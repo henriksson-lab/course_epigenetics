@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 425" width="1120" height="425" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="m0" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a6f97"/></marker><marker id="m1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker><marker id="m2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b4fa0"/></marker><marker id="m3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e67e22"/></marker><marker id="m4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8c564b"/></marker><marker id="m5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker></defs>
+<rect width="1120" height="425" fill="#ffffff"/>
+<rect x="136" y="116" width="668" height="230" rx="6" fill="#f4f6f8" stroke="#c5ced6"/>
+<rect x="207" y="158" width="86" height="130" rx="3" fill="#2a6f97" fill-opacity="0.13" stroke="#2a6f97" stroke-width="1.2"/>
+<rect x="297" y="158" width="176" height="130" rx="3" fill="#2e8b57" fill-opacity="0.13" stroke="#2e8b57" stroke-width="1.2"/>
+<rect x="477" y="158" width="66" height="130" rx="3" fill="#6b4fa0" fill-opacity="0.13" stroke="#6b4fa0" stroke-width="1.2"/>
+<rect x="572.0" y="158" width="221.0" height="130" rx="3" fill="#e67e22" fill-opacity="0.13" stroke="#e67e22" stroke-width="1.2"/>
+<rect x="167" y="314" width="386" height="24" rx="3" fill="#8c564b" fill-opacity="0.13" stroke="#8c564b" stroke-width="1.2"/>
+<text x="150" y="142" text-anchor="start" font-family="Courier New, monospace" font-size="16" fill="#1b2a3a">GRanges</text>
+<text x="230" y="142" text-anchor="start" font-family="Courier New, monospace" font-size="16" fill="#1b2a3a">object</text>
+<text x="300" y="142" text-anchor="start" font-family="Courier New, monospace" font-size="16" fill="#1b2a3a">with</text>
+<text x="350" y="142" text-anchor="start" font-family="Courier New, monospace" font-size="16" fill="#1b2a3a">3</text>
+<text x="370" y="142" text-anchor="start" font-family="Courier New, monospace" font-size="16" fill="#1b2a3a">ranges</text>
+<text x="440" y="142" text-anchor="start" font-family="Courier New, monospace" font-size="16" fill="#1b2a3a">and</text>
+<text x="480" y="142" text-anchor="start" font-family="Courier New, monospace" font-size="16" fill="#1b2a3a">2</text>
+<text x="500" y="142" text-anchor="start" font-family="Courier New, monospace" font-size="16" fill="#1b2a3a">metadata</text>
+<text x="590" y="142" text-anchor="start" font-family="Courier New, monospace" font-size="16" fill="#1b2a3a">columns:</text>
+<text x="200" y="176" text-anchor="end" font-family="Courier New, monospace" font-size="16" fill="#5b6b7a"></text>
+<text x="290" y="176" text-anchor="end" font-family="Courier New, monospace" font-size="16" fill="#1b2a3a">seqnames</text>
+<text x="470" y="176" text-anchor="end" font-family="Courier New, monospace" font-size="16" fill="#1b2a3a">ranges</text>
+<text x="540" y="176" text-anchor="end" font-family="Courier New, monospace" font-size="16" fill="#1b2a3a">strand</text>
+<text x="555" y="176" text-anchor="middle" font-family="Courier New, monospace" font-size="16" fill="#5b6b7a">|</text>
+<text x="690" y="176" text-anchor="end" font-family="Courier New, monospace" font-size="16" fill="#1b2a3a">name</text>
+<text x="790" y="176" text-anchor="end" font-family="Courier New, monospace" font-size="16" fill="#1b2a3a">score</text>
+<text x="200" y="202" text-anchor="end" font-family="Courier New, monospace" font-size="16" fill="#5b6b7a"></text>
+<text x="290" y="202" text-anchor="end" font-family="Courier New, monospace" font-size="16" fill="#5b6b7a">&lt;Rle&gt;</text>
+<text x="470" y="202" text-anchor="end" font-family="Courier New, monospace" font-size="16" fill="#5b6b7a">&lt;IRanges&gt;</text>
+<text x="540" y="202" text-anchor="end" font-family="Courier New, monospace" font-size="16" fill="#5b6b7a">&lt;Rle&gt;</text>
+<text x="555" y="202" text-anchor="middle" font-family="Courier New, monospace" font-size="16" fill="#5b6b7a">|</text>
+<text x="690" y="202" text-anchor="end" font-family="Courier New, monospace" font-size="16" fill="#5b6b7a">&lt;character&gt;</text>
+<text x="790" y="202" text-anchor="end" font-family="Courier New, monospace" font-size="16" fill="#5b6b7a">&lt;numeric&gt;</text>
+<text x="200" y="228" text-anchor="end" font-family="Courier New, monospace" font-size="16" fill="#5b6b7a">[1]</text>
+<text x="290" y="228" text-anchor="end" font-family="Courier New, monospace" font-size="16" fill="#1b2a3a">chr21</text>
+<text x="470" y="228" text-anchor="end" font-family="Courier New, monospace" font-size="16" fill="#1b2a3a">33025471-33025790</text>
+<text x="540" y="228" text-anchor="end" font-family="Courier New, monospace" font-size="16" fill="#1b2a3a">*</text>
+<text x="555" y="228" text-anchor="middle" font-family="Courier New, monospace" font-size="16" fill="#5b6b7a">|</text>
+<text x="690" y="228" text-anchor="end" font-family="Courier New, monospace" font-size="16" fill="#1b2a3a">peak1</text>
+<text x="790" y="228" text-anchor="end" font-family="Courier New, monospace" font-size="16" fill="#1b2a3a">312.5</text>
+<text x="200" y="254" text-anchor="end" font-family="Courier New, monospace" font-size="16" fill="#5b6b7a">[2]</text>
+<text x="290" y="254" text-anchor="end" font-family="Courier New, monospace" font-size="16" fill="#1b2a3a">chr21</text>
+<text x="470" y="254" text-anchor="end" font-family="Courier New, monospace" font-size="16" fill="#1b2a3a">33031602-33032011</text>
+<text x="540" y="254" text-anchor="end" font-family="Courier New, monospace" font-size="16" fill="#1b2a3a">*</text>
+<text x="555" y="254" text-anchor="middle" font-family="Courier New, monospace" font-size="16" fill="#5b6b7a">|</text>
+<text x="690" y="254" text-anchor="end" font-family="Courier New, monospace" font-size="16" fill="#1b2a3a">peak2</text>
+<text x="790" y="254" text-anchor="end" font-family="Courier New, monospace" font-size="16" fill="#1b2a3a">187.0</text>
+<text x="200" y="280" text-anchor="end" font-family="Courier New, monospace" font-size="16" fill="#5b6b7a">[3]</text>
+<text x="290" y="280" text-anchor="end" font-family="Courier New, monospace" font-size="16" fill="#1b2a3a">chr22</text>
+<text x="470" y="280" text-anchor="end" font-family="Courier New, monospace" font-size="16" fill="#1b2a3a">19756211-19756580</text>
+<text x="540" y="280" text-anchor="end" font-family="Courier New, monospace" font-size="16" fill="#1b2a3a">*</text>
+<text x="555" y="280" text-anchor="middle" font-family="Courier New, monospace" font-size="16" fill="#5b6b7a">|</text>
+<text x="690" y="280" text-anchor="end" font-family="Courier New, monospace" font-size="16" fill="#1b2a3a">peak3</text>
+<text x="790" y="280" text-anchor="end" font-family="Courier New, monospace" font-size="16" fill="#1b2a3a">95.2</text>
+<text x="170" y="306" text-anchor="start" font-family="Courier New, monospace" font-size="16" fill="#5b6b7a">-------</text>
+<text x="170" y="332" text-anchor="start" font-family="Courier New, monospace" font-size="16" fill="#1b2a3a">seqinfo: 25 sequences from hg38 genome</text>
+<text x="225.0" y="72" text-anchor="middle" font-size="17" font-weight="bold" fill="#2a6f97">seqnames</text>
+<text x="225.0" y="92" text-anchor="middle" font-size="15" fill="#2a6f97">chromosome</text>
+<line x1="225.0" y1="100" x2="225.0" y2="156" stroke="#2a6f97" stroke-width="2" marker-end="url(#m0)"/>
+<text x="365.0" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#2e8b57">ranges</text>
+<text x="365.0" y="52" text-anchor="middle" font-size="15" fill="#2e8b57">start-end, 1-based closed</text>
+<text x="365.0" y="72" text-anchor="middle" font-size="15" fill="#2e8b57">width = end − start + 1</text>
+<line x1="365.0" y1="80" x2="365.0" y2="156" stroke="#2e8b57" stroke-width="2" marker-end="url(#m1)"/>
+<text x="495.0" y="72" text-anchor="middle" font-size="17" font-weight="bold" fill="#6b4fa0">strand</text>
+<text x="495.0" y="92" text-anchor="middle" font-size="15" fill="#6b4fa0">+, − or *</text>
+<line x1="495.0" y1="100" x2="495.0" y2="156" stroke="#6b4fa0" stroke-width="2" marker-end="url(#m2)"/>
+<text x="725.0" y="72" text-anchor="middle" font-size="17" font-weight="bold" fill="#e67e22">mcols(gr)</text>
+<text x="725.0" y="92" text-anchor="middle" font-size="15" fill="#e67e22">metadata columns</text>
+<line x1="725.0" y1="100" x2="725.0" y2="156" stroke="#e67e22" stroke-width="2" marker-end="url(#m3)"/>
+<line x1="360" y1="368" x2="360" y2="340" stroke="#8c564b" stroke-width="2" marker-end="url(#m4)"/>
+<text x="360" y="388" text-anchor="middle" font-size="17" font-weight="bold" fill="#8c564b">seqinfo</text>
+<text x="360" y="408" text-anchor="middle" font-size="15" fill="#8c564b">chromosome names and lengths + genome build</text>
+<rect x="860" y="182" width="245" height="102" rx="6" fill="#ffffff" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="982" y="206" text-anchor="middle" font-size="15" fill="#1b2a3a">row [1] came from BED:</text>
+<text x="982" y="232" text-anchor="middle" font-family="Courier New, monospace" font-size="15" fill="#1b2a3a">chr21 33025470 33025790</text>
+<text x="982" y="260" text-anchor="middle" font-size="15" fill="#2e8b57">start + 1 = 33025471</text>
+<line x1="860" y1="223" x2="808" y2="223" stroke="#5b6b7a" stroke-width="2" marker-end="url(#m5)"/>
+</svg>

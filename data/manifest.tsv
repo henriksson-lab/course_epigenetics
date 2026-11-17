@@ -1,0 +1,15 @@
+# id	url	description	used_by
+gm12878_h3k4me3_fc.bigWig	https://www.encodeproject.org/files/ENCFF927KAJ/@@download/ENCFF927KAJ.bigWig	GM12878 H3K4me3 fold change over control, pooled reps (ENCSR000AKA, Broad)	chromatin-intro
+gm12878_h3k27ac_fc.bigWig	https://www.encodeproject.org/files/ENCFF469WVA/@@download/ENCFF469WVA.bigWig	GM12878 H3K27ac fold change over control, pooled reps (ENCSR000AKC, Broad)	chromatin-intro
+gm12878_h3k4me1_fc.bigWig	https://www.encodeproject.org/files/ENCFF564KBE/@@download/ENCFF564KBE.bigWig	GM12878 H3K4me1 fold change over control, pooled reps (ENCSR000AKF, Broad)	chromatin-intro
+gm12878_h3k36me3_fc.bigWig	https://www.encodeproject.org/files/ENCFF312MUY/@@download/ENCFF312MUY.bigWig	GM12878 H3K36me3 fold change over control, pooled reps (ENCSR000AKE, Broad)	chromatin-intro
+gm12878_h3k27me3_fc.bigWig	https://www.encodeproject.org/files/ENCFF919DOR/@@download/ENCFF919DOR.bigWig	GM12878 H3K27me3 fold change over control, pooled reps (ENCSR000AKD, Broad)	chromatin-intro
+gm12878_h3k9me3_fc.bigWig	https://www.encodeproject.org/files/ENCFF683HCZ/@@download/ENCFF683HCZ.bigWig	GM12878 H3K9me3 fold change over control, pooled reps (ENCSR000AOX, Broad)	chromatin-intro
+gm12878_ctcf_fc.bigWig	https://www.encodeproject.org/files/ENCFF485CGE/@@download/ENCFF485CGE.bigWig	GM12878 CTCF fold change over control, pooled reps (ENCSR000DZN, Stanford)	chromatin-intro, genomic-intervals
+gm12878_h3k4me3_peaks.bed.gz	https://www.encodeproject.org/files/ENCFF115YTM/@@download/ENCFF115YTM.bed.gz	GM12878 H3K4me3 replicated peaks, narrowPeak (ENCSR000AKA)	genomic-intervals
+gm12878_h3k27ac_peaks.bed.gz	https://www.encodeproject.org/files/ENCFF361XMX/@@download/ENCFF361XMX.bed.gz	GM12878 H3K27ac replicated peaks, narrowPeak (ENCSR000AKC)	genomic-intervals
+gm12878_ctcf_peaks.bed.gz	https://www.encodeproject.org/files/ENCFF796WRU/@@download/ENCFF796WRU.bed.gz	GM12878 CTCF conservative IDR thresholded peaks, narrowPeak (ENCSR000DZN)	genomic-intervals
+gencode.v46.basic.annotation.gtf.gz	https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_46/gencode.v46.basic.annotation.gtf.gz	GENCODE v46 basic gene annotation, GRCh38	genomic-intervals, chromatin-intro
+hg38.chrom.sizes	https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.chrom.sizes	hg38 chromosome sizes (genome file for bedtools)	genomic-intervals
+hg38_blacklist.bed.gz	https://www.encodeproject.org/files/ENCFF356LFX/@@download/ENCFF356LFX.bed.gz	ENCODE exclusion list (blacklist) v2 for GRCh38 (Amemiya et al. 2019)	genomic-intervals, enrichment-alignment
+hg38_chr21.fa.gz	https://hgdownload.soe.ucsc.edu/goldenPath/hg38/chromosomes/chr21.fa.gz	hg38 chromosome 21 sequence (UCSC)	chromatin-intro

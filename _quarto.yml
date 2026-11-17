@@ -1,0 +1,117 @@
+project:
+  type: website
+  output-dir: docs
+  # Built interactive demos (make demos), copied into docs/ on render.
+  resources:
+    - demos/dist/
+  render:
+    # Order is set by the sidebar below, not by these globs. One level deep per
+    # unit; plan/ holds internal working docs and is excluded from the site.
+    - "*.qmd"
+    - "*.md"
+    - "*/*.qmd"
+    - "*/*.md"
+    - "!plan/"
+    - "!unused-figures/"
+    - "!tools/"
+    - "!edit-notes/"
+    - "!node_modules/"
+    - "!demos/"
+    - "!data/"
+    # Bonus-quiz answers live in canvas-quiz/private/: never render or publish.
+    - "!canvas-quiz/"
+    # Teacher-only pages: kept in the repo (read them on GitHub), not published.
+    - "!README.md"
+    - "!audience.md"
+    - "!contentplan.md"
+    - "!designprinciples.md"
+    - "!authors.md"
+    - "!CODE_AUDIT_CHECKLIST.md"
+
+website:
+  title: "Epigenetics"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - text: "Course info"
+        menu:
+          - text: Course plan
+            href: courseplan.md
+  sidebar:
+    style: docked
+    search: true
+    contents:
+      - text: Home
+        href: index.qmd
+      - section: "Course info"
+        contents:
+          - text: Course plan
+            href: courseplan.md
+          - text: Learning outcomes
+            href: elo.md
+          - text: Install software
+            href: intro/install.qmd
+          - text: Glossary
+            href: dictionary.qmd
+      - section: "Foundations"
+        contents:
+          - section: "What is epigenetics?"
+            contents:
+              - text: "Lecture (slides)"
+                href: chromatin-intro/lec.qmd
+              - text: "Quiz"
+                href: chromatin-intro/quiz.qmd
+              - text: "Exercise"
+                href: chromatin-intro/exercise.qmd
+          - section: "Genomic intervals"
+            contents:
+              - text: "Lecture (slides)"
+                href: genomic-intervals/lec.qmd
+              - text: "Quiz"
+                href: genomic-intervals/quiz.qmd
+              - text: "Exercise"
+                href: genomic-intervals/exercise.qmd
+      # ----------------------------------------------------------------------
+      # Order is defined HERE, not in folder names. To reorder a unit, move its
+      # block; never rename its folder. Folders are named by topic, never by
+      # day or week (designprinciples.md §8). styles.css colours leaf links by
+      # filename: *lec* → green, *quiz* → blue, *exercise* → italic, and gives
+      # each top-level topic block its own colour.
+      #
+      # Template for one block with one unit:
+      #
+      # - section: "Chromatin accessibility"
+      #   contents:
+      #     - section: "ATAC-seq: the assay"
+      #       contents:
+      #         - text: "Lecture (video)"
+      #           href: videos/atacseq-intro.qmd
+      #         - text: "Lecture (slides)"
+      #           href: atacseq-intro/lec.qmd
+      #         - text: "Quiz"
+      #           href: atacseq-intro/quiz.qmd
+      #         - text: "Exercise"
+      #           href: atacseq-intro/exercise.qmd
+      #
+      # Optional material goes in a final "Further reading" block; give each
+      # such unit a _metadata.yml with
+      #   include-before-body: ../_further-reading-banner.html
+      # ----------------------------------------------------------------------
+
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+    theme: cosmo
+    css: styles.css
+
+# reveal.js navigation arrows for every lecture deck (lec.qmd). Plain top-level
+# keys, not a `format: revealjs:` block: html pages ignore them, so no page is
+# rendered as slides by accident. `controls: true` shows the arrows on desktop
+# too (Quarto's default `auto` shows them only on touch devices).
+controls: true
+controls-layout: edges
+controls-back-arrows: visible

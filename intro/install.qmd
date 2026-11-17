@@ -1,0 +1,64 @@
+---
+title: "Install the software you need"
+---
+
+Try to do this **before the course starts**, so supervision time can be spent
+on the analysis.
+
+You need two kinds of software: **command-line tools** (alignment, peak
+calling, coverage tracks) and **R with Bioconductor** (downstream analysis).
+
+## 1. Command-line tools with conda
+
+Install [Miniforge](https://github.com/conda-forge/miniforge) (it provides
+`conda` and `mamba` with the conda-forge channel preconfigured). Then create
+the course environment:
+
+```bash
+mamba create -n epigenetics -c conda-forge -c bioconda \
+  samtools bedtools bowtie2 macs3 deeptools fastp multiqc
+  # ... add tools here as the material is written
+mamba activate epigenetics
+```
+
+<!-- Candidates as units are written: bismark, methyldackel (methylation);
+     homer, meme (motifs); tobias (footprinting); cooler, pairtools,
+     hicexplorer, cooltools (Hi-C); seacr (CUT&Tag); modkit (nanopore). -->
+
+## 2. A genome browser
+
+Install [IGV](https://igv.org/doc/desktop/) (desktop), or use
+[igv.js in the browser](https://igv.org/app/).
+
+## 3. R and Bioconductor
+
+Install a recent [R](https://cran.r-project.org/) (4.4 or newer) and
+[RStudio Desktop](https://posit.co/download/rstudio-desktop/).
+
+```r
+install.packages(c("tidyverse", "BiocManager", "torch", "patchwork"))
+torch::install_torch()   # downloads the libtorch backend once (CPU version)
+BiocManager::install(c(
+  "GenomicRanges",   # genomic intervals
+  "rtracklayer",     # read/write BED, narrowPeak, GTF, bigWig
+  "Biostrings",      # DNA sequences, CpG counts (What is epigenetics?)
+  "DESeq2"           # differential accessibility / binding
+  # ... add Bioconductor packages here as the material is written
+))
+```
+
+## 4. Check it works
+
+```bash
+mamba activate epigenetics
+samtools --version | head -1
+macs3 --version
+```
+
+```r
+library(GenomicRanges)
+gr <- GRanges("chr1", IRanges(c(100, 150), width = 100))
+reduce(gr)   # should print one merged interval, chr1:100-249
+```
+
+If both print without error, you are ready for the course!

@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 470" width="1120" height="470" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/>
+    </marker>
+    <marker id="ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/>
+    </marker>
+  </defs>
+  <rect width="1120" height="470" fill="#ffffff"/>
+
+  <!-- other machinery -->
+  <rect x="390" y="16" width="340" height="58" rx="10" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="560" y="40" text-anchor="middle" font-size="16" font-weight="bold" fill="#1b2a3a">other machinery</text>
+  <text x="560" y="62" text-anchor="middle" font-size="13" fill="#5b6b7a">e.g. transcription activators, compaction factors</text>
+  <line x1="560" y1="126" x2="560" y2="78" stroke="#1b2a3a" stroke-width="2.5" marker-end="url(#ah)"/>
+  <text x="550" y="106" text-anchor="end" font-size="13" fill="#5b6b7a">recruits</text>
+
+  <!-- reader with pocket around the mark -->
+  <path d="M 522 128 H 598 V 196 H 577 A 17 17 0 0 0 543 196 H 522 Z" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="2.2" stroke-linejoin="round"/>
+  <text x="614" y="146" font-size="18" font-weight="bold" fill="#1b2a3a">READER</text>
+  <text x="614" y="166" font-size="14" fill="#e67e22">bromodomain reads ac</text>
+  <text x="614" y="184" font-size="14" fill="#2a6f97">chromodomain reads me</text>
+
+  <!-- nucleosome -->
+  <g>
+    <circle cx="536" cy="300" r="27" fill="#2a9d8f"/>
+    <circle cx="584" cy="300" r="27" fill="#8ab17d"/>
+    <circle cx="536" cy="342" r="27" fill="#f4a261"/>
+    <circle cx="584" cy="342" r="27" fill="#e9c46a"/>
+    <path d="M 380 372 C 440 372 470 380 486 350" fill="none" stroke="#5b6b7a" stroke-width="7" stroke-linecap="round"/>
+    <ellipse cx="560" cy="321" rx="80" ry="56" fill="none" stroke="#5b6b7a" stroke-width="7"/>
+    <path d="M 634 350 C 650 380 680 372 740 372" fill="none" stroke="#5b6b7a" stroke-width="7" stroke-linecap="round"/>
+    <text x="536" y="305" text-anchor="middle" font-size="14" font-weight="bold" fill="#ffffff">H3</text>
+    <text x="584" y="305" text-anchor="middle" font-size="14" font-weight="bold" fill="#1b2a3a">H4</text>
+    <text x="536" y="347" text-anchor="middle" font-size="14" font-weight="bold" fill="#1b2a3a">H2A</text>
+    <text x="584" y="347" text-anchor="middle" font-size="14" font-weight="bold" fill="#1b2a3a">H2B</text>
+  </g>
+  <!-- H3 tail with lysine and mark -->
+  <path d="M 536 274 C 530 262 552 252 548 244 C 545 238 556 238 560 235" fill="none" stroke="#2a9d8f" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="560" cy="226" r="11" fill="#ffffff" stroke="#1b2a3a" stroke-width="2"/>
+  <text x="560" y="231" text-anchor="middle" font-size="13" font-weight="bold" fill="#1b2a3a">K</text>
+  <path d="M 560 183 A 13 13 0 0 0 560 209 Z" fill="#e67e22"/>
+  <path d="M 560 183 A 13 13 0 0 1 560 209 Z" fill="#2a6f97"/>
+  <circle cx="560" cy="196" r="13" fill="none" stroke="#1b2a3a" stroke-width="2"/>
+  <text x="575" y="250" font-size="13" fill="#5b6b7a">H3 tail</text>
+  <text x="538" y="234" text-anchor="end" font-size="13" fill="#5b6b7a">mark (ac or me3) on lysine</text>
+
+  <!-- writer -->
+  <rect x="140" y="172" width="180" height="70" rx="14" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="2.2"/>
+  <text x="230" y="203" text-anchor="middle" font-size="18" font-weight="bold" fill="#1b2a3a">WRITER</text>
+  <text x="230" y="226" text-anchor="middle" font-size="15" fill="#1b2a3a">adds the mark</text>
+  <text x="230" y="266" text-anchor="middle" font-size="14" fill="#e67e22">p300/CBP → ac</text>
+  <text x="230" y="285" text-anchor="middle" font-size="14" fill="#2a6f97">EZH2 (PRC2) → me3</text>
+  <path d="M 322 205 Q 440 200 544 203" fill="none" stroke="#1b2a3a" stroke-width="2.5" marker-end="url(#ah)"/>
+
+  <!-- eraser -->
+  <rect x="800" y="172" width="180" height="70" rx="14" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="2.2"/>
+  <text x="890" y="203" text-anchor="middle" font-size="18" font-weight="bold" fill="#1b2a3a">ERASER</text>
+  <text x="890" y="226" text-anchor="middle" font-size="15" fill="#1b2a3a">removes it</text>
+  <text x="890" y="266" text-anchor="middle" font-size="14" fill="#e67e22">HDAC removes ac</text>
+  <text x="890" y="285" text-anchor="middle" font-size="14" fill="#2a6f97">KDM6 (UTX) removes me3</text>
+  <path d="M 576 203 Q 690 200 797 205" fill="none" stroke="#1b2a3a" stroke-width="2.5" marker-end="url(#ah)"/>
+
+  <!-- cycle return arc -->
+  <path d="M 982 222 C 1100 330 900 448 560 448 C 220 448 20 330 137 222" fill="none" stroke="#5b6b7a" stroke-width="2.2" stroke-dasharray="8 5" marker-end="url(#ahg)"/>
+  <text x="560" y="428" text-anchor="middle" font-size="14" fill="#5b6b7a">unmarked lysine can be written again: marks turn over</text>
+</svg>

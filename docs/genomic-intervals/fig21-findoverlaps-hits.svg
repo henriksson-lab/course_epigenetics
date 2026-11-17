@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 275" width="1120" height="275" font-family="Helvetica, Arial, sans-serif">
+<rect width="1120" height="275" fill="#ffffff"/>
+<text x="30" y="34" font-size="18" font-weight="bold" fill="#1b2a3a">Peaks (query) and promoters (subject)</text>
+<line x1="150" y1="74" x2="570" y2="74" stroke="#1b2a3a" stroke-width="1.5"/>
+<line x1="150.0" y1="74" x2="150.0" y2="68" stroke="#1b2a3a" stroke-width="1.2"/>
+<text x="150.0" y="63" text-anchor="middle" font-size="13" fill="#5b6b7a">0</text>
+<line x1="202.5" y1="74" x2="202.5" y2="68" stroke="#1b2a3a" stroke-width="1.2"/>
+<text x="202.5" y="63" text-anchor="middle" font-size="13" fill="#5b6b7a">1</text>
+<line x1="255.0" y1="74" x2="255.0" y2="68" stroke="#1b2a3a" stroke-width="1.2"/>
+<text x="255.0" y="63" text-anchor="middle" font-size="13" fill="#5b6b7a">2</text>
+<line x1="307.5" y1="74" x2="307.5" y2="68" stroke="#1b2a3a" stroke-width="1.2"/>
+<text x="307.5" y="63" text-anchor="middle" font-size="13" fill="#5b6b7a">3</text>
+<line x1="360.0" y1="74" x2="360.0" y2="68" stroke="#1b2a3a" stroke-width="1.2"/>
+<text x="360.0" y="63" text-anchor="middle" font-size="13" fill="#5b6b7a">4</text>
+<line x1="412.5" y1="74" x2="412.5" y2="68" stroke="#1b2a3a" stroke-width="1.2"/>
+<text x="412.5" y="63" text-anchor="middle" font-size="13" fill="#5b6b7a">5</text>
+<line x1="465.0" y1="74" x2="465.0" y2="68" stroke="#1b2a3a" stroke-width="1.2"/>
+<text x="465.0" y="63" text-anchor="middle" font-size="13" fill="#5b6b7a">6</text>
+<line x1="517.5" y1="74" x2="517.5" y2="68" stroke="#1b2a3a" stroke-width="1.2"/>
+<text x="517.5" y="63" text-anchor="middle" font-size="13" fill="#5b6b7a">7</text>
+<line x1="570.0" y1="74" x2="570.0" y2="68" stroke="#1b2a3a" stroke-width="1.2"/>
+<text x="570.0" y="63" text-anchor="middle" font-size="13" fill="#5b6b7a">8</text>
+<text x="140" y="79" text-anchor="end" font-size="14" fill="#5b6b7a">chr1 (kb)</text>
+<rect x="260" y="128" width="25" height="84" fill="#2e8b57" fill-opacity="0.25"/>
+<rect x="330" y="128" width="30" height="84" fill="#2e8b57" fill-opacity="0.25"/>
+<rect x="455" y="128" width="20" height="84" fill="#2e8b57" fill-opacity="0.25"/>
+<rect x="160" y="128" width="55" height="20" fill="#2a6f97"/>
+<text x="187.5" y="120" text-anchor="middle" font-size="15" font-weight="bold" fill="#2a6f97">q1</text>
+<rect x="260" y="128" width="100" height="20" fill="#2a6f97"/>
+<text x="310.0" y="120" text-anchor="middle" font-size="15" font-weight="bold" fill="#2a6f97">q2</text>
+<rect x="420" y="128" width="55" height="20" fill="#2a6f97"/>
+<text x="447.5" y="120" text-anchor="middle" font-size="15" font-weight="bold" fill="#2a6f97">q3</text>
+<rect x="515" y="128" width="45" height="20" fill="#2a6f97"/>
+<text x="537.5" y="120" text-anchor="middle" font-size="15" font-weight="bold" fill="#2a6f97">q4</text>
+<rect x="245" y="192" width="40" height="20" fill="#e67e22"/>
+<text x="265.0" y="232" text-anchor="middle" font-size="15" font-weight="bold" fill="#e67e22">s1</text>
+<rect x="330" y="192" width="50" height="20" fill="#e67e22"/>
+<text x="355.0" y="232" text-anchor="middle" font-size="15" font-weight="bold" fill="#e67e22">s2</text>
+<rect x="455" y="192" width="45" height="20" fill="#e67e22"/>
+<text x="477.5" y="232" text-anchor="middle" font-size="15" font-weight="bold" fill="#e67e22">s3</text>
+<circle cx="272.5" cy="170.0" r="10" fill="#2e8b57"/>
+<text x="272.5" y="175.0" text-anchor="middle" font-size="13" font-weight="bold" fill="#ffffff">1</text>
+<circle cx="345.0" cy="170.0" r="10" fill="#2e8b57"/>
+<text x="345.0" y="175.0" text-anchor="middle" font-size="13" font-weight="bold" fill="#ffffff">2</text>
+<circle cx="465.0" cy="170.0" r="10" fill="#2e8b57"/>
+<text x="465.0" y="175.0" text-anchor="middle" font-size="13" font-weight="bold" fill="#ffffff">3</text>
+<text x="140" y="144" text-anchor="end" font-size="15" fill="#2a6f97">peaks</text>
+<text x="140" y="208" text-anchor="end" font-size="15" fill="#e67e22">promoters</text>
+<text x="355" y="264" text-anchor="middle" font-size="14" fill="#5b6b7a">green = overlap; numbers = rows of the Hits object</text>
+<text x="615" y="34" font-size="18" font-weight="bold" fill="#1b2a3a">Hits</text>
+<text x="615" y="58" font-family="Courier New, monospace" font-size="14" fill="#5b6b7a">findOverlaps()</text>
+<rect x="615" y="80" width="196" height="120" fill="#ffffff" stroke="#c5ced6"/>
+<rect x="615" y="80" width="196" height="30" fill="#eaf1f7" stroke="#c5ced6"/>
+<text x="661.0" y="100" text-anchor="middle" font-family="Courier New, monospace" font-size="14" font-weight="bold" fill="#1b2a3a">queryHits</text>
+<text x="759.0" y="100" text-anchor="middle" font-family="Courier New, monospace" font-size="14" font-weight="bold" fill="#1b2a3a">subjectHits</text>
+<text x="661.0" y="131" text-anchor="middle" font-family="Courier New, monospace" font-size="16" font-weight="bold" fill="#2a6f97">2</text>
+<text x="759.0" y="131" text-anchor="middle" font-family="Courier New, monospace" font-size="16" font-weight="bold" fill="#e67e22">1</text>
+<circle cx="599" cy="125" r="10" fill="#2e8b57"/>
+<text x="599" y="130" text-anchor="middle" font-size="13" font-weight="bold" fill="#ffffff">1</text>
+<line x1="615" y1="140" x2="811" y2="140" stroke="#e1e6eb"/>
+<text x="661.0" y="161" text-anchor="middle" font-family="Courier New, monospace" font-size="16" font-weight="bold" fill="#2a6f97">2</text>
+<text x="759.0" y="161" text-anchor="middle" font-family="Courier New, monospace" font-size="16" font-weight="bold" fill="#e67e22">2</text>
+<circle cx="599" cy="155" r="10" fill="#2e8b57"/>
+<text x="599" y="160" text-anchor="middle" font-size="13" font-weight="bold" fill="#ffffff">2</text>
+<line x1="615" y1="170" x2="811" y2="170" stroke="#e1e6eb"/>
+<text x="661.0" y="191" text-anchor="middle" font-family="Courier New, monospace" font-size="16" font-weight="bold" fill="#2a6f97">3</text>
+<text x="759.0" y="191" text-anchor="middle" font-family="Courier New, monospace" font-size="16" font-weight="bold" fill="#e67e22">3</text>
+<circle cx="599" cy="185" r="10" fill="#2e8b57"/>
+<text x="599" y="190" text-anchor="middle" font-size="13" font-weight="bold" fill="#ffffff">3</text>
+<text x="845" y="34" font-size="18" font-weight="bold" fill="#1b2a3a">One value per peak</text>
+<rect x="845" y="80" width="250" height="150" fill="#ffffff" stroke="#c5ced6"/>
+<rect x="845" y="80" width="250" height="30" fill="#eaf1f7" stroke="#c5ced6"/>
+<text x="862.0" y="100" text-anchor="middle" font-family="Courier New, monospace" font-size="14" font-weight="bold" fill="#1b2a3a"></text>
+<text x="929.0" y="100" text-anchor="middle" font-family="Courier New, monospace" font-size="14" font-weight="bold" fill="#1b2a3a">overlapsAny</text>
+<text x="1037.0" y="100" text-anchor="middle" font-family="Courier New, monospace" font-size="14" font-weight="bold" fill="#1b2a3a">countOverlaps</text>
+<text x="862.0" y="131" text-anchor="middle" font-family="Courier New, monospace" font-size="16" font-weight="bold" fill="#2a6f97">q1</text>
+<text x="929.0" y="131" text-anchor="middle" font-family="Courier New, monospace" font-size="16" font-weight="bold" fill="#5b6b7a">FALSE</text>
+<text x="1037.0" y="131" text-anchor="middle" font-family="Courier New, monospace" font-size="16" font-weight="bold" fill="#1b2a3a">0</text>
+<line x1="845" y1="140" x2="1095" y2="140" stroke="#e1e6eb"/>
+<text x="862.0" y="161" text-anchor="middle" font-family="Courier New, monospace" font-size="16" font-weight="bold" fill="#2a6f97">q2</text>
+<text x="929.0" y="161" text-anchor="middle" font-family="Courier New, monospace" font-size="16" font-weight="bold" fill="#2e8b57">TRUE</text>
+<text x="1037.0" y="161" text-anchor="middle" font-family="Courier New, monospace" font-size="16" font-weight="bold" fill="#1b2a3a">2</text>
+<line x1="845" y1="170" x2="1095" y2="170" stroke="#e1e6eb"/>
+<text x="862.0" y="191" text-anchor="middle" font-family="Courier New, monospace" font-size="16" font-weight="bold" fill="#2a6f97">q3</text>
+<text x="929.0" y="191" text-anchor="middle" font-family="Courier New, monospace" font-size="16" font-weight="bold" fill="#2e8b57">TRUE</text>
+<text x="1037.0" y="191" text-anchor="middle" font-family="Courier New, monospace" font-size="16" font-weight="bold" fill="#1b2a3a">1</text>
+<line x1="845" y1="200" x2="1095" y2="200" stroke="#e1e6eb"/>
+<text x="862.0" y="221" text-anchor="middle" font-family="Courier New, monospace" font-size="16" font-weight="bold" fill="#2a6f97">q4</text>
+<text x="929.0" y="221" text-anchor="middle" font-family="Courier New, monospace" font-size="16" font-weight="bold" fill="#5b6b7a">FALSE</text>
+<text x="1037.0" y="221" text-anchor="middle" font-family="Courier New, monospace" font-size="16" font-weight="bold" fill="#1b2a3a">0</text>
+</svg>

@@ -1,0 +1,53 @@
+/* Sidebar tweaks for the course website (HTML pages only — slides use theme.scss). */
+
+/* Bold the collapsible section headers in the docked sidebar. */
+.sidebar-item.sidebar-item-section > .sidebar-item-container,
+.sidebar-item.sidebar-item-section > .sidebar-item-container > a,
+.sidebar-item.sidebar-item-section > .sidebar-item-container > .sidebar-item-toggle,
+.sidebar-item.sidebar-item-section > .sidebar-item-container .sidebar-item-text {
+  font-weight: 700;
+}
+
+/* Colour sidebar leaf links by type so they're identifiable at a glance:
+   lectures (any file with "lec" in the name) → green,
+   quizzes ("quiz") → blue, interactive demos ("#explore") → orange,
+   exercises ("exercise") → italic. */
+.sidebar a.sidebar-item-text[href*="lec"],
+.sidebar-item .sidebar-item-text > a[href*="lec"] { color: #1a7a3b; }
+.sidebar a.sidebar-item-text[href*="lec"]:hover,
+.sidebar-item .sidebar-item-text > a[href*="lec"]:hover { color: #105025; }
+
+.sidebar a.sidebar-item-text[href*="quiz"],
+.sidebar-item .sidebar-item-text > a[href*="quiz"] { color: #2a55c2; }
+.sidebar a.sidebar-item-text[href*="quiz"]:hover,
+.sidebar-item .sidebar-item-text > a[href*="quiz"]:hover { color: #1a3a8c; }
+
+.sidebar a.sidebar-item-text[href*="#explore"],
+.sidebar-item .sidebar-item-text > a[href*="#explore"] { color: #b35900; }
+.sidebar a.sidebar-item-text[href*="#explore"]:hover,
+.sidebar-item .sidebar-item-text > a[href*="#explore"]:hover { color: #7a3d00; }
+
+.sidebar a.sidebar-item-text[href*="exercise"]:not([href*="#explore"]) { font-style: italic; }
+
+/* One colour per top-level topic block: a stripe down the left of the block
+   and a tinted header. Positional: top-level items are Home (1),
+   Course info (2), then topic blocks from (3). Colours cycle over 6. */
+.sidebar-menu-container > ul > li.sidebar-item-section:nth-child(n+3) {
+  border-left: 4px solid var(--block-color);
+  padding-left: 0.35rem;
+  margin: 0.4rem 0;
+}
+.sidebar-menu-container > ul > li.sidebar-item-section:nth-child(n+3) > .sidebar-item-container {
+  background: var(--block-tint);
+  border-radius: 0 4px 4px 0;
+  padding-left: 0.3rem;
+}
+.sidebar-menu-container > ul > li.sidebar-item-section:nth-child(n+3) > .sidebar-item-container .menu-text {
+  color: var(--block-color);
+}
+.sidebar-menu-container > ul > li:nth-child(6n+3) { --block-color: #2a7f8f; --block-tint: #e6f3f5; } /* teal */
+.sidebar-menu-container > ul > li:nth-child(6n+4) { --block-color: #6b4fa0; --block-tint: #efebf7; } /* purple */
+.sidebar-menu-container > ul > li:nth-child(6n+5) { --block-color: #a8324a; --block-tint: #f8e9ec; } /* crimson */
+.sidebar-menu-container > ul > li:nth-child(6n+6) { --block-color: #8a6a12; --block-tint: #f6f0de; } /* ochre */
+.sidebar-menu-container > ul > li:nth-child(6n+7) { --block-color: #3b5bab; --block-tint: #e9eef8; } /* blue */
+.sidebar-menu-container > ul > li:nth-child(6n+8) { --block-color: #3d7a3a; --block-tint: #e9f3e8; } /* green */

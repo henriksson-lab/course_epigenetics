@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 462" width="1120" height="462" font-family="Helvetica, Arial, sans-serif">
+<rect width="1120" height="462" fill="white"/>
+<text x="20" y="28" font-size="18" font-weight="bold" fill="#1b2a3a">One narrowPeak line (a CTCF peak)</text>
+<path d="M34,70 V62 H628 V70" fill="none" stroke="#1b2a3a" stroke-width="2"/>
+<text x="331.0" y="55" text-anchor="middle" font-size="15" font-weight="bold" fill="#1b2a3a">BED6</text>
+<path d="M34,104 V96 H374 V104" fill="none" stroke="#1b2a3a" stroke-width="2"/>
+<text x="204.0" y="89" text-anchor="middle" font-size="15" font-weight="bold" fill="#1b2a3a">BED3 (required)</text>
+<path d="M636,104 V96 H1072 V104" fill="none" stroke="#8c564b" stroke-width="2"/>
+<text x="854.0" y="89" text-anchor="middle" font-size="15" font-weight="bold" fill="#8c564b">+4 narrowPeak</text>
+<text x="78.0" y="128" text-anchor="middle" font-size="15" font-weight="bold" fill="#1b2a3a">chrom</text>
+<rect x="30" y="138" width="96" height="38" fill="#f4f6f8" stroke="#c8d2dc"/>
+<text x="78.0" y="164" text-anchor="middle" font-size="18" font-weight="bold" font-family="Courier New, monospace" fill="#1b2a3a">chr21</text>
+<text x="78.0" y="196" text-anchor="middle" font-size="13" fill="#5b6b7a">chromosome</text>
+<text x="189.0" y="128" text-anchor="middle" font-size="15" font-weight="bold" fill="#1b2a3a">start</text>
+<rect x="126" y="138" width="126" height="38" fill="#f4f6f8" stroke="#c8d2dc"/>
+<text x="189.0" y="164" text-anchor="middle" font-size="18" font-weight="bold" font-family="Courier New, monospace" fill="#c0392b">33025470</text>
+<text x="189.0" y="196" text-anchor="middle" font-size="13" fill="#5b6b7a">0-based</text>
+<text x="315.0" y="128" text-anchor="middle" font-size="15" font-weight="bold" fill="#1b2a3a">end</text>
+<rect x="252" y="138" width="126" height="38" fill="#f4f6f8" stroke="#c8d2dc"/>
+<text x="315.0" y="164" text-anchor="middle" font-size="18" font-weight="bold" font-family="Courier New, monospace" fill="#1b2a3a">33025790</text>
+<text x="315.0" y="196" text-anchor="middle" font-size="13" fill="#5b6b7a">not included</text>
+<text x="411.0" y="128" text-anchor="middle" font-size="15" font-weight="bold" fill="#1b2a3a">name</text>
+<rect x="378" y="138" width="66" height="38" fill="#f4f6f8" stroke="#c8d2dc"/>
+<text x="411.0" y="164" text-anchor="middle" font-size="18" font-weight="bold" font-family="Courier New, monospace" fill="#1b2a3a">.</text>
+<text x="411.0" y="196" text-anchor="middle" font-size="13" fill="#5b6b7a">none</text>
+<text x="492.0" y="128" text-anchor="middle" font-size="15" font-weight="bold" fill="#1b2a3a">score</text>
+<rect x="444" y="138" width="96" height="38" fill="#f4f6f8" stroke="#c8d2dc"/>
+<text x="492.0" y="164" text-anchor="middle" font-size="18" font-weight="bold" font-family="Courier New, monospace" fill="#1b2a3a">1000</text>
+<text x="492.0" y="196" text-anchor="middle" font-size="13" fill="#5b6b7a">0–1000,</text>
+<text x="492.0" y="213" text-anchor="middle" font-size="13" fill="#5b6b7a">for display</text>
+<text x="586.0" y="128" text-anchor="middle" font-size="15" font-weight="bold" fill="#1b2a3a">strand</text>
+<rect x="540" y="138" width="92" height="38" fill="#f4f6f8" stroke="#c8d2dc"/>
+<text x="586.0" y="164" text-anchor="middle" font-size="18" font-weight="bold" font-family="Courier New, monospace" fill="#1b2a3a">.</text>
+<text x="586.0" y="196" text-anchor="middle" font-size="13" fill="#5b6b7a">no strand</text>
+<text x="695.0" y="128" text-anchor="middle" font-size="15" font-weight="bold" fill="#1b2a3a">signalValue</text>
+<rect x="632" y="138" width="126" height="38" fill="#f6efe9" stroke="#c8d2dc"/>
+<text x="695.0" y="164" text-anchor="middle" font-size="18" font-weight="bold" font-family="Courier New, monospace" fill="#1b2a3a">45.2</text>
+<text x="695.0" y="196" text-anchor="middle" font-size="13" fill="#5b6b7a">fold</text>
+<text x="695.0" y="213" text-anchor="middle" font-size="13" fill="#5b6b7a">enrichment</text>
+<text x="807.0" y="128" text-anchor="middle" font-size="15" font-weight="bold" fill="#1b2a3a">pValue</text>
+<rect x="758" y="138" width="98" height="38" fill="#f6efe9" stroke="#c8d2dc"/>
+<text x="807.0" y="164" text-anchor="middle" font-size="18" font-weight="bold" font-family="Courier New, monospace" fill="#1b2a3a">312.5</text>
+<text x="905.0" y="128" text-anchor="middle" font-size="15" font-weight="bold" fill="#1b2a3a">qValue</text>
+<rect x="856" y="138" width="98" height="38" fill="#f6efe9" stroke="#c8d2dc"/>
+<text x="905.0" y="164" text-anchor="middle" font-size="18" font-weight="bold" font-family="Courier New, monospace" fill="#1b2a3a">308.1</text>
+<text x="1015.0" y="128" text-anchor="middle" font-size="15" font-weight="bold" fill="#1b2a3a">peak</text>
+<rect x="954" y="138" width="122" height="38" fill="#f6efe9" stroke="#c8d2dc"/>
+<text x="1015.0" y="164" text-anchor="middle" font-size="18" font-weight="bold" font-family="Courier New, monospace" fill="#c0392b">162</text>
+<text x="1015.0" y="196" text-anchor="middle" font-size="13" fill="#5b6b7a">summit offset</text>
+<text x="1015.0" y="213" text-anchor="middle" font-size="13" fill="#5b6b7a">from start</text>
+<text x="804.0" y="196" font-size="13" fill="#5b6b7a">both as −log<tspan dy="4" font-size="10">10</tspan></text>
+<text x="804.0" y="213" font-size="13" fill="#5b6b7a">10 means p = 10<tspan dy="-6" font-size="10">−10</tspan></text>
+<polygon points="321.7,352 321.7,351.6 328.7,351.5 335.7,351.4 342.6,351.2 349.6,351.0 356.5,350.7 363.5,350.4 370.4,350.0 377.4,349.5 384.3,348.9 391.3,348.3 398.3,347.5 405.2,346.5 412.2,345.4 419.1,344.1 426.1,342.7 433.0,341.0 440.0,339.1 447.0,337.1 453.9,334.8 460.9,332.2 467.8,329.5 474.8,326.5 481.7,323.3 488.7,319.9 495.7,316.4 502.6,312.7 509.6,309.0 516.5,305.2 523.5,301.4 530.4,297.6 537.4,293.9 544.3,290.4 551.3,287.1 558.3,284.1 565.2,281.3 572.2,279.0 579.1,277.1 586.1,275.6 593.0,274.6 600.0,274.1 607.0,274.1 613.9,274.6 620.9,275.6 627.8,277.1 634.8,279.0 641.7,281.3 648.7,284.1 655.7,287.1 662.6,290.4 669.6,293.9 676.5,297.6 683.5,301.4 690.4,305.2 697.4,309.0 704.3,312.7 711.3,316.4 718.3,319.9 725.2,323.3 732.2,326.5 739.1,329.5 746.1,332.2 753.0,334.8 760.0,337.1 767.0,339.1 773.9,341.0 780.9,342.7 787.8,344.1 794.8,345.4 801.7,346.5 808.7,347.5 815.7,348.3 822.6,348.9 829.6,349.5 836.5,350.0 843.5,350.4 850.4,350.7 857.4,351.0 864.3,351.2 871.3,351.4 878.3,351.5 878.3,352" fill="#ecdfd9" stroke="#8c564b" stroke-width="1.5"/>
+<text x="890.3" y="344" font-size="13" fill="#5b6b7a">read pileup</text>
+<rect x="321.7" y="356" width="556.5" height="14" fill="#8c564b"/>
+<text x="311.7" y="368" text-anchor="end" font-size="15" font-weight="bold" fill="#c0392b">start 33,025,470</text>
+<text x="888.3" y="368" font-size="15" font-weight="bold" fill="#1b2a3a">end 33,025,790</text>
+<line x1="603.5" y1="240" x2="603.5" y2="370" stroke="#c0392b" stroke-width="2.5"/>
+<text x="613.5" y="244" font-size="15" font-weight="bold" fill="#c0392b">summit = start + peak</text>
+<text x="613.5" y="263" font-size="14" fill="#1b2a3a">= 33,025,470 + 162 = <tspan font-weight="bold">33,025,632</tspan></text>
+<path d="M321.7,380 V388 H603.5 V380" fill="none" stroke="#c0392b" stroke-width="2"/>
+<text x="462.6" y="406" text-anchor="middle" font-size="14" font-weight="bold" fill="#c0392b">peak = 162 bp</text>
+<line x1="200" y1="432" x2="1000" y2="432" stroke="#5b6b7a" stroke-width="1.5"/>
+<line x1="200.0" y1="427" x2="200.0" y2="437" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="200.0" y="454" text-anchor="middle" font-size="13" fill="#5b6b7a">33,025,400</text>
+<line x1="373.9" y1="427" x2="373.9" y2="437" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="373.9" y="454" text-anchor="middle" font-size="13" fill="#5b6b7a">33,025,500</text>
+<line x1="547.8" y1="427" x2="547.8" y2="437" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="547.8" y="454" text-anchor="middle" font-size="13" fill="#5b6b7a">33,025,600</text>
+<line x1="721.7" y1="427" x2="721.7" y2="437" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="721.7" y="454" text-anchor="middle" font-size="13" fill="#5b6b7a">33,025,700</text>
+<line x1="895.7" y1="427" x2="895.7" y2="437" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="895.7" y="454" text-anchor="middle" font-size="13" fill="#5b6b7a">33,025,800</text>
+<text x="188" y="437" text-anchor="end" font-size="14" fill="#5b6b7a">chr21</text>
+</svg>

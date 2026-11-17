@@ -1,0 +1,148 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 380" width="1120" height="380" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker></defs>
+<rect width="1120" height="380" fill="#ffffff"/>
+<text x="200.0" y="34" text-anchor="middle" font-size="18" font-weight="bold" fill="#1b2a3a">1. Observed</text>
+<rect x="56.2" y="92" width="18.8" height="72" rx="3" fill="#2e8b57" fill-opacity="0.22" stroke="#2e8b57" stroke-width="1.5"/>
+<rect x="110.6" y="92" width="18.8" height="72" rx="3" fill="#2e8b57" fill-opacity="0.22" stroke="#2e8b57" stroke-width="1.5"/>
+<rect x="158.6" y="92" width="18.8" height="72" rx="3" fill="#2e8b57" fill-opacity="0.22" stroke="#2e8b57" stroke-width="1.5"/>
+<rect x="203.4" y="92" width="25.2" height="72" rx="3" fill="#2e8b57" fill-opacity="0.22" stroke="#2e8b57" stroke-width="1.5"/>
+<rect x="261.0" y="92" width="19.1" height="72" rx="3" fill="#2e8b57" fill-opacity="0.22" stroke="#2e8b57" stroke-width="1.5"/>
+<rect x="312.2" y="92" width="18.8" height="72" rx="3" fill="#2e8b57" fill-opacity="0.22" stroke="#2e8b57" stroke-width="1.5"/>
+<line x1="40" y1="128.0" x2="360.0" y2="128.0" stroke="#5b6b7a" stroke-width="2"/>
+<rect x="62.4" y="96" width="7.0" height="20" fill="#2a6f97"/>
+<rect x="88.0" y="96" width="7.7" height="20" fill="#2a6f97"/>
+<rect x="116.8" y="96" width="6.4" height="20" fill="#2a6f97"/>
+<rect x="136.0" y="96" width="8.3" height="20" fill="#2a6f97"/>
+<rect x="163.2" y="96" width="7.0" height="20" fill="#2a6f97"/>
+<rect x="206.4" y="96" width="7.7" height="20" fill="#2a6f97"/>
+<rect x="219.2" y="96" width="6.4" height="20" fill="#2a6f97"/>
+<rect x="244.8" y="96" width="7.0" height="20" fill="#2a6f97"/>
+<rect x="268.8" y="96" width="8.3" height="20" fill="#2a6f97"/>
+<rect x="320.0" y="96" width="7.7" height="20" fill="#2a6f97"/>
+<rect x="59.2" y="140" width="12.8" height="20" fill="#e67e22"/>
+<rect x="113.6" y="140" width="12.8" height="20" fill="#e67e22"/>
+<rect x="161.6" y="140" width="12.8" height="20" fill="#e67e22"/>
+<rect x="212.8" y="140" width="12.8" height="20" fill="#e67e22"/>
+<rect x="264.0" y="140" width="12.8" height="20" fill="#e67e22"/>
+<rect x="315.2" y="140" width="12.8" height="20" fill="#e67e22"/>
+<text x="32" y="114" text-anchor="end" font-size="15" font-weight="bold" fill="#2a6f97">A</text>
+<text x="32" y="158" text-anchor="end" font-size="15" font-weight="bold" fill="#e67e22">B</text>
+<text x="200.0" y="196" text-anchor="middle" font-size="15" fill="#5b6b7a">A intervals overlapping B (green)</text>
+<text x="200.0" y="236" text-anchor="middle" font-size="22" font-weight="bold" fill="#c0392b">observed = 7</text>
+<text x="200.0" y="66" text-anchor="middle" font-size="14" fill="#5b6b7a">10 A intervals, 6 B intervals</text>
+<line x1="372" y1="150" x2="402" y2="150" stroke="#5b6b7a" stroke-width="2.5" marker-end="url(#ah)"/>
+<text x="585.0" y="34" text-anchor="middle" font-size="18" font-weight="bold" fill="#1b2a3a">2. Shuffle A (same widths)</text>
+<rect x="484.5" y="58" width="17.5" height="49" rx="3" fill="#2e8b57" fill-opacity="0.22" stroke="#2e8b57" stroke-width="1.5"/>
+<rect x="602.0" y="58" width="17.5" height="49" rx="3" fill="#2e8b57" fill-opacity="0.22" stroke="#2e8b57" stroke-width="1.5"/>
+<line x1="430" y1="82.5" x2="680.0" y2="82.5" stroke="#5b6b7a" stroke-width="2"/>
+<rect x="433.8" y="62" width="5.5" height="13" fill="#2a6f97"/>
+<rect x="462.5" y="62" width="6.0" height="13" fill="#2a6f97"/>
+<rect x="477.5" y="62" width="5.0" height="13" fill="#2a6f97"/>
+<rect x="492.5" y="62" width="6.5" height="13" fill="#2a6f97"/>
+<rect x="512.5" y="62" width="5.5" height="13" fill="#2a6f97"/>
+<rect x="546.2" y="62" width="6.0" height="13" fill="#2a6f97"/>
+<rect x="582.5" y="62" width="5.0" height="13" fill="#2a6f97"/>
+<rect x="593.8" y="62" width="5.5" height="13" fill="#2a6f97"/>
+<rect x="610.0" y="62" width="6.5" height="13" fill="#2a6f97"/>
+<rect x="662.5" y="62" width="6.0" height="13" fill="#2a6f97"/>
+<rect x="445.0" y="90" width="10.0" height="13" fill="#e67e22"/>
+<rect x="487.5" y="90" width="10.0" height="13" fill="#e67e22"/>
+<rect x="525.0" y="90" width="10.0" height="13" fill="#e67e22"/>
+<rect x="565.0" y="90" width="10.0" height="13" fill="#e67e22"/>
+<rect x="605.0" y="90" width="10.0" height="13" fill="#e67e22"/>
+<rect x="645.0" y="90" width="10.0" height="13" fill="#e67e22"/>
+<text x="422" y="73" text-anchor="end" font-size="14" font-weight="bold" fill="#2a6f97">A</text>
+<text x="422" y="101" text-anchor="end" font-size="14" font-weight="bold" fill="#e67e22">B</text>
+<text x="692.0" y="89" font-size="15" fill="#1b2a3a">→ <tspan font-weight="bold">2</tspan></text>
+<rect x="562.0" y="128" width="19.0" height="49" rx="3" fill="#2e8b57" fill-opacity="0.22" stroke="#2e8b57" stroke-width="1.5"/>
+<line x1="430" y1="152.5" x2="680.0" y2="152.5" stroke="#5b6b7a" stroke-width="2"/>
+<rect x="435.0" y="132" width="5.5" height="13" fill="#2a6f97"/>
+<rect x="458.8" y="132" width="6.0" height="13" fill="#2a6f97"/>
+<rect x="471.2" y="132" width="5.0" height="13" fill="#2a6f97"/>
+<rect x="505.0" y="132" width="6.5" height="13" fill="#2a6f97"/>
+<rect x="515.0" y="132" width="5.5" height="13" fill="#2a6f97"/>
+<rect x="545.0" y="132" width="6.0" height="13" fill="#2a6f97"/>
+<rect x="555.0" y="132" width="5.0" height="13" fill="#2a6f97"/>
+<rect x="572.5" y="132" width="5.5" height="13" fill="#2a6f97"/>
+<rect x="627.5" y="132" width="6.5" height="13" fill="#2a6f97"/>
+<rect x="668.8" y="132" width="6.0" height="13" fill="#2a6f97"/>
+<rect x="445.0" y="160" width="10.0" height="13" fill="#e67e22"/>
+<rect x="487.5" y="160" width="10.0" height="13" fill="#e67e22"/>
+<rect x="525.0" y="160" width="10.0" height="13" fill="#e67e22"/>
+<rect x="565.0" y="160" width="10.0" height="13" fill="#e67e22"/>
+<rect x="605.0" y="160" width="10.0" height="13" fill="#e67e22"/>
+<rect x="645.0" y="160" width="10.0" height="13" fill="#e67e22"/>
+<text x="422" y="143" text-anchor="end" font-size="14" font-weight="bold" fill="#2a6f97">A</text>
+<text x="422" y="171" text-anchor="end" font-size="14" font-weight="bold" fill="#e67e22">B</text>
+<text x="692.0" y="159" font-size="15" fill="#1b2a3a">→ <tspan font-weight="bold">1</tspan></text>
+<rect x="442.0" y="198" width="16.5" height="49" rx="3" fill="#2e8b57" fill-opacity="0.22" stroke="#2e8b57" stroke-width="1.5"/>
+<rect x="522.0" y="198" width="16.5" height="49" rx="3" fill="#2e8b57" fill-opacity="0.22" stroke="#2e8b57" stroke-width="1.5"/>
+<rect x="642.0" y="198" width="17.0" height="49" rx="3" fill="#2e8b57" fill-opacity="0.22" stroke="#2e8b57" stroke-width="1.5"/>
+<line x1="430" y1="222.5" x2="680.0" y2="222.5" stroke="#5b6b7a" stroke-width="2"/>
+<rect x="450.0" y="202" width="5.5" height="13" fill="#2a6f97"/>
+<rect x="465.0" y="202" width="6.0" height="13" fill="#2a6f97"/>
+<rect x="502.5" y="202" width="5.0" height="13" fill="#2a6f97"/>
+<rect x="512.5" y="202" width="6.5" height="13" fill="#2a6f97"/>
+<rect x="530.0" y="202" width="5.5" height="13" fill="#2a6f97"/>
+<rect x="547.5" y="202" width="6.0" height="13" fill="#2a6f97"/>
+<rect x="585.0" y="202" width="5.0" height="13" fill="#2a6f97"/>
+<rect x="595.0" y="202" width="5.5" height="13" fill="#2a6f97"/>
+<rect x="630.0" y="202" width="6.5" height="13" fill="#2a6f97"/>
+<rect x="650.0" y="202" width="6.0" height="13" fill="#2a6f97"/>
+<rect x="445.0" y="230" width="10.0" height="13" fill="#e67e22"/>
+<rect x="487.5" y="230" width="10.0" height="13" fill="#e67e22"/>
+<rect x="525.0" y="230" width="10.0" height="13" fill="#e67e22"/>
+<rect x="565.0" y="230" width="10.0" height="13" fill="#e67e22"/>
+<rect x="605.0" y="230" width="10.0" height="13" fill="#e67e22"/>
+<rect x="645.0" y="230" width="10.0" height="13" fill="#e67e22"/>
+<text x="422" y="213" text-anchor="end" font-size="14" font-weight="bold" fill="#2a6f97">A</text>
+<text x="422" y="241" text-anchor="end" font-size="14" font-weight="bold" fill="#e67e22">B</text>
+<text x="692.0" y="229" font-size="15" fill="#1b2a3a">→ <tspan font-weight="bold">3</tspan></text>
+<text x="555.0" y="268" text-anchor="middle" font-size="15" fill="#5b6b7a">… repeat N = 1000 times</text>
+<line x1="732" y1="150" x2="762" y2="150" stroke="#5b6b7a" stroke-width="2.5" marker-end="url(#ah)"/>
+<text x="955.0" y="34" text-anchor="middle" font-size="18" font-weight="bold" fill="#1b2a3a">3. Null distribution</text>
+<rect x="822.0" y="160.6" width="26.0" height="75.4" fill="#9aa8b5"/>
+<rect x="852.0" y="79.4" width="26.0" height="156.6" fill="#9aa8b5"/>
+<rect x="882.0" y="73.6" width="26.0" height="162.4" fill="#9aa8b5"/>
+<rect x="912.0" y="125.8" width="26.0" height="110.2" fill="#9aa8b5"/>
+<rect x="942.0" y="183.8" width="26.0" height="52.2" fill="#9aa8b5"/>
+<rect x="972.0" y="218.6" width="26.0" height="17.4" fill="#9aa8b5"/>
+<rect x="1002.0" y="230.2" width="26.0" height="5.8" fill="#9aa8b5"/>
+<line x1="820" y1="236" x2="1090" y2="236" stroke="#1b2a3a" stroke-width="1.5"/>
+<line x1="820" y1="236" x2="820" y2="62" stroke="#1b2a3a" stroke-width="1.5"/>
+<line x1="835.0" y1="236" x2="835.0" y2="241" stroke="#1b2a3a" stroke-width="1.2"/>
+<text x="835.0" y="257" text-anchor="middle" font-size="14" fill="#1b2a3a">0</text>
+<line x1="865.0" y1="236" x2="865.0" y2="241" stroke="#1b2a3a" stroke-width="1.2"/>
+<text x="865.0" y="257" text-anchor="middle" font-size="14" fill="#1b2a3a">1</text>
+<line x1="895.0" y1="236" x2="895.0" y2="241" stroke="#1b2a3a" stroke-width="1.2"/>
+<text x="895.0" y="257" text-anchor="middle" font-size="14" fill="#1b2a3a">2</text>
+<line x1="925.0" y1="236" x2="925.0" y2="241" stroke="#1b2a3a" stroke-width="1.2"/>
+<text x="925.0" y="257" text-anchor="middle" font-size="14" fill="#1b2a3a">3</text>
+<line x1="955.0" y1="236" x2="955.0" y2="241" stroke="#1b2a3a" stroke-width="1.2"/>
+<text x="955.0" y="257" text-anchor="middle" font-size="14" fill="#1b2a3a">4</text>
+<line x1="985.0" y1="236" x2="985.0" y2="241" stroke="#1b2a3a" stroke-width="1.2"/>
+<text x="985.0" y="257" text-anchor="middle" font-size="14" fill="#1b2a3a">5</text>
+<line x1="1015.0" y1="236" x2="1015.0" y2="241" stroke="#1b2a3a" stroke-width="1.2"/>
+<text x="1015.0" y="257" text-anchor="middle" font-size="14" fill="#1b2a3a">6</text>
+<line x1="1045.0" y1="236" x2="1045.0" y2="241" stroke="#1b2a3a" stroke-width="1.2"/>
+<text x="1045.0" y="257" text-anchor="middle" font-size="14" fill="#1b2a3a">7</text>
+<line x1="1075.0" y1="236" x2="1075.0" y2="241" stroke="#1b2a3a" stroke-width="1.2"/>
+<text x="1075.0" y="257" text-anchor="middle" font-size="14" fill="#1b2a3a">8</text>
+<text x="955.0" y="278" text-anchor="middle" font-size="15" fill="#1b2a3a">overlaps per shuffle</text>
+<line x1="815" y1="236.0" x2="820" y2="236.0" stroke="#1b2a3a" stroke-width="1.2"/>
+<text x="811" y="241.0" text-anchor="end" font-size="13" fill="#1b2a3a">0</text>
+<line x1="815" y1="178.0" x2="820" y2="178.0" stroke="#1b2a3a" stroke-width="1.2"/>
+<text x="811" y="183.0" text-anchor="end" font-size="13" fill="#1b2a3a">100</text>
+<line x1="815" y1="120.0" x2="820" y2="120.0" stroke="#1b2a3a" stroke-width="1.2"/>
+<text x="811" y="125.0" text-anchor="end" font-size="13" fill="#1b2a3a">200</text>
+<line x1="815" y1="62.0" x2="820" y2="62.0" stroke="#1b2a3a" stroke-width="1.2"/>
+<text x="811" y="67.0" text-anchor="end" font-size="13" fill="#1b2a3a">300</text>
+<text transform="translate(774,149.0) rotate(-90)" text-anchor="middle" font-size="15" fill="#1b2a3a">shuffles</text>
+<line x1="1045.0" y1="236" x2="1045.0" y2="72" stroke="#c0392b" stroke-width="3"/>
+<text x="1045.0" y="64" text-anchor="middle" font-size="15" font-weight="bold" fill="#c0392b">observed</text>
+<line x1="894.1" y1="236" x2="894.1" y2="72" stroke="#1b2a3a" stroke-width="1.5" stroke-dasharray="5,4"/>
+<text x="894.1" y="64" text-anchor="middle" font-size="15" fill="#1b2a3a">mean 1.97</text>
+<rect x="150" y="288" width="820" height="84" rx="6" fill="#f4f6f8" stroke="#d5dde5"/>
+<text x="560" y="316" text-anchor="middle" font-size="17" fill="#1b2a3a">enrichment = observed / mean(shuffled) = 7 / 1.97 ≈ 3.6</text>
+<text x="560" y="350" text-anchor="middle" font-size="17" fill="#1b2a3a">p = (#shuffles ≥ observed + 1) / (N + 1) = (0 + 1) / (1000 + 1) ≈ 0.001</text>
+</svg>

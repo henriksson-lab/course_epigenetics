@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 270" width="1120" height="270" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/>
+    </marker>
+  </defs>
+  <rect width="1120" height="270" fill="#ffffff"/>
+
+  <!-- row labels -->
+  <text x="20" y="44" font-size="17" font-weight="bold" fill="#1b2a3a">text</text>
+  <text x="20" y="63" font-size="13" fill="#5b6b7a">read by eye,</text>
+  <text x="20" y="79" font-size="13" fill="#5b6b7a">small files</text>
+  <text x="20" y="164" font-size="17" font-weight="bold" fill="#1b2a3a">indexed</text>
+  <text x="20" y="184" font-size="17" font-weight="bold" fill="#1b2a3a">binary</text>
+  <text x="20" y="203" font-size="13" fill="#5b6b7a">random access</text>
+
+  <!-- top row: text formats -->
+  <g stroke-width="2">
+    <rect x="155" y="28" width="160" height="56" rx="6" fill="#eaf1f7" stroke="#2a6f97"/>
+    <rect x="340" y="28" width="160" height="56" rx="6" fill="#eaf1f7" stroke="#2a6f97"/>
+    <rect x="525" y="28" width="160" height="56" rx="6" fill="#efeaf6" stroke="#6b4fa0"/>
+    <rect x="720" y="28" width="160" height="56" rx="6" fill="#efeaf6" stroke="#6b4fa0"/>
+    <rect x="930" y="28" width="160" height="56" rx="6" fill="#efeaf6" stroke="#6b4fa0"/>
+  </g>
+  <g font-size="16" font-weight="bold" fill="#1b2a3a" text-anchor="middle">
+    <text x="235" y="52">BED, narrowPeak</text>
+    <text x="420" y="52">bedGraph, wig</text>
+    <text x="605" y="52">SAM</text>
+    <text x="800" y="52">GTF, GFF3</text>
+    <text x="1010" y="52">VCF</text>
+  </g>
+  <g font-family="Courier New, monospace" font-size="13" fill="#5b6b7a" text-anchor="middle">
+    <text x="235" y="72">.bed .narrowPeak</text>
+    <text x="420" y="72">.bedGraph .wig</text>
+    <text x="605" y="72">.sam</text>
+    <text x="800" y="72">.gtf .gff3</text>
+    <text x="1010" y="72">.vcf</text>
+  </g>
+
+  <!-- arrows -->
+  <g stroke="#1b2a3a" stroke-width="2" marker-end="url(#arr)">
+    <line x1="235" y1="86" x2="235" y2="142"/>
+    <line x1="420" y1="86" x2="420" y2="142"/>
+    <line x1="605" y1="86" x2="605" y2="142"/>
+    <line x1="800" y1="86" x2="800" y2="142"/>
+    <line x1="980" y1="86" x2="880" y2="142"/>
+    <line x1="1040" y1="86" x2="1040" y2="142"/>
+  </g>
+
+  <!-- bottom row: indexed binary -->
+  <g stroke-width="2">
+    <rect x="155" y="144" width="160" height="56" rx="6" fill="#eaf1f7" stroke="#2a6f97"/>
+    <rect x="340" y="144" width="160" height="56" rx="6" fill="#eaf1f7" stroke="#2a6f97"/>
+    <rect x="525" y="144" width="160" height="56" rx="6" fill="#efeaf6" stroke="#6b4fa0"/>
+    <rect x="720" y="144" width="190" height="56" rx="6" fill="#efeaf6" stroke="#6b4fa0"/>
+    <rect x="975" y="144" width="130" height="56" rx="6" fill="#efeaf6" stroke="#6b4fa0"/>
+  </g>
+  <g font-size="16" font-weight="bold" fill="#1b2a3a" text-anchor="middle">
+    <text x="235" y="168">bigBed</text>
+    <text x="420" y="168">bigWig</text>
+    <text x="605" y="168">BAM, CRAM</text>
+    <text x="815" y="168">bgzip + tabix</text>
+    <text x="1040" y="168">BCF</text>
+  </g>
+  <g font-family="Courier New, monospace" font-size="13" fill="#5b6b7a" text-anchor="middle">
+    <text x="235" y="188">.bb</text>
+    <text x="420" y="188">.bw</text>
+    <text x="605" y="188">.bam .cram</text>
+    <text x="815" y="188">.gz + .gz.tbi</text>
+    <text x="1040" y="188">.bcf</text>
+  </g>
+  <text x="605" y="218" font-size="13" fill="#5b6b7a" text-anchor="middle">stored 0-based inside,</text>
+  <text x="605" y="234" font-size="13" fill="#5b6b7a" text-anchor="middle">printed 1-based</text>
+  <text x="815" y="218" font-size="13" fill="#5b6b7a" text-anchor="middle">works for any sorted</text>
+  <text x="815" y="234" font-size="13" fill="#5b6b7a" text-anchor="middle">tab-separated file</text>
+
+  <!-- key -->
+  <rect x="155" y="242" width="22" height="16" rx="3" fill="#eaf1f7" stroke="#2a6f97" stroke-width="2"/>
+  <text x="185" y="255" font-size="14" fill="#1b2a3a">0-based, half-open</text>
+  <rect x="340" y="242" width="22" height="16" rx="3" fill="#efeaf6" stroke="#6b4fa0" stroke-width="2"/>
+  <text x="370" y="255" font-size="14" fill="#1b2a3a">1-based, closed</text>
+</svg>

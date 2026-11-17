@@ -1,0 +1,1211 @@
+[
+  {
+    "objectID": "elo.html",
+    "href": "elo.html",
+    "title": "Expected learning outcomes (draft)",
+    "section": "",
+    "text": "A final-year MSc course on epigenetics: the biology of chromatin and DNA methylation, the sequencing assays that measure them, and how to analyse the data. Draft outcomes, to be aligned with the syllabus once it exists.\n\n\nBy the end of the course, a student should be able to take an epigenomic dataset (ATAC-seq, ChIP-seq or CUT&Tag, bisulfite sequencing or Hi-C), process it from reads to biological interpretation, and judge whether the experiment and the analysis support the claims made.\n\n\n\nA student can:\n\nexplain how chromatin structure, histone modifications, DNA methylation and 3D genome organisation regulate gene expression;\ndescribe the principle of ATAC-seq, ChIP-seq (and CUT&RUN/CUT&Tag), bisulfite sequencing and Hi-C, and the biases each assay introduces;\nexplain the statistical models behind peak calling, differential accessibility/binding, differential methylation and Hi-C normalisation.\n\n\n\n\nA student can:\n\nprocess raw reads from an epigenomic assay to aligned, filtered reads and signal tracks on the command line, and assess their quality;\ncall peaks, methylation levels and 3D genome features, and test for differences between conditions in R;\nwork with genomic intervals and annotations (bedtools, GenomicRanges), and visualise data in a genome browser;\nintegrate epigenomic data with gene expression to propose regulatory mechanisms.\n\n\n\n\nAn individual written exam. Exercises with code build understanding; the exam tests reading data figures, small calculations and judging designs and claims.\n\n\n\nA student can:\n\ncritically assess the design, controls, normalisation and interpretation of published epigenomic studies, including claims of epigenetic inheritance.",
+    "crumbs": [
+      "Home",
+      "Course info",
+      "Learning outcomes"
+    ]
+  },
+  {
+    "objectID": "elo.html#overall-course-outcome",
+    "href": "elo.html#overall-course-outcome",
+    "title": "Expected learning outcomes (draft)",
+    "section": "",
+    "text": "By the end of the course, a student should be able to take an epigenomic dataset (ATAC-seq, ChIP-seq or CUT&Tag, bisulfite sequencing or Hi-C), process it from reads to biological interpretation, and judge whether the experiment and the analysis support the claims made.",
+    "crumbs": [
+      "Home",
+      "Course info",
+      "Learning outcomes"
+    ]
+  },
+  {
+    "objectID": "elo.html#knowledge-and-understanding",
+    "href": "elo.html#knowledge-and-understanding",
+    "title": "Expected learning outcomes (draft)",
+    "section": "",
+    "text": "A student can:\n\nexplain how chromatin structure, histone modifications, DNA methylation and 3D genome organisation regulate gene expression;\ndescribe the principle of ATAC-seq, ChIP-seq (and CUT&RUN/CUT&Tag), bisulfite sequencing and Hi-C, and the biases each assay introduces;\nexplain the statistical models behind peak calling, differential accessibility/binding, differential methylation and Hi-C normalisation.",
+    "crumbs": [
+      "Home",
+      "Course info",
+      "Learning outcomes"
+    ]
+  },
+  {
+    "objectID": "elo.html#skills-and-abilities",
+    "href": "elo.html#skills-and-abilities",
+    "title": "Expected learning outcomes (draft)",
+    "section": "",
+    "text": "A student can:\n\nprocess raw reads from an epigenomic assay to aligned, filtered reads and signal tracks on the command line, and assess their quality;\ncall peaks, methylation levels and 3D genome features, and test for differences between conditions in R;\nwork with genomic intervals and annotations (bedtools, GenomicRanges), and visualise data in a genome browser;\nintegrate epigenomic data with gene expression to propose regulatory mechanisms.",
+    "crumbs": [
+      "Home",
+      "Course info",
+      "Learning outcomes"
+    ]
+  },
+  {
+    "objectID": "elo.html#assessment",
+    "href": "elo.html#assessment",
+    "title": "Expected learning outcomes (draft)",
+    "section": "",
+    "text": "An individual written exam. Exercises with code build understanding; the exam tests reading data figures, small calculations and judging designs and claims.",
+    "crumbs": [
+      "Home",
+      "Course info",
+      "Learning outcomes"
+    ]
+  },
+  {
+    "objectID": "elo.html#judgement-and-approach",
+    "href": "elo.html#judgement-and-approach",
+    "title": "Expected learning outcomes (draft)",
+    "section": "",
+    "text": "A student can:\n\ncritically assess the design, controls, normalisation and interpretation of published epigenomic studies, including claims of epigenetic inheritance.",
+    "crumbs": [
+      "Home",
+      "Course info",
+      "Learning outcomes"
+    ]
+  },
+  {
+    "objectID": "intro/install.html",
+    "href": "intro/install.html",
+    "title": "Install the software you need",
+    "section": "",
+    "text": "Try to do this before the course starts, so supervision time can be spent on the analysis.\nYou need two kinds of software: command-line tools (alignment, peak calling, coverage tracks) and R with Bioconductor (downstream analysis).",
+    "crumbs": [
+      "Home",
+      "Course info",
+      "Install software"
+    ]
+  },
+  {
+    "objectID": "intro/install.html#command-line-tools-with-conda",
+    "href": "intro/install.html#command-line-tools-with-conda",
+    "title": "Install the software you need",
+    "section": "1. Command-line tools with conda",
+    "text": "1. Command-line tools with conda\nInstall Miniforge (it provides conda and mamba with the conda-forge channel preconfigured). Then create the course environment:\nmamba create -n epigenetics -c conda-forge -c bioconda \\\n  samtools bedtools bowtie2 macs3 deeptools fastp multiqc\n  # ... add tools here as the material is written\nmamba activate epigenetics",
+    "crumbs": [
+      "Home",
+      "Course info",
+      "Install software"
+    ]
+  },
+  {
+    "objectID": "intro/install.html#a-genome-browser",
+    "href": "intro/install.html#a-genome-browser",
+    "title": "Install the software you need",
+    "section": "2. A genome browser",
+    "text": "2. A genome browser\nInstall IGV (desktop), or use igv.js in the browser.",
+    "crumbs": [
+      "Home",
+      "Course info",
+      "Install software"
+    ]
+  },
+  {
+    "objectID": "intro/install.html#r-and-bioconductor",
+    "href": "intro/install.html#r-and-bioconductor",
+    "title": "Install the software you need",
+    "section": "3. R and Bioconductor",
+    "text": "3. R and Bioconductor\nInstall a recent R (4.4 or newer) and RStudio Desktop.\ninstall.packages(c(\"tidyverse\", \"BiocManager\", \"torch\", \"patchwork\"))\ntorch::install_torch()   # downloads the libtorch backend once (CPU version)\nBiocManager::install(c(\n  \"GenomicRanges\",   # genomic intervals\n  \"rtracklayer\",     # read/write BED, narrowPeak, GTF, bigWig\n  \"Biostrings\",      # DNA sequences, CpG counts (What is epigenetics?)\n  \"DESeq2\"           # differential accessibility / binding\n  # ... add Bioconductor packages here as the material is written\n))",
+    "crumbs": [
+      "Home",
+      "Course info",
+      "Install software"
+    ]
+  },
+  {
+    "objectID": "intro/install.html#check-it-works",
+    "href": "intro/install.html#check-it-works",
+    "title": "Install the software you need",
+    "section": "4. Check it works",
+    "text": "4. Check it works\nmamba activate epigenetics\nsamtools --version | head -1\nmacs3 --version\nlibrary(GenomicRanges)\ngr &lt;- GRanges(\"chr1\", IRanges(c(100, 150), width = 100))\nreduce(gr)   # should print one merged interval, chr1:100-249\nIf both print without error, you are ready for the course!",
+    "crumbs": [
+      "Home",
+      "Course info",
+      "Install software"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/quiz.html",
+    "href": "genomic-intervals/quiz.html",
+    "title": "Quiz: genomic intervals",
+    "section": "",
+    "text": "Short questions on coordinates, file formats and interval operations. Try each on paper first, then open the answer.\n\nQ1. A BED file contains the line chr3  499  500. Which base is this, as a 1-based position? How long is the interval?\n\n\n\n\n\n\nHint\n\n\n\n\n\nBED counts the boundaries between bases from 0.\n\n\n\n\n\n\n\n\n\nAnswer\n\n\n\n\n\nBase 500 (1-based), chr3:500-500. Length \\(500 - 499 = 1\\): a single base.\n\n\n\n\nQ2. You copy SNP positions from a VCF into a BED file as chrom  pos  pos+1. What is wrong, and what happens when you intersect the file with a list of CpG sites?\n\n\n\n\n\n\nHint\n\n\n\n\n\nVCF is 1-based. What is the BED start of the base at 1-based position pos?\n\n\n\n\n\n\n\n\n\nAnswer\n\n\n\n\n\nThe base at 1-based position pos is pos−1  pos in BED. Writing pos  pos+1 shifts every SNP one base to the right, so SNPs on the C of a CpG appear on the G, and SNPs on the G appear outside the CpG. Some true overlaps are missed and some false ones are reported.\n\n\n\n\nQ3. A narrowPeak line ends in … 12.4  35.1  32.8  210, and its start is 1 000 000. Where is the summit, and what is its \\(q\\)-value?\n\n\n\n\n\n\nHint\n\n\n\n\n\nThe last column is an offset from the start; the \\(p\\) and \\(q\\) columns are \\(-\\log_{10}\\).\n\n\n\n\n\n\n\n\n\nAnswer\n\n\n\n\n\nSummit boundary \\(1\\,000\\,000 + 210 = 1\\,000\\,210\\) (BED 1000210  1000211, 1-based position 1 000 211). \\(q = 10^{-32.8}\\).\n\n\n\n\nQ4. A gene is on the − strand, from 50 000 to 60 000 (1-based). Where is its TSS, and in which direction is “upstream”?\n\n\n\n\n\n\nAnswer\n\n\n\n\n\nThe TSS is at 60 000, the end coordinate. Upstream is towards larger coordinates (60 001, 60 002, …).\n\n\n\n\nQ5. bedtools intersect -a peaks.bed -b promoters.bed | wc -l gives 12 000 and the peak file has 10 000 lines. Your colleague concludes that more than 100% of the peaks are at promoters. What went wrong, and what command should they run?\n\n\n\n\n\n\nAnswer\n\n\n\n\n\nThe default output has one line per overlapping (peak, promoter) pair, and a peak overlapping several promoter windows (alternative TSSs) is counted several times. Count peaks with bedtools intersect -u -a peaks.bed -b promoters.bed | wc -l, then divide by 10 000.\n\n\n\n\nQ6. A = chr1 100 200, B = chr1 150 400, C = chr1 400 500. What does cat A B C | sort -k1,1 -k2,2n | bedtools merge return?\n\n\n\n\n\n\nHint\n\n\n\n\n\nDo B and C overlap, or only touch? By default merge also joins intervals that touch (book-ended).\n\n\n\n\n\n\n\n\n\nAnswer\n\n\n\n\n\nA and B overlap, so they merge into 100–400. B ends at boundary 400 and C starts there: they touch without sharing a base, and bedtools merge joins book-ended intervals by default. The result is one interval, chr1 100 500.\n\n\n\n\nQ7. Your peaks overlap enhancers 4 times more often than shuffled peaks do. The shuffle placed peaks anywhere in the genome file, including centromeres and runs of N. Is the true enrichment likely higher or lower than 4?\n\n\n\n\n\n\nAnswer\n\n\n\n\n\nLower. Shuffled peaks in impossible places (gaps, centromeres, unmappable repeats) never overlap anything, so the shuffled overlap is too low and the enrichment too high. Restrict the shuffle (-chrom, -excl blacklist and gaps, or -incl the mappable genome) for a fairer null.\n\n\n\n\nQ8. You read a BED file with read.table() and build GRanges(V1, IRanges(V2, V3)). What is wrong with the result, and how do you avoid it?\n\n\n\n\n\n\nAnswer\n\n\n\n\n\nEvery range is one base too long on the left: the 0-based BED start is used as a 1-based start. Use rtracklayer::import(), which converts, or add 1 to the start (IRanges(V2 + 1, V3)), or makeGRangesFromDataFrame(..., starts.in.df.are.0based = TRUE).\n\n\n\n\nQ9. Peak files from two labs give a Jaccard index of 0.02. Can you conclude that the two peak sets are unrelated?\n\n\n\n\n\n\nAnswer\n\n\n\n\n\nNo. Jaccard counts shared bases relative to the union. If one set has narrow peaks (a TF) and the other broad ones (a histone mark), even complete overlap of every narrow peak gives a small Jaccard. Count overlapping peaks and compare with a shuffled null instead.\n\n\n\n\nQ10. One file has chr1, the other 1; one is hg19, the other hg38. Which of the two problems will bedtools tell you about?\n\n\n\n\n\n\nAnswer\n\n\n\n\n\nNeither reliably. With different chromosome names nothing overlaps, so you get an empty or suspiciously small result (sometimes a warning). With different builds the names match, so bedtools reports overlaps, just wrong ones, with no error. Always check build and naming before you start.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/exercise.html",
+    "href": "genomic-intervals/exercise.html",
+    "title": "Exercise: Genomic intervals",
+    "section": "",
+    "text": "After this exercise you will be able to:\n\nConvert coordinates between the 0-based half-open (BED) and 1-based closed (GTF, VCF, GRanges) conventions, by hand.\nRead a narrowPeak line: width, summit, and which columns are statistics.\nBuild strand-aware TSS and promoter files from a GENCODE GTF with awk and bedtools slop.\nAnswer “what fraction of my peaks sit at promoters?” with bedtools intersect and with GenomicRanges, and get the same answer.\nTest whether two sets of peaks overlap more than by chance with bedtools shuffle, and explain why the choice of background matters.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/exercise.html#goal",
+    "href": "genomic-intervals/exercise.html#goal",
+    "title": "Exercise: Genomic intervals",
+    "section": "",
+    "text": "After this exercise you will be able to:\n\nConvert coordinates between the 0-based half-open (BED) and 1-based closed (GTF, VCF, GRanges) conventions, by hand.\nRead a narrowPeak line: width, summit, and which columns are statistics.\nBuild strand-aware TSS and promoter files from a GENCODE GTF with awk and bedtools slop.\nAnswer “what fraction of my peaks sit at promoters?” with bedtools intersect and with GenomicRanges, and get the same answer.\nTest whether two sets of peaks overlap more than by chance with bedtools shuffle, and explain why the choice of background matters.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/exercise.html#background",
+    "href": "genomic-intervals/exercise.html#background",
+    "title": "Exercise: Genomic intervals",
+    "section": "Background",
+    "text": "Background\nCoordinates. BED and bedGraph count the boundaries between bases from 0, so an interval start end covers the bases after boundary start up to boundary end: length = end − start. GTF, SAM, VCF and GRanges number the bases from 1 and include both ends: length = end − start + 1. To go from 1-based [s, e] to BED: s − 1, e.\nnarrowPeak is BED6 + 4 columns: signalValue (enrichment), pValue and qValue (both as \\(-\\log_{10}\\), −1 = not available), and peak, the summit as an offset from start.\nStrand. The TSS of a transcript is its start on the + strand and its end on the − strand. Upstream of a − strand gene is towards higher coordinates.\nOverlap counts and chance. Overlap by default means at least one shared base. Report each peak once (-u) when counting peaks. Whether an overlap is more than chance needs a null: shuffle one set to random positions (same widths) many times and compare.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/exercise.html#data",
+    "href": "genomic-intervals/exercise.html#data",
+    "title": "Exercise: Genomic intervals",
+    "section": "Data",
+    "text": "Data\nThe exercise uses three GM12878 peak sets from ENCODE (H3K4me3, H3K27ac, CTCF; GRCh38), the GENCODE v46 basic annotation, the hg38 chromosome sizes, and the ENCODE blacklist. From the course repository:\ndata/download.sh genomic-intervals      # about 35 MB\nmkdir -p ~/epi/intervals && cd ~/epi/intervals\nD=/path/to/course/data                  # where download.sh put the files\nYou need bedtools and the usual Unix tools (see Install the software you need). Everything runs in seconds on a laptop or a login node; on the cluster you can also wrap the commands in an sbatch script.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/exercise.html#by-hand",
+    "href": "genomic-intervals/exercise.html#by-hand",
+    "title": "Exercise: Genomic intervals",
+    "section": "By hand",
+    "text": "By hand\nDo these on paper.\nB1. Coordinates.\n\nA VCF file reports a SNP at chr7  117559590 (1-based). Write the BED line for this single base.\nA BED line reads chr2  1000  1250. Write the region as a browser would display it (1-based), and give its length.\nA GTF exon is chr1  11869  12227  +. Write it as a BED line and give its length.\nTwo BED intervals chr1 100 200 and chr1 200 300. Do they overlap? Do they share a base?\n\nB2. A narrowPeak line. This is the first line of the ENCODE CTCF file:\nchr12  53676107  53676353  .  1000  .  497.29450  -1.00000  4.87269  126\n\nHow wide is the peak?\nAt which position is the summit? Give it as a one-base BED interval and as a 1-based position.\nWhat does −1 in column 8 mean? What \\(q\\)-value does column 9 correspond to?\nCan you use column 5 to rank peaks by strength? Which column would you use?\n\nB3. Promoters and strand. A transcript is annotated in a GTF as chr5  1000000  1050000 on the − strand.\n\nWhere is its TSS (1-based)?\nDefine the promoter as 2 kb upstream to 500 bp downstream of the TSS. Give it as a 1-based interval and as a BED line.\nA script computes every promoter as start − 2000 to start + 500, ignoring strand. Where does this put the window for this transcript, and what lies there?\n\nB4. Interval operations. On a 1000 bp genome (chrT, BED coordinates):\nA:  chrT 100 300    chrT 500 600    chrT 700 900\nB:  chrT 250 450    chrT 850 950\nDraw A and B on a ruler, then give the output of:\n\nbedtools intersect -a A -b B (b) intersect -u (c) intersect -v (d) subtract -a A -b B\ncat A B | sort -k1,1 -k2,2n | bedtools merge (f) closest -a A -b B -d (the distance column) (g) complement -i A with the genome file chrT 1000.\n\nB5. Counting overlaps. bedtools intersect -u -a h3k4me3.bed -b promoters.bed | wc -l gives 21 390, but the same command without -u gives 63 214 lines. The H3K4me3 file has 53 912 peaks.\n\nWhat fraction of the H3K4me3 peaks overlap a promoter?\nHow can the default output have more lines than there are peaks? Think about what a gene with many transcripts looks like in the promoter file.\n\nB6. Overlaps by hand in R terms. Queries q1 = [1, 10], q2 = [20, 40], q3 = [50, 60]; subjects s1 = [5, 25], s2 = [35, 55] (1-based, as in GRanges). Write the result of findOverlaps(q, s) as a table of (query, subject) pairs, and give countOverlaps(q, s) and overlapsAny(q, s).\nB7. Is it more than chance?\n\n30 of your peaks overlap a set of enhancers. In 999 shuffles of the peaks, the mean overlap was 12, and 4 shuffles reached 30 or more. Compute the enrichment and the empirical \\(p\\)-value \\((k + 1) / (N + 1)\\).\nIn another test none of 99 shuffles reached the observed value. What is the smallest \\(p\\)-value you can report, and how could you report the result honestly?\nA colleague shuffles peaks over the whole genome file, including chrY, unplaced contigs and the centromeres. Will the enrichment be too high or too low? Why?",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/exercise.html#on-the-command-line",
+    "href": "genomic-intervals/exercise.html#on-the-command-line",
+    "title": "Exercise: Genomic intervals",
+    "section": "On the command line",
+    "text": "On the command line\n\nC1 — Look at the data\nfor m in h3k4me3 h3k27ac ctcf; do\n  zcat $D/gm12878_${m}_peaks.bed.gz | sort -k1,1 -k2,2n &gt; $m.bed\ndone\nhead -3 ctcf.bed\nwc -l *.bed\nawk '{ w = $3 - $2; s += w } END { print s / NR }' ctcf.bed      # mean width\ncut -f1 ctcf.bed | sort | uniq -c | sort -k1,1n | head             # peaks per chromosome\n\nHow many peaks are in each file, and what is the mean width of each kind? Why are CTCF peaks so much narrower than H3K27ac peaks?\nWhich chromosomes appear? Is there a chrY in the CTCF file? Count the H3K27ac peaks on chrY. GM12878 comes from a woman: how do you explain what you find?\n\n\n\nC2 — A TSS file from the GTF\nzcat $D/gencode.v46.basic.annotation.gtf.gz \\\n | awk -F'\\t' -v OFS='\\t' '$3 == \"transcript\" && $9 ~ /transcript_type \"protein_coding\"/ {\n     match($9, /gene_name \"[^\"]+\"/); g = substr($9, RSTART + 11, RLENGTH - 12)\n     tss = ($7 == \"+\") ? $4 : $5\n     print $1, tss - 1, tss, g, \".\", $7 }' \\\n | sort -u | sort -k1,1 -k2,2n &gt; tss.bed\nwc -l tss.bed\ngrep -w APP tss.bed\n\nExplain each part of the awk program. Why tss - 1, tss?\nAPP (amyloid precursor protein, chr21) is on the − strand. Check that its TSSs are at the end of the gene: compare with the gene line, zcat $D/gencode.v46.basic.annotation.gtf.gz | awk -F'\\t' '$3==\"gene\" && $9 ~ /gene_name \"APP\";/' | cut -f1,4,5,7. How many distinct TSSs does APP have?\nReplace sort -u | sort -k1,1 -k2,2n by sort -k1,1 -k2,2n -u. How many lines do you get now? Why fewer? (Read man sort on -u with -k.)\n\n\n\nC3 — Promoters and the fraction of peaks at promoters\nbedtools slop -i tss.bed -g $D/hg38.chrom.sizes -b 1000 &gt; promoters.bed\nfor m in h3k4me3 h3k27ac ctcf; do\n  echo $m $(bedtools intersect -u -a $m.bed -b promoters.bed | wc -l) $(wc -l &lt; $m.bed)\ndone\n\nWhat fraction of each kind of peak overlaps a promoter (±1 kb of a protein-coding TSS)? Does the order match the table of marks in What is epigenetics?\nRun the same without -u for H3K4me3 (B5).\n\n\n\nC4 — Strong peaks and weak peaks\nOnly about 40% of H3K4me3 peaks are at a protein-coding promoter, although H3K4me3 is “the promoter mark”. Rank the peaks by signalValue (column 7):\nsort -k7,7gr h3k4me3.bed | head -10000 | bedtools intersect -u -a - -b promoters.bed | wc -l\nsort -k7,7g  h3k4me3.bed | head -10000 | bedtools intersect -u -a - -b promoters.bed | wc -l\n\nWhat fraction of the 10 000 strongest and of the 10 000 weakest peaks are at a promoter?\nGive two reasons why a real H3K4me3 peak could be far from a protein-coding TSS. (Hint: what else has a promoter? What does the weak end of a peak list contain?)\n\n\n\nC5 — Candidate enhancers and distances to TSSs\nbedtools intersect -v -a h3k27ac.bed -b h3k4me3.bed \\\n  | bedtools intersect -v -a - -b promoters.bed &gt; enhancers.bed\nwc -l enhancers.bed\nfor m in h3k4me3 h3k27ac ctcf enhancers; do\n  bedtools closest -a $m.bed -b tss.bed -d -t first | awk '{ print $NF }' | sort -n \\\n    | awk -v m=$m '{ a[NR] = $1 } END { print m, \"median distance\", a[int(NR / 2)] }'\ndone\n\nHow many candidate enhancers are there, and what is their median distance to the nearest protein-coding TSS? Compare with the medians for the three peak sets.\nWhich gene is nearest to the enhancer that is farthest from any TSS, and how far away is it? (sort -k17,17nr | head -1 on the closest output.) Is “nearest gene” a convincing target at that distance?\n\n\n\nC6 — Merge and Jaccard\ncat h3k4me3.bed h3k27ac.bed | cut -f1-3 | sort -k1,1 -k2,2n | bedtools merge &gt; active.bed\nwc -l active.bed\nbedtools jaccard -a h3k4me3.bed -b h3k27ac.bed\nbedtools jaccard -a ctcf.bed    -b h3k27ac.bed\n\nHow many merged “active” regions are there? Why fewer than the sum of the two files?\nThe Jaccard index is (bases in the intersection) / (bases in the union). Compare the two values. Does a small Jaccard index mean that CTCF and H3K27ac are unrelated? (Hold on to your answer for C7.)\n\n\n\nC7 — Is the CTCF–H3K27ac overlap more than chance?\nzcat $D/hg38_blacklist.bed.gz &gt; blacklist.bed\ngrep -P '^chr([0-9]+|X|Y)\\t' $D/hg38.chrom.sizes &gt; genome.txt   # main chromosomes only\n\nbedtools intersect -u -a ctcf.bed -b h3k27ac.bed | wc -l        # observed\n\nfor i in $(seq 1 100); do\n  bedtools shuffle -i h3k27ac.bed -g genome.txt -chrom -excl blacklist.bed -seed $i \\\n    | sort -k1,1 -k2,2n | bedtools intersect -u -a ctcf.bed -b - | wc -l\ndone &gt; shuffled.txt\n\nfor i in $(seq 1 100); do\n  bedtools shuffle -i h3k27ac.bed -g $D/hg38.chrom.sizes -seed $i \\\n    | sort -k1,1 -k2,2n | bedtools intersect -u -a ctcf.bed -b - | wc -l\ndone &gt; shuffled_naive.txt\n\nWhat is the observed number of CTCF peaks that overlap an H3K27ac peak? What is the mean over the 100 restricted shuffles, the enrichment, and the empirical \\(p\\)-value?\nCompute the same enrichment with the naive shuffle. Which is larger, and why (B7c)?\nCombine with C6: the overlap is highly significant, but what fraction of CTCF peaks overlap H3K27ac? Write one sentence for a results section that reports both.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/exercise.html#in-r",
+    "href": "genomic-intervals/exercise.html#in-r",
+    "title": "Exercise: Genomic intervals",
+    "section": "In R",
+    "text": "In R\nYou need GenomicRanges and rtracklayer (see Install the software you need). Set D to the data folder:\nlibrary(GenomicRanges); library(rtracklayer)\nD &lt;- \"/path/to/course/data\"\n\nR1 — Import peaks and check the coordinates\nctcf &lt;- import(file.path(D, \"gm12878_ctcf_peaks.bed.gz\"), format = \"narrowPeak\")\nctcf\nraw &lt;- read.table(file.path(D, \"gm12878_ctcf_peaks.bed.gz\"), nrows = 1)\nraw$V2; start(ctcf)[1]                   # start in the file vs in R\nraw$V3 - raw$V2; width(ctcf)[1]          # widths\nsummit &lt;- start(ctcf) + ctcf$peak        # careful: which convention?\nsummit[1]\n\nBy how much do the starts differ, and do the widths agree?\nIs start(ctcf) + ctcf$peak the 1-based position of the summit? Compare with your answer to B2b.\nBuild a GRanges yourself with GRanges(raw$V1, IRanges(raw$V2, raw$V3)). What is its width, and what went wrong? Fix it.\n\n\n\nR2 — TSSs and promoters in R\ngtf &lt;- import(file.path(D, \"gencode.v46.basic.annotation.gtf.gz\"))\ntx  &lt;- gtf[gtf$type == \"transcript\" & gtf$transcript_type == \"protein_coding\"]\ntss &lt;- resize(tx, width = 1, fix = \"start\")        # fix = \"start\" respects strand\nmcols(tss) &lt;- mcols(tss)[\"gene_name\"]\ntss &lt;- tss[!duplicated(paste(as.character(tss), tss$gene_name))]\nlength(tss)\ntss[tss$gene_name == \"APP\"]\nprom &lt;- tss + 1000                                  # 1000 bp on each side\n\nHow many TSSs do you get? Compare with wc -l tss.bed from C2.\nCheck the APP TSSs against C2b. Why does resize(..., fix = \"start\") put the TSS of a − strand transcript at its end?\nIs tss + 1000 the same set of bases as bedtools slop -b 1000 on the one-base BED TSS? Check the width.\n\n\n\nR3 — Fractions at promoters, again\nmarks &lt;- c(\"h3k4me3\", \"h3k27ac\", \"ctcf\")\npk &lt;- lapply(setNames(marks, marks), function(m)\n  import(file.path(D, sprintf(\"gm12878_%s_peaks.bed.gz\", m)), format = \"narrowPeak\"))\nsapply(pk, function(p) mean(overlapsAny(p, prom, ignore.strand = TRUE)))\nsapply(pk, function(p) length(findOverlaps(p, prom, ignore.strand = TRUE)))\n\nDo the fractions agree exactly with C3? Do the pair counts agree with the default (no -u) line counts?\nWhy is ignore.strand = TRUE harmless here? (What strand do the peaks have?)\n\n\n\nR4 — Distances to the nearest TSS\ndist &lt;- lapply(pk, function(p) mcols(distanceToNearest(p, tss, ignore.strand = TRUE))$distance)\nsapply(dist, median)\nsapply(dist, function(d) mean(d &lt;= 1000))\npar(mfrow = c(1, 3))\nfor (m in marks) hist(log10(dist[[m]] + 1), breaks = 60, main = m, xlab = \"log10(distance + 1)\")\n\nCompare the medians with C5. They differ by a little for some peaks: test with two adjacent ranges, distance(GRanges(\"chr1\", IRanges(1, 5)), GRanges(\"chr1\", IRanges(6, 10))), and the same pair with bedtools closest -d. What is the rule?\nDescribe the three histograms in one sentence each. Which mark labels promoters, which labels promoters and enhancers, and which is mostly elsewhere?\n\n\n\nR5 — Plot the shuffle test\nobs  &lt;- 7464                                    # your observed value from C7\nshuf &lt;- scan(\"shuffled.txt\"); naive &lt;- scan(\"shuffled_naive.txt\")\nhist(shuf, xlim = c(0, obs * 1.05), col = \"grey\", main = \"CTCF peaks overlapping H3K27ac\",\n     xlab = \"overlapping CTCF peaks\")\nabline(v = obs, col = \"red\", lwd = 3)\nc(restricted = obs / mean(shuf), naive = obs / mean(naive))\nWhat would the histogram look like if the two sets were unrelated?",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/exercise.html#hints",
+    "href": "genomic-intervals/exercise.html#hints",
+    "title": "Exercise: Genomic intervals",
+    "section": "Hints",
+    "text": "Hints\n\n\n\n\n\n\nHint 1 — coordinates (B1, B2, R1)\n\n\n\n\n\nFrom 1-based [s, e] to BED: start − 1, end unchanged. From BED to 1-based: start + 1, end unchanged. A single base at 1-based position \\(p\\) is the BED line p−1  p. For the summit: start + peak is a BED boundary; the summit base is start + peak to start + peak + 1 in BED. The narrowPeak format is described on the UCSC format page.\n\n\n\n\n\n\n\n\n\nHint 2 — strand (B3, C2, R2)\n\n\n\n\n\nOn the − strand the gene is read from right to left: the TSS is the largest coordinate, and “2 kb upstream” means 2 kb towards larger coordinates. resize with fix = \"start\" and promoters use the strand for you.\n\n\n\n\n\n\n\n\n\nHint 3 — bedtools (B4, C3–C7)\n\n\n\n\n\nDraw it. -u reports each A once if it overlaps anything; -v reports A that overlap nothing; subtract removes the overlapping bases. merge needs sorted input. closest -d reports 0 for overlaps; for non-overlapping intervals bedtools reports one more than the number of bases between them. complement returns the gaps. sort -k7,7gr sorts on column 7 as a general number, largest first.\n\n\n\n\n\n\n\n\n\nHint 4 — shuffling (B7, C7)\n\n\n\n\n\nEnrichment = observed / mean of the shuffles. Empirical \\(p = (k + 1) / (N + 1)\\), where \\(k\\) is the number of shuffles at least as extreme as the observation and \\(N\\) the number of shuffles. -chrom keeps each interval on its own chromosome; -excl keeps them out of the given regions. See bedtools shuffle and the ENCODE blacklist paper.\n\n\n\n\n\n\n\n\n\nHint 5 — GenomicRanges (R1–R4)\n\n\n\n\n\nimport with format = \"narrowPeak\" reads the extra columns. overlapsAny, findOverlaps and distanceToNearest are the R versions of intersect -u, intersect and closest -d. gr + 1000 widens a range by 1000 on each side. makeGRangesFromDataFrame has an argument starts.in.df.are.0based.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/exercise.html#solutions",
+    "href": "genomic-intervals/exercise.html#solutions",
+    "title": "Exercise: Genomic intervals",
+    "section": "Solutions",
+    "text": "Solutions\n\n\n\n\n\n\nSolutions — by hand\n\n\n\n\n\nB1. (a) chr7  117559589  117559590. (b) chr2:1001-1250, length 250. (c) chr1  11868  12227, length \\(12227 - 11868 = 359\\) (in 1-based: \\(12227 - 11869 + 1 = 359\\)). (d) They touch but do not overlap: the first covers BED boundaries 100–200 (1-based bases 101–200), the second 200–300 (bases 201–300). They share no base, and bedtools intersect reports nothing.\nB2. (a) \\(53676353 - 53676107 = 246\\) bp. (b) Summit boundary \\(53676107 + 126 = 53676233\\), so the summit base is chr12  53676233  53676234 in BED, position 53 676 234 in 1-based. (c) −1 means not available: the IDR pipeline did not report a \\(p\\)-value. \\(q = 10^{-4.87} \\approx 1.3 \\times 10^{-5}\\). (d) No: column 5 is a display score (here 1000 for every strong peak). Rank by signalValue (column 7), or by the \\(p\\)/\\(q\\) columns when they are available.\nB3. (a) The end, 1 050 000. (b) Upstream is towards larger coordinates: 1-based [1049501, 1052000] (500 bp downstream = 1 049 501 … 1 050 000, 2 kb upstream = 1 050 001 … 1 052 000); BED chr5  1049500  1052000. (c) 998000–1000500: around the annotated start, which for a − strand transcript is its 3’ end. The “promoter” is at the end of the gene, in the last exon or beyond.\nB4. (a) chrT 250 300, chrT 850 900. (b) chrT 100 300, chrT 700 900. (c) chrT 500 600. (d) chrT 100 250, chrT 500 600, chrT 700 850. (e) chrT 100 450, chrT 500 600, chrT 700 950. (f) 0 for 100 300 (overlaps B1); for 500 600 the nearest is 250 450, with 50 bases between them (450–499), reported by bedtools as 51; 0 for 700 900. (g) chrT 0 100, chrT 300 500, chrT 600 700, chrT 900 1000.\nB5. (a) \\(21390 / 53912 = 0.40\\). (b) The default reports one line per overlapping pair. A protein-coding gene often has several transcripts with nearby start sites, and each gives its own promoter window; a peak over that promoter overlaps all of them and is reported once per window.\nB6. Pairs (1, 1), (2, 1), (2, 2), (3, 2). countOverlaps = 1, 2, 1. overlapsAny = TRUE, TRUE, TRUE.\nB7. (a) Enrichment \\(30 / 12 = 2.5\\); \\(p = (4 + 1) / (999 + 1) = 0.005\\). (b) \\(p = (0 + 1)/(99 + 1) = 0.01\\); report “\\(p \\le 0.01\\) (none of 99 shuffles reached the observed value)”, together with the enrichment. Run more shuffles if you need a smaller bound. (c) Too high. Shuffled peaks land in places where no real peak can be (centromeres, gaps, unplaced contigs, chrY in a female cell line), so the shuffled overlaps are too low and the ratio observed/shuffled too high.\n\n\n\n\n\n\n\n\n\nSolutions — command line\n\n\n\n\n\nC1. (a) H3K4me3 53 912 peaks (mean width 781 bp), H3K27ac 52 455 (1156 bp), CTCF 44 217 (181 bp; median 216, maximum 452). CTCF is a sequence-specific TF: it binds one ~20 bp motif, so its peaks are as narrow as the fragment size allows. Histone marks cover several nucleosomes, and H3K27ac spreads over whole enhancers and promoters. (b) chr1–22 and chrX. No chrY in the CTCF file; one H3K27ac peak on chrY (chrY 15882971 15883161, weak: signalValue 5). GM12878 is female, so this must be reads from elsewhere that align to chrY: sequence shared with the X chromosome, or a repeat. A good reason to check, and to exclude chrY from a female sample.\nC2. (a) -F'\\t' splits on tabs only (column 9 contains spaces); $3 == \"transcript\" keeps transcript lines; the regular expression keeps protein-coding transcripts; match/substr cut the gene name out of the attributes; the TSS is column 4 (start) on + and column 5 (end) on −; GTF is 1-based, so the one-base BED interval is tss − 1, tss. You should get 56 260 lines. (b) The APP gene is chr21 25880535 26171128 −; its TSSs are at 26 140 460 and 26 170 654 … 26 171 128 (BED end column): the large coordinates, the end of the gene. APP has 8 distinct TSSs in GENCODE basic. (c) 56 154 lines. With -k, sort -u compares only the sort keys (chromosome and start), so two TSSs at the same position are collapsed even if they belong to different genes or strands. A silent loss of data.\nC3. (a) H3K4me3 21 390 / 53 912 = 39.7%, H3K27ac 14 320 / 52 455 = 27.3%, CTCF 6016 / 44 217 = 13.6%. The order matches: H3K4me3 is the promoter mark, H3K27ac marks active promoters and enhancers, CTCF binds mostly away from promoters. (b) 63 214 lines (B5).\nC4. (a) Strongest 10 000: 8653 (87%); weakest 10 000: 1559 (16%). (b) Promoters of genes that are not protein-coding (lncRNAs, unannotated transcripts); bivalent or weakly active sites, and enhancers, which carry some H3K4me3 when highly active. The weak end of a peak list also contains noise. Including all GENCODE basic transcript start sites raises the fraction from 21 390 to 24 715 peaks (46%).\nC5. (a) 22 330 candidate enhancers, median distance 28.6 kb to the nearest protein-coding TSS, against 2.7 kb for H3K4me3, 10.9 kb for H3K27ac and 23.8 kb for CTCF peaks. (H3K4me3’s median is above 1 kb because 60% of its peaks are not at protein-coding promoters, C4.) (b) chr21:5101753-5102097, nearest TSS TPTE at about 5.4 Mb. At that distance (in a region near the chr21 centromere with few genes) nearest-gene assignment means little; the integration unit uses contacts and activity instead.\nC6. (a) 65 446 merged regions: wherever an H3K4me3 and an H3K27ac peak overlap (active promoters), merging makes one region of the two. (b) H3K4me3–H3K27ac 0.41, CTCF–H3K27ac 0.018. The CTCF Jaccard is small partly because CTCF peaks are narrow (few bases each), so even complete overlap of every CTCF peak would give a small fraction of the union. Jaccard measures shared bases, not shared sites.\nC7. (a) Observed 7464. Restricted shuffles: mean about 1120 (range about 1000–1200; the exact numbers depend on the order of lines and the seeds), enrichment about 6.7, empirical \\(p = 1/101 \\approx 0.01\\) (none of the 100 shuffles came close). (b) Naive: mean about 950, enrichment about 7.8: larger, because shuffled peaks fall into regions where no peak can be (B7c). (c) “17% of CTCF peaks (7464 of 44 217) overlapped an H3K27ac peak, 6.7 times more than expected from 100 shuffles of the H3K27ac peaks within their chromosomes outside blacklisted regions (\\(p \\le 0.01\\)).” Significant but partial: most CTCF sites are not in active regulatory elements.\n\n\n\n\n\n\n\n\n\nSolutions — R\n\n\n\n\n\nR1. (a) R’s start is the file’s start + 1 (53 676 108 vs 53 676 107); widths agree (246). (b) No. start is now 1-based (file start + 1), so start + peak = 53 676 234, which happens to be the 1-based summit position: (file start + 1) + peak. Coincidence of conventions, worth checking each time. (c) Width 247: the 0-based start was used as a 1-based start, adding a base on the left. Fix: IRanges(raw$V2 + 1, raw$V3), or makeGRangesFromDataFrame(..., starts.in.df.are.0based = TRUE).\nR2. (a) 56 260, the same as C2 (with the plain sort -u). (b) The APP TSSs are the same 8 positions. fix = \"start\" keeps the biological start of the range, which is the end coordinate on the − strand. (c) Yes: tss + 1000 has width 2001, the TSS base plus 1000 on each side, the same bases as slop -b 1000 on the BED TSS.\nR3. (a) Identical fractions: 0.397, 0.273, 0.136. The pair counts (63 214, 43 651, 15 474) equal the default bedtools line counts. (b) The peaks have strand *, which overlaps ranges on either strand anyway.\nR4. (a) For non-overlapping ranges, distance() counts the bases between them (adjacent ranges: 0), bedtools reports one more (adjacent: 1). Overlaps are 0 in both. (b) H3K4me3: a large spike at 0 (promoters) plus a spread of weaker peaks; H3K27ac: a spike at 0 and a broad hump at 10–100 kb (enhancers); CTCF: mostly 1–100 kb, a small spike at 0.\nR5. The red line would sit inside the grey histogram. Here it is about seven times further right than the mean of the shuffles.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/exercise.html#where-this-leads",
+    "href": "genomic-intervals/exercise.html#where-this-leads",
+    "title": "Exercise: Genomic intervals",
+    "section": "Where this leads",
+    "text": "Where this leads\n\nFrom reads to coverage makes the peaks and bigWigs we used here from raw reads.\nDifferential accessibility merges peaks from many samples into a consensus set (C6) and counts reads in it.\nMotifs and footprinting uses windows around summits (B2) and GC-matched backgrounds, a better null than C7.\nLinking regulatory elements to genes replaces “nearest gene” (C5b) with contacts and activity.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/exercise.html#key-papers-optional-further-reading",
+    "href": "genomic-intervals/exercise.html#key-papers-optional-further-reading",
+    "title": "Exercise: Genomic intervals",
+    "section": "Key papers (optional further reading)",
+    "text": "Key papers (optional further reading)\nNot required reading and not examined.\n\nQuinlan & Hall 2010, Bioinformatics. BEDTools: a flexible suite of utilities for comparing genomic features.\nLawrence et al. 2013, PLoS Comput Biol. Software for computing and annotating genomic ranges.\nKent et al. 2010, Bioinformatics. BigWig and BigBed: enabling browsing of large distributed datasets.\nFrankish et al. 2019, Nucleic Acids Res. GENCODE reference annotation for the human and mouse genomes.\nENCODE Project Consortium 2020, Nature. Expanded encyclopaedias of DNA elements in the human and mouse genomes.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/quiz.html",
+    "href": "chromatin-intro/quiz.html",
+    "title": "Quiz: what is epigenetics?",
+    "section": "",
+    "text": "Short questions on chromatin, histone marks and DNA methylation. Try each on paper first, then open the answer.\n\nQ1. Give the narrow (classical) definition of an epigenetic change. Is a histone mark that is put back by transcription factors every time the cell divides “epigenetic” in this sense?\n\n\n\n\n\n\nAnswer\n\n\n\n\n\nA mitotically and/or meiotically heritable change in gene function that cannot be explained by a change in DNA sequence (Riggs et al. 1996). A mark that is simply rebuilt by transcription factors after each division is not self-perpetuating, so it is not epigenetic in the narrow sense; the information is carried by the transcription factors. In the broad sense used by “epigenomics” it would still be called epigenetic.\n\n\n\n\nQ2. What is H3K27ac? Where in the genome do you find it, and what does it tell you?\n\n\n\n\n\n\nAnswer\n\n\n\n\n\nHistone H3, lysine 27, acetylated. It sits at active promoters and enhancers and marks them as active (as opposed to primed or poised). It is written by p300/CBP and read by bromodomain proteins such as BRD4.\n\n\n\n\nQ3. An MNase digest of chromatin gives bands at about 150, 350 and 550 bp. What are they, and what is the nucleosome repeat length?\n\n\n\n\n\n\nAnswer\n\n\n\n\n\nMono-, di- and tri-nucleosomes: MNase cuts only the linker DNA between nucleosomes. The steps between bands give the repeat length, about 200 bp here (147 bp core + linker).\n\n\n\n\nQ4. A gene has a sharp H3K4me3 peak at its TSS and H3K36me3 over its body. A second gene is covered by a 100 kb domain of H3K27me3. Describe the state of each.\n\n\n\n\n\n\nAnswer\n\n\n\n\n\nThe first is actively transcribed: H3K4me3 marks its active promoter and H3K36me3 is laid down by SETD2 travelling with the elongating polymerase. The second is silenced by Polycomb (facultative heterochromatin), typical for developmental regulators such as HOX genes in a cell type where they are not needed.\n\n\n\n\nQ5. What is the difference between constitutive and facultative heterochromatin? Give the mark of each.\n\n\n\n\n\n\nAnswer\n\n\n\n\n\nConstitutive heterochromatin is compact in every cell type (repeats, pericentromeres, telomeres) and carries H3K9me3, read by HP1. Facultative heterochromatin is silent in some cell types but active in others (developmental genes, the inactive X) and carries H3K27me3, written by Polycomb PRC2.\n\n\n\n\nQ6. Explain how a pattern of CpG methylation is copied when the DNA is replicated.\n\n\n\n\n\n\nHint\n\n\n\n\n\nWhat does a CpG look like just after the replication fork has passed?\n\n\n\n\n\n\n\n\n\nAnswer\n\n\n\n\n\nCpG is palindromic, so both strands are methylated. After replication each daughter duplex has a methylated old strand and an unmethylated new strand: the CpG is hemimethylated. UHRF1 recognises hemimethylated CpGs and recruits DNMT1, which methylates the new strand. The pattern is copied site by site.\n\n\n\n\nQ7. Why does a histone mark need a “read–write” mechanism to survive many cell divisions, while DNA methylation does not need one in the same way?\n\n\n\n\n\n\nAnswer\n\n\n\n\n\nAt replication the old, marked histones are split randomly between the two daughters and new unmarked histones fill the gaps, so each daughter inherits only about half of the marks; without re-marking the mark halves at every division (\\(0.5^n\\)). A writer that is activated by its own mark (PRC2 binding H3K27me3) restores the mark on the new neighbours. DNA methylation is copied from a template at each site by DNMT1, so it is kept directly.\n\n\n\n\nQ8. The human genome has a CpG observed/expected ratio of about 0.25. Why so low, and why are CpG islands an exception?\n\n\n\n\n\n\nAnswer\n\n\n\n\n\nMethylated cytosine deaminates spontaneously to thymine, and the resulting T:G mismatch is often repaired the wrong way, so methylated CpGs turn into TpG/CpA over evolutionary time. CpG islands are kept unmethylated (mostly at promoters), so they are not lost and keep a high CpG density (o/e above 0.6).\n\n\n\n\nQ9. In GM12878 B cells the ALB (albumin) gene has no active marks and almost no H3K27me3. HOXD10 has no active marks and a lot of H3K27me3. Both are silent. What is the difference?\n\n\n\n\n\n\nAnswer\n\n\n\n\n\nALB is silent because the activators it needs (liver transcription factors) are absent: nothing opens or marks it. HOXD10 is actively kept silent by Polycomb, a system that represses developmental regulators that must stay firmly off in this cell type. Silence does not always need a repressive mark.\n\n\n\n\nQ10. Genes with high H3K36me3 are highly expressed. Does H3K36me3 activate transcription? How could you test it?\n\n\n\n\n\n\nAnswer\n\n\n\n\n\nNot necessarily: H3K36me3 is deposited by SETD2, which travels with the elongating polymerase, so expression causes the mark (reverse causation). Tests: block transcription and see whether the mark disappears; remove the writer (SETD2 knockout) or mutate the residue (H3K36M or K36R) and see whether expression changes.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/exercise.html",
+    "href": "chromatin-intro/exercise.html",
+    "title": "Exercise: What is epigenetics?",
+    "section": "",
+    "text": "After this exercise you will be able to:\n\nDo the basic arithmetic of chromatin: nucleosome repeat, fragment ladders, the dilution of marks through replication.\nDecode the name of a histone mark, and predict which marks sit where on an active, a Polycomb-silenced and a heterochromatic gene.\nRead genome-browser tracks of six histone marks and say what state a gene is in.\nMeasure histone-mark signal over promoters and gene bodies from ENCODE bigWig files in R, and explain a result that looks wrong.\nCompute the CpG observed/expected ratio of a sequence, and connect CpG islands to H3K4me3.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/exercise.html#goal",
+    "href": "chromatin-intro/exercise.html#goal",
+    "title": "Exercise: What is epigenetics?",
+    "section": "",
+    "text": "After this exercise you will be able to:\n\nDo the basic arithmetic of chromatin: nucleosome repeat, fragment ladders, the dilution of marks through replication.\nDecode the name of a histone mark, and predict which marks sit where on an active, a Polycomb-silenced and a heterochromatic gene.\nRead genome-browser tracks of six histone marks and say what state a gene is in.\nMeasure histone-mark signal over promoters and gene bodies from ENCODE bigWig files in R, and explain a result that looks wrong.\nCompute the CpG observed/expected ratio of a sequence, and connect CpG islands to H3K4me3.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/exercise.html#background",
+    "href": "chromatin-intro/exercise.html#background",
+    "title": "Exercise: What is epigenetics?",
+    "section": "Background",
+    "text": "Background\nThe six marks (from the lecture):\n\n\n\n\n\n\n\n\nmark\nwhere\nmeaning\n\n\n\n\nH3K4me3\npromoters\nactive or poised promoter\n\n\nH3K4me1\nenhancers, flanks of promoters\nenhancer (primed or active)\n\n\nH3K27ac\nactive promoters and enhancers\nactive regulatory element\n\n\nH3K36me3\nbodies of transcribed genes\ntranscription\n\n\nH3K27me3\nbroad domains over silenced genes\nPolycomb repression\n\n\nH3K9me3\nrepeats, ZNF clusters, pericentromeres\nconstitutive heterochromatin\n\n\n\nFold change over input. ENCODE signal tracks give, at each position, how many times more ChIP reads there are than in the input control (normalised to depth). 1 means no enrichment; values below 1 mean fewer reads than input.\nCpG observed/expected for a sequence of length \\(L\\):\n\\[\\text{CpG o/e} = \\frac{\\text{number of CpG}}{(\\text{number of C}) \\times (\\text{number of G}) / L}\\]\nThe denominator is the number of CpGs expected if C and G were placed independently. A CpG island (Gardiner-Garden & Frommer) is at least 200 bp with GC content above 50% and CpG o/e above 0.6.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/exercise.html#data",
+    "href": "chromatin-intro/exercise.html#data",
+    "title": "Exercise: What is epigenetics?",
+    "section": "Data",
+    "text": "Data\nGM12878 fold-change bigWigs for six marks (ENCODE, GRCh38, about 2.6 GB in total), the GENCODE annotation and the sequence of chr21. On the cluster:\ndata/download.sh chromatin-intro\nReading a region from a local bigWig takes a fraction of a second; the files are big because they cover the whole genome at base resolution.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/exercise.html#by-hand",
+    "href": "chromatin-intro/exercise.html#by-hand",
+    "title": "Exercise: What is epigenetics?",
+    "section": "By hand",
+    "text": "By hand\nB1. Counting nucleosomes.\n\nThe nucleosome repeat length is 190 bp, of which 147 bp are wrapped around the octamer. How long is the linker?\nHow many nucleosomes are there in a diploid human cell (\\(6.4 \\times 10^9\\) bp)? How many histone H3 molecules?\nA promoter has a nucleosome-depleted region of 200 bp. How many nucleosomes would fit there at the normal repeat?\n\nB2. The ladder. Chromatin is digested lightly with MNase. With a repeat of 190 bp and a core of 147 bp, which fragment sizes do you expect for mono-, di- and tri-nucleosomes if the enzyme trims the linker completely? And if it cuts in the middle of each linker? Sketch the gel.\nB3. Names. Write out in words: (a) H4K16ac, (b) H3K9me2, (c) H3S10ph, (d) H2AK119ub1. (e) Can one H3 tail carry both H3K27ac and H3K27me3? Can one nucleosome carry H3K4me3 and H3K27me3?\nB4. Predict the marks. For each element, say which of the six marks you expect to be high (H) or low (L):\n\nThe promoter of a highly expressed housekeeping gene.\nThe body of the same gene.\nA primed enhancer that is not (yet) active.\nAn active enhancer.\nThe promoter of a HOX gene in a blood cell.\nA zinc-finger gene cluster on chr19.\n\nB5. Read the tracks. Look at the figures Real data: an active gene in B cells and Real data: two kinds of silence in the lecture.\n\nCD74 is on the − strand. Where is its TSS on the plot, and which marks peak there?\nIn which direction does the H3K36me3 signal over CD74 increase, and why?\nThe HOXD cluster: name one mark that is high and one that is low over the whole cluster. Is this region open or closed chromatin?\nZNF100 carries H3K36me3 and H3K9me3 over the same body. Why is this unusual?\n\nB6. Dilution through replication.\n\nA domain of 40 nucleosomes is fully marked with H3K27me3. Replication splits old histones randomly between the daughters, and the cell has no way to re-mark. What fraction of the nucleosomes in the domain is marked after 1, 2 and 5 divisions?\nDNA methylation is copied by DNMT1 with a maintenance fidelity of about 99.9% per CpG per division (a site is lost with probability 0.001). What fraction of the methylated CpGs is still methylated after 50 divisions? Compare with (a).\n\nB7. CpG o/e by hand. Compute GC content and CpG o/e for these two 20 bp sequences, and decide which is more CpG-island-like:\nS1: ACGCGTTCGACGCGGCCGTA\nS2: ATGCATTGCAAGTCCATGCA\nB8. Cause or consequence? A paper shows that genes with high H3K36me3 are highly expressed and concludes that “H3K36me3 activates transcription”. Give an alternative explanation, and propose one experiment that could tell the two apart.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/exercise.html#in-r",
+    "href": "chromatin-intro/exercise.html#in-r",
+    "title": "Exercise: What is epigenetics?",
+    "section": "In R",
+    "text": "In R\nlibrary(GenomicRanges); library(rtracklayer); library(Biostrings)\nD &lt;- \"/path/to/course/data\"\nbw &lt;- function(m) file.path(D, sprintf(\"gm12878_%s_fc.bigWig\", tolower(m)))\nmarks &lt;- c(\"H3K4me3\", \"H3K4me1\", \"H3K27ac\", \"H3K36me3\", \"H3K27me3\", \"H3K9me3\")\ngtf &lt;- import(file.path(D, \"gencode.v46.basic.annotation.gtf.gz\"))\ngenes &lt;- gtf[gtf$type == \"gene\" & gtf$gene_type == \"protein_coding\"]\nnames(genes) &lt;- genes$gene_name\n\nR1 — Your own browser view\nplot_tracks &lt;- function(region) {\n  op &lt;- par(mfrow = c(length(marks), 1), mar = c(1, 6, 0.5, 1), las = 1)\n  for (m in marks) {\n    s &lt;- import(bw(m), which = region, as = \"RleList\")[[as.character(seqnames(region))]]\n    v &lt;- as.numeric(s[start(region):end(region)])\n    plot(start(region):end(region), v, type = \"h\", col = \"grey30\", xaxt = \"n\",\n         xlab = \"\", ylab = m, ylim = c(0, max(5, max(v))))\n  }\n  par(op)\n}\nplot_tracks(genes[\"CD79A\"] + 10000)     # the gene plus 10 kb on each side\n\nPlot CD79A (a B-cell receptor gene). Which state is it in?\nPlot ALB (albumin, made in the liver) and HOXD10. Describe each in one sentence.\nPick any gene you like and predict its state before you plot it.\n\n\n\nR2 — A table of states\nmean_signal &lt;- function(m, regions) {\n  s &lt;- import(bw(m), which = regions, as = \"RleList\")\n  sapply(seq_along(regions), function(i) {\n    r &lt;- regions[i]; mean(s[[as.character(seqnames(r))]][start(r):end(r)])\n  })\n}\npick &lt;- c(\"CD74\", \"CD79A\", \"PAX5\", \"MS4A1\", \"GAPDH\", \"ACTB\",\n          \"ALB\", \"NEUROD1\", \"HOXD10\", \"HOXD13\", \"ZNF43\", \"ZNF208\")\ng    &lt;- genes[pick]\nprom &lt;- promoters(g, upstream = 1000, downstream = 1000)\ntab &lt;- data.frame(row.names = pick,\n  K4me3_prom  = mean_signal(\"H3K4me3\",  prom),\n  K27ac_prom  = mean_signal(\"H3K27ac\",  prom),\n  K36me3_body = mean_signal(\"H3K36me3\", g),\n  K27me3_body = mean_signal(\"H3K27me3\", g),\n  K9me3_body  = mean_signal(\"H3K9me3\",  g))\nround(tab, 1)\n\nClassify each gene as active, Polycomb-silenced, H3K9me3-marked or silent without a strong repressive mark. Which B-cell genes are active?\nACTB (β-actin) is one of the most highly expressed genes in every cell, yet its promoter looks silent in the table. Find out why: look at its transcripts and their start sites, and compute H3K4me3 at each.\n\nactb &lt;- gtf[gtf$type == \"transcript\" & gtf$gene_name == \"ACTB\"]\nat   &lt;- unique(resize(actb, width = 1, fix = \"start\"))\ndata.frame(tss = start(at), H3K4me3 = round(mean_signal(\"H3K4me3\", promoters(at, 1000, 1000)), 1))\ngranges(genes[\"ACTB\"])\n\nALB and NEUROD1 are silent in B cells, but have little H3K27me3 compared with HOXD10. What does that say about how genes are kept off?\n\n\n\nR3 — An average profile around TSSs\ntx  &lt;- gtf[gtf$type == \"transcript\" & gtf$transcript_type == \"protein_coding\" & seqnames(gtf) == \"chr21\"]\ntss &lt;- unique(resize(tx, width = 1, fix = \"start\"))\nwin &lt;- promoters(tss, upstream = 5000, downstream = 5001)     # 10 001 bp, TSS in the middle\nprofile &lt;- function(m) {\n  s &lt;- import(bw(m), which = reduce(win), as = \"RleList\")$chr21\n  mat &lt;- t(sapply(seq_along(win), function(i) {\n    v &lt;- as.numeric(s[start(win)[i]:end(win)[i]])\n    if (as.character(strand(win)[i]) == \"-\") rev(v) else v     # orient all genes left to right\n  }))\n  colMeans(mat)\n}\npr  &lt;- sapply(c(\"H3K4me3\", \"H3K27ac\", \"H3K4me1\", \"H3K36me3\", \"H3K27me3\"), profile)\npos &lt;- -5000:5000\nmatplot(pos, pr, type = \"l\", lty = 1, lwd = 2, xlab = \"distance to TSS (bp)\", ylab = \"mean fold change\")\nlegend(\"topright\", colnames(pr), col = 1:5, lty = 1, lwd = 2)\npos[which.max(pr[, \"H3K4me3\"])]\n\nWhy does the code reverse the signal for − strand transcripts?\nWhere is the maximum of H3K4me3: upstream or downstream of the TSS, and by how much? Which nucleosome sits there?\nLook at the signal exactly at the TSS (pr[pos == 0, ]) compared with ±500 bp. What do you see, and why?\nDescribe H3K4me1 and H3K36me3 around the TSS. Do they match the figure The marks you will meet in this course?\n\n\n\nR4 — CpG islands and H3K4me3\nchr21 &lt;- readDNAStringSet(file.path(D, \"hg38_chr21.fa.gz\"))[[1]]\ncpg_oe &lt;- function(x) {\n  f &lt;- as.numeric(letterFrequency(x, c(\"A\", \"C\", \"G\", \"T\")))    # A, C, G, T counts\n  as.numeric(countPattern(\"CG\", x)) * sum(f) / (f[2] * f[3])\n}\ncpg_oe(chr21)\n\npw   &lt;- promoters(tss, upstream = 500, downstream = 500)\nseqs &lt;- DNAStringSet(Views(chr21, start = start(pw), end = end(pw)))\noe   &lt;- sapply(seqs, cpg_oe)\ngc   &lt;- letterFrequency(seqs, \"GC\", as.prob = TRUE)[, 1]\ncgi  &lt;- oe &gt; 0.6 & gc &gt; 0.5\nk4   &lt;- mean_signal(\"H3K4me3\", pw)\ntable(cgi)\ntapply(k4, cgi, median)\nboxplot(k4 + 0.1 ~ cgi, log = \"y\", names = c(\"low CpG\", \"CpG-island-like\"), ylab = \"H3K4me3 fold change + 0.1\")\n\nWhat is the CpG o/e of the whole of chr21? Why is it so far below 1?\nWhat fraction of chr21 protein-coding promoters is CpG-island-like?\nCompare H3K4me3 at CpG-island-like and low-CpG promoters. Suggest a mechanism (hint: proteins with a CXXC domain bind unmethylated CpG).",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/exercise.html#hints",
+    "href": "chromatin-intro/exercise.html#hints",
+    "title": "Exercise: What is epigenetics?",
+    "section": "Hints",
+    "text": "Hints\n\n\n\n\n\n\nHint 1 — nucleosome arithmetic (B1, B2)\n\n\n\n\n\nLinker = repeat − core. Each nucleosome has two copies of each core histone. If the linker is trimmed away, an \\(n\\)-nucleosome fragment is \\(n\\) cores plus \\(n-1\\) linkers; if the cut is in the middle of each linker, it is \\(n\\) repeat lengths.\n\n\n\n\n\n\n\n\n\nHint 2 — names and marks (B3, B4)\n\n\n\n\n\nThe pattern is histone – residue (one-letter code) – position – modification. K = lysine, S = serine; me = methyl, ac = acetyl, ph = phosphate, ub = ubiquitin. One residue holds one kind of modification at a time; a nucleosome has two copies of H3.\n\n\n\n\n\n\n\n\n\nHint 3 — dilution (B6)\n\n\n\n\n\nWithout re-marking, each division halves the marked fraction: \\(0.5^n\\). For DNA methylation each site survives one division with probability \\(0.999\\), so \\(0.999^{50}\\) after 50.\n\n\n\n\n\n\n\n\n\nHint 4 — CpG o/e (B7, R4)\n\n\n\n\n\nCount C, G and the dinucleotide CG (read along one strand; overlapping counts like CGCG contain 2 CpGs). Expected CpG = C × G / L. letterFrequency and countPattern do the counting in R.\n\n\n\n\n\n\n\n\n\nHint 5 — reading bigWigs (R1–R3)\n\n\n\n\n\nimport with which = reads only the regions you ask for; as = \"RleList\" returns one run-length vector per chromosome, which you index by position. promoters and resize respect strand. For ACTB (R2b), compare the gene’s coordinates with the starts of its transcripts.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/exercise.html#solutions",
+    "href": "chromatin-intro/exercise.html#solutions",
+    "title": "Exercise: What is epigenetics?",
+    "section": "Solutions",
+    "text": "Solutions\n\n\n\n\n\n\nSolutions — by hand\n\n\n\n\n\nB1. (a) \\(190 - 147 = 43\\) bp. (b) \\(6.4 \\times 10^9 / 190 \\approx 3.4 \\times 10^7\\) nucleosomes, each with 2 H3: about \\(6.7 \\times 10^7\\) H3 molecules (plus the replication-independent variant H3.3). (c) About one (\\(200 / 190\\)): an NDR is the gap left by one or two missing nucleosomes.\nB2. Linker trimmed away: \\(147\\), \\(2 \\times 147 + 43 = 337\\), \\(3 \\times 147 + 2 \\times 43 = 527\\) bp. Cut in the middle of each linker: \\(190\\), \\(380\\), \\(570\\) bp. Real digests lie in between, so bands are fuzzy: about 150, 350, 550 bp. The ladder steps by the repeat length in both cases.\nB3. (a) Histone H4, lysine 16, acetylated. (b) Histone H3, lysine 9, di-methylated. (c) Histone H3, serine 10, phosphorylated (a mitotic mark). (d) Histone H2A, lysine 119, mono-ubiquitylated (written by Polycomb PRC1). (e) Not on the same tail: lysine 27 carries either an acetyl or methyl groups. But a nucleosome has two H3 tails, and H3K4me3 and H3K27me3 can sit on the same nucleosome: these bivalent promoters are common in embryonic stem cells, at developmental genes that are silent but ready.\nB4.\n\n\n\n\nK4me3\nK4me1\nK27ac\nK36me3\nK27me3\nK9me3\n\n\n\n\n(a) active promoter\nH\nL (flanks)\nH\nL\nL\nL\n\n\n(b) active gene body\nL\nL\nL\nH\nL\nL\n\n\n(c) primed enhancer\nL\nH\nL\nL\nL/H*\nL\n\n\n(d) active enhancer\nL\nH\nH\nL\nL\nL\n\n\n(e) HOX promoter in blood\nL\nL\nL\nL\nH\nL\n\n\n(f) ZNF cluster\nL\nL\nL\nH (bodies)\nL\nH\n\n\n\n*Some primed enhancers in stem cells carry H3K27me3 (“poised”).\nB5. (a) CD74 is read right to left, so its TSS is at the right end of the gene, near 150.413 Mb, where H3K4me3 and H3K27ac peak. (b) It increases towards the 3’ end, i.e. towards the left for this − strand gene: SETD2 travels with RNA polymerase II, and more of the gene has been transcribed towards the 3’ end. (c) H3K27me3 is high over the whole cluster; H3K27ac and H3K36me3 are low. Closed, Polycomb-repressed chromatin. (d) H3K36me3 means active transcription, H3K9me3 means heterochromatin: usually exclusive. ZNF genes are the exception: KRAB zinc-finger genes carry both over their 3’ exons, which contain repeat-like zinc-finger motifs.\nB6. (a) \\(0.5\\), \\(0.25\\), \\(0.5^5 \\approx 0.03\\). Without re-marking, a histone domain is gone within a few divisions. (b) \\(0.999^{50} \\approx 0.95\\). DNA methylation is copied site by site and survives many divisions; histone memory needs read–write feedback to restore the half that is lost at every division.\nB7. S1: C = 7, G = 7, CpG = 6 (starting at positions 2, 4, 8, 11, 13 and 17). GC = 14/20 = 0.70. Expected CpG = \\(7 \\times 7 / 20 = 2.45\\); o/e = \\(6 / 2.45 = 2.4\\). S2: C = 5, G = 4, CpG = 0, GC = 9/20 = 0.45, o/e = 0. S1 is island-like (in real life an island must be at least 200 bp).\nB8. Reverse causation: the transcribing polymerase carries SETD2, which deposits H3K36me3, so high expression causes high H3K36me3. Experiments: inhibit transcription (e.g. with a Pol II inhibitor) and see whether H3K36me3 is lost; or mutate H3K36 (K36M, or delete SETD2) and see whether expression falls. (In fact, loss of H3K36me3 mostly affects cryptic transcription from inside genes and splicing, not the level of expression.)\n\n\n\n\n\n\n\n\n\nSolutions — R\n\n\n\n\n\nR1. (a) CD79A is active: H3K4me3 and H3K27ac at the promoter, H3K36me3 over the short gene body. (b) ALB: almost nothing (no active marks, little H3K27me3): silent, not specifically repressed. HOXD10: no active marks, high H3K27me3 over the gene and its neighbours: Polycomb-silenced.\nR2. (a)\n\n\n\n\n\n\n\n\n\n\n\n\ngene\nK4me3 prom\nK27ac prom\nK36me3 body\nK27me3 body\nK9me3 body\nstate\n\n\n\n\nCD74\n8.3\n68.6\n4.6\n0.3\n0.6\nactive\n\n\nCD79A\n7.4\n45.3\n2.1\n0.3\n0.4\nactive\n\n\nPAX5\n11.2\n26.3\n3.4\n0.3\n0.7\nactive\n\n\nMS4A1\n10.6\n23.2\n3.5\n0.4\n0.9\nactive\n\n\nGAPDH\n10.1\n37.1\n4.3\n0.5\n1.2\nactive\n\n\nACTB\n1.8\n0.2\n1.0\n0.4\n0.6\n“silent”? see (b)\n\n\nALB\n0.4\n0.2\n0.3\n1.0\n0.5\nsilent, no strong mark\n\n\nNEUROD1\n1.4\n0.1\n0.4\n1.6\n1.2\nsilent, weak Polycomb\n\n\nHOXD10\n0.3\n0.1\n0.4\n3.6\n1.4\nPolycomb\n\n\nHOXD13\n0.7\n0.0\n0.3\n3.7\n1.2\nPolycomb\n\n\nZNF43\n2.6\n0.7\n0.7\n0.4\n2.1\nH3K9me3-marked, weakly transcribed\n\n\nZNF208\n0.5\n0.2\n0.3\n0.3\n1.3\nsilent, weak H3K9me3\n\n\n\nAll four B-cell genes (CD74, CD79A, PAX5, MS4A1) are active, as is GAPDH.\n\nThe ACTB gene in GENCODE runs from 5 526 409 to 5 563 902 on the − strand, so its “start” (the TSS used by promoters(gene)) is 5 563 902. That belongs to one long, rare transcript. The main ACTB transcripts start at about 5 530 601, where H3K4me3 is about 6. Lesson: promoters() on a gene uses the outermost transcript start, which is often not the main promoter. Use transcript start sites (as in Genomic intervals).\nSilence does not always need a repressive mark. ALB is simply never switched on in B cells: no activators bind its liver enhancers, so it has no active marks, but no Polycomb either. Polycomb (H3K27me3) is concentrated on developmental regulators such as HOX genes, which must be kept firmly off, often CpG-island genes.\n\nR3. (a) For a − strand gene, downstream is to the left. Reversing puts every gene’s downstream side on the right, so the profiles can be averaged. (b) Downstream, at about +760 bp: the +1 and +2 nucleosomes. (c) A dip exactly at the TSS: H3K4me3 2.9 at 0 vs 4.8 at −500 and 5.5 at +500; H3K27ac 6.5 vs 10.5 and 9.5. The TSS sits in the nucleosome-depleted region: no nucleosome, no histone mark. (d) H3K4me1 has a minimum near the TSS and is higher on the flanks (1.8 at −1 kb, 1.5 at +2 kb): it flanks promoters, as in the figure. H3K36me3 is lowest just downstream of the TSS and rises into the gene body (1.4 at +5 kb), but stays low upstream.\nR4. (a) 0.275: chr21 has about a quarter of the CpGs expected from its C and G content. Methylated CpGs mutate to TpG/CpA by deamination, so CpGs are lost over evolutionary time. (b) 365 of 602 TSSs (61%) are CpG-island-like. (c) Median H3K4me3 fold change 6.1 at CpG-island-like promoters, 0.6 at the others; 63% vs 11% have H3K4me3 above 5. CXXC-domain proteins (CFP1, part of the SET1 complex that writes H3K4me3; also KDM2A/B) bind unmethylated CpG and bring H3K4 methylation to CpG islands. This is one reason why CpG islands are marked as promoters even when the gene is expressed at a low level.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/exercise.html#where-this-leads",
+    "href": "chromatin-intro/exercise.html#where-this-leads",
+    "title": "Exercise: What is epigenetics?",
+    "section": "Where this leads",
+    "text": "Where this leads\n\nGene regulation explains how transcription factors open the nucleosome-depleted regions you saw in R3.\nGenomic intervals and From reads to coverage explain how the bigWigs and peaks used here are made.\nThe ChIP-seq block maps these marks yourself, including broad domains like the HOXD H3K27me3 domain.\nDNA methylation biology returns to CpG islands, maintenance methylation (B6) and imprinting.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/exercise.html#key-papers-optional-further-reading",
+    "href": "chromatin-intro/exercise.html#key-papers-optional-further-reading",
+    "title": "Exercise: What is epigenetics?",
+    "section": "Key papers (optional further reading)",
+    "text": "Key papers (optional further reading)\nNot required reading and not examined.\n\nLuger et al. 1997, Nature. Crystal structure of the nucleosome core particle at 2.8 Å resolution.\nKornberg 1974, Science. Chromatin structure: a repeating unit of histones and DNA.\nStrahl & Allis 2000, Nature. The language of covalent histone modifications.\nBarski et al. 2007, Cell. High-resolution profiling of histone methylations in the human genome.\nBird 2007, Nature. Perceptions of epigenetics.\nAllis & Jenuwein 2016, Nat Rev Genet. The molecular hallmarks of epigenetic control.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/lec.html#about-this-lecture",
+    "href": "chromatin-intro/lec.html#about-this-lecture",
+    "title": "What is epigenetics?",
+    "section": "About this lecture",
+    "text": "About this lecture\nEvery cell in your body carries (almost) the same genome, yet a neuron and a B cell use very different genes. This lecture is about the layer of information on top of the DNA sequence that helps decide which genes a cell uses, and remembers that decision.\n\nWhat “epigenetic” means, and why the word is used in two different ways.\nChromatin: how 2 m of DNA is packed into a nucleus, and why packing controls access.\nHistone modifications: the marks you will map with ChIP-seq and CUT&Tag.\nDNA methylation: the mark you will map with bisulfite and long-read sequencing.\nHow a state can be remembered through cell division.\nA map of the assays in this course, and what each one measures.\n\n\nThis is the first unit of the course and sets up the vocabulary for everything else. Students know transcription and transcription factors from their bachelor’s; most have heard “histone” and “DNA methylation” but few can say what H3K27me3 means or why it should be heritable. The aim today is a working mental model, not a catalogue: by the end they should be able to look at a genome-browser view of a few histone marks and say “this is an active promoter, this is a repressed gene”. Every later unit builds on this.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/lec.html#one-genome-many-cell-types",
+    "href": "chromatin-intro/lec.html#one-genome-many-cell-types",
+    "title": "What is epigenetics?",
+    "section": "One genome, many cell types",
+    "text": "One genome, many cell types\n\n\nA B cell, a neuron and a liver cell share the same DNA sequence, but express different sets of genes.\nThe identity is stable: a liver cell divides into liver cells, not neurons, long after the signal that made it a liver cell is gone.\nSo something besides the sequence is (1) different between cell types and (2) copied when a cell divides.\n\n\nStart from the puzzle that created the field. Cell identity is both different and stable. Transcription factors explain “different”: a liver cell has liver TFs. But TF levels fluctuate and the initial signals during development are transient, so something must also remember. The two candidates we study in this course are chromatin (histones and their modifications) and DNA methylation. Exceptions to “same genome” exist (B and T cells rearrange their receptor genes, somatic mutations), but they do not explain cell identity.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/lec.html#what-does-epigenetic-mean",
+    "href": "chromatin-intro/lec.html#what-does-epigenetic-mean",
+    "title": "What is epigenetics?",
+    "section": "What does “epigenetic” mean?",
+    "text": "What does “epigenetic” mean?\n\n\n\n\n\nWaddington (1940s–50s): the “epigenetic landscape”. A cell rolls downhill into one of several valleys (fates); the genes shape the landscape.\nNarrow definition (Riggs et al. 1996): mitotically and/or meiotically heritable changes in gene function that cannot be explained by changes in DNA sequence.\nBroad definition (Bird 2007): the structural adaptation of chromosomal regions so as to register, signal or perpetuate altered activity states.\n\n\n\nIn practice “epigenomics” means measuring chromatin and DNA methylation genome-wide, whether or not the state is heritable.\n\n\nTwo meanings coexist and cause confusion in papers. The narrow, classical one demands heritability: a state that is copied through cell division (mitotic) or even to offspring (meiotic) without a change in sequence. The broad one, which most genomics papers use, calls any chromatin feature “epigenetic”, including states that are rebuilt every time by transcription factors. When a paper says “epigenetic regulation”, ask which one they mean: is there evidence the state is self-perpetuating, or is it just a chromatin mark that correlates with expression? We come back to this in the unit on epigenetic inheritance. Waddington’s landscape is a metaphor, not a mechanism, but it captures the two properties from the previous slide: valleys are different (identity) and walls are high (stability).",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/lec.html#two-meters-of-dna-in-a-nucleus",
+    "href": "chromatin-intro/lec.html#two-meters-of-dna-in-a-nucleus",
+    "title": "What is epigenetics?",
+    "section": "Two meters of DNA in a nucleus",
+    "text": "Two meters of DNA in a nucleus\n\n\nA human diploid genome is 6.4 \\times 10^9 bp, about 2 m of DNA, packed into a nucleus about 10 µm across.\nPacking is hierarchical: DNA → nucleosomes (“beads on a string”, 11 nm) → loops and domains → chromosome territories.\nPacking is not just storage: the more compact a region, the harder it is for proteins to reach the DNA.\n\n\nNumbers to make it concrete: 0.34 nm per base pair, times 6.4 billion is about 2.2 m. If the nucleus were a football (22 cm), the DNA would be a thread about 40 km long. Each level of the figure is the subject of one part of the course: nucleosomes and their marks (ChIP-seq, ATAC-seq), loops, TADs and compartments (Hi-C). The 30 nm fibre found in textbooks is largely absent in living cells; we skip it. The key message is the last bullet: compaction is a regulatory layer, because a transcription factor or polymerase needs access to its sequence.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/lec.html#the-nucleosome",
+    "href": "chromatin-intro/lec.html#the-nucleosome",
+    "title": "What is epigenetics?",
+    "section": "The nucleosome",
+    "text": "The nucleosome\n\n\n\n\n\n147 bp of DNA wrapped about 1.7 turns around a histone octamer: two copies each of H2A, H2B, H3 and H4.\nNucleosomes are separated by linker DNA (about 20–80 bp). The linker histone H1 sits where DNA enters and leaves.\nEach histone has a flexible tail that sticks out of the particle. The tails carry most of the modifications.\n\n\n\nThe nucleosome core particle was solved at atomic resolution in 1997 (Luger et al.), one of the key papers. The drawing is simplified to two layers of four histones; in the real structure H3–H4 form a tetramer in the middle, flanked by two H2A–H2B dimers. DNA contacts the octamer every 10 bp or so, where the minor groove faces the histones; this is why some sequences wrap more easily than others. The tails are unstructured and accessible to enzymes, which is why they are the main target of the modifications on the next slides. H1 is not part of the core; it stabilises the more compact forms.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/lec.html#nucleosomes-come-in-a-regular-repeat",
+    "href": "chromatin-intro/lec.html#nucleosomes-come-in-a-regular-repeat",
+    "title": "What is epigenetics?",
+    "section": "Nucleosomes come in a regular repeat",
+    "text": "Nucleosomes come in a regular repeat\n\n\nDigest chromatin with an enzyme that cuts only linker DNA (micrococcal nuclease, MNase) and you get a ladder: about 150, 350, 550 bp …: one, two, three nucleosomes.\nThe step of the ladder is the nucleosome repeat length, about 190–200 bp in human cells (147 bp core + linker).\nYou will see the same ladder in the fragment lengths of every ATAC-seq library.\n\n\nThis is the 1970s experiment that showed chromatin is a repeating unit (Kornberg 1974 proposed the model). The enzyme can only reach linker DNA, so cuts fall between nucleosomes. Fragment sizes are therefore multiples of the repeat length, plus the core. The same logic underlies ATAC-seq: the Tn5 transposase also prefers linker and nucleosome-free DNA, so the fragment-length histogram of an ATAC library has a big nucleosome-free peak under 100 bp, then a mono-nucleosome peak near 200 bp, then di-nucleosomes near 400 bp. Students will compute this in the ATAC units. MNase-seq maps nucleosome positions genome-wide this way.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/lec.html#nucleosomes-block-access-regulatory-dna-is-open",
+    "href": "chromatin-intro/lec.html#nucleosomes-block-access-regulatory-dna-is-open",
+    "title": "What is epigenetics?",
+    "section": "Nucleosomes block access; regulatory DNA is open",
+    "text": "Nucleosomes block access; regulatory DNA is open\n\n\nMost of the genome is wrapped in nucleosomes. Active promoters and enhancers have a nucleosome-depleted region (NDR) of a few hundred bp.\nTranscription factors bind in the NDR; well-positioned nucleosomes flank it (the +1 nucleosome sits just downstream of the transcription start site, TSS).\n“Open” (accessible) chromatin is what ATAC-seq and DNase-seq measure: about 1–3% of the genome in a given cell type.\n\n\nThe NDR is the defining feature of active regulatory DNA. Most transcription factors cannot bind a motif wrapped on a nucleosome; a few “pioneer” factors can (gene-regulation unit), and they open the region for the rest. Chromatin remodelers then slide or evict nucleosomes. The +1 nucleosome is strongly positioned downstream of the TSS; the -1 nucleosome upstream. This figure is the picture students should have in mind when they look at an ATAC-seq peak: a peak is an NDR. The 1–3% number varies with cell type and peak caller, so treat it as an order of magnitude.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/lec.html#histone-tails-carry-chemical-modifications",
+    "href": "chromatin-intro/lec.html#histone-tails-carry-chemical-modifications",
+    "title": "What is epigenetics?",
+    "section": "Histone tails carry chemical modifications",
+    "text": "Histone tails carry chemical modifications\n\n\nEnzymes add small groups to amino acids in the tails: acetylation (ac) and methylation (me1, me2, me3) of lysines (K), phosphorylation of serines, and more.\nOver 100 different modifications are known. A handful of them are well understood and mapped routinely; those are the ones in this course.\nModifications act in two ways: they change how tightly the histone holds DNA, and they recruit proteins that recognise them.\n\n\nPoint at H3 and H4 tails, which carry the best-studied marks. Lysine acetylation removes the positive charge of the lysine side chain; DNA is negative, so the tail binds DNA less tightly and the chromatin loosens. Methylation does not change the charge: its effect comes almost entirely from proteins that bind methylated lysines. Ubiquitylation of H2A (H2AK119ub, by Polycomb PRC1) and H2B are on the C-terminal tails and are much larger additions. The “histone code” hypothesis (Strahl & Allis 2000) proposed that combinations of marks are read like a code; the modern view is less strict, but combinations do define chromatin states (chromatin-states unit).",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/lec.html#reading-the-name-of-a-histone-mark",
+    "href": "chromatin-intro/lec.html#reading-the-name-of-a-histone-mark",
+    "title": "What is epigenetics?",
+    "section": "Reading the name of a histone mark",
+    "text": "Reading the name of a histone mark\n\n\nH3K27me3 = histone H3, lysine (K) at position 27, tri-methylated.\nH3K27ac is the same lysine, acetylated. One lysine can carry either mark but not both: the two are mutually exclusive, and they mean opposite things.\nPositions count from the N-terminus of the mature histone.\n\n\nA small slide but students need to be able to decode the names fluently, and it is a typical exam question. K is the one-letter code for lysine, S serine, R arginine, T threonine. me1/me2/me3 are mono-, di- and tri-methylation; a lysine can carry up to three methyl groups. H3K27 is a nice example because the same residue is either acetylated (active enhancers and promoters) or tri-methylated (Polycomb repression). Histone variants get their own names: H3.3, H2A.Z, CENP-A (later slide).",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/lec.html#writers-readers-and-erasers",
+    "href": "chromatin-intro/lec.html#writers-readers-and-erasers",
+    "title": "What is epigenetics?",
+    "section": "Writers, readers and erasers",
+    "text": "Writers, readers and erasers\n\n\nWriters add a mark: histone acetyltransferases (HATs, e.g. p300/CBP), lysine methyltransferases (e.g. EZH2, SETD2).\nErasers remove it: histone deacetylases (HDACs), lysine demethylases (e.g. KDM6/UTX).\nReaders bind it and bring in other machinery: bromodomains read acetyl-lysine, chromodomains and PHD fingers read methyl-lysine.\nMarks are dynamic: they are turned over by writers and erasers, some within minutes.\n\n\nThe writer/reader/eraser framing is the single most useful way to think about any chromatin mark. For each mark you meet in the course, ask: who writes it, who reads it, who erases it. Examples: p300/CBP write H3K27ac at enhancers; BRD4 reads it with its bromodomains and recruits the transcription machinery; HDACs erase it. EZH2 (in the PRC2 complex) writes H3K27me3; KDM6A/UTX and KDM6B/JMJD3 erase it. Many of these enzymes are drug targets (HDAC inhibitors, EZH2 inhibitors, BET inhibitors that block BRD4): see the cancer-epigenetics unit.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/lec.html#the-marks-you-will-meet-in-this-course",
+    "href": "chromatin-intro/lec.html#the-marks-you-will-meet-in-this-course",
+    "title": "What is epigenetics?",
+    "section": "The marks you will meet in this course",
+    "text": "The marks you will meet in this course\n\n\n\n\n\n\n\n\n\nmark\nwhere\nmeaning\n\n\n\n\nH3K4me3\npromoters (around the TSS)\nactive or poised promoter\n\n\nH3K4me1\nenhancers (and flanks of promoters)\nenhancer, active or primed\n\n\nH3K27ac\nactive promoters and enhancers\nactive regulatory element\n\n\nH3K36me3\nbodies of transcribed genes\ntranscription has passed here\n\n\nH3K27me3\nbroad domains over silenced genes\nPolycomb repression (facultative)\n\n\nH3K9me3\nrepeats, ZNF gene clusters, pericentromeres\nconstitutive heterochromatin\n\n\n\n\nThis table is the most important reference of the course; students should know it by heart. Read it with the figure: a gene model with promoter, an upstream enhancer, the gene body, and where each mark sits. Two pairs are worth stressing. H3K4me1 without H3K27ac marks a primed enhancer, with H3K27ac an active one (Creyghton et al. 2010; Rada-Iglesias et al. 2011). H3K4me3 is at the promoter (narrow, a few kb), H3K36me3 over the gene body (broad, as long as the gene), because SETD2 travels with elongating RNA polymerase II. The two repressive marks are different systems: H3K27me3 (Polycomb) silences developmental genes that may be needed in another cell type; H3K9me3 silences repeats and transposons, mostly permanently.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/lec.html#real-data-an-active-gene-in-b-cells",
+    "href": "chromatin-intro/lec.html#real-data-an-active-gene-in-b-cells",
+    "title": "What is epigenetics?",
+    "section": "Real data: an active gene in B cells",
+    "text": "Real data: an active gene in B cells\n\n\nENCODE ChIP-seq in GM12878, a B-lymphoblastoid cell line (the course’s main dataset). Each track: enrichment over input (fold change).\nH3K4me3 and H3K27ac peak at the promoter; H3K36me3 covers the gene body; H3K27me3 and H3K9me3 are absent.\n\n\nFirst look at real data, in a genome-browser layout like IGV. Explain how to read a track: x is position along the chromosome, y is how many more reads than in the input control, so a value of 1 means “no enrichment”. The gene model at the bottom shows exons as boxes and the arrow gives the direction of transcription. Point out that the H3K36me3 signal increases towards the 3’ end, as expected for a mark deposited during elongation. The H3K4me1 signal flanks the H3K4me3 peak. The figure is made by make-chromatin-figs.R from ENCODE files listed in data/manifest.tsv; students make the same plots in the exercise.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/lec.html#real-data-two-kinds-of-silence",
+    "href": "chromatin-intro/lec.html#real-data-two-kinds-of-silence",
+    "title": "What is epigenetics?",
+    "section": "Real data: two kinds of silence",
+    "text": "Real data: two kinds of silence\n\n\nLeft: the HOXD cluster. Developmental genes, silent in B cells, covered by a broad H3K27me3 domain (Polycomb).\nRight: a zinc-finger (ZNF) gene cluster on chr19, marked by H3K9me3 (with H3K36me3 over the gene bodies that are still transcribed).\nRepressive marks form broad domains (tens to hundreds of kb), not sharp peaks: this matters for peak calling later.\n\n\nThe HOX genes pattern the body axis during development; in a B cell they are off, but they are kept in a repressed state that could in principle be reversed (facultative heterochromatin). H3K27me3 covers the whole cluster, more than 100 kb. The ZNF cluster is the classical place for H3K9me3 in euchromatin; the ZNF genes themselves are transcribed but their 3’ ends carry H3K9me3 together with H3K36me3, an unusual combination. Broad domains matter technically: a peak caller made for sharp TF peaks (MACS default) will cut a broad domain into many fragments, which is why the ChIP units teach broad-domain calling.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/lec.html#euchromatin-and-heterochromatin",
+    "href": "chromatin-intro/lec.html#euchromatin-and-heterochromatin",
+    "title": "What is epigenetics?",
+    "section": "Euchromatin and heterochromatin",
+    "text": "Euchromatin and heterochromatin\n\n\nEuchromatin: open, gene-rich, early-replicating, where most active genes are.\nConstitutive heterochromatin: compact, H3K9me3, read by HP1; repeats, pericentromeres, telomeres. The same in all cell types.\nFacultative heterochromatin: H3K27me3 (Polycomb); developmental genes silenced in this cell type but active in another.\n\n\nThe terms date from the 1920s (Heitz), when heterochromatin was the part of the chromosome that stayed condensed and darkly stained through interphase. In modern terms it is defined by the marks. HP1 (heterochromatin protein 1) binds H3K9me3 through its chromodomain, dimerises and bridges nucleosomes, compacting the region. In the Hi-C units, heterochromatin is the B compartment, euchromatin the A compartment. In imaging, heterochromatin sits at the nuclear periphery (lamina-associated domains) and around the nucleolus.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/lec.html#readwrite-feedback-how-a-mark-can-spread-and-persist",
+    "href": "chromatin-intro/lec.html#readwrite-feedback-how-a-mark-can-spread-and-persist",
+    "title": "What is epigenetics?",
+    "section": "Read–write feedback: how a mark can spread and persist",
+    "text": "Read–write feedback: how a mark can spread and persist\n\n\nSome writers carry a reader for their own product. PRC2 (writer of H3K27me3) is activated when its EED subunit binds H3K27me3; SUV39H1 (writer of H3K9me3) has a chromodomain that binds H3K9me3.\nA mark therefore recruits more of itself to neighbouring nucleosomes: domains spread until something stops them.\nThe same loop can restore a mark after it is diluted, which is the key to memory.\n\n\nThis is the mechanism behind both broad domains (previous slides) and inheritance (next slide). Positive feedback makes a state bistable: a region tends to be either fully marked or not marked, and it stays that way. For Polycomb, PRC2 binding to H3K27me3 through EED allosterically stimulates the methyltransferase activity of EZH2 (Margueron et al. 2009). Spreading is limited by boundaries such as active transcription, CTCF sites and the turnover by erasers. Mathematical models of this bistability (Dodd et al. 2007) are a good further read for students with a modelling interest.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/lec.html#through-dna-replication-diluted-then-restored",
+    "href": "chromatin-intro/lec.html#through-dna-replication-diluted-then-restored",
+    "title": "What is epigenetics?",
+    "section": "Through DNA replication: diluted, then restored",
+    "text": "Through DNA replication: diluted, then restored\n\n\nAt replication, old histones (with their marks) are split randomly between the two daughter strands; new, unmarked histones fill the gaps.\nEach daughter gets about half the marked nucleosomes. Read–write feedback then re-marks the new neighbours.\nWhether histone marks are truly self-sustaining through many divisions is still debated; for H3K27me3 the evidence is strongest.\n\n\nThis is why histone-based memory is harder than DNA methylation: the information is halved at every replication and must be restored from a 50% template. In flies and in mammalian cells, removing the Polycomb recruitment sequence leads to loss of H3K27me3 over a few divisions, which suggests the domain needs both DNA-sequence recruitment and the read-write loop (Laprell et al. 2017; Coleman & Struhl 2017). The plant FLC example later is one of the clearest cases of mitotic memory of a Polycomb state. Be honest with students: this is an active research field, not settled textbook material.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/lec.html#dna-methylation-a-mark-on-the-dna-itself",
+    "href": "chromatin-intro/lec.html#dna-methylation-a-mark-on-the-dna-itself",
+    "title": "What is epigenetics?",
+    "section": "DNA methylation: a mark on the DNA itself",
+    "text": "DNA methylation: a mark on the DNA itself\n\n\nIn mammals, a methyl group is added to carbon 5 of cytosine, almost only in CpG dinucleotides: 5-methylcytosine (5mC).\nCpG is palindromic: both strands carry a CpG, and both are usually methylated together.\nAbout 70–80% of CpGs in a human somatic cell are methylated. The exceptions are mostly in CpG islands at promoters.\nPlants also methylate CHG and CHH (H = A, C or T).\n\n\nThe methyl group sits in the major groove and does not change base pairing: 5mC still pairs with G, which is why it survives replication as information but is invisible to normal sequencing. Bisulfite sequencing (methylation units) converts unmethylated C to U but leaves 5mC, turning the mark into a sequence difference. Long-read technologies (nanopore, PacBio) detect 5mC directly from the signal. 5mC can be oxidised by TET enzymes to 5hmC, 5fC and 5caC, which are intermediates in active demethylation; bisulfite cannot distinguish 5mC from 5hmC. In plants the non-CG contexts are maintained by different enzymes (CMT3, DRM2 via RNA-directed DNA methylation), covered in methylation-biology.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/lec.html#copying-dna-methylation-through-replication",
+    "href": "chromatin-intro/lec.html#copying-dna-methylation-through-replication",
+    "title": "What is epigenetics?",
+    "section": "Copying DNA methylation through replication",
+    "text": "Copying DNA methylation through replication\n\n\nAfter replication the new strand is unmethylated: each CpG is hemimethylated.\nUHRF1 recognises hemimethylated CpGs and recruits DNMT1, which methylates the new strand: the pattern is copied.\nDNMT3A/3B methylate de novo (new sites, e.g. during development); TET enzymes start active removal.\nBecause the template is copied site by site, DNA methylation is the clearest example of a mitotically heritable epigenetic mark.\n\n\nThis is the textbook mechanism for epigenetic memory, proposed in 1975 (Holliday & Pugh; Riggs), and it fits the narrow definition perfectly: the information is in the pattern, and a dedicated enzyme copies it to the daughter strand. Copying is not perfect (about 1 error in 20–1000 CpGs per division depending on context), which is one origin of the drift that epigenetic clocks measure. Passive demethylation happens if DNMT1 is absent or blocked during replication; this is how the primordial germ cells and the early embryo erase most methylation. The de novo enzymes DNMT3A and DNMT3B (Okano et al. 1999) set the patterns in the first place.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/lec.html#cpg-islands",
+    "href": "chromatin-intro/lec.html#cpg-islands",
+    "title": "What is epigenetics?",
+    "section": "CpG islands",
+    "text": "CpG islands\n\n\nThe human genome has only about a quarter of the CpGs expected from its base composition. Methylated C mutates easily to T (spontaneous deamination), so CpGs are slowly lost.\nCpG islands (CGIs) are about 1 kb stretches that keep a high CpG density because they are unmethylated. About 60–70% of human gene promoters have one.\nCGI promoters are usually unmethylated even when the gene is off; methylation of a CGI promoter means stable silencing (inactive X, imprinted genes, some genes in cancer).\n\n\nDeamination of C gives U, which repair recognises as foreign; deamination of 5mC gives T, a normal base, so the resulting T:G mismatch is often repaired the wrong way. Over evolutionary time, methylated CpGs become TpG or CpA, which depletes CpG genome-wide (observed/expected ratio about 0.2–0.25). Islands escape because they are protected from methylation, mostly by being bound by transcription machinery and proteins such as CFP1 and KDM2B that recognise unmethylated CpG. The classical definition (Gardiner-Garden & Frommer 1987): at least 200 bp, GC content above 50%, observed/expected CpG above 0.6. In tumours, hypermethylation of CGI promoters silences tumour suppressors (cancer-epigenetics unit).",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/lec.html#remodelers-and-histone-variants",
+    "href": "chromatin-intro/lec.html#remodelers-and-histone-variants",
+    "title": "What is epigenetics?",
+    "section": "Remodelers and histone variants",
+    "text": "Remodelers and histone variants\n\n\nChromatin remodelers use ATP to slide, evict or exchange nucleosomes (e.g. SWI/SNF, ISWI, CHD, INO80 families). They create and maintain NDRs.\nHistone variants replace canonical histones at specific places: H2A.Z flanks promoters and enhancers, H3.3 is deposited in active genes independently of replication, CENP-A defines centromeres.\n\n\nRemodelers are the motors of chromatin: modifications recruit them, and they physically move nucleosomes. SWI/SNF (BAF) subunits are mutated in about 20% of human cancers, which shows how important access is. Variants differ by a few amino acids from the canonical histones but are deposited by dedicated chaperones at specific places. CENP-A is a beautiful example of an epigenetically defined locus: centromeres are defined by CENP-A nucleosomes, not by a specific sequence, and neocentromeres can form on ordinary DNA. H3.3 is also the histone that carries the K27M oncohistone mutation in paediatric gliomas.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/lec.html#beyond-one-dimension-the-3d-genome",
+    "href": "chromatin-intro/lec.html#beyond-one-dimension-the-3d-genome",
+    "title": "What is epigenetics?",
+    "section": "Beyond one dimension: the 3D genome",
+    "text": "Beyond one dimension: the 3D genome\n\n\nChromosomes occupy territories; active and inactive chromatin separate into A and B compartments.\nWithin them, loops and topologically associating domains (TADs) bring enhancers close to the promoters they regulate, often over 10–1000 kb.\nMeasured with Hi-C (3D genome units).\n\n\nA teaser only. The point here: a 1D track (previous slides) does not tell us which promoter an enhancer talks to. Loops are made by cohesin extruding DNA until it hits CTCF bound in a convergent orientation; that is why CTCF is in the course dataset. Compartments correlate strongly with the marks: A is H3K27ac/H3K36me3-rich, B is H3K9me3/H3K27me3-rich and lamina-associated. Students will compute compartments themselves from a Hi-C matrix.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/lec.html#epigenetic-memory-in-action",
+    "href": "chromatin-intro/lec.html#epigenetic-memory-in-action",
+    "title": "What is epigenetics?",
+    "section": "Epigenetic memory in action",
+    "text": "Epigenetic memory in action\n\n\nX inactivation: in female mammals one X is silenced early in development (Xist RNA, H3K27me3, CGI methylation) and stays silent in all descendants.\nGenomic imprinting: some genes are expressed only from the maternal or only the paternal copy, set by DNA methylation in the germ line.\nVernalisation in plants: Arabidopsis remembers winter. Cold silences the flowering repressor FLC by Polycomb (H3K27me3), and the silence is kept through cell divisions after it warms up, so the plant flowers in spring.\n\n\nThree examples that fit the narrow definition: a state set by a transient signal and remembered through mitosis. X inactivation shows memory at the scale of a whole chromosome; calico cats are the visible result of random X inactivation. Imprinting shows memory from the parents’ germ lines: the paternal and maternal copies differ only in methylation at imprinting control regions. The figure uses H19: its imprinting control region is methylated on the paternal allele (set in the male germ line), so H19 is expressed only from the maternal copy. Vernalisation is the plant example (Umeå has a strong plant-science community); it is one of the best-studied cases of quantitative Polycomb memory: the longer the cold, the more cells switch FLC off (an all-or-none switch per cell). The epigenetic-inheritance unit asks which claims of memory across generations hold up.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/lec.html#cause-or-consequence",
+    "href": "chromatin-intro/lec.html#cause-or-consequence",
+    "title": "What is epigenetics?",
+    "section": "Cause or consequence?",
+    "text": "Cause or consequence?\n\n\nMarks correlate with activity, but correlation does not show that the mark causes it. H3K36me3 is deposited because the gene is transcribed.\nCausal tests: replace a histone with a mutant that cannot be modified (e.g. lysine → arginine), tether a writer to a gene (epigenome editing: dCas9 fused to a writer or eraser), or remove the writer.\nTreat “epigenetic regulation of gene X” with care: is the mark a driver, a lock that keeps a decision, or a footprint of transcription?\n\n\nThis is the critical-thinking slide and should come back throughout the course. Some marks are clearly downstream of transcription (H3K36me3, H3K79me2). Others act as locks: in flies, replacing all H3 copies with H3K27R derepresses Polycomb target genes, showing the lysine itself is needed for repression. Epigenome editing (dCas9-p300, dCas9-KRAB, dCas9-DNMT3A) can test whether placing a mark changes expression and whether the change is remembered after the tool is gone. Most genome-wide studies, including the ones we analyse, are correlational.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/lec.html#what-the-assays-in-this-course-measure",
+    "href": "chromatin-intro/lec.html#what-the-assays-in-this-course-measure",
+    "title": "What is epigenetics?",
+    "section": "What the assays in this course measure",
+    "text": "What the assays in this course measure\n\n\n\n\n\n\n\n\n\nquestion\nassay\nunits\n\n\n\n\nWhere is the DNA accessible?\nATAC-seq (DNase-seq, MNase-seq)\nATAC-seq block\n\n\nWhere is a histone mark or a TF?\nChIP-seq, CUT&RUN, CUT&Tag\nChIP-seq block\n\n\nWhich CpGs are methylated?\nbisulfite / EM-seq, arrays, long reads\nmethylation block\n\n\nWhich regions touch in 3D?\nHi-C, Micro-C\n3D genome block\n\n\n\n\nThis is the map of the course. Every assay turns a chromatin property into DNA fragments that are sequenced, and every one has its own way of being wrong: Tn5 sequence bias in ATAC, antibody specificity and input in ChIP, incomplete bisulfite conversion, ligation artefacts and distance decay in Hi-C. The analysis always ends in the same kinds of objects: intervals (peaks, domains), signal tracks, and counts in regions. That is why the next units are on genomic intervals and on going from reads to coverage.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/lec.html#summary",
+    "href": "chromatin-intro/lec.html#summary",
+    "title": "What is epigenetics?",
+    "section": "Summary",
+    "text": "Summary\n\n\n\n\n\n\n\nidea\nkey fact\n\n\n\n\nepigenetic\nnarrow: heritable without sequence change; broad (epigenomics): any chromatin state\n\n\nnucleosome\n147 bp around an octamer (H2A, H2B, H3, H4 ×2); repeat about 190 bp\n\n\nopen chromatin\nnucleosome-depleted regions at active promoters and enhancers\n\n\nhistone marks\nnamed histone–residue–modification: H3K27ac; written, read, erased by enzymes\n\n\nactive marks\nH3K4me3 (promoter), H3K4me1 (enhancer), H3K27ac (active), H3K36me3 (gene body)\n\n\nrepressive marks\nH3K27me3 (Polycomb, facultative), H3K9me3 (HP1, constitutive)\n\n\nmemory\nread–write feedback for histone marks; DNMT1 + UHRF1 copy CpG methylation\n\n\nCpG islands\nunmethylated, CpG-rich promoters; methylated when stably silenced\n\n\ncaution\ncorrelation is not causation: many marks follow transcription\n\n\n\n\nStudents should leave able to decode a mark’s name, place the six marks on a gene, explain the difference between the two kinds of heterochromatin, and explain how DNA methylation is copied through replication. Next units: gene regulation (transcription factors, enhancers), then the technical foundation (intervals, reads to coverage).",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "chromatin-intro/lec.html#key-papers-optional-further-reading",
+    "href": "chromatin-intro/lec.html#key-papers-optional-further-reading",
+    "title": "What is epigenetics?",
+    "section": "Key papers (optional further reading)",
+    "text": "Key papers (optional further reading)\nNot required reading and not examined. For those who want the primary literature.\n\nLuger et al. 1997, Nature. Crystal structure of the nucleosome core particle at 2.8 Å resolution. The atomic picture of the nucleosome.\nKornberg 1974, Science. Chromatin structure: a repeating unit of histones and DNA. The nucleosome model, from the ladder of digestion fragments.\nStrahl & Allis 2000, Nature. The language of covalent histone modifications. The “histone code” hypothesis.\nBarski et al. 2007, Cell. High-resolution profiling of histone methylations in the human genome. One of the first genome-wide maps of histone marks by ChIP-seq.\nBird 2007, Nature. Perceptions of epigenetics. A short essay on what the word should mean.\nAllis & Jenuwein 2016, Nat Rev Genet. The molecular hallmarks of epigenetic control. A broad review of the whole field.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "What is epigenetics?",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "dictionary.html",
+    "href": "dictionary.html",
+    "title": "Glossary",
+    "section": "",
+    "text": "A running glossary of the biological, technical and analysis terms used in this course. Add terms as the material is written; keep definitions short and link to the unit where the term is taught.",
+    "crumbs": [
+      "Home",
+      "Course info",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/lec.html#about-this-lecture",
+    "href": "genomic-intervals/lec.html#about-this-lecture",
+    "title": "Genomic intervals",
+    "section": "About this lecture",
+    "text": "About this lecture\nIn RNA-seq you counted reads per gene: the annotation told you where to count. In epigenomics there is no such list. Peaks, domains, CpG islands, loops and methylated regions are all intervals that you find in the data, and most of the analysis is arithmetic on intervals: which overlap, how far apart, how many more than by chance.\n\nCoordinates: genome builds, and the two numbering systems (0-based and 1-based) that cause most off-by-one bugs.\nFile formats: BED and narrowPeak, GTF, bedGraph and bigWig.\nInterval operations with bedtools on the command line.\nIs an overlap meaningful? Comparing with shuffled intervals.\nThe same operations in R with GenomicRanges.\n\n\nThis is a technical unit, but every later unit depends on it. Students are comfortable on the command line and in R, so the new content is the coordinate conventions and the interval logic. The running example uses ENCODE peaks from GM12878 (H3K4me3, H3K27ac, CTCF) and the GENCODE annotation, the same files as in the exercise. By the end they should be able to answer “what fraction of my peaks are at promoters, and is that more than chance?” in a few lines, both with bedtools and in R.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/lec.html#everything-is-an-interval",
+    "href": "genomic-intervals/lec.html#everything-is-an-interval",
+    "title": "Genomic intervals",
+    "section": "Everything is an interval",
+    "text": "Everything is an interval\n\n\nA genomic interval is a chromosome, a start, an end and (sometimes) a strand: chr21:33,000,000–33,002,000 (+).\nGenes, exons, promoters, peaks, CpG islands, methylated regions, reads, Hi-C loop anchors: all intervals.\nQuestions about biology become questions about intervals: do my peaks overlap promoters? which gene is nearest? how many reads fall in each peak?\n\n\nThe point of the figure: the same line (a stretch of chromosome) carries many different kinds of intervals, coming from annotation (genes, CpG islands) and from data (reads, peaks). Once everything is an interval, the same handful of operations answers most questions. Counting reads in peaks, which students will do for differential accessibility, is literally the same as counting reads in genes, which they did for RNA-seq; only the intervals differ.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/lec.html#a-coordinate-only-means-something-with-its-genome-build",
+    "href": "genomic-intervals/lec.html#a-coordinate-only-means-something-with-its-genome-build",
+    "title": "Genomic intervals",
+    "section": "A coordinate only means something with its genome build",
+    "text": "A coordinate only means something with its genome build\n\n\nThe reference genome is updated: GRCh37/hg19 (2009) and GRCh38/hg38 (2013) are both still used. The same gene has different coordinates in each.\nChromosome names differ too: UCSC writes chr1, Ensembl/NCBI write 1. Mitochondria: chrM vs MT.\nAlways check that all your files use the same build and the same naming. Mixing builds gives no error, just wrong answers.\nThis course uses GRCh38 with chr names throughout.\n\n\nThe most common silent error in interval analysis. bedtools will happily intersect hg19 peaks with hg38 genes and report a few random overlaps. Check the header of the file, the methods section, or test: does a well-known gene’s TSS fall where it should? Converting between builds is done with liftOver (later slide), which is lossy. Also mention the newer telomere-to-telomere T2T-CHM13 assembly, which fills the remaining gaps in GRCh38 and is gaining use, but most epigenomic resources (ENCODE, Roadmap) are still in GRCh38 or hg19.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/lec.html#two-ways-to-number-the-bases",
+    "href": "genomic-intervals/lec.html#two-ways-to-number-the-bases",
+    "title": "Genomic intervals",
+    "section": "Two ways to number the bases",
+    "text": "Two ways to number the bases\n\n\n1-based, closed [s, e]: the first base is 1, and the end base is included. Used by GTF/GFF, SAM, VCF, and by genome browsers when they display a position.\n0-based, half-open [s, e): count the gaps between bases from 0; the interval runs from gap s to gap e. Used by BED, bedGraph, BAM internally, and most programming languages.\nThe bases CGT above are chr1:3-5 in 1-based, chr1 2 5 in BED. Length: e - s + 1 in 1-based, e - s in BED.\n\n\nDraw the ruler on the board. In the 0-based half-open system the numbers label the boundaries between bases, so an interval is “from boundary 2 to boundary 5”, which contains the 3rd, 4th and 5th bases. The advantages: length is end minus start, adjacent intervals share an end/start number, and an empty interval (an insertion point) has start = end. Rule for converting: BED start = 1-based start − 1, end is the same number. The UCSC browser displays 1-based but stores 0-based; that is why a BED line chr1 2 5 shows as chr1:3-5. This slide will be on the exam in some form.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/lec.html#getting-it-wrong",
+    "href": "genomic-intervals/lec.html#getting-it-wrong",
+    "title": "Genomic intervals",
+    "section": "Getting it wrong",
+    "text": "Getting it wrong\n\n\nCopy a 1-based position from a VCF into a BED file without subtracting 1 and your SNP sits one base to the right: next to the CpG you wanted, not on it.\nFor peaks of hundreds of bp an off-by-one hardly matters. For single bases (SNPs, CpGs, TSSs, Tn5 insertion sites) it changes the answer.\nTools convert for you when they read a format they know (rtracklayer::import adds 1 to BED starts). Trouble starts when you write files by hand with awk or paste.\n\n\nA concrete failure, as in the figure: the VCF says the SNP is at 1043 (1-based), the G of a CpG. Written correctly to BED it is chr1 1042 1043; copied as chr1 1043 1044 it sits on the next base, outside the CpG, and an overlap with a CpG list misses it. The same happens to CpG positions from a methylation caller written to BED as pos, pos+1. The fix is boring but important: know which convention each file uses, and convert at the boundary. In the exercise, students make a TSS file with awk from the GTF and have to get exactly this right.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/lec.html#bed-and-narrowpeak",
+    "href": "genomic-intervals/lec.html#bed-and-narrowpeak",
+    "title": "Genomic intervals",
+    "section": "BED and narrowPeak",
+    "text": "BED and narrowPeak\n\n\nBED: tab-separated; three required columns chrom start end (0-based), then optional name score strand and more.\nnarrowPeak (BED6+4): what peak callers like MACS write. Adds signalValue (enrichment), pValue and qValue (as -\\log_{10}), and peak: the summit, as an offset from start.\nbroadPeak is the same without the summit column, for broad domains.\n\n\nWalk through the example line (the numbers are illustrative; the exercise starts from real lines of the ENCODE CTCF file). Column 5 (score) is often a scaled integer for display (0–1000) and not a statistic; the statistics are in columns 7–9. pValue and qValue are already −log10, so 10 means 1e-10. Column 10 is easy to misread: it is not a genome coordinate; the summit is start + peak. Summits are useful because the binding site is usually within a few tens of bp of the summit, much narrower than the peak: motif analysis and footprinting use windows around summits. A value of −1 means “not available”: the ENCODE CTCF IDR peaks used in the exercise have pValue −1 in every line.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/lec.html#annotation-gtf",
+    "href": "genomic-intervals/lec.html#annotation-gtf",
+    "title": "Genomic intervals",
+    "section": "Annotation: GTF",
+    "text": "Annotation: GTF\n\n\nGene annotation (GENCODE, Ensembl) comes as GTF/GFF: one line per feature (gene, transcript, exon, CDS, …), 1-based closed.\nColumn 9 holds attributes: gene_id, gene_name, gene_type, transcript_id, ….\nA gene has several transcripts, often with different start sites. “The TSS of a gene” is a choice: the gene start, every transcript start, or a canonical transcript.\n\n\nStudents met GTF files in RNA-seq when counting with featureCounts or building an index, but probably did not look inside. The hierarchy matters: gene lines span all their transcripts; transcripts are made of exons. GENCODE “basic” is a subset with the full-length, well-supported transcripts; we use it to keep files small. The TSS question is a real analysis choice: taking only the gene start can miss alternative promoters, and taking every transcript start counts some promoters many times. In the exercise students use transcript starts of protein-coding transcripts and collapse duplicates.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/lec.html#strand-where-is-upstream",
+    "href": "genomic-intervals/lec.html#strand-where-is-upstream",
+    "title": "Genomic intervals",
+    "section": "Strand: where is upstream?",
+    "text": "Strand: where is upstream?\n\n\nCoordinates always increase left to right along the + strand. A gene on the − strand is read right to left.\nTSS = start for a + gene, end for a − gene. Upstream of a − gene means higher coordinates.\n“Promoter = 2 kb upstream to 500 bp downstream of the TSS” therefore needs the strand. GenomicRanges::promoters() handles it; bedtools slop -s -l 2000 -r 500 too.\n\n\nThe second classic bug after off-by-one. In the figure, gene A is on + and gene B on −; their promoters point in opposite directions. If you build promoters as start − 2000 to start + 500 for every gene, all minus-strand promoters are in the gene body near the 3’ end instead. In BED, strand is column 6; in GTF column 7. Peaks from ChIP or ATAC have no strand (“.” or “*“), because chromatin has no direction; but the genes they are near do.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/lec.html#signal-tracks-bedgraph-and-bigwig",
+    "href": "genomic-intervals/lec.html#signal-tracks-bedgraph-and-bigwig",
+    "title": "Genomic intervals",
+    "section": "Signal tracks: bedGraph and bigWig",
+    "text": "Signal tracks: bedGraph and bigWig\n\n\nA signal track gives a number for every position: reads piled up, divided by a normaliser (CPM, fold change over input).\nbedGraph: a BED-like text file, chrom start end value, one line per run of constant value.\nbigWig: the same data in a compressed, indexed binary file, with precomputed summaries at several zoom levels. A browser can fetch just the region on screen, even over the internet.\n\n\nPileup: count how many reads (or fragments) cover each base. bedGraph compresses runs of equal value into one line. bigWig (Kent et al. 2010) adds an index and zoom levels, which is why a 500 MB bigWig opens instantly in IGV: it reads only the blocks for the current window and the right zoom level. ENCODE provides fold-change and p-value bigWigs for every ChIP experiment; in the chromatin-intro exercise we read regions from them with rtracklayer. Making bigWigs from BAM files is in the reads-to-coverage unit (deepTools bamCoverage).",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/lec.html#the-file-formats-at-a-glance",
+    "href": "genomic-intervals/lec.html#the-file-formats-at-a-glance",
+    "title": "Genomic intervals",
+    "section": "The file formats at a glance",
+    "text": "The file formats at a glance\n\n\n\n\ncontent\ntext format\nindexed binary\ncoordinates\n\n\n\n\nintervals (peaks, regions)\nBED, narrowPeak\nbigBed\n0-based\n\n\nsignal per position\nbedGraph, wig\nbigWig\n0-based\n\n\naligned reads\nSAM\nBAM, CRAM\n1-based in SAM text\n\n\nannotation\nGTF, GFF3\n(tabix-indexed .gz)\n1-based\n\n\nvariants\nVCF\nBCF\n1-based in VCF text\n\n\n\n\nA reference slide. Rule of thumb: text formats are for small files and for reading with your eyes, indexed binary formats are for large files and random access. Any sorted, bgzip-compressed text file can be indexed with tabix for random access, which is how large BED and GTF files are often distributed. BAM stores 0-based positions internally, but samtools view prints 1-based POS in SAM text; again the tools convert for you.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/lec.html#a-genome-browser-shows-intervals-and-signals-together",
+    "href": "genomic-intervals/lec.html#a-genome-browser-shows-intervals-and-signals-together",
+    "title": "Genomic intervals",
+    "section": "A genome browser shows intervals and signals together",
+    "text": "A genome browser shows intervals and signals together\n\n\nReal data: GM12878 CTCF ChIP-seq on chr21. Top: the fold-change bigWig. Middle: the narrowPeak intervals, with summits. Bottom: GENCODE genes.\nPeaks are where the signal is high; a summit sits at the top of each peak.\nIGV (desktop or igv.js in a browser) loads all of these formats directly.\n\n\nThis is a reconstruction of an IGV view in R (make-intervals-figs.R) so the exact files can be reproduced; in the exercise students load the same files in IGV. Point out a weak signal bump without a peak: the peak caller decided it was not significant. And point out how narrow CTCF peaks are: CTCF is a sequence-specific TF with a long motif, so its peaks are sharp, unlike the broad H3K27me3 domains in chromatin-intro.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/lec.html#the-basic-interval-operations",
+    "href": "genomic-intervals/lec.html#the-basic-interval-operations",
+    "title": "Genomic intervals",
+    "section": "The basic interval operations",
+    "text": "The basic interval operations\n\n\nintersect: the parts of A that overlap B (or: the A intervals that overlap any B, -u).\nsubtract / -v: A minus B, or the A intervals that overlap no B.\nmerge: collapse overlapping (or nearby, -d) intervals into one.\nclosest: for each A, the nearest B and the distance.\nslop / flank: grow intervals, or make windows next to them. complement: the gaps.\n\n\nGo through each panel with the toy intervals. These six operations, plus coverage counting, cover most of what students will do. Every one exists in bedtools and in GenomicRanges, with slightly different names (table later). Insist on drawing toy intervals by hand when unsure what a command returns: it is faster than debugging.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/lec.html#what-counts-as-an-overlap",
+    "href": "genomic-intervals/lec.html#what-counts-as-an-overlap",
+    "title": "Genomic intervals",
+    "section": "What counts as an overlap?",
+    "text": "What counts as an overlap?\n\n\nBy default, one shared base is an overlap. A 1 bp touch between a 2 kb peak and a promoter counts.\nAsk for a minimum: bedtools intersect -f 0.5 (at least 50% of A), -r (reciprocal), or a minimum number of bases (minoverlap in R).\nReport choices: one line per pair (default), each A once (-u), or count of B per A (-c). These give different numbers of “overlapping peaks”.\n\n\nStudents are often surprised that “how many peaks overlap promoters” depends on these flags. Default intersect reports one line per overlapping pair, and each line is the overlapping piece, not the whole A interval (use -wa for whole intervals). A peak overlapping two promoters appears twice: if you count lines you overcount peaks. -u fixes that. In the figure the roles of A and B swap between the panels: in the left panel A is the promoters, because -f is a fraction of A. Fraction requirements matter most when comparing peak sets of different widths, for example narrow TF peaks against broad domains. There is no universally right choice; the rule is to state it in the methods.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/lec.html#sorting-and-merging",
+    "href": "genomic-intervals/lec.html#sorting-and-merging",
+    "title": "Genomic intervals",
+    "section": "Sorting and merging",
+    "text": "Sorting and merging\n\n\nMost tools that walk along the genome need input sorted by chromosome, then start: sort -k1,1 -k2,2n.\nbedtools merge collapses overlapping intervals: e.g. peaks from two replicates into one consensus set.\nMerging loses the per-interval information unless you ask for it (-c 5 -o max, keep the maximum score).\n\n\nSorting: -k1,1 sorts by the first column only (as text), -k2,2n by the second column numerically. Lexical chromosome order (chr1, chr10, chr11, …, chr2) is fine for bedtools, as long as all files use the same order; some tools (bedtools with -g, bigWig tools) want the order of a genome file. Merging peaks from replicates or conditions into a consensus set is the first step of differential accessibility: you need one common set of regions to count reads in.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/lec.html#nearest-feature-and-distance",
+    "href": "genomic-intervals/lec.html#nearest-feature-and-distance",
+    "title": "Genomic intervals",
+    "section": "Nearest feature and distance",
+    "text": "Nearest feature and distance\n\n\nbedtools closest -a peaks.bed -b tss.bed -d reports, for each peak, the nearest TSS and the distance (0 if they overlap).\nTies (two TSSs at the same distance) give several lines per peak; -t first keeps one.\nThe distribution of distances says what kind of element a mark labels: promoter marks sit at 0, enhancer marks kilobases away.\n\n\nBoth files must be sorted. For non-overlapping intervals bedtools reports one more than the number of bases between them (the toy A [900,950) and B [700,800) in the operations figure: 100 bases apart, reported as 101). A signed distance relative to the gene’s direction (-D b) tells upstream from downstream, useful for promoter analyses. Nearest gene is the naive way to assign a peak to a gene; it is right perhaps half the time for enhancers. The integration unit uses Hi-C contacts and activity to do better (ABC model).",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/lec.html#windows-around-intervals",
+    "href": "genomic-intervals/lec.html#windows-around-intervals",
+    "title": "Genomic intervals",
+    "section": "Windows around intervals",
+    "text": "Windows around intervals\n\n\nslop extends each interval (e.g. ±1 kb around a summit), flank makes windows next to it (e.g. the 2 kb upstream), both strand-aware with -s.\nNear a chromosome end, a window would run off the end: these tools need a genome file with chromosome lengths (-g hg38.chrom.sizes) and clip at the end.\n\n\nNote that flank needs both sides (-l 2000 -r 0); -l alone is an error. The genome file is a two-column text file: chromosome name and length. Download it from UCSC (hg38.chrom.sizes) or make it from a FASTA index (cut -f1,2 genome.fa.fai). The same file is needed for complement, shuffle and genomecov. In R, GRanges carries the chromosome lengths in its seqinfo, and trim() clips out-of-bound ranges.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/lec.html#bedtools-on-the-command-line",
+    "href": "genomic-intervals/lec.html#bedtools-on-the-command-line",
+    "title": "Genomic intervals",
+    "section": "bedtools on the command line",
+    "text": "bedtools on the command line\n# promoter windows: 1 kb either side of each protein-coding TSS\nbedtools slop -i tss.bed -g hg38.chrom.sizes -b 1000 &gt; promoters.bed\n\n# H3K4me3 peaks at a promoter (each peak once) vs. not\nbedtools intersect -u -a h3k4me3.bed -b promoters.bed | wc -l\nbedtools intersect -v -a h3k4me3.bed -b promoters.bed | wc -l\n\n# candidate enhancers: H3K27ac peaks with no H3K4me3 peak and away from TSSs\nbedtools intersect -v -a h3k27ac.bed -b h3k4me3.bed \\\n  | bedtools intersect -v -a - -b promoters.bed &gt; enhancers.bed\n\n# distance from every enhancer to its nearest TSS\nsort -k1,1 -k2,2n enhancers.bed | bedtools closest -a - -b tss.bed -d -t first\n\nEvery command reads and writes plain text, so they chain with pipes (- means standard input).\n\n\nThese are the exact commands of the exercise, so students see the shape before they type them. The enhancer definition (H3K27ac without H3K4me3, distal from promoters) is a common heuristic and a useful example of building a biological category from interval operations. Point out that wc -l counts lines; with -u each peak appears once, so lines = peaks.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/lec.html#real-data-where-do-the-peaks-sit",
+    "href": "genomic-intervals/lec.html#real-data-where-do-the-peaks-sit",
+    "title": "Genomic intervals",
+    "section": "Real data: where do the peaks sit?",
+    "text": "Real data: where do the peaks sit?\n\n\nDistance from each GM12878 peak to the nearest protein-coding TSS.\nH3K4me3 peaks pile up at the TSS. H3K27ac is at TSSs and at distal enhancers. CTCF is mostly far from TSSs.\n\n\nThe x axis is log scale (distance + 1). Read the figure as the answer to “what does this mark label?”. The H3K4me3 distribution confirms the promoter mark from chromatin-intro with real data. H3K27ac is bimodal: active promoters and active enhancers. CTCF sites are insulators and loop anchors and are spread through the genome. Numbers on the plot (fraction within 1 kb) are computed in make-intervals-figs.R; students reproduce them in the exercise.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/lec.html#is-an-overlap-more-than-chance",
+    "href": "genomic-intervals/lec.html#is-an-overlap-more-than-chance",
+    "title": "Genomic intervals",
+    "section": "Is an overlap more than chance?",
+    "text": "Is an overlap more than chance?\n\n\nTwo sets of intervals will overlap somewhat by chance, more so if they are wide or numerous. A raw overlap count is not evidence.\nNull by shuffling: place the same intervals (same widths) at random positions, count overlaps, repeat many times. Compare the observed count with this distribution.\nEnrichment = observed / mean of shuffled. Empirical p-value = (number of shuffles with at least the observed overlap + 1) / (number of shuffles + 1).\n\n\nThis is a permutation test, the same idea as in any statistics course, applied to positions on the genome. bedtools shuffle does one shuffle; repeat it in a loop. The p-value can be no smaller than 1/(number of shuffles + 1), so 100 shuffles can at best give about 0.01. For large enrichments, report the fold enrichment and say that none of the N shuffles reached the observed value. Next slide: the real numbers.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/lec.html#real-data-h3k27ac-and-ctcf-overlap-more-than-chance",
+    "href": "genomic-intervals/lec.html#real-data-h3k27ac-and-ctcf-overlap-more-than-chance",
+    "title": "Genomic intervals",
+    "section": "Real data: H3K27ac and CTCF overlap more than chance",
+    "text": "Real data: H3K27ac and CTCF overlap more than chance\n\n\nGrey: overlaps between CTCF peaks and shuffled H3K27ac peaks (100 shuffles, same chromosome, same widths). Red: the observed overlap.\nThe observed overlap is far outside the shuffled distribution: the two sets are associated.\n\n\nNumbers in the figure come from make-intervals-figs.R. A good discussion point: why do CTCF and H3K27ac co-occur at all, when CTCF is an insulator? Some CTCF sites are at active promoters and enhancers; others are not. The overlap is significant but partial, which a single p-value hides: report the fraction too.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/lec.html#shuffling-has-assumptions",
+    "href": "genomic-intervals/lec.html#shuffling-has-assumptions",
+    "title": "Genomic intervals",
+    "section": "Shuffling has assumptions",
+    "text": "Shuffling has assumptions\n\n\nA naive shuffle puts intervals in gaps (runs of N), centromeres and unmappable repeats, where real peaks can never be. This inflates enrichment.\nKeep shuffled intervals on the same chromosome (-chrom) and inside the mappable, non-blacklisted genome (-incl / -excl).\nPeaks also prefer GC-rich, gene-dense regions. The more of that structure the null ignores, the more “significant” everything looks. Choose the background with care; state it.\n\n\nThe general lesson: a p-value is only as good as its null. Here the null is “the intervals could have been anywhere”, and “anywhere” includes places where no assay can produce a peak. Better nulls restrict to the accessible genome, or match on GC content and distance to TSS. Tools such as regioneR (R) and LOLA formalise this; the idea is the same. The same issue comes back with motif enrichment (GC-matched background) and in the ML units (matched negatives).",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/lec.html#intervals-in-r-granges",
+    "href": "genomic-intervals/lec.html#intervals-in-r-granges",
+    "title": "Genomic intervals",
+    "section": "Intervals in R: GRanges",
+    "text": "Intervals in R: GRanges\n\n\nGRanges (package GenomicRanges): seqnames, ranges (start, end, width, 1-based closed), strand, and any metadata columns (mcols).\nseqinfo holds chromosome names, lengths and genome build: R refuses to compare ranges from different builds if they are set.\nrtracklayer::import() reads BED, narrowPeak, GTF and bigWig, and converts BED’s 0-based starts to 1-based.\n\n\nGRanges is the Bioconductor container for intervals and is used under the hood by DESeq2’s rowRanges, ChIPseeker, DiffBind, csaw, minfi, and many more. Students used SummarizedExperiment through DESeq2; its rowRanges is a GRanges. The seqinfo check is a nice safety net: genome(gr) &lt;- “hg38” on both objects and a comparison with an hg19 object fails loudly instead of silently.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/lec.html#findoverlaps-returns-pairs",
+    "href": "genomic-intervals/lec.html#findoverlaps-returns-pairs",
+    "title": "Genomic intervals",
+    "section": "findOverlaps returns pairs",
+    "text": "findOverlaps returns pairs\n\nhits &lt;- findOverlaps(peaks, promoters)      # one row per overlapping pair\nqueryHits(hits); subjectHits(hits)          # indices into peaks and promoters\npeaks[unique(queryHits(hits))]              # each peak once\noverlapsAny(peaks, promoters)               # TRUE/FALSE per peak (= bedtools -u)\ncountOverlaps(peaks, promoters)             # number of promoters per peak (= -c)\n\nfindOverlaps is the general operation; everything else is a convenience on top. The Hits object is a two-column table of indices, like a sparse matrix of overlaps. This is the same many-to-many issue as with bedtools default output: one peak can hit several promoters. subsetByOverlaps(peaks, promoters) is the R equivalent of intersect -u.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/lec.html#bedtools-genomicranges",
+    "href": "genomic-intervals/lec.html#bedtools-genomicranges",
+    "title": "Genomic intervals",
+    "section": "bedtools ↔︎ GenomicRanges",
+    "text": "bedtools ↔︎ GenomicRanges\n\n\n\n\n\n\n\n\ntask\nbedtools\nGenomicRanges\n\n\n\n\nA that overlap B\nintersect -u\nsubsetByOverlaps(A, B)\n\n\nA that do not overlap B\nintersect -v\nA[!overlapsAny(A, B)]\n\n\nall overlapping pairs\nintersect -wa -wb\nfindOverlaps(A, B)\n\n\nmerge overlapping\nmerge\nreduce(A)\n\n\nnearest and distance\nclosest -d\ndistanceToNearest(A, B)\n\n\nwindows around TSS\nslop -s -l -r / flank\npromoters(A, upstream, downstream), flank(), resize()\n\n\ngaps\ncomplement\ngaps(A)\n\n\ncount per interval\nintersect -c, coverage\ncountOverlaps(A, B)\n\n\n\n\nUse the command line for big files and pipelines, R for analysis, statistics and plots. The answers must agree (exercise R5).\n\n\nA reference table; students do not need to memorise it. The key differences: GRanges is 1-based, bedtools 0-based (the numbers in the files differ by one at the start, the bases are the same); reduce() and findOverlaps() respect strand unless you say ignore.strand = TRUE (peaks have strand *, which overlaps both strands, so it rarely bites); distances differ by one: for two ranges that do not overlap, distanceToNearest reports the number of bases between them (0 for directly adjacent ranges), bedtools closest -d reports one more (1 for adjacent). Both report 0 for overlapping ranges. Small differences like these are why comparing the two in the exercise is instructive.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/lec.html#same-bases-different-numbers",
+    "href": "genomic-intervals/lec.html#same-bases-different-numbers",
+    "title": "Genomic intervals",
+    "section": "Same bases, different numbers",
+    "text": "Same bases, different numbers\n\n\nThe BED line chr1  2  5 and the GRanges chr1:3-5 are the same three bases.\nrtracklayer::import() and export() convert in both directions. If you read a BED file with read.table() and build a GRanges yourself, add 1 to the start.\n\n\nThe single most common bug when students mix R and the command line: reading a BED with read.table or fread and calling GRanges(chr, IRanges(start, end)) without adding 1. Then every range is 1 bp too long on the left. For peaks it is harmless; for CpGs or SNPs it is wrong. makeGRangesFromDataFrame has a starts.in.df.are.0based argument for exactly this.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/lec.html#moving-between-builds-liftover",
+    "href": "genomic-intervals/lec.html#moving-between-builds-liftover",
+    "title": "Genomic intervals",
+    "section": "Moving between builds: liftOver",
+    "text": "Moving between builds: liftOver\n\n\nliftOver maps intervals from one build to another using a chain file of aligned blocks (UCSC tool; rtracklayer::liftOver in R).\nSome intervals fail (deleted or rearranged in the new build) or split into pieces. Check how many you lose.\nBetter, when possible: re-align the raw reads to the new build, or download the data already processed in the build you need.\n\n\nChain files list blocks of sequence that align between builds and the gaps between them. An interval that spans a gap in the alignment comes out split or not at all. For small intervals (SNPs, CpGs, narrow peaks) liftOver is usually fine; for broad domains and anything near rearranged regions, be careful. ENCODE has reprocessed its data on GRCh38, which is why we use their GRCh38 files directly.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/lec.html#summary",
+    "href": "genomic-intervals/lec.html#summary",
+    "title": "Genomic intervals",
+    "section": "Summary",
+    "text": "Summary\n\n\n\n\n\n\n\nidea\nkey fact\n\n\n\n\nintervals\nchrom, start, end, strand; same build and same chromosome names in every file\n\n\n0-based half-open\nBED, bedGraph: length = end − start; first base is 0\n\n\n1-based closed\nGTF, SAM, VCF, GRanges, browser display: first base is 1\n\n\nnarrowPeak\nBED6 + signalValue, −log10 p, −log10 q, summit offset from start\n\n\nbigWig\nindexed binary signal track; read only the region you need\n\n\nstrand\nTSS and upstream depend on strand; peaks have none\n\n\nbedtools\nintersect (-u, -v, -c, -f), merge, closest, slop/flank (-g), shuffle\n\n\nGenomicRanges\nfindOverlaps, subsetByOverlaps, reduce, distanceToNearest, promoters\n\n\noverlap statistics\ncompare with shuffled intervals; the null decides the answer\n\n\n\n\nStudents should leave able to convert a coordinate between conventions by hand, read a narrowPeak line, build strand-aware promoter windows, answer an overlap question with both bedtools and GRanges, and explain why an overlap count needs a null. Next: from reads to coverage, where these intervals come from.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "genomic-intervals/lec.html#key-papers-optional-further-reading",
+    "href": "genomic-intervals/lec.html#key-papers-optional-further-reading",
+    "title": "Genomic intervals",
+    "section": "Key papers (optional further reading)",
+    "text": "Key papers (optional further reading)\nNot required reading and not examined. For those who want the primary literature.\n\nQuinlan & Hall 2010, Bioinformatics. BEDTools: a flexible suite of utilities for comparing genomic features. The tool of this unit.\nLawrence et al. 2013, PLoS Comput Biol. Software for computing and annotating genomic ranges. GenomicRanges and the Bioconductor interval infrastructure.\nLi et al. 2009, Bioinformatics. The Sequence Alignment/Map format and SAMtools. The SAM/BAM formats.\nKent et al. 2010, Bioinformatics. BigWig and BigBed: enabling browsing of large distributed datasets. Why a bigWig opens instantly.\nFrankish et al. 2019, Nucleic Acids Res. GENCODE reference annotation for the human and mouse genomes. The annotation we use.\nENCODE Project Consortium 2020, Nature. Expanded encyclopaedias of DNA elements in the human and mouse genomes. Where the course data come from.",
+    "crumbs": [
+      "Home",
+      "Foundations",
+      "Genomic intervals",
+      "Lecture (slides)"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Epigenetics",
+    "section": "",
+    "text": "A second-cycle course at Umeå University on the biology of chromatin and DNA methylation, the sequencing assays that measure them, and how to analyse the data: from raw reads on the command line to interpretation in R.",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#where-to-start",
+    "href": "index.html#where-to-start",
+    "title": "Epigenetics",
+    "section": "Where to start",
+    "text": "Where to start\n\nCourse plan: the official syllabus.\nLearning outcomes: what we are trying to teach.",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#before-you-start",
+    "href": "index.html#before-you-start",
+    "title": "Epigenetics",
+    "section": "Before you start",
+    "text": "Before you start\n\nInstall the software you need: do this before you start the first unit.",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#topics",
+    "href": "index.html#topics",
+    "title": "Epigenetics",
+    "section": "Topics",
+    "text": "Topics\nWork through the sidebar from top to bottom. Each unit lists its lecture, quiz and exercises in teaching order.\n\nFoundations: what epigenetics is (chromatin, histone marks, DNA methylation), and genomic intervals on the command line and in R.\n\nThe material is under construction: more blocks are added as they are written.\nSee Canvas for the most up to date study instructions.",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "courseplan.html",
+    "href": "courseplan.html",
+    "title": "Course syllabus",
+    "section": "",
+    "text": "[?] Not yet established. Course code, credits and the official syllabus are to be decided. When the syllabus exists, summarise it here and link the binding version on umu.se.\n\n\n\nLevel: second cycle, final year of the MSc.\nDepartment: Department of Molecular Biology, Umeå University [?]\nLanguage: English.\nAssumed background: see the learning outcomes; in short, students have analysed RNA-seq data in R and are comfortable on the Linux command line.\nExamination: an individual written exam (only).",
+    "crumbs": [
+      "Home",
+      "Course info",
+      "Course plan"
+    ]
+  },
+  {
+    "objectID": "courseplan.html#known-so-far",
+    "href": "courseplan.html#known-so-far",
+    "title": "Course syllabus",
+    "section": "",
+    "text": "Level: second cycle, final year of the MSc.\nDepartment: Department of Molecular Biology, Umeå University [?]\nLanguage: English.\nAssumed background: see the learning outcomes; in short, students have analysed RNA-seq data in R and are comfortable on the Linux command line.\nExamination: an individual written exam (only).",
+    "crumbs": [
+      "Home",
+      "Course info",
+      "Course plan"
+    ]
+  }
+]

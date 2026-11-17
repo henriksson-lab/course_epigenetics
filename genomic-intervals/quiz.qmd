@@ -1,0 +1,107 @@
+---
+title: "Quiz: genomic intervals"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+Short questions on coordinates, file formats and interval operations. Try each on paper first, then open the answer.
+
+---
+
+**Q1.** A BED file contains the line `chr3  499  500`. Which base is this, as a 1-based position? How long is the interval?
+
+::: {.callout-tip collapse="true" title="Hint"}
+BED counts the boundaries between bases from 0.
+:::
+
+::: {.callout-note collapse="true" title="Answer"}
+Base 500 (1-based), `chr3:500-500`. Length $500 - 499 = 1$: a single base.
+:::
+
+---
+
+**Q2.** You copy SNP positions from a VCF into a BED file as `chrom  pos  pos+1`. What is wrong, and what happens when you intersect the file with a list of CpG sites?
+
+::: {.callout-tip collapse="true" title="Hint"}
+VCF is 1-based. What is the BED start of the base at 1-based position `pos`?
+:::
+
+::: {.callout-note collapse="true" title="Answer"}
+The base at 1-based position `pos` is `pos−1  pos` in BED. Writing `pos  pos+1` shifts every SNP one base to the right, so SNPs on the C of a CpG appear on the G, and SNPs on the G appear outside the CpG. Some true overlaps are missed and some false ones are reported.
+:::
+
+---
+
+**Q3.** A narrowPeak line ends in `… 12.4  35.1  32.8  210`, and its start is 1 000 000. Where is the summit, and what is its $q$-value?
+
+::: {.callout-tip collapse="true" title="Hint"}
+The last column is an offset from the start; the $p$ and $q$ columns are $-\log_{10}$.
+:::
+
+::: {.callout-note collapse="true" title="Answer"}
+Summit boundary $1\,000\,000 + 210 = 1\,000\,210$ (BED `1000210  1000211`, 1-based position 1 000 211). $q = 10^{-32.8}$.
+:::
+
+---
+
+**Q4.** A gene is on the − strand, from 50 000 to 60 000 (1-based). Where is its TSS, and in which direction is "upstream"?
+
+::: {.callout-note collapse="true" title="Answer"}
+The TSS is at 60 000, the end coordinate. Upstream is towards **larger** coordinates (60 001, 60 002, …).
+:::
+
+---
+
+**Q5.** `bedtools intersect -a peaks.bed -b promoters.bed | wc -l` gives 12 000 and the peak file has 10 000 lines. Your colleague concludes that more than 100% of the peaks are at promoters. What went wrong, and what command should they run?
+
+::: {.callout-note collapse="true" title="Answer"}
+The default output has one line per overlapping (peak, promoter) pair, and a peak overlapping several promoter windows (alternative TSSs) is counted several times. Count peaks with `bedtools intersect -u -a peaks.bed -b promoters.bed | wc -l`, then divide by 10 000.
+:::
+
+---
+
+**Q6.** `A = chr1 100 200`, `B = chr1 150 400`, `C = chr1 400 500`. What does `cat A B C | sort -k1,1 -k2,2n | bedtools merge` return?
+
+::: {.callout-tip collapse="true" title="Hint"}
+Do B and C overlap, or only touch? By default `merge` also joins intervals that touch (book-ended).
+:::
+
+::: {.callout-note collapse="true" title="Answer"}
+A and B overlap, so they merge into 100–400. B ends at boundary 400 and C starts there: they touch without sharing a base, and `bedtools merge` joins book-ended intervals by default. The result is one interval, `chr1 100 500`.
+:::
+
+---
+
+**Q7.** Your peaks overlap enhancers 4 times more often than shuffled peaks do. The shuffle placed peaks anywhere in the genome file, including centromeres and runs of N. Is the true enrichment likely higher or lower than 4?
+
+::: {.callout-note collapse="true" title="Answer"}
+Lower. Shuffled peaks in impossible places (gaps, centromeres, unmappable repeats) never overlap anything, so the shuffled overlap is too low and the enrichment too high. Restrict the shuffle (`-chrom`, `-excl` blacklist and gaps, or `-incl` the mappable genome) for a fairer null.
+:::
+
+---
+
+**Q8.** You read a BED file with `read.table()` and build `GRanges(V1, IRanges(V2, V3))`. What is wrong with the result, and how do you avoid it?
+
+::: {.callout-note collapse="true" title="Answer"}
+Every range is one base too long on the left: the 0-based BED start is used as a 1-based start. Use `rtracklayer::import()`, which converts, or add 1 to the start (`IRanges(V2 + 1, V3)`), or `makeGRangesFromDataFrame(..., starts.in.df.are.0based = TRUE)`.
+:::
+
+---
+
+**Q9.** Peak files from two labs give a Jaccard index of 0.02. Can you conclude that the two peak sets are unrelated?
+
+::: {.callout-note collapse="true" title="Answer"}
+No. Jaccard counts shared *bases* relative to the union. If one set has narrow peaks (a TF) and the other broad ones (a histone mark), even complete overlap of every narrow peak gives a small Jaccard. Count overlapping *peaks* and compare with a shuffled null instead.
+:::
+
+---
+
+**Q10.** One file has `chr1`, the other `1`; one is hg19, the other hg38. Which of the two problems will bedtools tell you about?
+
+::: {.callout-note collapse="true" title="Answer"}
+Neither reliably. With different chromosome names nothing overlaps, so you get an empty or suspiciously small result (sometimes a warning). With different builds the names match, so bedtools reports overlaps, just wrong ones, with no error. Always check build and naming before you start.
+:::

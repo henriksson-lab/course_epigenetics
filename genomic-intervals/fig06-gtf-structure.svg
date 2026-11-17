@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 478" width="1120" height="478" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker></defs>
+<rect width="1120" height="478" fill="white"/>
+<text x="20" y="28" font-size="18" font-weight="bold" fill="#1b2a3a">One gene, two transcripts with different first exons</text>
+<text x="1100" y="28" text-anchor="end" font-size="14" fill="#5b6b7a">example coordinates, chr21, + strand</text>
+<line x1="170" y1="68" x2="1000" y2="68" stroke="#5b6b7a" stroke-width="1.5"/>
+<line x1="218.8" y1="63" x2="218.8" y2="73" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="218.8" y="58" text-anchor="middle" font-size="13" fill="#5b6b7a">33,010,000</text>
+<line x1="381.6" y1="63" x2="381.6" y2="73" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="381.6" y="58" text-anchor="middle" font-size="13" fill="#5b6b7a">33,012,000</text>
+<line x1="544.3" y1="63" x2="544.3" y2="73" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="544.3" y="58" text-anchor="middle" font-size="13" fill="#5b6b7a">33,014,000</text>
+<line x1="707.1" y1="63" x2="707.1" y2="73" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="707.1" y="58" text-anchor="middle" font-size="13" fill="#5b6b7a">33,016,000</text>
+<line x1="869.8" y1="63" x2="869.8" y2="73" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="869.8" y="58" text-anchor="middle" font-size="13" fill="#5b6b7a">33,018,000</text>
+<text x="20" y="109" font-size="16" fill="#1b2a3a">gene</text>
+<rect x="218.8" y="98" width="732.4" height="12" fill="#c8d2dc" stroke="#5b6b7a"/>
+<text x="20" y="165" font-size="16" fill="#1b2a3a">transcript 1</text>
+<line x1="218.8" y1="160" x2="951.2" y2="160" stroke="#1b2a3a" stroke-width="2"/>
+<rect x="218.8" y="150" width="32.5" height="20" fill="#1b2a3a"/>
+<rect x="625.7" y="150" width="14.6" height="20" fill="#1b2a3a"/>
+<rect x="829.1" y="150" width="122.1" height="20" fill="#1b2a3a"/>
+<path d="M218.8,150 V134 H248.8" fill="none" stroke="#c0392b" stroke-width="2.5" marker-end="url(#arr)"/>
+<text x="256.8" y="139" font-size="14" font-weight="bold" fill="#c0392b">TSS 1</text>
+<text x="20" y="227" font-size="16" fill="#1b2a3a">transcript 2</text>
+<line x1="462.9" y1="222" x2="951.2" y2="222" stroke="#1b2a3a" stroke-width="2"/>
+<rect x="462.9" y="212" width="20.3" height="20" fill="#1b2a3a"/>
+<rect x="625.7" y="212" width="14.6" height="20" fill="#1b2a3a"/>
+<rect x="829.1" y="212" width="122.1" height="20" fill="#1b2a3a"/>
+<path d="M462.9,212 V196 H492.9" fill="none" stroke="#c0392b" stroke-width="2.5" marker-end="url(#arr)"/>
+<text x="500.9" y="201" font-size="14" font-weight="bold" fill="#c0392b">TSS 2</text>
+<line x1="218.8" y1="170" x2="218.8" y2="262" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="4,4"/>
+<line x1="462.9" y1="232" x2="462.9" y2="262" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="4,4"/>
+<line x1="218.8" y1="262" x2="462.9" y2="262" stroke="#c0392b" stroke-width="2"/>
+<text x="474.9" y="267" font-size="15" font-weight="bold" fill="#c0392b">which one is “the” TSS?</text>
+<text x="20" y="304" font-size="14" fill="#5b6b7a">GTF lines (tab-separated, 1-based closed), for the gene, transcript 2 and its first exon:</text>
+<text x="24" y="330" font-size="14" font-weight="bold" fill="#1b2a3a">seqname</text>
+<text x="102" y="330" font-size="14" font-weight="bold" fill="#1b2a3a">source</text>
+<text x="180" y="330" font-size="14" font-weight="bold" fill="#1b2a3a">feature</text>
+<text x="292" y="330" font-size="14" font-weight="bold" fill="#1b2a3a">start</text>
+<text x="388" y="330" font-size="14" font-weight="bold" fill="#1b2a3a">end</text>
+<text x="484" y="330" font-size="14" font-weight="bold" fill="#1b2a3a">score</text>
+<text x="540" y="330" font-size="14" font-weight="bold" fill="#1b2a3a">strand</text>
+<text x="602" y="330" font-size="14" font-weight="bold" fill="#1b2a3a">frame</text>
+<text x="660" y="330" font-size="14" font-weight="bold" fill="#1b2a3a">attributes</text>
+<line x1="20" y1="338" x2="1100" y2="338" stroke="#c8d2dc" stroke-width="1.5"/>
+<rect x="16" y="344" width="1088" height="44" fill="#f4f6f8"/>
+<text x="24" y="370" font-size="15" font-family="Courier New, monospace" font-weight="normal" fill="#1b2a3a">chr21</text>
+<text x="102" y="370" font-size="15" font-family="Courier New, monospace" font-weight="normal" fill="#1b2a3a">HAVANA</text>
+<text x="180" y="370" font-size="15" font-family="Courier New, monospace" font-weight="bold" fill="#1b2a3a">gene</text>
+<text x="292" y="370" font-size="15" font-family="Courier New, monospace" font-weight="bold" fill="#1b2a3a">33010001</text>
+<text x="388" y="370" font-size="15" font-family="Courier New, monospace" font-weight="bold" fill="#1b2a3a">33019000</text>
+<text x="484" y="370" font-size="15" font-family="Courier New, monospace" font-weight="normal" fill="#1b2a3a">.</text>
+<text x="540" y="370" font-size="15" font-family="Courier New, monospace" font-weight="normal" fill="#1b2a3a">+</text>
+<text x="602" y="370" font-size="15" font-family="Courier New, monospace" font-weight="normal" fill="#1b2a3a">.</text>
+<text x="660" y="362" font-size="14" font-family="Courier New, monospace" fill="#1b2a3a">gene_id "ENSG00000999999.1";</text>
+<text x="660" y="380" font-size="14" font-family="Courier New, monospace" fill="#1b2a3a">gene_name "GENE1"; gene_type "protein_coding";</text>
+<text x="24" y="414" font-size="15" font-family="Courier New, monospace" font-weight="normal" fill="#1b2a3a">chr21</text>
+<text x="102" y="414" font-size="15" font-family="Courier New, monospace" font-weight="normal" fill="#1b2a3a">HAVANA</text>
+<text x="180" y="414" font-size="15" font-family="Courier New, monospace" font-weight="bold" fill="#1b2a3a">transcript</text>
+<text x="292" y="414" font-size="15" font-family="Courier New, monospace" font-weight="bold" fill="#1b2a3a">33013001</text>
+<text x="388" y="414" font-size="15" font-family="Courier New, monospace" font-weight="bold" fill="#1b2a3a">33019000</text>
+<text x="484" y="414" font-size="15" font-family="Courier New, monospace" font-weight="normal" fill="#1b2a3a">.</text>
+<text x="540" y="414" font-size="15" font-family="Courier New, monospace" font-weight="normal" fill="#1b2a3a">+</text>
+<text x="602" y="414" font-size="15" font-family="Courier New, monospace" font-weight="normal" fill="#1b2a3a">.</text>
+<text x="660" y="406" font-size="14" font-family="Courier New, monospace" fill="#1b2a3a">gene_id "ENSG00000999999.1";</text>
+<text x="660" y="424" font-size="14" font-family="Courier New, monospace" fill="#1b2a3a">transcript_id "ENST00000999992.1"; ...</text>
+<rect x="16" y="432" width="1088" height="44" fill="#f4f6f8"/>
+<text x="24" y="458" font-size="15" font-family="Courier New, monospace" font-weight="normal" fill="#1b2a3a">chr21</text>
+<text x="102" y="458" font-size="15" font-family="Courier New, monospace" font-weight="normal" fill="#1b2a3a">HAVANA</text>
+<text x="180" y="458" font-size="15" font-family="Courier New, monospace" font-weight="bold" fill="#1b2a3a">exon</text>
+<text x="292" y="458" font-size="15" font-family="Courier New, monospace" font-weight="bold" fill="#1b2a3a">33013001</text>
+<text x="388" y="458" font-size="15" font-family="Courier New, monospace" font-weight="bold" fill="#1b2a3a">33013250</text>
+<text x="484" y="458" font-size="15" font-family="Courier New, monospace" font-weight="normal" fill="#1b2a3a">.</text>
+<text x="540" y="458" font-size="15" font-family="Courier New, monospace" font-weight="normal" fill="#1b2a3a">+</text>
+<text x="602" y="458" font-size="15" font-family="Courier New, monospace" font-weight="normal" fill="#1b2a3a">.</text>
+<text x="660" y="450" font-size="14" font-family="Courier New, monospace" fill="#1b2a3a">gene_id "ENSG00000999999.1";</text>
+<text x="660" y="468" font-size="14" font-family="Courier New, monospace" fill="#1b2a3a">transcript_id "ENST00000999992.1"; exon_number 1;</text>
+</svg>

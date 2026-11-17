@@ -1,0 +1,23 @@
+# Quarto cache. The built site lives in docs/ and IS tracked (committed HTML).
+/.quarto/
+
+# R
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+
+# OS cruft
+.DS_Store
+
+# Demo build tooling (npm i)
+/node_modules/
+
+# Canvas quiz answers and QTI zips: never checked in (public repo)
+/canvas-quiz/private/
+
+# Downloaded datasets: only the manifest and the script are tracked
+/data/*
+!/data/manifest.tsv
+!/data/download.sh
+!/data/README.md

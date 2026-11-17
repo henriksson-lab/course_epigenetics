@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.30">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Exercise: What is epigenetics? – Epigenetics</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-662ae1889177880cb371f83234c0a158.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-d37fb74fd9c61f52627c5754f4dbd5bd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Epigenetics</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-course-info" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Course info</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-course-info">    
+        <li>
+    <a class="dropdown-item" href="../courseplan.html">
+ <span class="dropdown-text">Course plan</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Foundations</li><li class="breadcrumb-item"><a href="../chromatin-intro/lec.html">What is epigenetics?</a></li><li class="breadcrumb-item"><a href="../chromatin-intro/exercise.html">Exercise</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Course info</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../courseplan.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Course plan</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../elo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Learning outcomes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../intro/install.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Install software</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dictionary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Glossary</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Foundations</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">What is epigenetics?</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chromatin-intro/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chromatin-intro/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chromatin-intro/exercise.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Genomic intervals</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../genomic-intervals/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../genomic-intervals/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../genomic-intervals/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#goal" id="toc-goal" class="nav-link active" data-scroll-target="#goal">Goal</a></li>
+  <li><a href="#background" id="toc-background" class="nav-link" data-scroll-target="#background">Background</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
+  <li><a href="#by-hand" id="toc-by-hand" class="nav-link" data-scroll-target="#by-hand">By hand</a></li>
+  <li><a href="#in-r" id="toc-in-r" class="nav-link" data-scroll-target="#in-r">In R</a>
+  <ul class="collapse">
+  <li><a href="#r1-your-own-browser-view" id="toc-r1-your-own-browser-view" class="nav-link" data-scroll-target="#r1-your-own-browser-view">R1 — Your own browser view</a></li>
+  <li><a href="#r2-a-table-of-states" id="toc-r2-a-table-of-states" class="nav-link" data-scroll-target="#r2-a-table-of-states">R2 — A table of states</a></li>
+  <li><a href="#r3-an-average-profile-around-tsss" id="toc-r3-an-average-profile-around-tsss" class="nav-link" data-scroll-target="#r3-an-average-profile-around-tsss">R3 — An average profile around TSSs</a></li>
+  <li><a href="#r4-cpg-islands-and-h3k4me3" id="toc-r4-cpg-islands-and-h3k4me3" class="nav-link" data-scroll-target="#r4-cpg-islands-and-h3k4me3">R4 — CpG islands and H3K4me3</a></li>
+  </ul></li>
+  <li><a href="#hints" id="toc-hints" class="nav-link" data-scroll-target="#hints">Hints</a></li>
+  <li><a href="#solutions" id="toc-solutions" class="nav-link" data-scroll-target="#solutions">Solutions</a></li>
+  <li><a href="#where-this-leads" id="toc-where-this-leads" class="nav-link" data-scroll-target="#where-this-leads">Where this leads</a></li>
+  <li><a href="#key-papers-optional-further-reading" id="toc-key-papers-optional-further-reading" class="nav-link" data-scroll-target="#key-papers-optional-further-reading">Key papers (optional further reading)</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Foundations</li><li class="breadcrumb-item"><a href="../chromatin-intro/lec.html">What is epigenetics?</a></li><li class="breadcrumb-item"><a href="../chromatin-intro/exercise.html">Exercise</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Exercise: What is epigenetics?</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="goal" class="level2">
+<h2 class="anchored" data-anchor-id="goal">Goal</h2>
+<p>After this exercise you will be able to:</p>
+<ul>
+<li>Do the basic arithmetic of chromatin: nucleosome repeat, fragment ladders, the dilution of marks through replication.</li>
+<li>Decode the name of a histone mark, and predict which marks sit where on an active, a Polycomb-silenced and a heterochromatic gene.</li>
+<li>Read genome-browser tracks of six histone marks and say what state a gene is in.</li>
+<li>Measure histone-mark signal over promoters and gene bodies from ENCODE bigWig files in R, and explain a result that looks wrong.</li>
+<li>Compute the CpG observed/expected ratio of a sequence, and connect CpG islands to H3K4me3.</li>
+</ul>
+</section>
+<section id="background" class="level2">
+<h2 class="anchored" data-anchor-id="background">Background</h2>
+<p><strong>The six marks</strong> (from the lecture):</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>mark</th>
+<th>where</th>
+<th>meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>H3K4me3</td>
+<td>promoters</td>
+<td>active or poised promoter</td>
+</tr>
+<tr class="even">
+<td>H3K4me1</td>
+<td>enhancers, flanks of promoters</td>
+<td>enhancer (primed or active)</td>
+</tr>
+<tr class="odd">
+<td>H3K27ac</td>
+<td>active promoters and enhancers</td>
+<td>active regulatory element</td>
+</tr>
+<tr class="even">
+<td>H3K36me3</td>
+<td>bodies of transcribed genes</td>
+<td>transcription</td>
+</tr>
+<tr class="odd">
+<td>H3K27me3</td>
+<td>broad domains over silenced genes</td>
+<td>Polycomb repression</td>
+</tr>
+<tr class="even">
+<td>H3K9me3</td>
+<td>repeats, ZNF clusters, pericentromeres</td>
+<td>constitutive heterochromatin</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fold change over input.</strong> ENCODE signal tracks give, at each position, how many times more ChIP reads there are than in the input control (normalised to depth). 1 means no enrichment; values below 1 mean fewer reads than input.</p>
+<p><strong>CpG observed/expected</strong> for a sequence of length <span class="math inline">\(L\)</span>:</p>
+<p><span class="math display">\[\text{CpG o/e} = \frac{\text{number of CpG}}{(\text{number of C}) \times (\text{number of G}) / L}\]</span></p>
+<p>The denominator is the number of CpGs expected if C and G were placed independently. A CpG island (Gardiner-Garden &amp; Frommer) is at least 200 bp with GC content above 50% and CpG o/e above 0.6.</p>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<p>GM12878 fold-change bigWigs for six marks (ENCODE, GRCh38, about 2.6 GB in total), the GENCODE annotation and the sequence of chr21. On the cluster:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">data/download.sh</span> chromatin-intro</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Reading a region from a local bigWig takes a fraction of a second; the files are big because they cover the whole genome at base resolution.</p>
+</section>
+<section id="by-hand" class="level2">
+<h2 class="anchored" data-anchor-id="by-hand">By hand</h2>
+<p><strong>B1. Counting nucleosomes.</strong></p>
+<ol type="a">
+<li><p>The nucleosome repeat length is 190 bp, of which 147 bp are wrapped around the octamer. How long is the linker?</p></li>
+<li><p>How many nucleosomes are there in a diploid human cell (<span class="math inline">\(6.4 \times 10^9\)</span> bp)? How many histone H3 molecules?</p></li>
+<li><p>A promoter has a nucleosome-depleted region of 200 bp. How many nucleosomes would fit there at the normal repeat?</p></li>
+</ol>
+<p><strong>B2. The ladder.</strong> Chromatin is digested lightly with MNase. With a repeat of 190 bp and a core of 147 bp, which fragment sizes do you expect for mono-, di- and tri-nucleosomes if the enzyme trims the linker completely? And if it cuts in the middle of each linker? Sketch the gel.</p>
+<p><strong>B3. Names.</strong> Write out in words: (a) H4K16ac, (b) H3K9me2, (c) H3S10ph, (d) H2AK119ub1. (e) Can one H3 tail carry both H3K27ac and H3K27me3? Can one nucleosome carry H3K4me3 and H3K27me3?</p>
+<p><strong>B4. Predict the marks.</strong> For each element, say which of the six marks you expect to be high (H) or low (L):</p>
+<ol type="a">
+<li>The promoter of a highly expressed housekeeping gene.</li>
+<li>The body of the same gene.</li>
+<li>A primed enhancer that is not (yet) active.</li>
+<li>An active enhancer.</li>
+<li>The promoter of a HOX gene in a blood cell.</li>
+<li>A zinc-finger gene cluster on chr19.</li>
+</ol>
+<p><strong>B5. Read the tracks.</strong> Look at the figures <em>Real data: an active gene in B cells</em> and <em>Real data: two kinds of silence</em> in the lecture.</p>
+<ol type="a">
+<li>CD74 is on the − strand. Where is its TSS on the plot, and which marks peak there?</li>
+<li>In which direction does the H3K36me3 signal over CD74 increase, and why?</li>
+<li>The HOXD cluster: name one mark that is high and one that is low over the whole cluster. Is this region open or closed chromatin?</li>
+<li>ZNF100 carries H3K36me3 and H3K9me3 over the same body. Why is this unusual?</li>
+</ol>
+<p><strong>B6. Dilution through replication.</strong></p>
+<ol type="a">
+<li><p>A domain of 40 nucleosomes is fully marked with H3K27me3. Replication splits old histones randomly between the daughters, and the cell has <strong>no</strong> way to re-mark. What fraction of the nucleosomes in the domain is marked after 1, 2 and 5 divisions?</p></li>
+<li><p>DNA methylation is copied by DNMT1 with a maintenance fidelity of about 99.9% per CpG per division (a site is lost with probability 0.001). What fraction of the methylated CpGs is still methylated after 50 divisions? Compare with (a).</p></li>
+</ol>
+<p><strong>B7. CpG o/e by hand.</strong> Compute GC content and CpG o/e for these two 20 bp sequences, and decide which is more CpG-island-like:</p>
+<pre><code>S1: ACGCGTTCGACGCGGCCGTA
+S2: ATGCATTGCAAGTCCATGCA</code></pre>
+<p><strong>B8. Cause or consequence?</strong> A paper shows that genes with high H3K36me3 are highly expressed and concludes that “H3K36me3 activates transcription”. Give an alternative explanation, and propose one experiment that could tell the two apart.</p>
+</section>
+<section id="in-r" class="level2">
+<h2 class="anchored" data-anchor-id="in-r">In R</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GenomicRanges); <span class="fu">library</span>(rtracklayer); <span class="fu">library</span>(Biostrings)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>D <span class="ot">&lt;-</span> <span class="st">"/path/to/course/data"</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>bw <span class="ot">&lt;-</span> <span class="cf">function</span>(m) <span class="fu">file.path</span>(D, <span class="fu">sprintf</span>(<span class="st">"gm12878_%s_fc.bigWig"</span>, <span class="fu">tolower</span>(m)))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>marks <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"H3K4me3"</span>, <span class="st">"H3K4me1"</span>, <span class="st">"H3K27ac"</span>, <span class="st">"H3K36me3"</span>, <span class="st">"H3K27me3"</span>, <span class="st">"H3K9me3"</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>gtf <span class="ot">&lt;-</span> <span class="fu">import</span>(<span class="fu">file.path</span>(D, <span class="st">"gencode.v46.basic.annotation.gtf.gz"</span>))</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>genes <span class="ot">&lt;-</span> gtf[gtf<span class="sc">$</span>type <span class="sc">==</span> <span class="st">"gene"</span> <span class="sc">&amp;</span> gtf<span class="sc">$</span>gene_type <span class="sc">==</span> <span class="st">"protein_coding"</span>]</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(genes) <span class="ot">&lt;-</span> genes<span class="sc">$</span>gene_name</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="r1-your-own-browser-view" class="level3">
+<h3 class="anchored" data-anchor-id="r1-your-own-browser-view">R1 — Your own browser view</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>plot_tracks <span class="ot">&lt;-</span> <span class="cf">function</span>(region) {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  op <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="fu">length</span>(marks), <span class="dv">1</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">6</span>, <span class="fl">0.5</span>, <span class="dv">1</span>), <span class="at">las =</span> <span class="dv">1</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (m <span class="cf">in</span> marks) {</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    s <span class="ot">&lt;-</span> <span class="fu">import</span>(<span class="fu">bw</span>(m), <span class="at">which =</span> region, <span class="at">as =</span> <span class="st">"RleList"</span>)[[<span class="fu">as.character</span>(<span class="fu">seqnames</span>(region))]]</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    v <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(s[<span class="fu">start</span>(region)<span class="sc">:</span><span class="fu">end</span>(region)])</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot</span>(<span class="fu">start</span>(region)<span class="sc">:</span><span class="fu">end</span>(region), v, <span class="at">type =</span> <span class="st">"h"</span>, <span class="at">col =</span> <span class="st">"grey30"</span>, <span class="at">xaxt =</span> <span class="st">"n"</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">xlab =</span> <span class="st">""</span>, <span class="at">ylab =</span> m, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">max</span>(<span class="dv">5</span>, <span class="fu">max</span>(v))))</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">par</span>(op)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_tracks</span>(genes[<span class="st">"CD79A"</span>] <span class="sc">+</span> <span class="dv">10000</span>)     <span class="co"># the gene plus 10 kb on each side</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>Plot CD79A (a B-cell receptor gene). Which state is it in?</p></li>
+<li><p>Plot ALB (albumin, made in the liver) and HOXD10. Describe each in one sentence.</p></li>
+<li><p>Pick any gene you like and predict its state before you plot it.</p></li>
+</ol>
+</section>
+<section id="r2-a-table-of-states" class="level3">
+<h3 class="anchored" data-anchor-id="r2-a-table-of-states">R2 — A table of states</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>mean_signal <span class="ot">&lt;-</span> <span class="cf">function</span>(m, regions) {</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  s <span class="ot">&lt;-</span> <span class="fu">import</span>(<span class="fu">bw</span>(m), <span class="at">which =</span> regions, <span class="at">as =</span> <span class="st">"RleList"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sapply</span>(<span class="fu">seq_along</span>(regions), <span class="cf">function</span>(i) {</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    r <span class="ot">&lt;-</span> regions[i]; <span class="fu">mean</span>(s[[<span class="fu">as.character</span>(<span class="fu">seqnames</span>(r))]][<span class="fu">start</span>(r)<span class="sc">:</span><span class="fu">end</span>(r)])</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>pick <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"CD74"</span>, <span class="st">"CD79A"</span>, <span class="st">"PAX5"</span>, <span class="st">"MS4A1"</span>, <span class="st">"GAPDH"</span>, <span class="st">"ACTB"</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>          <span class="st">"ALB"</span>, <span class="st">"NEUROD1"</span>, <span class="st">"HOXD10"</span>, <span class="st">"HOXD13"</span>, <span class="st">"ZNF43"</span>, <span class="st">"ZNF208"</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>g    <span class="ot">&lt;-</span> genes[pick]</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>prom <span class="ot">&lt;-</span> <span class="fu">promoters</span>(g, <span class="at">upstream =</span> <span class="dv">1000</span>, <span class="at">downstream =</span> <span class="dv">1000</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">row.names =</span> pick,</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">K4me3_prom  =</span> <span class="fu">mean_signal</span>(<span class="st">"H3K4me3"</span>,  prom),</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">K27ac_prom  =</span> <span class="fu">mean_signal</span>(<span class="st">"H3K27ac"</span>,  prom),</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">K36me3_body =</span> <span class="fu">mean_signal</span>(<span class="st">"H3K36me3"</span>, g),</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">K27me3_body =</span> <span class="fu">mean_signal</span>(<span class="st">"H3K27me3"</span>, g),</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">K9me3_body  =</span> <span class="fu">mean_signal</span>(<span class="st">"H3K9me3"</span>,  g))</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(tab, <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>Classify each gene as <em>active</em>, <em>Polycomb-silenced</em>, <em>H3K9me3-marked</em> or <em>silent without a strong repressive mark</em>. Which B-cell genes are active?</p></li>
+<li><p>ACTB (β-actin) is one of the most highly expressed genes in every cell, yet its promoter looks silent in the table. Find out why: look at its transcripts and their start sites, and compute H3K4me3 at each.</p></li>
+</ol>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>actb <span class="ot">&lt;-</span> gtf[gtf<span class="sc">$</span>type <span class="sc">==</span> <span class="st">"transcript"</span> <span class="sc">&amp;</span> gtf<span class="sc">$</span>gene_name <span class="sc">==</span> <span class="st">"ACTB"</span>]</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>at   <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">resize</span>(actb, <span class="at">width =</span> <span class="dv">1</span>, <span class="at">fix =</span> <span class="st">"start"</span>))</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">tss =</span> <span class="fu">start</span>(at), <span class="at">H3K4me3 =</span> <span class="fu">round</span>(<span class="fu">mean_signal</span>(<span class="st">"H3K4me3"</span>, <span class="fu">promoters</span>(at, <span class="dv">1000</span>, <span class="dv">1000</span>)), <span class="dv">1</span>))</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">granges</span>(genes[<span class="st">"ACTB"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol start="3" type="a">
+<li>ALB and NEUROD1 are silent in B cells, but have little H3K27me3 compared with HOXD10. What does that say about how genes are kept off?</li>
+</ol>
+</section>
+<section id="r3-an-average-profile-around-tsss" class="level3">
+<h3 class="anchored" data-anchor-id="r3-an-average-profile-around-tsss">R3 — An average profile around TSSs</h3>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>tx  <span class="ot">&lt;-</span> gtf[gtf<span class="sc">$</span>type <span class="sc">==</span> <span class="st">"transcript"</span> <span class="sc">&amp;</span> gtf<span class="sc">$</span>transcript_type <span class="sc">==</span> <span class="st">"protein_coding"</span> <span class="sc">&amp;</span> <span class="fu">seqnames</span>(gtf) <span class="sc">==</span> <span class="st">"chr21"</span>]</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>tss <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">resize</span>(tx, <span class="at">width =</span> <span class="dv">1</span>, <span class="at">fix =</span> <span class="st">"start"</span>))</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>win <span class="ot">&lt;-</span> <span class="fu">promoters</span>(tss, <span class="at">upstream =</span> <span class="dv">5000</span>, <span class="at">downstream =</span> <span class="dv">5001</span>)     <span class="co"># 10 001 bp, TSS in the middle</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>profile <span class="ot">&lt;-</span> <span class="cf">function</span>(m) {</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  s <span class="ot">&lt;-</span> <span class="fu">import</span>(<span class="fu">bw</span>(m), <span class="at">which =</span> <span class="fu">reduce</span>(win), <span class="at">as =</span> <span class="st">"RleList"</span>)<span class="sc">$</span>chr21</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  mat <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">sapply</span>(<span class="fu">seq_along</span>(win), <span class="cf">function</span>(i) {</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    v <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(s[<span class="fu">start</span>(win)[i]<span class="sc">:</span><span class="fu">end</span>(win)[i]])</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">as.character</span>(<span class="fu">strand</span>(win)[i]) <span class="sc">==</span> <span class="st">"-"</span>) <span class="fu">rev</span>(v) <span class="cf">else</span> v     <span class="co"># orient all genes left to right</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  }))</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colMeans</span>(mat)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>pr  <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="fu">c</span>(<span class="st">"H3K4me3"</span>, <span class="st">"H3K27ac"</span>, <span class="st">"H3K4me1"</span>, <span class="st">"H3K36me3"</span>, <span class="st">"H3K27me3"</span>), profile)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>pos <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">5000</span><span class="sc">:</span><span class="dv">5000</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="fu">matplot</span>(pos, pr, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">xlab =</span> <span class="st">"distance to TSS (bp)"</span>, <span class="at">ylab =</span> <span class="st">"mean fold change"</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="fu">colnames</span>(pr), <span class="at">col =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>pos[<span class="fu">which.max</span>(pr[, <span class="st">"H3K4me3"</span>])]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>Why does the code reverse the signal for − strand transcripts?</p></li>
+<li><p>Where is the maximum of H3K4me3: upstream or downstream of the TSS, and by how much? Which nucleosome sits there?</p></li>
+<li><p>Look at the signal exactly at the TSS (<code>pr[pos == 0, ]</code>) compared with ±500 bp. What do you see, and why?</p></li>
+<li><p>Describe H3K4me1 and H3K36me3 around the TSS. Do they match the figure <em>The marks you will meet in this course</em>?</p></li>
+</ol>
+</section>
+<section id="r4-cpg-islands-and-h3k4me3" class="level3">
+<h3 class="anchored" data-anchor-id="r4-cpg-islands-and-h3k4me3">R4 — CpG islands and H3K4me3</h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>chr21 <span class="ot">&lt;-</span> <span class="fu">readDNAStringSet</span>(<span class="fu">file.path</span>(D, <span class="st">"hg38_chr21.fa.gz"</span>))[[<span class="dv">1</span>]]</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>cpg_oe <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  f <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">letterFrequency</span>(x, <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"C"</span>, <span class="st">"G"</span>, <span class="st">"T"</span>)))    <span class="co"># A, C, G, T counts</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.numeric</span>(<span class="fu">countPattern</span>(<span class="st">"CG"</span>, x)) <span class="sc">*</span> <span class="fu">sum</span>(f) <span class="sc">/</span> (f[<span class="dv">2</span>] <span class="sc">*</span> f[<span class="dv">3</span>])</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">cpg_oe</span>(chr21)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>pw   <span class="ot">&lt;-</span> <span class="fu">promoters</span>(tss, <span class="at">upstream =</span> <span class="dv">500</span>, <span class="at">downstream =</span> <span class="dv">500</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>seqs <span class="ot">&lt;-</span> <span class="fu">DNAStringSet</span>(<span class="fu">Views</span>(chr21, <span class="at">start =</span> <span class="fu">start</span>(pw), <span class="at">end =</span> <span class="fu">end</span>(pw)))</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>oe   <span class="ot">&lt;-</span> <span class="fu">sapply</span>(seqs, cpg_oe)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>gc   <span class="ot">&lt;-</span> <span class="fu">letterFrequency</span>(seqs, <span class="st">"GC"</span>, <span class="at">as.prob =</span> <span class="cn">TRUE</span>)[, <span class="dv">1</span>]</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>cgi  <span class="ot">&lt;-</span> oe <span class="sc">&gt;</span> <span class="fl">0.6</span> <span class="sc">&amp;</span> gc <span class="sc">&gt;</span> <span class="fl">0.5</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>k4   <span class="ot">&lt;-</span> <span class="fu">mean_signal</span>(<span class="st">"H3K4me3"</span>, pw)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(cgi)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="fu">tapply</span>(k4, cgi, median)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(k4 <span class="sc">+</span> <span class="fl">0.1</span> <span class="sc">~</span> cgi, <span class="at">log =</span> <span class="st">"y"</span>, <span class="at">names =</span> <span class="fu">c</span>(<span class="st">"low CpG"</span>, <span class="st">"CpG-island-like"</span>), <span class="at">ylab =</span> <span class="st">"H3K4me3 fold change + 0.1"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>What is the CpG o/e of the whole of chr21? Why is it so far below 1?</p></li>
+<li><p>What fraction of chr21 protein-coding promoters is CpG-island-like?</p></li>
+<li><p>Compare H3K4me3 at CpG-island-like and low-CpG promoters. Suggest a mechanism (hint: proteins with a CXXC domain bind unmethylated CpG).</p></li>
+</ol>
+</section>
+</section>
+<section id="hints" class="level2">
+<h2 class="anchored" data-anchor-id="hints">Hints</h2>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 1 — nucleosome arithmetic (B1, B2)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 1 — nucleosome arithmetic (B1, B2)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Linker = repeat − core. Each nucleosome has two copies of each core histone. If the linker is trimmed away, an <span class="math inline">\(n\)</span>-nucleosome fragment is <span class="math inline">\(n\)</span> cores plus <span class="math inline">\(n-1\)</span> linkers; if the cut is in the middle of each linker, it is <span class="math inline">\(n\)</span> repeat lengths.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 2 — names and marks (B3, B4)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 2 — names and marks (B3, B4)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The pattern is histone – residue (one-letter code) – position – modification. K = lysine, S = serine; me = methyl, ac = acetyl, ph = phosphate, ub = ubiquitin. One residue holds one kind of modification at a time; a nucleosome has two copies of H3.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 3 — dilution (B6)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 3 — dilution (B6)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Without re-marking, each division halves the marked fraction: <span class="math inline">\(0.5^n\)</span>. For DNA methylation each site survives one division with probability <span class="math inline">\(0.999\)</span>, so <span class="math inline">\(0.999^{50}\)</span> after 50.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 4 — CpG o/e (B7, R4)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 4 — CpG o/e (B7, R4)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Count C, G and the dinucleotide CG (read along one strand; overlapping counts like CGCG contain 2 CpGs). Expected CpG = C × G / L. <a href="https://rdrr.io/bioc/Biostrings/man/letterFrequency.html"><code>letterFrequency</code></a> and <a href="https://rdrr.io/bioc/Biostrings/man/matchPattern.html"><code>countPattern</code></a> do the counting in R.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 5 — reading bigWigs (R1–R3)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 5 — reading bigWigs (R1–R3)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><a href="https://rdrr.io/bioc/rtracklayer/man/BigWigFile.html"><code>import</code></a> with <code>which =</code> reads only the regions you ask for; <code>as = "RleList"</code> returns one run-length vector per chromosome, which you index by position. <a href="https://rdrr.io/bioc/GenomicRanges/man/intra-range-methods.html"><code>promoters</code></a> and <a href="https://rdrr.io/bioc/GenomicRanges/man/intra-range-methods.html"><code>resize</code></a> respect strand. For ACTB (R2b), compare the gene’s coordinates with the starts of its transcripts.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="solutions" class="level2">
+<h2 class="anchored" data-anchor-id="solutions">Solutions</h2>
+<div class="callout callout-style-default callout-note callout-titled" title="Solutions — by hand">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions — by hand
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>B1.</strong> (a) <span class="math inline">\(190 - 147 = 43\)</span> bp. (b) <span class="math inline">\(6.4 \times 10^9 / 190 \approx 3.4 \times 10^7\)</span> nucleosomes, each with 2 H3: about <span class="math inline">\(6.7 \times 10^7\)</span> H3 molecules (plus the replication-independent variant H3.3). (c) About one (<span class="math inline">\(200 / 190\)</span>): an NDR is the gap left by one or two missing nucleosomes.</p>
+<p><strong>B2.</strong> Linker trimmed away: <span class="math inline">\(147\)</span>, <span class="math inline">\(2 \times 147 + 43 = 337\)</span>, <span class="math inline">\(3 \times 147 + 2 \times 43 = 527\)</span> bp. Cut in the middle of each linker: <span class="math inline">\(190\)</span>, <span class="math inline">\(380\)</span>, <span class="math inline">\(570\)</span> bp. Real digests lie in between, so bands are fuzzy: about 150, 350, 550 bp. The ladder steps by the repeat length in both cases.</p>
+<p><strong>B3.</strong> (a) Histone H4, lysine 16, acetylated. (b) Histone H3, lysine 9, di-methylated. (c) Histone H3, serine 10, phosphorylated (a mitotic mark). (d) Histone H2A, lysine 119, mono-ubiquitylated (written by Polycomb PRC1). (e) Not on the same tail: lysine 27 carries either an acetyl or methyl groups. But a nucleosome has two H3 tails, and H3K4me3 and H3K27me3 can sit on the same nucleosome: these <strong>bivalent</strong> promoters are common in embryonic stem cells, at developmental genes that are silent but ready.</p>
+<p><strong>B4.</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th>K4me3</th>
+<th>K4me1</th>
+<th>K27ac</th>
+<th>K36me3</th>
+<th>K27me3</th>
+<th>K9me3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(a) active promoter</td>
+<td>H</td>
+<td>L (flanks)</td>
+<td>H</td>
+<td>L</td>
+<td>L</td>
+<td>L</td>
+</tr>
+<tr class="even">
+<td>(b) active gene body</td>
+<td>L</td>
+<td>L</td>
+<td>L</td>
+<td><strong>H</strong></td>
+<td>L</td>
+<td>L</td>
+</tr>
+<tr class="odd">
+<td>(c) primed enhancer</td>
+<td>L</td>
+<td><strong>H</strong></td>
+<td>L</td>
+<td>L</td>
+<td>L/H*</td>
+<td>L</td>
+</tr>
+<tr class="even">
+<td>(d) active enhancer</td>
+<td>L</td>
+<td>H</td>
+<td><strong>H</strong></td>
+<td>L</td>
+<td>L</td>
+<td>L</td>
+</tr>
+<tr class="odd">
+<td>(e) HOX promoter in blood</td>
+<td>L</td>
+<td>L</td>
+<td>L</td>
+<td>L</td>
+<td><strong>H</strong></td>
+<td>L</td>
+</tr>
+<tr class="even">
+<td>(f) ZNF cluster</td>
+<td>L</td>
+<td>L</td>
+<td>L</td>
+<td>H (bodies)</td>
+<td>L</td>
+<td><strong>H</strong></td>
+</tr>
+</tbody>
+</table>
+<p>*Some primed enhancers in stem cells carry H3K27me3 (“poised”).</p>
+<p><strong>B5.</strong> (a) CD74 is read right to left, so its TSS is at the <strong>right</strong> end of the gene, near 150.413 Mb, where H3K4me3 and H3K27ac peak. (b) It increases towards the 3’ end, i.e.&nbsp;towards the <strong>left</strong> for this − strand gene: SETD2 travels with RNA polymerase II, and more of the gene has been transcribed towards the 3’ end. (c) H3K27me3 is high over the whole cluster; H3K27ac and H3K36me3 are low. Closed, Polycomb-repressed chromatin. (d) H3K36me3 means active transcription, H3K9me3 means heterochromatin: usually exclusive. ZNF genes are the exception: KRAB zinc-finger genes carry both over their 3’ exons, which contain repeat-like zinc-finger motifs.</p>
+<p><strong>B6.</strong> (a) <span class="math inline">\(0.5\)</span>, <span class="math inline">\(0.25\)</span>, <span class="math inline">\(0.5^5 \approx 0.03\)</span>. Without re-marking, a histone domain is gone within a few divisions. (b) <span class="math inline">\(0.999^{50} \approx 0.95\)</span>. DNA methylation is copied site by site and survives many divisions; histone memory needs read–write feedback to restore the half that is lost at every division.</p>
+<p><strong>B7.</strong> S1: C = 7, G = 7, CpG = 6 (starting at positions 2, 4, 8, 11, 13 and 17). GC = 14/20 = 0.70. Expected CpG = <span class="math inline">\(7 \times 7 / 20 = 2.45\)</span>; o/e = <span class="math inline">\(6 / 2.45 = 2.4\)</span>. S2: C = 5, G = 4, CpG = 0, GC = 9/20 = 0.45, o/e = 0. S1 is island-like (in real life an island must be at least 200 bp).</p>
+<p><strong>B8.</strong> Reverse causation: the transcribing polymerase carries SETD2, which deposits H3K36me3, so high expression <em>causes</em> high H3K36me3. Experiments: inhibit transcription (e.g.&nbsp;with a Pol II inhibitor) and see whether H3K36me3 is lost; or mutate H3K36 (K36M, or delete SETD2) and see whether expression falls. (In fact, loss of H3K36me3 mostly affects cryptic transcription from inside genes and splicing, not the level of expression.)</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Solutions — R">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions — R
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>R1.</strong> (a) CD79A is active: H3K4me3 and H3K27ac at the promoter, H3K36me3 over the short gene body. (b) ALB: almost nothing (no active marks, little H3K27me3): silent, not specifically repressed. HOXD10: no active marks, high H3K27me3 over the gene and its neighbours: Polycomb-silenced.</p>
+<p><strong>R2.</strong> (a)</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>gene</th>
+<th>K4me3 prom</th>
+<th>K27ac prom</th>
+<th>K36me3 body</th>
+<th>K27me3 body</th>
+<th>K9me3 body</th>
+<th>state</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>CD74</td>
+<td>8.3</td>
+<td>68.6</td>
+<td>4.6</td>
+<td>0.3</td>
+<td>0.6</td>
+<td>active</td>
+</tr>
+<tr class="even">
+<td>CD79A</td>
+<td>7.4</td>
+<td>45.3</td>
+<td>2.1</td>
+<td>0.3</td>
+<td>0.4</td>
+<td>active</td>
+</tr>
+<tr class="odd">
+<td>PAX5</td>
+<td>11.2</td>
+<td>26.3</td>
+<td>3.4</td>
+<td>0.3</td>
+<td>0.7</td>
+<td>active</td>
+</tr>
+<tr class="even">
+<td>MS4A1</td>
+<td>10.6</td>
+<td>23.2</td>
+<td>3.5</td>
+<td>0.4</td>
+<td>0.9</td>
+<td>active</td>
+</tr>
+<tr class="odd">
+<td>GAPDH</td>
+<td>10.1</td>
+<td>37.1</td>
+<td>4.3</td>
+<td>0.5</td>
+<td>1.2</td>
+<td>active</td>
+</tr>
+<tr class="even">
+<td>ACTB</td>
+<td>1.8</td>
+<td>0.2</td>
+<td>1.0</td>
+<td>0.4</td>
+<td>0.6</td>
+<td>“silent”? see (b)</td>
+</tr>
+<tr class="odd">
+<td>ALB</td>
+<td>0.4</td>
+<td>0.2</td>
+<td>0.3</td>
+<td>1.0</td>
+<td>0.5</td>
+<td>silent, no strong mark</td>
+</tr>
+<tr class="even">
+<td>NEUROD1</td>
+<td>1.4</td>
+<td>0.1</td>
+<td>0.4</td>
+<td>1.6</td>
+<td>1.2</td>
+<td>silent, weak Polycomb</td>
+</tr>
+<tr class="odd">
+<td>HOXD10</td>
+<td>0.3</td>
+<td>0.1</td>
+<td>0.4</td>
+<td>3.6</td>
+<td>1.4</td>
+<td>Polycomb</td>
+</tr>
+<tr class="even">
+<td>HOXD13</td>
+<td>0.7</td>
+<td>0.0</td>
+<td>0.3</td>
+<td>3.7</td>
+<td>1.2</td>
+<td>Polycomb</td>
+</tr>
+<tr class="odd">
+<td>ZNF43</td>
+<td>2.6</td>
+<td>0.7</td>
+<td>0.7</td>
+<td>0.4</td>
+<td>2.1</td>
+<td>H3K9me3-marked, weakly transcribed</td>
+</tr>
+<tr class="even">
+<td>ZNF208</td>
+<td>0.5</td>
+<td>0.2</td>
+<td>0.3</td>
+<td>0.3</td>
+<td>1.3</td>
+<td>silent, weak H3K9me3</td>
+</tr>
+</tbody>
+</table>
+<p>All four B-cell genes (CD74, CD79A, PAX5, MS4A1) are active, as is GAPDH.</p>
+<ol start="2" type="a">
+<li><p>The ACTB gene in GENCODE runs from 5 526 409 to 5 563 902 on the − strand, so its “start” (the TSS used by <code>promoters(gene)</code>) is 5 563 902. That belongs to one long, rare transcript. The main ACTB transcripts start at about 5 530 601, where H3K4me3 is about 6. Lesson: <code>promoters()</code> on a <em>gene</em> uses the outermost transcript start, which is often not the main promoter. Use transcript start sites (as in <em>Genomic intervals</em>).</p></li>
+<li><p>Silence does not always need a repressive mark. ALB is simply never switched on in B cells: no activators bind its liver enhancers, so it has no active marks, but no Polycomb either. Polycomb (H3K27me3) is concentrated on developmental regulators such as HOX genes, which must be kept firmly off, often CpG-island genes.</p></li>
+</ol>
+<p><strong>R3.</strong> (a) For a − strand gene, downstream is to the left. Reversing puts every gene’s downstream side on the right, so the profiles can be averaged. (b) Downstream, at about +760 bp: the +1 and +2 nucleosomes. (c) A <strong>dip</strong> exactly at the TSS: H3K4me3 2.9 at 0 vs 4.8 at −500 and 5.5 at +500; H3K27ac 6.5 vs 10.5 and 9.5. The TSS sits in the nucleosome-depleted region: no nucleosome, no histone mark. (d) H3K4me1 has a minimum near the TSS and is higher on the flanks (1.8 at −1 kb, 1.5 at +2 kb): it flanks promoters, as in the figure. H3K36me3 is lowest just downstream of the TSS and rises into the gene body (1.4 at +5 kb), but stays low upstream.</p>
+<p><strong>R4.</strong> (a) 0.275: chr21 has about a quarter of the CpGs expected from its C and G content. Methylated CpGs mutate to TpG/CpA by deamination, so CpGs are lost over evolutionary time. (b) 365 of 602 TSSs (61%) are CpG-island-like. (c) Median H3K4me3 fold change 6.1 at CpG-island-like promoters, 0.6 at the others; 63% vs 11% have H3K4me3 above 5. CXXC-domain proteins (CFP1, part of the SET1 complex that writes H3K4me3; also KDM2A/B) bind <strong>unmethylated</strong> CpG and bring H3K4 methylation to CpG islands. This is one reason why CpG islands are marked as promoters even when the gene is expressed at a low level.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="where-this-leads" class="level2">
+<h2 class="anchored" data-anchor-id="where-this-leads">Where this leads</h2>
+<ul>
+<li><em>Gene regulation</em> explains how transcription factors open the nucleosome-depleted regions you saw in R3.</li>
+<li><em>Genomic intervals</em> and <em>From reads to coverage</em> explain how the bigWigs and peaks used here are made.</li>
+<li>The ChIP-seq block maps these marks yourself, including broad domains like the HOXD H3K27me3 domain.</li>
+<li><em>DNA methylation biology</em> returns to CpG islands, maintenance methylation (B6) and imprinting.</li>
+</ul>
+</section>
+<section id="key-papers-optional-further-reading" class="level2">
+<h2 class="anchored" data-anchor-id="key-papers-optional-further-reading">Key papers (optional further reading)</h2>
+<p><em>Not required reading and not examined.</em></p>
+<ul>
+<li>Luger et al.&nbsp;1997, <em>Nature</em>. <a href="https://doi.org/10.1038/38444">Crystal structure of the nucleosome core particle at 2.8 Å resolution</a>.</li>
+<li>Kornberg 1974, <em>Science</em>. <a href="https://doi.org/10.1126/science.184.4139.868">Chromatin structure: a repeating unit of histones and DNA</a>.</li>
+<li>Strahl &amp; Allis 2000, <em>Nature</em>. <a href="https://doi.org/10.1038/47412">The language of covalent histone modifications</a>.</li>
+<li>Barski et al.&nbsp;2007, <em>Cell</em>. <a href="https://doi.org/10.1016/j.cell.2007.05.009">High-resolution profiling of histone methylations in the human genome</a>.</li>
+<li>Bird 2007, <em>Nature</em>. <a href="https://doi.org/10.1038/nature05913">Perceptions of epigenetics</a>.</li>
+<li>Allis &amp; Jenuwein 2016, <em>Nat Rev Genet</em>. <a href="https://doi.org/10.1038/nrg.2016.59">The molecular hallmarks of epigenetic control</a>.</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

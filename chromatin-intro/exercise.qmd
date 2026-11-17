@@ -1,0 +1,324 @@
+---
+title: "Exercise: What is epigenetics?"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+## Goal
+
+After this exercise you will be able to:
+
+- Do the basic arithmetic of chromatin: nucleosome repeat, fragment ladders, the dilution of marks through replication.
+- Decode the name of a histone mark, and predict which marks sit where on an active, a Polycomb-silenced and a heterochromatic gene.
+- Read genome-browser tracks of six histone marks and say what state a gene is in.
+- Measure histone-mark signal over promoters and gene bodies from ENCODE bigWig files in R, and explain a result that looks wrong.
+- Compute the CpG observed/expected ratio of a sequence, and connect CpG islands to H3K4me3.
+
+## Background
+
+**The six marks** (from the lecture):
+
+| mark | where | meaning |
+|---|---|---|
+| H3K4me3 | promoters | active or poised promoter |
+| H3K4me1 | enhancers, flanks of promoters | enhancer (primed or active) |
+| H3K27ac | active promoters and enhancers | active regulatory element |
+| H3K36me3 | bodies of transcribed genes | transcription |
+| H3K27me3 | broad domains over silenced genes | Polycomb repression |
+| H3K9me3 | repeats, ZNF clusters, pericentromeres | constitutive heterochromatin |
+
+**Fold change over input.** ENCODE signal tracks give, at each position, how many times more ChIP reads there are than in the input control (normalised to depth). 1 means no enrichment; values below 1 mean fewer reads than input.
+
+**CpG observed/expected** for a sequence of length $L$:
+
+$$\text{CpG o/e} = \frac{\text{number of CpG}}{(\text{number of C}) \times (\text{number of G}) / L}$$
+
+The denominator is the number of CpGs expected if C and G were placed independently. A CpG island (Gardiner-Garden & Frommer) is at least 200 bp with GC content above 50% and CpG o/e above 0.6.
+
+## Data
+
+GM12878 fold-change bigWigs for six marks (ENCODE, GRCh38, about 2.6 GB in total), the GENCODE annotation and the sequence of chr21. On the cluster:
+
+```bash
+data/download.sh chromatin-intro
+```
+
+Reading a region from a local bigWig takes a fraction of a second; the files are big because they cover the whole genome at base resolution.
+
+## By hand
+
+**B1. Counting nucleosomes.**
+
+(a) The nucleosome repeat length is 190 bp, of which 147 bp are wrapped around the octamer. How long is the linker?
+
+(b) How many nucleosomes are there in a diploid human cell ($6.4 \times 10^9$ bp)? How many histone H3 molecules?
+
+(c) A promoter has a nucleosome-depleted region of 200 bp. How many nucleosomes would fit there at the normal repeat?
+
+**B2. The ladder.** Chromatin is digested lightly with MNase. With a repeat of 190 bp and a core of 147 bp, which fragment sizes do you expect for mono-, di- and tri-nucleosomes if the enzyme trims the linker completely? And if it cuts in the middle of each linker? Sketch the gel.
+
+**B3. Names.** Write out in words: (a) H4K16ac, (b) H3K9me2, (c) H3S10ph, (d) H2AK119ub1. (e) Can one H3 tail carry both H3K27ac and H3K27me3? Can one nucleosome carry H3K4me3 and H3K27me3?
+
+**B4. Predict the marks.** For each element, say which of the six marks you expect to be high (H) or low (L):
+
+(a) The promoter of a highly expressed housekeeping gene.
+(b) The body of the same gene.
+(c) A primed enhancer that is not (yet) active.
+(d) An active enhancer.
+(e) The promoter of a HOX gene in a blood cell.
+(f) A zinc-finger gene cluster on chr19.
+
+**B5. Read the tracks.** Look at the figures *Real data: an active gene in B cells* and *Real data: two kinds of silence* in the lecture.
+
+(a) CD74 is on the − strand. Where is its TSS on the plot, and which marks peak there?
+(b) In which direction does the H3K36me3 signal over CD74 increase, and why?
+(c) The HOXD cluster: name one mark that is high and one that is low over the whole cluster. Is this region open or closed chromatin?
+(d) ZNF100 carries H3K36me3 and H3K9me3 over the same body. Why is this unusual?
+
+**B6. Dilution through replication.**
+
+(a) A domain of 40 nucleosomes is fully marked with H3K27me3. Replication splits old histones randomly between the daughters, and the cell has **no** way to re-mark. What fraction of the nucleosomes in the domain is marked after 1, 2 and 5 divisions?
+
+(b) DNA methylation is copied by DNMT1 with a maintenance fidelity of about 99.9% per CpG per division (a site is lost with probability 0.001). What fraction of the methylated CpGs is still methylated after 50 divisions? Compare with (a).
+
+**B7. CpG o/e by hand.** Compute GC content and CpG o/e for these two 20 bp sequences, and decide which is more CpG-island-like:
+
+```
+S1: ACGCGTTCGACGCGGCCGTA
+S2: ATGCATTGCAAGTCCATGCA
+```
+
+**B8. Cause or consequence?** A paper shows that genes with high H3K36me3 are highly expressed and concludes that "H3K36me3 activates transcription". Give an alternative explanation, and propose one experiment that could tell the two apart.
+
+## In R
+
+```r
+library(GenomicRanges); library(rtracklayer); library(Biostrings)
+D <- "/path/to/course/data"
+bw <- function(m) file.path(D, sprintf("gm12878_%s_fc.bigWig", tolower(m)))
+marks <- c("H3K4me3", "H3K4me1", "H3K27ac", "H3K36me3", "H3K27me3", "H3K9me3")
+gtf <- import(file.path(D, "gencode.v46.basic.annotation.gtf.gz"))
+genes <- gtf[gtf$type == "gene" & gtf$gene_type == "protein_coding"]
+names(genes) <- genes$gene_name
+```
+
+### R1 — Your own browser view
+
+```r
+plot_tracks <- function(region) {
+  op <- par(mfrow = c(length(marks), 1), mar = c(1, 6, 0.5, 1), las = 1)
+  for (m in marks) {
+    s <- import(bw(m), which = region, as = "RleList")[[as.character(seqnames(region))]]
+    v <- as.numeric(s[start(region):end(region)])
+    plot(start(region):end(region), v, type = "h", col = "grey30", xaxt = "n",
+         xlab = "", ylab = m, ylim = c(0, max(5, max(v))))
+  }
+  par(op)
+}
+plot_tracks(genes["CD79A"] + 10000)     # the gene plus 10 kb on each side
+```
+
+(a) Plot CD79A (a B-cell receptor gene). Which state is it in?
+
+(b) Plot ALB (albumin, made in the liver) and HOXD10. Describe each in one sentence.
+
+(c) Pick any gene you like and predict its state before you plot it.
+
+### R2 — A table of states
+
+```r
+mean_signal <- function(m, regions) {
+  s <- import(bw(m), which = regions, as = "RleList")
+  sapply(seq_along(regions), function(i) {
+    r <- regions[i]; mean(s[[as.character(seqnames(r))]][start(r):end(r)])
+  })
+}
+pick <- c("CD74", "CD79A", "PAX5", "MS4A1", "GAPDH", "ACTB",
+          "ALB", "NEUROD1", "HOXD10", "HOXD13", "ZNF43", "ZNF208")
+g    <- genes[pick]
+prom <- promoters(g, upstream = 1000, downstream = 1000)
+tab <- data.frame(row.names = pick,
+  K4me3_prom  = mean_signal("H3K4me3",  prom),
+  K27ac_prom  = mean_signal("H3K27ac",  prom),
+  K36me3_body = mean_signal("H3K36me3", g),
+  K27me3_body = mean_signal("H3K27me3", g),
+  K9me3_body  = mean_signal("H3K9me3",  g))
+round(tab, 1)
+```
+
+(a) Classify each gene as *active*, *Polycomb-silenced*, *H3K9me3-marked* or *silent without a strong repressive mark*. Which B-cell genes are active?
+
+(b) ACTB (β-actin) is one of the most highly expressed genes in every cell, yet its promoter looks silent in the table. Find out why: look at its transcripts and their start sites, and compute H3K4me3 at each.
+
+```r
+actb <- gtf[gtf$type == "transcript" & gtf$gene_name == "ACTB"]
+at   <- unique(resize(actb, width = 1, fix = "start"))
+data.frame(tss = start(at), H3K4me3 = round(mean_signal("H3K4me3", promoters(at, 1000, 1000)), 1))
+granges(genes["ACTB"])
+```
+
+(c) ALB and NEUROD1 are silent in B cells, but have little H3K27me3 compared with HOXD10. What does that say about how genes are kept off?
+
+### R3 — An average profile around TSSs
+
+```r
+tx  <- gtf[gtf$type == "transcript" & gtf$transcript_type == "protein_coding" & seqnames(gtf) == "chr21"]
+tss <- unique(resize(tx, width = 1, fix = "start"))
+win <- promoters(tss, upstream = 5000, downstream = 5001)     # 10 001 bp, TSS in the middle
+profile <- function(m) {
+  s <- import(bw(m), which = reduce(win), as = "RleList")$chr21
+  mat <- t(sapply(seq_along(win), function(i) {
+    v <- as.numeric(s[start(win)[i]:end(win)[i]])
+    if (as.character(strand(win)[i]) == "-") rev(v) else v     # orient all genes left to right
+  }))
+  colMeans(mat)
+}
+pr  <- sapply(c("H3K4me3", "H3K27ac", "H3K4me1", "H3K36me3", "H3K27me3"), profile)
+pos <- -5000:5000
+matplot(pos, pr, type = "l", lty = 1, lwd = 2, xlab = "distance to TSS (bp)", ylab = "mean fold change")
+legend("topright", colnames(pr), col = 1:5, lty = 1, lwd = 2)
+pos[which.max(pr[, "H3K4me3"])]
+```
+
+(a) Why does the code reverse the signal for − strand transcripts?
+
+(b) Where is the maximum of H3K4me3: upstream or downstream of the TSS, and by how much? Which nucleosome sits there?
+
+(c) Look at the signal exactly at the TSS (`pr[pos == 0, ]`) compared with ±500 bp. What do you see, and why?
+
+(d) Describe H3K4me1 and H3K36me3 around the TSS. Do they match the figure *The marks you will meet in this course*?
+
+### R4 — CpG islands and H3K4me3
+
+```r
+chr21 <- readDNAStringSet(file.path(D, "hg38_chr21.fa.gz"))[[1]]
+cpg_oe <- function(x) {
+  f <- as.numeric(letterFrequency(x, c("A", "C", "G", "T")))    # A, C, G, T counts
+  as.numeric(countPattern("CG", x)) * sum(f) / (f[2] * f[3])
+}
+cpg_oe(chr21)
+
+pw   <- promoters(tss, upstream = 500, downstream = 500)
+seqs <- DNAStringSet(Views(chr21, start = start(pw), end = end(pw)))
+oe   <- sapply(seqs, cpg_oe)
+gc   <- letterFrequency(seqs, "GC", as.prob = TRUE)[, 1]
+cgi  <- oe > 0.6 & gc > 0.5
+k4   <- mean_signal("H3K4me3", pw)
+table(cgi)
+tapply(k4, cgi, median)
+boxplot(k4 + 0.1 ~ cgi, log = "y", names = c("low CpG", "CpG-island-like"), ylab = "H3K4me3 fold change + 0.1")
+```
+
+(a) What is the CpG o/e of the whole of chr21? Why is it so far below 1?
+
+(b) What fraction of chr21 protein-coding promoters is CpG-island-like?
+
+(c) Compare H3K4me3 at CpG-island-like and low-CpG promoters. Suggest a mechanism (hint: proteins with a CXXC domain bind unmethylated CpG).
+
+## Hints
+
+::: {.callout-tip collapse="true" title="Hint 1 — nucleosome arithmetic (B1, B2)"}
+Linker = repeat − core. Each nucleosome has two copies of each core histone. If the linker is trimmed away, an $n$-nucleosome fragment is $n$ cores plus $n-1$ linkers; if the cut is in the middle of each linker, it is $n$ repeat lengths.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 2 — names and marks (B3, B4)"}
+The pattern is histone – residue (one-letter code) – position – modification. K = lysine, S = serine; me = methyl, ac = acetyl, ph = phosphate, ub = ubiquitin. One residue holds one kind of modification at a time; a nucleosome has two copies of H3.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 3 — dilution (B6)"}
+Without re-marking, each division halves the marked fraction: $0.5^n$. For DNA methylation each site survives one division with probability $0.999$, so $0.999^{50}$ after 50.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 4 — CpG o/e (B7, R4)"}
+Count C, G and the dinucleotide CG (read along one strand; overlapping counts like CGCG contain 2 CpGs). Expected CpG = C × G / L. [`letterFrequency`](https://rdrr.io/bioc/Biostrings/man/letterFrequency.html) and [`countPattern`](https://rdrr.io/bioc/Biostrings/man/matchPattern.html) do the counting in R.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 5 — reading bigWigs (R1–R3)"}
+[`import`](https://rdrr.io/bioc/rtracklayer/man/BigWigFile.html) with `which = ` reads only the regions you ask for; `as = "RleList"` returns one run-length vector per chromosome, which you index by position. [`promoters`](https://rdrr.io/bioc/GenomicRanges/man/intra-range-methods.html) and [`resize`](https://rdrr.io/bioc/GenomicRanges/man/intra-range-methods.html) respect strand. For ACTB (R2b), compare the gene's coordinates with the starts of its transcripts.
+:::
+
+## Solutions
+
+::: {.callout-note collapse="true" title="Solutions — by hand"}
+
+**B1.** (a) $190 - 147 = 43$ bp. (b) $6.4 \times 10^9 / 190 \approx 3.4 \times 10^7$ nucleosomes, each with 2 H3: about $6.7 \times 10^7$ H3 molecules (plus the replication-independent variant H3.3). (c) About one ($200 / 190$): an NDR is the gap left by one or two missing nucleosomes.
+
+**B2.** Linker trimmed away: $147$, $2 \times 147 + 43 = 337$, $3 \times 147 + 2 \times 43 = 527$ bp. Cut in the middle of each linker: $190$, $380$, $570$ bp. Real digests lie in between, so bands are fuzzy: about 150, 350, 550 bp. The ladder steps by the repeat length in both cases.
+
+**B3.** (a) Histone H4, lysine 16, acetylated. (b) Histone H3, lysine 9, di-methylated. (c) Histone H3, serine 10, phosphorylated (a mitotic mark). (d) Histone H2A, lysine 119, mono-ubiquitylated (written by Polycomb PRC1). (e) Not on the same tail: lysine 27 carries either an acetyl or methyl groups. But a nucleosome has two H3 tails, and H3K4me3 and H3K27me3 can sit on the same nucleosome: these **bivalent** promoters are common in embryonic stem cells, at developmental genes that are silent but ready.
+
+**B4.**
+
+| | K4me3 | K4me1 | K27ac | K36me3 | K27me3 | K9me3 |
+|---|---|---|---|---|---|---|
+| (a) active promoter | H | L (flanks) | H | L | L | L |
+| (b) active gene body | L | L | L | **H** | L | L |
+| (c) primed enhancer | L | **H** | L | L | L/H* | L |
+| (d) active enhancer | L | H | **H** | L | L | L |
+| (e) HOX promoter in blood | L | L | L | L | **H** | L |
+| (f) ZNF cluster | L | L | L | H (bodies) | L | **H** |
+
+*Some primed enhancers in stem cells carry H3K27me3 ("poised").
+
+**B5.** (a) CD74 is read right to left, so its TSS is at the **right** end of the gene, near 150.413 Mb, where H3K4me3 and H3K27ac peak. (b) It increases towards the 3' end, i.e. towards the **left** for this − strand gene: SETD2 travels with RNA polymerase II, and more of the gene has been transcribed towards the 3' end. (c) H3K27me3 is high over the whole cluster; H3K27ac and H3K36me3 are low. Closed, Polycomb-repressed chromatin. (d) H3K36me3 means active transcription, H3K9me3 means heterochromatin: usually exclusive. ZNF genes are the exception: KRAB zinc-finger genes carry both over their 3' exons, which contain repeat-like zinc-finger motifs.
+
+**B6.** (a) $0.5$, $0.25$, $0.5^5 \approx 0.03$. Without re-marking, a histone domain is gone within a few divisions. (b) $0.999^{50} \approx 0.95$. DNA methylation is copied site by site and survives many divisions; histone memory needs read–write feedback to restore the half that is lost at every division.
+
+**B7.** S1: C = 7, G = 7, CpG = 6 (starting at positions 2, 4, 8, 11, 13 and 17). GC = 14/20 = 0.70. Expected CpG = $7 \times 7 / 20 = 2.45$; o/e = $6 / 2.45 = 2.4$. S2: C = 5, G = 4, CpG = 0, GC = 9/20 = 0.45, o/e = 0. S1 is island-like (in real life an island must be at least 200 bp).
+
+**B8.** Reverse causation: the transcribing polymerase carries SETD2, which deposits H3K36me3, so high expression *causes* high H3K36me3. Experiments: inhibit transcription (e.g. with a Pol II inhibitor) and see whether H3K36me3 is lost; or mutate H3K36 (K36M, or delete SETD2) and see whether expression falls. (In fact, loss of H3K36me3 mostly affects cryptic transcription from inside genes and splicing, not the level of expression.)
+:::
+
+::: {.callout-note collapse="true" title="Solutions — R"}
+
+**R1.** (a) CD79A is active: H3K4me3 and H3K27ac at the promoter, H3K36me3 over the short gene body. (b) ALB: almost nothing (no active marks, little H3K27me3): silent, not specifically repressed. HOXD10: no active marks, high H3K27me3 over the gene and its neighbours: Polycomb-silenced.
+
+**R2.** (a)
+
+| gene | K4me3 prom | K27ac prom | K36me3 body | K27me3 body | K9me3 body | state |
+|---|---|---|---|---|---|---|
+| CD74 | 8.3 | 68.6 | 4.6 | 0.3 | 0.6 | active |
+| CD79A | 7.4 | 45.3 | 2.1 | 0.3 | 0.4 | active |
+| PAX5 | 11.2 | 26.3 | 3.4 | 0.3 | 0.7 | active |
+| MS4A1 | 10.6 | 23.2 | 3.5 | 0.4 | 0.9 | active |
+| GAPDH | 10.1 | 37.1 | 4.3 | 0.5 | 1.2 | active |
+| ACTB | 1.8 | 0.2 | 1.0 | 0.4 | 0.6 | "silent"? see (b) |
+| ALB | 0.4 | 0.2 | 0.3 | 1.0 | 0.5 | silent, no strong mark |
+| NEUROD1 | 1.4 | 0.1 | 0.4 | 1.6 | 1.2 | silent, weak Polycomb |
+| HOXD10 | 0.3 | 0.1 | 0.4 | 3.6 | 1.4 | Polycomb |
+| HOXD13 | 0.7 | 0.0 | 0.3 | 3.7 | 1.2 | Polycomb |
+| ZNF43 | 2.6 | 0.7 | 0.7 | 0.4 | 2.1 | H3K9me3-marked, weakly transcribed |
+| ZNF208 | 0.5 | 0.2 | 0.3 | 0.3 | 1.3 | silent, weak H3K9me3 |
+
+All four B-cell genes (CD74, CD79A, PAX5, MS4A1) are active, as is GAPDH.
+
+(b) The ACTB gene in GENCODE runs from 5 526 409 to 5 563 902 on the − strand, so its "start" (the TSS used by `promoters(gene)`) is 5 563 902. That belongs to one long, rare transcript. The main ACTB transcripts start at about 5 530 601, where H3K4me3 is about 6. Lesson: `promoters()` on a *gene* uses the outermost transcript start, which is often not the main promoter. Use transcript start sites (as in *Genomic intervals*).
+
+(c) Silence does not always need a repressive mark. ALB is simply never switched on in B cells: no activators bind its liver enhancers, so it has no active marks, but no Polycomb either. Polycomb (H3K27me3) is concentrated on developmental regulators such as HOX genes, which must be kept firmly off, often CpG-island genes.
+
+**R3.** (a) For a − strand gene, downstream is to the left. Reversing puts every gene's downstream side on the right, so the profiles can be averaged. (b) Downstream, at about +760 bp: the +1 and +2 nucleosomes. (c) A **dip** exactly at the TSS: H3K4me3 2.9 at 0 vs 4.8 at −500 and 5.5 at +500; H3K27ac 6.5 vs 10.5 and 9.5. The TSS sits in the nucleosome-depleted region: no nucleosome, no histone mark. (d) H3K4me1 has a minimum near the TSS and is higher on the flanks (1.8 at −1 kb, 1.5 at +2 kb): it flanks promoters, as in the figure. H3K36me3 is lowest just downstream of the TSS and rises into the gene body (1.4 at +5 kb), but stays low upstream.
+
+**R4.** (a) 0.275: chr21 has about a quarter of the CpGs expected from its C and G content. Methylated CpGs mutate to TpG/CpA by deamination, so CpGs are lost over evolutionary time. (b) 365 of 602 TSSs (61%) are CpG-island-like. (c) Median H3K4me3 fold change 6.1 at CpG-island-like promoters, 0.6 at the others; 63% vs 11% have H3K4me3 above 5. CXXC-domain proteins (CFP1, part of the SET1 complex that writes H3K4me3; also KDM2A/B) bind **unmethylated** CpG and bring H3K4 methylation to CpG islands. This is one reason why CpG islands are marked as promoters even when the gene is expressed at a low level.
+:::
+
+## Where this leads
+
+- *Gene regulation* explains how transcription factors open the nucleosome-depleted regions you saw in R3.
+- *Genomic intervals* and *From reads to coverage* explain how the bigWigs and peaks used here are made.
+- The ChIP-seq block maps these marks yourself, including broad domains like the HOXD H3K27me3 domain.
+- *DNA methylation biology* returns to CpG islands, maintenance methylation (B6) and imprinting.
+
+## Key papers (optional further reading)
+
+*Not required reading and not examined.*
+
+- Luger et al. 1997, *Nature*. [Crystal structure of the nucleosome core particle at 2.8 Å resolution](https://doi.org/10.1038/38444).
+- Kornberg 1974, *Science*. [Chromatin structure: a repeating unit of histones and DNA](https://doi.org/10.1126/science.184.4139.868).
+- Strahl & Allis 2000, *Nature*. [The language of covalent histone modifications](https://doi.org/10.1038/47412).
+- Barski et al. 2007, *Cell*. [High-resolution profiling of histone methylations in the human genome](https://doi.org/10.1016/j.cell.2007.05.009).
+- Bird 2007, *Nature*. [Perceptions of epigenetics](https://doi.org/10.1038/nature05913).
+- Allis & Jenuwein 2016, *Nat Rev Genet*. [The molecular hallmarks of epigenetic control](https://doi.org/10.1038/nrg.2016.59).

@@ -1,0 +1,95 @@
+---
+title: "Quiz: what is epigenetics?"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+Short questions on chromatin, histone marks and DNA methylation. Try each on paper first, then open the answer.
+
+---
+
+**Q1.** Give the narrow (classical) definition of an epigenetic change. Is a histone mark that is put back by transcription factors every time the cell divides "epigenetic" in this sense?
+
+::: {.callout-note collapse="true" title="Answer"}
+A mitotically and/or meiotically heritable change in gene function that cannot be explained by a change in DNA sequence (Riggs et al. 1996). A mark that is simply rebuilt by transcription factors after each division is not self-perpetuating, so it is not epigenetic in the narrow sense; the information is carried by the transcription factors. In the broad sense used by "epigenomics" it would still be called epigenetic.
+:::
+
+---
+
+**Q2.** What is H3K27ac? Where in the genome do you find it, and what does it tell you?
+
+::: {.callout-note collapse="true" title="Answer"}
+Histone H3, lysine 27, acetylated. It sits at **active** promoters and enhancers and marks them as active (as opposed to primed or poised). It is written by p300/CBP and read by bromodomain proteins such as BRD4.
+:::
+
+---
+
+**Q3.** An MNase digest of chromatin gives bands at about 150, 350 and 550 bp. What are they, and what is the nucleosome repeat length?
+
+::: {.callout-note collapse="true" title="Answer"}
+Mono-, di- and tri-nucleosomes: MNase cuts only the linker DNA between nucleosomes. The steps between bands give the repeat length, about 200 bp here (147 bp core + linker).
+:::
+
+---
+
+**Q4.** A gene has a sharp H3K4me3 peak at its TSS and H3K36me3 over its body. A second gene is covered by a 100 kb domain of H3K27me3. Describe the state of each.
+
+::: {.callout-note collapse="true" title="Answer"}
+The first is actively transcribed: H3K4me3 marks its active promoter and H3K36me3 is laid down by SETD2 travelling with the elongating polymerase. The second is silenced by Polycomb (facultative heterochromatin), typical for developmental regulators such as HOX genes in a cell type where they are not needed.
+:::
+
+---
+
+**Q5.** What is the difference between constitutive and facultative heterochromatin? Give the mark of each.
+
+::: {.callout-note collapse="true" title="Answer"}
+Constitutive heterochromatin is compact in every cell type (repeats, pericentromeres, telomeres) and carries **H3K9me3**, read by HP1. Facultative heterochromatin is silent in some cell types but active in others (developmental genes, the inactive X) and carries **H3K27me3**, written by Polycomb PRC2.
+:::
+
+---
+
+**Q6.** Explain how a pattern of CpG methylation is copied when the DNA is replicated.
+
+::: {.callout-tip collapse="true" title="Hint"}
+What does a CpG look like just after the replication fork has passed?
+:::
+
+::: {.callout-note collapse="true" title="Answer"}
+CpG is palindromic, so both strands are methylated. After replication each daughter duplex has a methylated old strand and an unmethylated new strand: the CpG is **hemimethylated**. UHRF1 recognises hemimethylated CpGs and recruits DNMT1, which methylates the new strand. The pattern is copied site by site.
+:::
+
+---
+
+**Q7.** Why does a histone mark need a "read–write" mechanism to survive many cell divisions, while DNA methylation does not need one in the same way?
+
+::: {.callout-note collapse="true" title="Answer"}
+At replication the old, marked histones are split randomly between the two daughters and new unmarked histones fill the gaps, so each daughter inherits only about half of the marks; without re-marking the mark halves at every division ($0.5^n$). A writer that is activated by its own mark (PRC2 binding H3K27me3) restores the mark on the new neighbours. DNA methylation is copied from a template at each site by DNMT1, so it is kept directly.
+:::
+
+---
+
+**Q8.** The human genome has a CpG observed/expected ratio of about 0.25. Why so low, and why are CpG islands an exception?
+
+::: {.callout-note collapse="true" title="Answer"}
+Methylated cytosine deaminates spontaneously to thymine, and the resulting T:G mismatch is often repaired the wrong way, so methylated CpGs turn into TpG/CpA over evolutionary time. CpG islands are kept unmethylated (mostly at promoters), so they are not lost and keep a high CpG density (o/e above 0.6).
+:::
+
+---
+
+**Q9.** In GM12878 B cells the ALB (albumin) gene has no active marks and almost no H3K27me3. HOXD10 has no active marks and a lot of H3K27me3. Both are silent. What is the difference?
+
+::: {.callout-note collapse="true" title="Answer"}
+ALB is silent because the activators it needs (liver transcription factors) are absent: nothing opens or marks it. HOXD10 is actively kept silent by Polycomb, a system that represses developmental regulators that must stay firmly off in this cell type. Silence does not always need a repressive mark.
+:::
+
+---
+
+**Q10.** Genes with high H3K36me3 are highly expressed. Does H3K36me3 activate transcription? How could you test it?
+
+::: {.callout-note collapse="true" title="Answer"}
+Not necessarily: H3K36me3 is deposited by SETD2, which travels with the elongating polymerase, so expression causes the mark (reverse causation). Tests: block transcription and see whether the mark disappears; remove the writer (SETD2 knockout) or mutate the residue (H3K36M or K36R) and see whether expression changes.
+:::

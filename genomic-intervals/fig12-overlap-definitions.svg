@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 410" width="1120" height="410" font-family="Helvetica, Arial, sans-serif">
+<rect width="1120" height="410" fill="#ffffff"/>
+<text x="20.0" y="26.0" font-size="17" fill="#1b2a3a" font-weight="bold">Minimum overlap</text>
+<line x1="250.0" y1="64" x2="670.0" y2="64" stroke="#1b2a3a" stroke-width="2"/>
+<line x1="250.0" y1="64" x2="250.0" y2="57" stroke="#1b2a3a" stroke-width="2"/>
+<text x="250.0" y="52.0" font-size="14" fill="#1b2a3a" text-anchor="middle">0</text>
+<line x1="302.5" y1="64" x2="302.5" y2="60" stroke="#1b2a3a" stroke-width="2"/>
+<line x1="355.0" y1="64" x2="355.0" y2="57" stroke="#1b2a3a" stroke-width="2"/>
+<text x="355.0" y="52.0" font-size="14" fill="#1b2a3a" text-anchor="middle">1000</text>
+<line x1="407.5" y1="64" x2="407.5" y2="60" stroke="#1b2a3a" stroke-width="2"/>
+<line x1="460.0" y1="64" x2="460.0" y2="57" stroke="#1b2a3a" stroke-width="2"/>
+<text x="460.0" y="52.0" font-size="14" fill="#1b2a3a" text-anchor="middle">2000</text>
+<line x1="512.5" y1="64" x2="512.5" y2="60" stroke="#1b2a3a" stroke-width="2"/>
+<line x1="565.0" y1="64" x2="565.0" y2="57" stroke="#1b2a3a" stroke-width="2"/>
+<text x="565.0" y="52.0" font-size="14" fill="#1b2a3a" text-anchor="middle">3000</text>
+<line x1="617.5" y1="64" x2="617.5" y2="60" stroke="#1b2a3a" stroke-width="2"/>
+<line x1="670.0" y1="64" x2="670.0" y2="57" stroke="#1b2a3a" stroke-width="2"/>
+<text x="670.0" y="52.0" font-size="14" fill="#1b2a3a" text-anchor="middle">4000</text>
+<text x="20.0" y="52.0" font-size="14" fill="#5b6b7a" >position (bp)</text>
+<line x1="355.0" y1="101" x2="355.0" y2="222" stroke="#5b6b7a" stroke-width="1" stroke-dasharray="3,3"/>
+<line x1="565.0" y1="101" x2="565.0" y2="222" stroke="#5b6b7a" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="20.0" y="97.0" font-size="15" fill="#e67e22" font-weight="bold">peak (B), 2 kb</text>
+<rect x="355.0" y="84.0" width="210.0" height="16" rx="2" fill="#e67e22"/>
+<text x="20.0" y="126.0" font-size="15" fill="#2a6f97" font-weight="bold">promoter 1 (A)</text>
+<text x="20.0" y="142.0" font-size="13" fill="#5b6b7a" >1 bp = 0.1% of A</text>
+<rect x="564.9" y="120.0" width="105.0" height="16" rx="2" fill="#2a6f97"/>
+<text x="20.0" y="168.0" font-size="15" fill="#2a6f97" font-weight="bold">promoter 2 (A)</text>
+<text x="20.0" y="184.0" font-size="13" fill="#5b6b7a" >500 bp = 50% of A, 25% of B</text>
+<rect x="302.5" y="162.0" width="105.0" height="16" rx="2" fill="#2a6f97"/>
+<text x="20.0" y="210.0" font-size="15" fill="#2a6f97" font-weight="bold">promoter 3 (A)</text>
+<text x="20.0" y="226.0" font-size="13" fill="#5b6b7a" >1000 bp = 100% of A, 50% of B</text>
+<rect x="407.5" y="204.0" width="105.0" height="16" rx="2" fill="#2a6f97"/>
+<circle cx="565.0" cy="118" r="7" fill="none" stroke="#c0392b" stroke-width="2"/>
+<text x="553.0" y="120.0" font-size="13" fill="#c0392b" text-anchor="end" font-weight="bold">1 bp</text>
+<text x="722.0" y="60.0" font-size="14" fill="#1b2a3a" font-family="Courier New, monospace">intersect -u -a prom.bed -b peak.bed</text>
+<text x="770.0" y="97.0" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">default</text>
+<text x="875.0" y="97.0" font-size="15" fill="#1b2a3a" text-anchor="middle" font-family="Courier New, monospace" font-weight="bold">-f 0.5</text>
+<text x="1000.0" y="97.0" font-size="15" fill="#1b2a3a" text-anchor="middle" font-family="Courier New, monospace" font-weight="bold">-r -f 0.5</text>
+<line x1="722" y1="106" x2="1095" y2="106" stroke="#5b6b7a" stroke-width="1"/>
+<path d="M761,128 L767,135 L779,120" fill="none" stroke="#2e8b57" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M868,121 L882,135 M882,121 L868,135" fill="none" stroke="#a8324a" stroke-width="3.5" stroke-linecap="round"/>
+<path d="M993,121 L1007,135 M1007,121 L993,135" fill="none" stroke="#a8324a" stroke-width="3.5" stroke-linecap="round"/>
+<path d="M761,170 L767,177 L779,162" fill="none" stroke="#2e8b57" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M866,170 L872,177 L884,162" fill="none" stroke="#2e8b57" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M993,163 L1007,177 M1007,163 L993,177" fill="none" stroke="#a8324a" stroke-width="3.5" stroke-linecap="round"/>
+<path d="M761,212 L767,219 L779,204" fill="none" stroke="#2e8b57" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M866,212 L872,219 L884,204" fill="none" stroke="#2e8b57" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M991,212 L997,219 L1009,204" fill="none" stroke="#2e8b57" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<line x1="722" y1="232" x2="1095" y2="232" stroke="#5b6b7a" stroke-width="1"/>
+<text x="770.0" y="252.0" font-size="14" fill="#1b2a3a" text-anchor="middle">3 lines</text>
+<text x="875.0" y="252.0" font-size="14" fill="#1b2a3a" text-anchor="middle">2 lines</text>
+<text x="1000.0" y="252.0" font-size="14" fill="#1b2a3a" text-anchor="middle">1 line</text>
+<line x1="20" y1="268" x2="1100" y2="268" stroke="#cfd8e0" stroke-width="1.5"/>
+<text x="20.0" y="294.0" font-size="17" fill="#1b2a3a" font-weight="bold">One peak, two promoters</text>
+<line x1="140.0" y1="336" x2="440.0" y2="336" stroke="#1b2a3a" stroke-width="2"/>
+<line x1="140.0" y1="336" x2="140.0" y2="329" stroke="#1b2a3a" stroke-width="2"/>
+<text x="140.0" y="324.0" font-size="14" fill="#1b2a3a" text-anchor="middle">0</text>
+<line x1="177.5" y1="336" x2="177.5" y2="332" stroke="#1b2a3a" stroke-width="2"/>
+<line x1="215.0" y1="336" x2="215.0" y2="329" stroke="#1b2a3a" stroke-width="2"/>
+<text x="215.0" y="324.0" font-size="14" fill="#1b2a3a" text-anchor="middle">1000</text>
+<line x1="252.5" y1="336" x2="252.5" y2="332" stroke="#1b2a3a" stroke-width="2"/>
+<line x1="290.0" y1="336" x2="290.0" y2="329" stroke="#1b2a3a" stroke-width="2"/>
+<text x="290.0" y="324.0" font-size="14" fill="#1b2a3a" text-anchor="middle">2000</text>
+<line x1="327.5" y1="336" x2="327.5" y2="332" stroke="#1b2a3a" stroke-width="2"/>
+<line x1="365.0" y1="336" x2="365.0" y2="329" stroke="#1b2a3a" stroke-width="2"/>
+<text x="365.0" y="324.0" font-size="14" fill="#1b2a3a" text-anchor="middle">3000</text>
+<line x1="402.5" y1="336" x2="402.5" y2="332" stroke="#1b2a3a" stroke-width="2"/>
+<line x1="440.0" y1="336" x2="440.0" y2="329" stroke="#1b2a3a" stroke-width="2"/>
+<text x="440.0" y="324.0" font-size="14" fill="#1b2a3a" text-anchor="middle">4000</text>
+<text x="20.0" y="362.0" font-size="15" fill="#2a6f97" font-weight="bold">peak (A)</text>
+<rect x="215.0" y="350.0" width="150.0" height="16" rx="2" fill="#2a6f97"/>
+<text x="20.0" y="392.0" font-size="15" fill="#e67e22" font-weight="bold">prom. (B)</text>
+<rect x="177.5" y="380.0" width="75.0" height="16" rx="2" fill="#e67e22"/>
+<rect x="290.0" y="380.0" width="37.5" height="16" rx="2" fill="#e67e22"/>
+<text x="470.0" y="302.0" font-size="15" fill="#1b2a3a" font-family="Courier New, monospace" font-weight="bold">intersect</text>
+<rect x="464" y="310" width="206" height="50" rx="4" fill="#f4f6f8" stroke="#cfd8e0"/>
+<text x="470.0" y="329.0" font-size="14" fill="#1b2a3a" font-family="Courier New, monospace">chr1 1000 1500 peak1</text>
+<text x="470.0" y="349.0" font-size="14" fill="#1b2a3a" font-family="Courier New, monospace">chr1 2000 2500 peak1</text>
+<text x="470.0" y="380.0" font-size="13" fill="#5b6b7a" >2 lines: one per pair</text>
+<text x="680.0" y="302.0" font-size="15" fill="#1b2a3a" font-family="Courier New, monospace" font-weight="bold">intersect -u</text>
+<rect x="674" y="310" width="206" height="50" rx="4" fill="#f4f6f8" stroke="#cfd8e0"/>
+<text x="680.0" y="329.0" font-size="14" fill="#1b2a3a" font-family="Courier New, monospace">chr1 1000 3000 peak1</text>
+<text x="680.0" y="380.0" font-size="13" fill="#5b6b7a" >1 line: each A once</text>
+<text x="890.0" y="302.0" font-size="15" fill="#1b2a3a" font-family="Courier New, monospace" font-weight="bold">intersect -c</text>
+<rect x="884" y="310" width="206" height="50" rx="4" fill="#f4f6f8" stroke="#cfd8e0"/>
+<text x="890" y="329" font-size="14" fill="#1b2a3a" font-family="Courier New, monospace">chr1 1000 3000 peak1 <tspan fill="#2e8b57" font-weight="bold">2</tspan></text>
+<text x="890.0" y="380.0" font-size="13" fill="#5b6b7a" >1 line + count of B</text>
+</svg>

@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-662ae1889177880cb371f83234c0a158.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.7.30">
+
+  <meta name="author" content="Epigenetics">
+  <title>Epigenetics – Genomic intervals</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-bf56578b9c06c165c166475cd19dbcd1.css">
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Genomic intervals</h1>
+  <p class="subtitle">Coordinates, file formats and interval arithmetic on the command line and in R</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Epigenetics 
+</div>
+</div>
+</div>
+
+</section>
+<section id="about-this-lecture" class="slide level2">
+<h2>About this lecture</h2>
+<p>In RNA-seq you counted reads per <strong>gene</strong>: the annotation told you where to count. In epigenomics there is no such list. Peaks, domains, CpG islands, loops and methylated regions are all <strong>intervals</strong> that you find in the data, and most of the analysis is arithmetic on intervals: which overlap, how far apart, how many more than by chance.</p>
+<ul>
+<li><strong>Coordinates</strong>: genome builds, and the two numbering systems (0-based and 1-based) that cause most off-by-one bugs.</li>
+<li><strong>File formats</strong>: BED and narrowPeak, GTF, bedGraph and bigWig.</li>
+<li><strong>Interval operations</strong> with <code>bedtools</code> on the command line.</li>
+<li><strong>Is an overlap meaningful?</strong> Comparing with shuffled intervals.</li>
+<li>The same operations in R with <strong>GenomicRanges</strong>.</li>
+</ul>
+<aside class="notes">
+<p>This is a technical unit, but every later unit depends on it. Students are comfortable on the command line and in R, so the new content is the coordinate conventions and the interval logic. The running example uses ENCODE peaks from GM12878 (H3K4me3, H3K27ac, CTCF) and the GENCODE annotation, the same files as in the exercise. By the end they should be able to answer “what fraction of my peaks are at promoters, and is that more than chance?” in a few lines, both with bedtools and in R.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="everything-is-an-interval" class="slide level2 smaller">
+<h2>Everything is an interval</h2>
+
+<img data-src="fig01-everything-interval.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>A <strong>genomic interval</strong> is a chromosome, a start, an end and (sometimes) a strand: <code>chr21:33,000,000–33,002,000 (+)</code>.</li>
+<li>Genes, exons, promoters, peaks, CpG islands, methylated regions, reads, Hi-C loop anchors: all intervals.</li>
+<li>Questions about biology become questions about intervals: <em>do my peaks overlap promoters?</em> <em>which gene is nearest?</em> <em>how many reads fall in each peak?</em></li>
+</ul>
+<aside class="notes">
+<p>The point of the figure: the same line (a stretch of chromosome) carries many different kinds of intervals, coming from annotation (genes, CpG islands) and from data (reads, peaks). Once everything is an interval, the same handful of operations answers most questions. Counting reads in peaks, which students will do for differential accessibility, is literally the same as counting reads in genes, which they did for RNA-seq; only the intervals differ.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-coordinate-only-means-something-with-its-genome-build" class="slide level2 smaller">
+<h2>A coordinate only means something with its genome build</h2>
+
+<img data-src="fig02-genome-builds.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"><ul>
+<li>The reference genome is updated: <strong>GRCh37/hg19</strong> (2009) and <strong>GRCh38/hg38</strong> (2013) are both still used. The same gene has different coordinates in each.</li>
+<li>Chromosome names differ too: UCSC writes <code>chr1</code>, Ensembl/NCBI write <code>1</code>. Mitochondria: <code>chrM</code> vs <code>MT</code>.</li>
+<li><strong>Always check that all your files use the same build and the same naming.</strong> Mixing builds gives no error, just wrong answers.</li>
+<li>This course uses <strong>GRCh38</strong> with <code>chr</code> names throughout.</li>
+</ul>
+<aside class="notes">
+<p>The most common silent error in interval analysis. bedtools will happily intersect hg19 peaks with hg38 genes and report a few random overlaps. Check the header of the file, the methods section, or test: does a well-known gene’s TSS fall where it should? Converting between builds is done with liftOver (later slide), which is lossy. Also mention the newer telomere-to-telomere T2T-CHM13 assembly, which fills the remaining gaps in GRCh38 and is gaining use, but most epigenomic resources (ENCODE, Roadmap) are still in GRCh38 or hg19.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="two-ways-to-number-the-bases" class="slide level2 smaller">
+<h2>Two ways to number the bases</h2>
+
+<img data-src="fig03-zero-vs-one-based.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"><ul>
+<li><strong>1-based, closed</strong> <span class="math inline">[s, e]</span>: the first base is 1, and the end base is included. Used by <strong>GTF/GFF, SAM, VCF</strong>, and by genome browsers when they display a position.</li>
+<li><strong>0-based, half-open</strong> <span class="math inline">[s, e)</span>: count the gaps <em>between</em> bases from 0; the interval runs from gap <span class="math inline">s</span> to gap <span class="math inline">e</span>. Used by <strong>BED, bedGraph, BAM internally</strong>, and most programming languages.</li>
+<li>The bases <code>CGT</code> above are <code>chr1:3-5</code> in 1-based, <code>chr1 2 5</code> in BED. Length: <span class="math inline">e - s + 1</span> in 1-based, <span class="math inline">e - s</span> in BED.</li>
+</ul>
+<aside class="notes">
+<p>Draw the ruler on the board. In the 0-based half-open system the numbers label the boundaries between bases, so an interval is “from boundary 2 to boundary 5”, which contains the 3rd, 4th and 5th bases. The advantages: length is end minus start, adjacent intervals share an end/start number, and an empty interval (an insertion point) has start = end. Rule for converting: BED start = 1-based start − 1, end is the same number. The UCSC browser displays 1-based but stores 0-based; that is why a BED line chr1 2 5 shows as chr1:3-5. This slide will be on the exam in some form.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="getting-it-wrong" class="slide level2 smaller">
+<h2>Getting it wrong</h2>
+
+<img data-src="fig04-off-by-one.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:85.0%"><ul>
+<li>Copy a 1-based position from a VCF into a BED file without subtracting 1 and your SNP sits <strong>one base to the right</strong>: next to the CpG you wanted, not on it.</li>
+<li>For peaks of hundreds of bp an off-by-one hardly matters. For <strong>single bases</strong> (SNPs, CpGs, TSSs, Tn5 insertion sites) it changes the answer.</li>
+<li>Tools convert for you when they read a format they know (<code>rtracklayer::import</code> adds 1 to BED starts). Trouble starts when you write files by hand with <code>awk</code> or <code>paste</code>.</li>
+</ul>
+<aside class="notes">
+<p>A concrete failure, as in the figure: the VCF says the SNP is at 1043 (1-based), the G of a CpG. Written correctly to BED it is chr1 1042 1043; copied as chr1 1043 1044 it sits on the next base, outside the CpG, and an overlap with a CpG list misses it. The same happens to CpG positions from a methylation caller written to BED as pos, pos+1. The fix is boring but important: know which convention each file uses, and convert at the boundary. In the exercise, students make a TSS file with awk from the GTF and have to get exactly this right.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="bed-and-narrowpeak" class="slide level2 smaller">
+<h2>BED and narrowPeak</h2>
+
+<img data-src="fig05-bed-narrowpeak.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li><strong>BED</strong>: tab-separated; three required columns <code>chrom start end</code> (0-based), then optional <code>name score strand</code> and more.</li>
+<li><strong>narrowPeak</strong> (BED6+4): what peak callers like MACS write. Adds <code>signalValue</code> (enrichment), <code>pValue</code> and <code>qValue</code> (as <span class="math inline">-\log_{10}</span>), and <code>peak</code>: the summit, as an <strong>offset from start</strong>.</li>
+<li><strong>broadPeak</strong> is the same without the summit column, for broad domains.</li>
+</ul>
+<aside class="notes">
+<p>Walk through the example line (the numbers are illustrative; the exercise starts from real lines of the ENCODE CTCF file). Column 5 (score) is often a scaled integer for display (0–1000) and not a statistic; the statistics are in columns 7–9. pValue and qValue are already −log10, so 10 means 1e-10. Column 10 is easy to misread: it is not a genome coordinate; the summit is start + peak. Summits are useful because the binding site is usually within a few tens of bp of the summit, much narrower than the peak: motif analysis and footprinting use windows around summits. A value of −1 means “not available”: the ENCODE CTCF IDR peaks used in the exercise have pValue −1 in every line.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="annotation-gtf" class="slide level2 smaller">
+<h2>Annotation: GTF</h2>
+
+<img data-src="fig06-gtf-structure.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>Gene annotation (GENCODE, Ensembl) comes as <strong>GTF/GFF</strong>: one line per feature (<code>gene</code>, <code>transcript</code>, <code>exon</code>, <code>CDS</code>, …), <strong>1-based closed</strong>.</li>
+<li>Column 9 holds attributes: <code>gene_id</code>, <code>gene_name</code>, <code>gene_type</code>, <code>transcript_id</code>, ….</li>
+<li>A gene has several transcripts, often with <strong>different start sites</strong>. “The TSS of a gene” is a choice: the gene start, every transcript start, or a canonical transcript.</li>
+</ul>
+<aside class="notes">
+<p>Students met GTF files in RNA-seq when counting with featureCounts or building an index, but probably did not look inside. The hierarchy matters: gene lines span all their transcripts; transcripts are made of exons. GENCODE “basic” is a subset with the full-length, well-supported transcripts; we use it to keep files small. The TSS question is a real analysis choice: taking only the gene start can miss alternative promoters, and taking every transcript start counts some promoters many times. In the exercise students use transcript starts of protein-coding transcripts and collapse duplicates.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="strand-where-is-upstream" class="slide level2 smaller">
+<h2>Strand: where is upstream?</h2>
+
+<img data-src="fig07-strand-tss.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>Coordinates always increase left to right along the <strong>+ strand</strong>. A gene on the <strong>−</strong> strand is read right to left.</li>
+<li>TSS = <code>start</code> for a + gene, <code>end</code> for a − gene. <strong>Upstream</strong> of a − gene means <em>higher</em> coordinates.</li>
+<li>“Promoter = 2 kb upstream to 500 bp downstream of the TSS” therefore needs the strand. <code>GenomicRanges::promoters()</code> handles it; <code>bedtools slop -s -l 2000 -r 500</code> too.</li>
+</ul>
+<aside class="notes">
+<p>The second classic bug after off-by-one. In the figure, gene A is on + and gene B on −; their promoters point in opposite directions. If you build promoters as start − 2000 to start + 500 for every gene, all minus-strand promoters are in the gene body near the 3’ end instead. In BED, strand is column 6; in GTF column 7. Peaks from ChIP or ATAC have no strand (“.” or “*“), because chromatin has no direction; but the genes they are near do.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="signal-tracks-bedgraph-and-bigwig" class="slide level2 smaller">
+<h2>Signal tracks: bedGraph and bigWig</h2>
+
+<img data-src="fig08-coverage-to-bigwig.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>A <strong>signal track</strong> gives a number for every position: reads piled up, divided by a normaliser (CPM, fold change over input).</li>
+<li><strong>bedGraph</strong>: a BED-like text file, <code>chrom start end value</code>, one line per run of constant value.</li>
+<li><strong>bigWig</strong>: the same data in a compressed, <strong>indexed</strong> binary file, with precomputed summaries at several zoom levels. A browser can fetch just the region on screen, even over the internet.</li>
+</ul>
+<aside class="notes">
+<p>Pileup: count how many reads (or fragments) cover each base. bedGraph compresses runs of equal value into one line. bigWig (Kent et al.&nbsp;2010) adds an index and zoom levels, which is why a 500 MB bigWig opens instantly in IGV: it reads only the blocks for the current window and the right zoom level. ENCODE provides fold-change and p-value bigWigs for every ChIP experiment; in the chromatin-intro exercise we read regions from them with rtracklayer. Making bigWigs from BAM files is in the reads-to-coverage unit (deepTools bamCoverage).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-file-formats-at-a-glance" class="slide level2 smaller">
+<h2>The file formats at a glance</h2>
+
+<img data-src="fig09-format-family.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"><table class="caption-top">
+<thead>
+<tr class="header">
+<th>content</th>
+<th>text format</th>
+<th>indexed binary</th>
+<th>coordinates</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>intervals (peaks, regions)</td>
+<td>BED, narrowPeak</td>
+<td>bigBed</td>
+<td>0-based</td>
+</tr>
+<tr class="even">
+<td>signal per position</td>
+<td>bedGraph, wig</td>
+<td>bigWig</td>
+<td>0-based</td>
+</tr>
+<tr class="odd">
+<td>aligned reads</td>
+<td>SAM</td>
+<td>BAM, CRAM</td>
+<td>1-based in SAM text</td>
+</tr>
+<tr class="even">
+<td>annotation</td>
+<td>GTF, GFF3</td>
+<td>(tabix-indexed .gz)</td>
+<td>1-based</td>
+</tr>
+<tr class="odd">
+<td>variants</td>
+<td>VCF</td>
+<td>BCF</td>
+<td>1-based in VCF text</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>A reference slide. Rule of thumb: text formats are for small files and for reading with your eyes, indexed binary formats are for large files and random access. Any sorted, bgzip-compressed text file can be indexed with tabix for random access, which is how large BED and GTF files are often distributed. BAM stores 0-based positions internally, but samtools view prints 1-based POS in SAM text; again the tools convert for you.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-genome-browser-shows-intervals-and-signals-together" class="slide level2 smaller">
+<h2>A genome browser shows intervals and signals together</h2>
+
+<img data-src="fig10-browser-ctcf.png" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>Real data: GM12878 <strong>CTCF</strong> ChIP-seq on chr21. Top: the fold-change bigWig. Middle: the narrowPeak intervals, with summits. Bottom: GENCODE genes.</li>
+<li>Peaks are where the signal is high; a summit sits at the top of each peak.</li>
+<li>IGV (desktop or igv.js in a browser) loads all of these formats directly.</li>
+</ul>
+<aside class="notes">
+<p>This is a reconstruction of an IGV view in R (make-intervals-figs.R) so the exact files can be reproduced; in the exercise students load the same files in IGV. Point out a weak signal bump without a peak: the peak caller decided it was not significant. And point out how narrow CTCF peaks are: CTCF is a sequence-specific TF with a long motif, so its peaks are sharp, unlike the broad H3K27me3 domains in chromatin-intro.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-basic-interval-operations" class="slide level2 smaller">
+<h2>The basic interval operations</h2>
+
+<img data-src="fig11-interval-operations.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li><strong>intersect</strong>: the parts of A that overlap B (or: the A intervals that overlap any B, <code>-u</code>).</li>
+<li><strong>subtract</strong> / <code>-v</code>: A minus B, or the A intervals that overlap no B.</li>
+<li><strong>merge</strong>: collapse overlapping (or nearby, <code>-d</code>) intervals into one.</li>
+<li><strong>closest</strong>: for each A, the nearest B and the distance.</li>
+<li><strong>slop / flank</strong>: grow intervals, or make windows next to them. <strong>complement</strong>: the gaps.</li>
+</ul>
+<aside class="notes">
+<p>Go through each panel with the toy intervals. These six operations, plus coverage counting, cover most of what students will do. Every one exists in bedtools and in GenomicRanges, with slightly different names (table later). Insist on drawing toy intervals by hand when unsure what a command returns: it is faster than debugging.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="what-counts-as-an-overlap" class="slide level2 smaller">
+<h2>What counts as an overlap?</h2>
+
+<img data-src="fig12-overlap-definitions.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"><ul>
+<li>By default, <strong>one shared base</strong> is an overlap. A 1 bp touch between a 2 kb peak and a promoter counts.</li>
+<li>Ask for a minimum: <code>bedtools intersect -f 0.5</code> (at least 50% of A), <code>-r</code> (reciprocal), or a minimum number of bases (<code>minoverlap</code> in R).</li>
+<li>Report choices: one line per pair (default), each A once (<code>-u</code>), or count of B per A (<code>-c</code>). These give different numbers of “overlapping peaks”.</li>
+</ul>
+<aside class="notes">
+<p>Students are often surprised that “how many peaks overlap promoters” depends on these flags. Default intersect reports one line per overlapping pair, and each line is the overlapping <em>piece</em>, not the whole A interval (use -wa for whole intervals). A peak overlapping two promoters appears twice: if you count lines you overcount peaks. -u fixes that. In the figure the roles of A and B swap between the panels: in the left panel A is the promoters, because -f is a fraction of A. Fraction requirements matter most when comparing peak sets of different widths, for example narrow TF peaks against broad domains. There is no universally right choice; the rule is to state it in the methods.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="sorting-and-merging" class="slide level2 smaller">
+<h2>Sorting and merging</h2>
+
+<img data-src="fig13-sort-merge.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"><ul>
+<li>Most tools that walk along the genome need input <strong>sorted by chromosome, then start</strong>: <code>sort -k1,1 -k2,2n</code>.</li>
+<li><code>bedtools merge</code> collapses overlapping intervals: e.g.&nbsp;peaks from two replicates into one <strong>consensus</strong> set.</li>
+<li>Merging loses the per-interval information unless you ask for it (<code>-c 5 -o max</code>, keep the maximum score).</li>
+</ul>
+<aside class="notes">
+<p>Sorting: -k1,1 sorts by the first column only (as text), -k2,2n by the second column numerically. Lexical chromosome order (chr1, chr10, chr11, …, chr2) is fine for bedtools, as long as all files use the same order; some tools (bedtools with -g, bigWig tools) want the order of a genome file. Merging peaks from replicates or conditions into a consensus set is the first step of differential accessibility: you need one common set of regions to count reads in.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="nearest-feature-and-distance" class="slide level2 smaller">
+<h2>Nearest feature and distance</h2>
+
+<img data-src="fig14-closest-distance.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"><ul>
+<li><code>bedtools closest -a peaks.bed -b tss.bed -d</code> reports, for each peak, the nearest TSS and the distance (0 if they overlap).</li>
+<li>Ties (two TSSs at the same distance) give several lines per peak; <code>-t first</code> keeps one.</li>
+<li>The <strong>distribution</strong> of distances says what kind of element a mark labels: promoter marks sit at 0, enhancer marks kilobases away.</li>
+</ul>
+<aside class="notes">
+<p>Both files must be sorted. For non-overlapping intervals bedtools reports one more than the number of bases between them (the toy A [900,950) and B [700,800) in the operations figure: 100 bases apart, reported as 101). A signed distance relative to the gene’s direction (-D b) tells upstream from downstream, useful for promoter analyses. Nearest gene is the naive way to assign a peak to a gene; it is right perhaps half the time for enhancers. The integration unit uses Hi-C contacts and activity to do better (ABC model).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="windows-around-intervals" class="slide level2 smaller">
+<h2>Windows around intervals</h2>
+
+<img data-src="fig15-slop-flank-genome.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"><ul>
+<li><code>slop</code> extends each interval (e.g.&nbsp;±1 kb around a summit), <code>flank</code> makes windows next to it (e.g.&nbsp;the 2 kb upstream), both strand-aware with <code>-s</code>.</li>
+<li>Near a chromosome end, a window would run off the end: these tools need a <strong>genome file</strong> with chromosome lengths (<code>-g hg38.chrom.sizes</code>) and clip at the end.</li>
+</ul>
+<aside class="notes">
+<p>Note that flank needs both sides (-l 2000 -r 0); -l alone is an error. The genome file is a two-column text file: chromosome name and length. Download it from UCSC (hg38.chrom.sizes) or make it from a FASTA index (cut -f1,2 genome.fa.fai). The same file is needed for complement, shuffle and genomecov. In R, GRanges carries the chromosome lengths in its seqinfo, and trim() clips out-of-bound ranges.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="bedtools-on-the-command-line" class="slide level2">
+<h2>bedtools on the command line</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># promoter windows: 1 kb either side of each protein-coding TSS</span></span>
+<span id="cb1-2"><a aria-hidden="true" tabindex="-1"></a><span class="ex">bedtools</span> slop <span class="at">-i</span> tss.bed <span class="at">-g</span> hg38.chrom.sizes <span class="at">-b</span> 1000 <span class="op">&gt;</span> promoters.bed</span>
+<span id="cb1-3"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># H3K4me3 peaks at a promoter (each peak once) vs. not</span></span>
+<span id="cb1-5"><a aria-hidden="true" tabindex="-1"></a><span class="ex">bedtools</span> intersect <span class="at">-u</span> <span class="at">-a</span> h3k4me3.bed <span class="at">-b</span> promoters.bed <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span>
+<span id="cb1-6"><a aria-hidden="true" tabindex="-1"></a><span class="ex">bedtools</span> intersect <span class="at">-v</span> <span class="at">-a</span> h3k4me3.bed <span class="at">-b</span> promoters.bed <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span>
+<span id="cb1-7"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a aria-hidden="true" tabindex="-1"></a><span class="co"># candidate enhancers: H3K27ac peaks with no H3K4me3 peak and away from TSSs</span></span>
+<span id="cb1-9"><a aria-hidden="true" tabindex="-1"></a><span class="ex">bedtools</span> intersect <span class="at">-v</span> <span class="at">-a</span> h3k27ac.bed <span class="at">-b</span> h3k4me3.bed <span class="dt">\</span></span>
+<span id="cb1-10"><a aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="ex">bedtools</span> intersect <span class="at">-v</span> <span class="at">-a</span> <span class="at">-</span> <span class="at">-b</span> promoters.bed <span class="op">&gt;</span> enhancers.bed</span>
+<span id="cb1-11"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a aria-hidden="true" tabindex="-1"></a><span class="co"># distance from every enhancer to its nearest TSS</span></span>
+<span id="cb1-13"><a aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span> <span class="at">-k1,1</span> <span class="at">-k2,2n</span> enhancers.bed <span class="kw">|</span> <span class="ex">bedtools</span> closest <span class="at">-a</span> <span class="at">-</span> <span class="at">-b</span> tss.bed <span class="at">-d</span> <span class="at">-t</span> first</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Every command reads and writes plain text, so they <strong>chain with pipes</strong> (<code>-</code> means standard input).</li>
+</ul>
+<aside class="notes">
+<p>These are the exact commands of the exercise, so students see the shape before they type them. The enhancer definition (H3K27ac without H3K4me3, distal from promoters) is a common heuristic and a useful example of building a biological category from interval operations. Point out that wc -l counts lines; with -u each peak appears once, so lines = peaks.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="real-data-where-do-the-peaks-sit" class="slide level2 smaller">
+<h2>Real data: where do the peaks sit?</h2>
+
+<img data-src="fig16-distance-to-tss.png" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"><ul>
+<li>Distance from each GM12878 peak to the nearest protein-coding TSS.</li>
+<li><strong>H3K4me3</strong> peaks pile up at the TSS. <strong>H3K27ac</strong> is at TSSs <em>and</em> at distal enhancers. <strong>CTCF</strong> is mostly far from TSSs.</li>
+</ul>
+<aside class="notes">
+<p>The x axis is log scale (distance + 1). Read the figure as the answer to “what does this mark label?”. The H3K4me3 distribution confirms the promoter mark from chromatin-intro with real data. H3K27ac is bimodal: active promoters and active enhancers. CTCF sites are insulators and loop anchors and are spread through the genome. Numbers on the plot (fraction within 1 kb) are computed in make-intervals-figs.R; students reproduce them in the exercise.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="is-an-overlap-more-than-chance" class="slide level2 smaller">
+<h2>Is an overlap more than chance?</h2>
+
+<img data-src="fig17-shuffle-null.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"><ul>
+<li>Two sets of intervals will overlap somewhat <strong>by chance</strong>, more so if they are wide or numerous. A raw overlap count is not evidence.</li>
+<li><strong>Null by shuffling:</strong> place the same intervals (same widths) at random positions, count overlaps, repeat many times. Compare the observed count with this distribution.</li>
+<li>Enrichment = observed / mean of shuffled. Empirical p-value = (number of shuffles with at least the observed overlap + 1) / (number of shuffles + 1).</li>
+</ul>
+<aside class="notes">
+<p>This is a permutation test, the same idea as in any statistics course, applied to positions on the genome. bedtools shuffle does one shuffle; repeat it in a loop. The p-value can be no smaller than 1/(number of shuffles + 1), so 100 shuffles can at best give about 0.01. For large enrichments, report the fold enrichment and say that none of the N shuffles reached the observed value. Next slide: the real numbers.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="real-data-h3k27ac-and-ctcf-overlap-more-than-chance" class="slide level2 smaller">
+<h2>Real data: H3K27ac and CTCF overlap more than chance</h2>
+
+<img data-src="fig18-shuffle-real.png" class="quarto-figure quarto-figure-center r-stretch" style="width:85.0%"><ul>
+<li>Grey: overlaps between CTCF peaks and <strong>shuffled</strong> H3K27ac peaks (100 shuffles, same chromosome, same widths). Red: the observed overlap.</li>
+<li>The observed overlap is far outside the shuffled distribution: the two sets are associated.</li>
+</ul>
+<aside class="notes">
+<p>Numbers in the figure come from make-intervals-figs.R. A good discussion point: why do CTCF and H3K27ac co-occur at all, when CTCF is an insulator? Some CTCF sites are at active promoters and enhancers; others are not. The overlap is significant but partial, which a single p-value hides: report the fraction too.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="shuffling-has-assumptions" class="slide level2 smaller">
+<h2>Shuffling has assumptions</h2>
+
+<img data-src="fig19-shuffle-pitfalls.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"><ul>
+<li>A naive shuffle puts intervals in <strong>gaps</strong> (runs of N), centromeres and unmappable repeats, where real peaks can never be. This inflates enrichment.</li>
+<li>Keep shuffled intervals <strong>on the same chromosome</strong> (<code>-chrom</code>) and inside the mappable, non-blacklisted genome (<code>-incl</code> / <code>-excl</code>).</li>
+<li>Peaks also prefer GC-rich, gene-dense regions. The more of that structure the null ignores, the more “significant” everything looks. Choose the <strong>background</strong> with care; state it.</li>
+</ul>
+<aside class="notes">
+<p>The general lesson: a p-value is only as good as its null. Here the null is “the intervals could have been anywhere”, and “anywhere” includes places where no assay can produce a peak. Better nulls restrict to the accessible genome, or match on GC content and distance to TSS. Tools such as regioneR (R) and LOLA formalise this; the idea is the same. The same issue comes back with motif enrichment (GC-matched background) and in the ML units (matched negatives).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="intervals-in-r-granges" class="slide level2 smaller">
+<h2>Intervals in R: GRanges</h2>
+
+<img data-src="fig20-granges-anatomy.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li><code>GRanges</code> (package <strong>GenomicRanges</strong>): <code>seqnames</code>, <code>ranges</code> (start, end, width, <strong>1-based closed</strong>), <code>strand</code>, and any metadata columns (<code>mcols</code>).</li>
+<li><code>seqinfo</code> holds chromosome names, lengths and genome build: R refuses to compare ranges from different builds if they are set.</li>
+<li><code>rtracklayer::import()</code> reads BED, narrowPeak, GTF and bigWig, and converts BED’s 0-based starts to 1-based.</li>
+</ul>
+<aside class="notes">
+<p>GRanges is the Bioconductor container for intervals and is used under the hood by DESeq2’s rowRanges, ChIPseeker, DiffBind, csaw, minfi, and many more. Students used SummarizedExperiment through DESeq2; its rowRanges is a GRanges. The seqinfo check is a nice safety net: genome(gr) &lt;- “hg38” on both objects and a comparison with an hg19 object fails loudly instead of silently.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="findoverlaps-returns-pairs" class="slide level2">
+<h2>findOverlaps returns pairs</h2>
+
+<img data-src="fig21-findoverlaps-hits.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a aria-hidden="true" tabindex="-1"></a>hits <span class="ot">&lt;-</span> <span class="fu">findOverlaps</span>(peaks, promoters)      <span class="co"># one row per overlapping pair</span></span>
+<span id="cb2-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">queryHits</span>(hits); <span class="fu">subjectHits</span>(hits)          <span class="co"># indices into peaks and promoters</span></span>
+<span id="cb2-3"><a aria-hidden="true" tabindex="-1"></a>peaks[<span class="fu">unique</span>(<span class="fu">queryHits</span>(hits))]              <span class="co"># each peak once</span></span>
+<span id="cb2-4"><a aria-hidden="true" tabindex="-1"></a><span class="fu">overlapsAny</span>(peaks, promoters)               <span class="co"># TRUE/FALSE per peak (= bedtools -u)</span></span>
+<span id="cb2-5"><a aria-hidden="true" tabindex="-1"></a><span class="fu">countOverlaps</span>(peaks, promoters)             <span class="co"># number of promoters per peak (= -c)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<aside class="notes">
+<p>findOverlaps is the general operation; everything else is a convenience on top. The Hits object is a two-column table of indices, like a sparse matrix of overlaps. This is the same many-to-many issue as with bedtools default output: one peak can hit several promoters. subsetByOverlaps(peaks, promoters) is the R equivalent of intersect -u.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="bedtools-genomicranges" class="slide level2 smaller">
+<h2>bedtools ↔︎ GenomicRanges</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>task</th>
+<th>bedtools</th>
+<th>GenomicRanges</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A that overlap B</td>
+<td><code>intersect -u</code></td>
+<td><code>subsetByOverlaps(A, B)</code></td>
+</tr>
+<tr class="even">
+<td>A that do not overlap B</td>
+<td><code>intersect -v</code></td>
+<td><code>A[!overlapsAny(A, B)]</code></td>
+</tr>
+<tr class="odd">
+<td>all overlapping pairs</td>
+<td><code>intersect -wa -wb</code></td>
+<td><code>findOverlaps(A, B)</code></td>
+</tr>
+<tr class="even">
+<td>merge overlapping</td>
+<td><code>merge</code></td>
+<td><code>reduce(A)</code></td>
+</tr>
+<tr class="odd">
+<td>nearest and distance</td>
+<td><code>closest -d</code></td>
+<td><code>distanceToNearest(A, B)</code></td>
+</tr>
+<tr class="even">
+<td>windows around TSS</td>
+<td><code>slop -s -l -r</code> / <code>flank</code></td>
+<td><code>promoters(A, upstream, downstream)</code>, <code>flank()</code>, <code>resize()</code></td>
+</tr>
+<tr class="odd">
+<td>gaps</td>
+<td><code>complement</code></td>
+<td><code>gaps(A)</code></td>
+</tr>
+<tr class="even">
+<td>count per interval</td>
+<td><code>intersect -c</code>, <code>coverage</code></td>
+<td><code>countOverlaps(A, B)</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Use the command line for big files and pipelines, R for analysis, statistics and plots. The answers must agree (exercise R5).</li>
+</ul>
+<aside class="notes">
+<p>A reference table; students do not need to memorise it. The key differences: GRanges is 1-based, bedtools 0-based (the numbers in the files differ by one at the start, the bases are the same); reduce() and findOverlaps() respect strand unless you say ignore.strand = TRUE (peaks have strand *, which overlaps both strands, so it rarely bites); distances differ by one: for two ranges that do not overlap, distanceToNearest reports the number of bases between them (0 for directly adjacent ranges), bedtools closest -d reports one more (1 for adjacent). Both report 0 for overlapping ranges. Small differences like these are why comparing the two in the exercise is instructive.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="same-bases-different-numbers" class="slide level2 smaller">
+<h2>Same bases, different numbers</h2>
+
+<img data-src="fig22-bed-to-granges.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:85.0%"><ul>
+<li>The BED line <code>chr1  2  5</code> and the GRanges <code>chr1:3-5</code> are the <strong>same three bases</strong>.</li>
+<li><code>rtracklayer::import()</code> and <code>export()</code> convert in both directions. If you read a BED file with <code>read.table()</code> and build a GRanges yourself, <strong>add 1 to the start</strong>.</li>
+</ul>
+<aside class="notes">
+<p>The single most common bug when students mix R and the command line: reading a BED with read.table or fread and calling GRanges(chr, IRanges(start, end)) without adding 1. Then every range is 1 bp too long on the left. For peaks it is harmless; for CpGs or SNPs it is wrong. makeGRangesFromDataFrame has a starts.in.df.are.0based argument for exactly this.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="moving-between-builds-liftover" class="slide level2 smaller">
+<h2>Moving between builds: liftOver</h2>
+
+<img data-src="fig23-liftover.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"><ul>
+<li><strong>liftOver</strong> maps intervals from one build to another using a <strong>chain file</strong> of aligned blocks (UCSC tool; <code>rtracklayer::liftOver</code> in R).</li>
+<li>Some intervals <strong>fail</strong> (deleted or rearranged in the new build) or <strong>split</strong> into pieces. Check how many you lose.</li>
+<li>Better, when possible: re-align the raw reads to the new build, or download the data already processed in the build you need.</li>
+</ul>
+<aside class="notes">
+<p>Chain files list blocks of sequence that align between builds and the gaps between them. An interval that spans a gap in the alignment comes out split or not at all. For small intervals (SNPs, CpGs, narrow peaks) liftOver is usually fine; for broad domains and anything near rearranged regions, be careful. ENCODE has reprocessed its data on GRCh38, which is why we use their GRCh38 files directly.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="summary" class="slide level2 smaller">
+<h2>Summary</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>idea</th>
+<th>key fact</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>intervals</td>
+<td>chrom, start, end, strand; same build and same chromosome names in every file</td>
+</tr>
+<tr class="even">
+<td>0-based half-open</td>
+<td>BED, bedGraph: length = end − start; first base is 0</td>
+</tr>
+<tr class="odd">
+<td>1-based closed</td>
+<td>GTF, SAM, VCF, GRanges, browser display: first base is 1</td>
+</tr>
+<tr class="even">
+<td>narrowPeak</td>
+<td>BED6 + signalValue, −log10 p, −log10 q, summit offset from start</td>
+</tr>
+<tr class="odd">
+<td>bigWig</td>
+<td>indexed binary signal track; read only the region you need</td>
+</tr>
+<tr class="even">
+<td>strand</td>
+<td>TSS and upstream depend on strand; peaks have none</td>
+</tr>
+<tr class="odd">
+<td>bedtools</td>
+<td>intersect (-u, -v, -c, -f), merge, closest, slop/flank (-g), shuffle</td>
+</tr>
+<tr class="even">
+<td>GenomicRanges</td>
+<td>findOverlaps, subsetByOverlaps, reduce, distanceToNearest, promoters</td>
+</tr>
+<tr class="odd">
+<td>overlap statistics</td>
+<td>compare with shuffled intervals; the null decides the answer</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>Students should leave able to convert a coordinate between conventions by hand, read a narrowPeak line, build strand-aware promoter windows, answer an overlap question with both bedtools and GRanges, and explain why an overlap count needs a null. Next: from reads to coverage, where these intervals come from.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="key-papers-optional-further-reading" class="slide level2 smaller">
+<h2>Key papers (optional further reading)</h2>
+<p><em>Not required reading and not examined. For those who want the primary literature.</em></p>
+<ul>
+<li>Quinlan &amp; Hall 2010, <em>Bioinformatics</em>. <a href="https://doi.org/10.1093/bioinformatics/btq033">BEDTools: a flexible suite of utilities for comparing genomic features</a>. The tool of this unit.</li>
+<li>Lawrence et al.&nbsp;2013, <em>PLoS Comput Biol</em>. <a href="https://doi.org/10.1371/journal.pcbi.1003118">Software for computing and annotating genomic ranges</a>. GenomicRanges and the Bioconductor interval infrastructure.</li>
+<li>Li et al.&nbsp;2009, <em>Bioinformatics</em>. <a href="https://doi.org/10.1093/bioinformatics/btp352">The Sequence Alignment/Map format and SAMtools</a>. The SAM/BAM formats.</li>
+<li>Kent et al.&nbsp;2010, <em>Bioinformatics</em>. <a href="https://doi.org/10.1093/bioinformatics/btq351">BigWig and BigBed: enabling browsing of large distributed datasets</a>. Why a bigWig opens instantly.</li>
+<li>Frankish et al.&nbsp;2019, <em>Nucleic Acids Res</em>. <a href="https://doi.org/10.1093/nar/gky955">GENCODE reference annotation for the human and mouse genomes</a>. The annotation we use.</li>
+<li>ENCODE Project Consortium 2020, <em>Nature</em>. <a href="https://doi.org/10.1038/s41586-020-2493-4">Expanded encyclopaedias of DNA elements in the human and mouse genomes</a>. Where the course data come from.</li>
+</ul>
+
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'visible',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: false,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+            const codeEl = trigger.previousElementSibling.cloneNode(true);
+            for (const childEl of codeEl.children) {
+              if (isCodeAnnotation(childEl)) {
+                childEl.remove();
+              }
+            }
+            return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

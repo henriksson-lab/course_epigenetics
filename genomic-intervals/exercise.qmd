@@ -1,0 +1,405 @@
+---
+title: "Exercise: Genomic intervals"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+## Goal
+
+After this exercise you will be able to:
+
+- Convert coordinates between the **0-based half-open** (BED) and **1-based closed** (GTF, VCF, GRanges) conventions, by hand.
+- Read a **narrowPeak** line: width, summit, and which columns are statistics.
+- Build **strand-aware** TSS and promoter files from a GENCODE GTF with `awk` and [`bedtools slop`](https://bedtools.readthedocs.io/en/latest/content/tools/slop.html).
+- Answer "what fraction of my peaks sit at promoters?" with [`bedtools intersect`](https://bedtools.readthedocs.io/en/latest/content/tools/intersect.html) and with [GenomicRanges](https://bioconductor.org/packages/release/bioc/html/GenomicRanges.html), and get the same answer.
+- Test whether two sets of peaks overlap more than by chance with [`bedtools shuffle`](https://bedtools.readthedocs.io/en/latest/content/tools/shuffle.html), and explain why the choice of background matters.
+
+## Background
+
+**Coordinates.** BED and bedGraph count the boundaries *between* bases from 0, so an interval `start end` covers the bases after boundary `start` up to boundary `end`: length = end − start. GTF, SAM, VCF and GRanges number the bases from 1 and include both ends: length = end − start + 1. To go from 1-based `[s, e]` to BED: `s − 1, e`.
+
+**narrowPeak** is BED6 + 4 columns: `signalValue` (enrichment), `pValue` and `qValue` (both as $-\log_{10}$, −1 = not available), and `peak`, the summit as an offset from `start`.
+
+**Strand.** The TSS of a transcript is its `start` on the + strand and its `end` on the − strand. Upstream of a − strand gene is towards higher coordinates.
+
+**Overlap counts and chance.** Overlap by default means at least one shared base. Report each peak once (`-u`) when counting peaks. Whether an overlap is *more than chance* needs a null: shuffle one set to random positions (same widths) many times and compare.
+
+## Data
+
+The exercise uses three GM12878 peak sets from ENCODE (H3K4me3, H3K27ac, CTCF; GRCh38), the GENCODE v46 basic annotation, the hg38 chromosome sizes, and the ENCODE blacklist. From the course repository:
+
+```bash
+data/download.sh genomic-intervals      # about 35 MB
+mkdir -p ~/epi/intervals && cd ~/epi/intervals
+D=/path/to/course/data                  # where download.sh put the files
+```
+
+You need `bedtools` and the usual Unix tools (see *Install the software you need*). Everything runs in seconds on a laptop or a login node; on the cluster you can also wrap the commands in an `sbatch` script.
+
+## By hand
+
+Do these on paper.
+
+**B1. Coordinates.**
+
+(a) A VCF file reports a SNP at `chr7  117559590` (1-based). Write the BED line for this single base.
+
+(b) A BED line reads `chr2  1000  1250`. Write the region as a browser would display it (1-based), and give its length.
+
+(c) A GTF exon is `chr1  11869  12227  +`. Write it as a BED line and give its length.
+
+(d) Two BED intervals `chr1 100 200` and `chr1 200 300`. Do they overlap? Do they share a base?
+
+**B2. A narrowPeak line.** This is the first line of the ENCODE CTCF file:
+
+```
+chr12  53676107  53676353  .  1000  .  497.29450  -1.00000  4.87269  126
+```
+
+(a) How wide is the peak?
+
+(b) At which position is the summit? Give it as a one-base BED interval and as a 1-based position.
+
+(c) What does −1 in column 8 mean? What $q$-value does column 9 correspond to?
+
+(d) Can you use column 5 to rank peaks by strength? Which column would you use?
+
+**B3. Promoters and strand.** A transcript is annotated in a GTF as `chr5  1000000  1050000` on the **−** strand.
+
+(a) Where is its TSS (1-based)?
+
+(b) Define the promoter as 2 kb upstream to 500 bp downstream of the TSS. Give it as a 1-based interval and as a BED line.
+
+(c) A script computes every promoter as `start − 2000` to `start + 500`, ignoring strand. Where does this put the window for this transcript, and what lies there?
+
+**B4. Interval operations.** On a 1000 bp genome (`chrT`, BED coordinates):
+
+```
+A:  chrT 100 300    chrT 500 600    chrT 700 900
+B:  chrT 250 450    chrT 850 950
+```
+
+Draw A and B on a ruler, then give the output of:
+
+(a) `bedtools intersect -a A -b B`  (b) `intersect -u`  (c) `intersect -v`  (d) `subtract -a A -b B`
+
+(e) `cat A B | sort -k1,1 -k2,2n | bedtools merge`  (f) `closest -a A -b B -d` (the distance column)  (g) `complement -i A` with the genome file `chrT 1000`.
+
+**B5. Counting overlaps.** `bedtools intersect -u -a h3k4me3.bed -b promoters.bed | wc -l` gives 21 390, but the same command without `-u` gives 63 214 lines. The H3K4me3 file has 53 912 peaks.
+
+(a) What fraction of the H3K4me3 peaks overlap a promoter?
+
+(b) How can the default output have more lines than there are peaks? Think about what a gene with many transcripts looks like in the promoter file.
+
+**B6. Overlaps by hand in R terms.** Queries `q1 = [1, 10]`, `q2 = [20, 40]`, `q3 = [50, 60]`; subjects `s1 = [5, 25]`, `s2 = [35, 55]` (1-based, as in GRanges). Write the result of `findOverlaps(q, s)` as a table of (query, subject) pairs, and give `countOverlaps(q, s)` and `overlapsAny(q, s)`.
+
+**B7. Is it more than chance?**
+
+(a) 30 of your peaks overlap a set of enhancers. In 999 shuffles of the peaks, the mean overlap was 12, and 4 shuffles reached 30 or more. Compute the enrichment and the empirical $p$-value $(k + 1) / (N + 1)$.
+
+(b) In another test none of 99 shuffles reached the observed value. What is the smallest $p$-value you can report, and how could you report the result honestly?
+
+(c) A colleague shuffles peaks over the whole genome file, including chrY, unplaced contigs and the centromeres. Will the enrichment be too high or too low? Why?
+
+## On the command line
+
+### C1 — Look at the data
+
+```bash
+for m in h3k4me3 h3k27ac ctcf; do
+  zcat $D/gm12878_${m}_peaks.bed.gz | sort -k1,1 -k2,2n > $m.bed
+done
+head -3 ctcf.bed
+wc -l *.bed
+awk '{ w = $3 - $2; s += w } END { print s / NR }' ctcf.bed      # mean width
+cut -f1 ctcf.bed | sort | uniq -c | sort -k1,1n | head             # peaks per chromosome
+```
+
+(a) How many peaks are in each file, and what is the mean width of each kind? Why are CTCF peaks so much narrower than H3K27ac peaks?
+
+(b) Which chromosomes appear? Is there a chrY in the CTCF file? Count the H3K27ac peaks on chrY. GM12878 comes from a woman: how do you explain what you find?
+
+### C2 — A TSS file from the GTF
+
+```bash
+zcat $D/gencode.v46.basic.annotation.gtf.gz \
+ | awk -F'\t' -v OFS='\t' '$3 == "transcript" && $9 ~ /transcript_type "protein_coding"/ {
+     match($9, /gene_name "[^"]+"/); g = substr($9, RSTART + 11, RLENGTH - 12)
+     tss = ($7 == "+") ? $4 : $5
+     print $1, tss - 1, tss, g, ".", $7 }' \
+ | sort -u | sort -k1,1 -k2,2n > tss.bed
+wc -l tss.bed
+grep -w APP tss.bed
+```
+
+(a) Explain each part of the `awk` program. Why `tss - 1, tss`?
+
+(b) APP (amyloid precursor protein, chr21) is on the − strand. Check that its TSSs are at the **end** of the gene: compare with the gene line, `zcat $D/gencode.v46.basic.annotation.gtf.gz | awk -F'\t' '$3=="gene" && $9 ~ /gene_name "APP";/' | cut -f1,4,5,7`. How many distinct TSSs does APP have?
+
+(c) Replace `sort -u | sort -k1,1 -k2,2n` by `sort -k1,1 -k2,2n -u`. How many lines do you get now? Why fewer? (Read `man sort` on `-u` with `-k`.)
+
+### C3 — Promoters and the fraction of peaks at promoters
+
+```bash
+bedtools slop -i tss.bed -g $D/hg38.chrom.sizes -b 1000 > promoters.bed
+for m in h3k4me3 h3k27ac ctcf; do
+  echo $m $(bedtools intersect -u -a $m.bed -b promoters.bed | wc -l) $(wc -l < $m.bed)
+done
+```
+
+(a) What fraction of each kind of peak overlaps a promoter (±1 kb of a protein-coding TSS)? Does the order match the table of marks in *What is epigenetics?*
+
+(b) Run the same without `-u` for H3K4me3 (B5).
+
+### C4 — Strong peaks and weak peaks
+
+Only about 40% of H3K4me3 peaks are at a protein-coding promoter, although H3K4me3 is "the promoter mark". Rank the peaks by `signalValue` (column 7):
+
+```bash
+sort -k7,7gr h3k4me3.bed | head -10000 | bedtools intersect -u -a - -b promoters.bed | wc -l
+sort -k7,7g  h3k4me3.bed | head -10000 | bedtools intersect -u -a - -b promoters.bed | wc -l
+```
+
+(a) What fraction of the 10 000 strongest and of the 10 000 weakest peaks are at a promoter?
+
+(b) Give two reasons why a real H3K4me3 peak could be far from a protein-coding TSS. (Hint: what else has a promoter? What does the weak end of a peak list contain?)
+
+### C5 — Candidate enhancers and distances to TSSs
+
+```bash
+bedtools intersect -v -a h3k27ac.bed -b h3k4me3.bed \
+  | bedtools intersect -v -a - -b promoters.bed > enhancers.bed
+wc -l enhancers.bed
+for m in h3k4me3 h3k27ac ctcf enhancers; do
+  bedtools closest -a $m.bed -b tss.bed -d -t first | awk '{ print $NF }' | sort -n \
+    | awk -v m=$m '{ a[NR] = $1 } END { print m, "median distance", a[int(NR / 2)] }'
+done
+```
+
+(a) How many candidate enhancers are there, and what is their median distance to the nearest protein-coding TSS? Compare with the medians for the three peak sets.
+
+(b) Which gene is nearest to the enhancer that is farthest from any TSS, and how far away is it? (`sort -k17,17nr | head -1` on the `closest` output.) Is "nearest gene" a convincing target at that distance?
+
+### C6 — Merge and Jaccard
+
+```bash
+cat h3k4me3.bed h3k27ac.bed | cut -f1-3 | sort -k1,1 -k2,2n | bedtools merge > active.bed
+wc -l active.bed
+bedtools jaccard -a h3k4me3.bed -b h3k27ac.bed
+bedtools jaccard -a ctcf.bed    -b h3k27ac.bed
+```
+
+(a) How many merged "active" regions are there? Why fewer than the sum of the two files?
+
+(b) The [Jaccard index](https://bedtools.readthedocs.io/en/latest/content/tools/jaccard.html) is (bases in the intersection) / (bases in the union). Compare the two values. Does a small Jaccard index mean that CTCF and H3K27ac are unrelated? (Hold on to your answer for C7.)
+
+### C7 — Is the CTCF–H3K27ac overlap more than chance?
+
+```bash
+zcat $D/hg38_blacklist.bed.gz > blacklist.bed
+grep -P '^chr([0-9]+|X|Y)\t' $D/hg38.chrom.sizes > genome.txt   # main chromosomes only
+
+bedtools intersect -u -a ctcf.bed -b h3k27ac.bed | wc -l        # observed
+
+for i in $(seq 1 100); do
+  bedtools shuffle -i h3k27ac.bed -g genome.txt -chrom -excl blacklist.bed -seed $i \
+    | sort -k1,1 -k2,2n | bedtools intersect -u -a ctcf.bed -b - | wc -l
+done > shuffled.txt
+
+for i in $(seq 1 100); do
+  bedtools shuffle -i h3k27ac.bed -g $D/hg38.chrom.sizes -seed $i \
+    | sort -k1,1 -k2,2n | bedtools intersect -u -a ctcf.bed -b - | wc -l
+done > shuffled_naive.txt
+```
+
+(a) What is the observed number of CTCF peaks that overlap an H3K27ac peak? What is the mean over the 100 restricted shuffles, the enrichment, and the empirical $p$-value?
+
+(b) Compute the same enrichment with the naive shuffle. Which is larger, and why (B7c)?
+
+(c) Combine with C6: the overlap is highly significant, but what *fraction* of CTCF peaks overlap H3K27ac? Write one sentence for a results section that reports both.
+
+## In R
+
+You need `GenomicRanges` and `rtracklayer` (see *Install the software you need*). Set `D` to the data folder:
+
+```r
+library(GenomicRanges); library(rtracklayer)
+D <- "/path/to/course/data"
+```
+
+### R1 — Import peaks and check the coordinates
+
+```r
+ctcf <- import(file.path(D, "gm12878_ctcf_peaks.bed.gz"), format = "narrowPeak")
+ctcf
+raw <- read.table(file.path(D, "gm12878_ctcf_peaks.bed.gz"), nrows = 1)
+raw$V2; start(ctcf)[1]                   # start in the file vs in R
+raw$V3 - raw$V2; width(ctcf)[1]          # widths
+summit <- start(ctcf) + ctcf$peak        # careful: which convention?
+summit[1]
+```
+
+(a) By how much do the starts differ, and do the widths agree?
+
+(b) Is `start(ctcf) + ctcf$peak` the 1-based position of the summit? Compare with your answer to B2b.
+
+(c) Build a GRanges yourself with `GRanges(raw$V1, IRanges(raw$V2, raw$V3))`. What is its width, and what went wrong? Fix it.
+
+### R2 — TSSs and promoters in R
+
+```r
+gtf <- import(file.path(D, "gencode.v46.basic.annotation.gtf.gz"))
+tx  <- gtf[gtf$type == "transcript" & gtf$transcript_type == "protein_coding"]
+tss <- resize(tx, width = 1, fix = "start")        # fix = "start" respects strand
+mcols(tss) <- mcols(tss)["gene_name"]
+tss <- tss[!duplicated(paste(as.character(tss), tss$gene_name))]
+length(tss)
+tss[tss$gene_name == "APP"]
+prom <- tss + 1000                                  # 1000 bp on each side
+```
+
+(a) How many TSSs do you get? Compare with `wc -l tss.bed` from C2.
+
+(b) Check the APP TSSs against C2b. Why does `resize(..., fix = "start")` put the TSS of a − strand transcript at its end?
+
+(c) Is `tss + 1000` the same set of bases as `bedtools slop -b 1000` on the one-base BED TSS? Check the width.
+
+### R3 — Fractions at promoters, again
+
+```r
+marks <- c("h3k4me3", "h3k27ac", "ctcf")
+pk <- lapply(setNames(marks, marks), function(m)
+  import(file.path(D, sprintf("gm12878_%s_peaks.bed.gz", m)), format = "narrowPeak"))
+sapply(pk, function(p) mean(overlapsAny(p, prom, ignore.strand = TRUE)))
+sapply(pk, function(p) length(findOverlaps(p, prom, ignore.strand = TRUE)))
+```
+
+(a) Do the fractions agree exactly with C3? Do the pair counts agree with the default (no `-u`) line counts?
+
+(b) Why is `ignore.strand = TRUE` harmless here? (What strand do the peaks have?)
+
+### R4 — Distances to the nearest TSS
+
+```r
+dist <- lapply(pk, function(p) mcols(distanceToNearest(p, tss, ignore.strand = TRUE))$distance)
+sapply(dist, median)
+sapply(dist, function(d) mean(d <= 1000))
+par(mfrow = c(1, 3))
+for (m in marks) hist(log10(dist[[m]] + 1), breaks = 60, main = m, xlab = "log10(distance + 1)")
+```
+
+(a) Compare the medians with C5. They differ by a little for some peaks: test with two adjacent ranges, `distance(GRanges("chr1", IRanges(1, 5)), GRanges("chr1", IRanges(6, 10)))`, and the same pair with `bedtools closest -d`. What is the rule?
+
+(b) Describe the three histograms in one sentence each. Which mark labels promoters, which labels promoters and enhancers, and which is mostly elsewhere?
+
+### R5 — Plot the shuffle test
+
+```r
+obs  <- 7464                                    # your observed value from C7
+shuf <- scan("shuffled.txt"); naive <- scan("shuffled_naive.txt")
+hist(shuf, xlim = c(0, obs * 1.05), col = "grey", main = "CTCF peaks overlapping H3K27ac",
+     xlab = "overlapping CTCF peaks")
+abline(v = obs, col = "red", lwd = 3)
+c(restricted = obs / mean(shuf), naive = obs / mean(naive))
+```
+
+What would the histogram look like if the two sets were unrelated?
+
+## Hints
+
+::: {.callout-tip collapse="true" title="Hint 1 — coordinates (B1, B2, R1)"}
+From 1-based `[s, e]` to BED: start − 1, end unchanged. From BED to 1-based: start + 1, end unchanged. A single base at 1-based position $p$ is the BED line `p−1  p`. For the summit: `start + peak` is a BED boundary; the summit base is `start + peak` to `start + peak + 1` in BED. The narrowPeak format is described on the [UCSC format page](https://genome.ucsc.edu/FAQ/FAQformat.html#format12).
+:::
+
+::: {.callout-tip collapse="true" title="Hint 2 — strand (B3, C2, R2)"}
+On the − strand the gene is read from right to left: the TSS is the largest coordinate, and "2 kb upstream" means 2 kb towards larger coordinates. [`resize`](https://rdrr.io/bioc/GenomicRanges/man/intra-range-methods.html) with `fix = "start"` and [`promoters`](https://rdrr.io/bioc/GenomicRanges/man/intra-range-methods.html) use the strand for you.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 3 — bedtools (B4, C3–C7)"}
+Draw it. `-u` reports each A once if it overlaps anything; `-v` reports A that overlap nothing; `subtract` removes the overlapping bases. [`merge`](https://bedtools.readthedocs.io/en/latest/content/tools/merge.html) needs sorted input. [`closest -d`](https://bedtools.readthedocs.io/en/latest/content/tools/closest.html) reports 0 for overlaps; for non-overlapping intervals bedtools reports one more than the number of bases between them. [`complement`](https://bedtools.readthedocs.io/en/latest/content/tools/complement.html) returns the gaps. `sort -k7,7gr` sorts on column 7 as a general number, largest first.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 4 — shuffling (B7, C7)"}
+Enrichment = observed / mean of the shuffles. Empirical $p = (k + 1) / (N + 1)$, where $k$ is the number of shuffles at least as extreme as the observation and $N$ the number of shuffles. `-chrom` keeps each interval on its own chromosome; `-excl` keeps them out of the given regions. See [`bedtools shuffle`](https://bedtools.readthedocs.io/en/latest/content/tools/shuffle.html) and the ENCODE [blacklist paper](https://doi.org/10.1038/s41598-019-45839-z).
+:::
+
+::: {.callout-tip collapse="true" title="Hint 5 — GenomicRanges (R1–R4)"}
+[`import`](https://rdrr.io/bioc/rtracklayer/man/BEDFile-class.html) with `format = "narrowPeak"` reads the extra columns. [`overlapsAny`](https://rdrr.io/bioc/GenomicRanges/man/findOverlaps-methods.html), [`findOverlaps`](https://rdrr.io/bioc/GenomicRanges/man/findOverlaps-methods.html) and [`distanceToNearest`](https://rdrr.io/bioc/GenomicRanges/man/nearest-methods.html) are the R versions of `intersect -u`, `intersect` and `closest -d`. `gr + 1000` widens a range by 1000 on each side. [`makeGRangesFromDataFrame`](https://rdrr.io/bioc/GenomicRanges/man/makeGRangesFromDataFrame.html) has an argument `starts.in.df.are.0based`.
+:::
+
+## Solutions
+
+::: {.callout-note collapse="true" title="Solutions — by hand"}
+
+**B1.** (a) `chr7  117559589  117559590`. (b) `chr2:1001-1250`, length 250. (c) `chr1  11868  12227`, length $12227 - 11868 = 359$ (in 1-based: $12227 - 11869 + 1 = 359$). (d) They touch but do not overlap: the first covers BED boundaries 100–200 (1-based bases 101–200), the second 200–300 (bases 201–300). They share no base, and `bedtools intersect` reports nothing.
+
+**B2.** (a) $53676353 - 53676107 = 246$ bp. (b) Summit boundary $53676107 + 126 = 53676233$, so the summit base is `chr12  53676233  53676234` in BED, position 53 676 234 in 1-based. (c) −1 means not available: the IDR pipeline did not report a $p$-value. $q = 10^{-4.87} \approx 1.3 \times 10^{-5}$. (d) No: column 5 is a display score (here 1000 for every strong peak). Rank by `signalValue` (column 7), or by the $p$/$q$ columns when they are available.
+
+**B3.** (a) The end, 1 050 000. (b) Upstream is towards larger coordinates: 1-based `[1049501, 1052000]` (500 bp downstream = 1 049 501 … 1 050 000, 2 kb upstream = 1 050 001 … 1 052 000); BED `chr5  1049500  1052000`. (c) `998000`–`1000500`: around the annotated start, which for a − strand transcript is its **3' end**. The "promoter" is at the end of the gene, in the last exon or beyond.
+
+**B4.**
+(a) `chrT 250 300`, `chrT 850 900`.
+(b) `chrT 100 300`, `chrT 700 900`.
+(c) `chrT 500 600`.
+(d) `chrT 100 250`, `chrT 500 600`, `chrT 700 850`.
+(e) `chrT 100 450`, `chrT 500 600`, `chrT 700 950`.
+(f) 0 for `100 300` (overlaps B1); for `500 600` the nearest is `250 450`, with 50 bases between them (450–499), reported by bedtools as **51**; 0 for `700 900`.
+(g) `chrT 0 100`, `chrT 300 500`, `chrT 600 700`, `chrT 900 1000`.
+
+**B5.** (a) $21390 / 53912 = 0.40$. (b) The default reports one line per *overlapping pair*. A protein-coding gene often has several transcripts with nearby start sites, and each gives its own promoter window; a peak over that promoter overlaps all of them and is reported once per window.
+
+**B6.** Pairs (1, 1), (2, 1), (2, 2), (3, 2). `countOverlaps` = 1, 2, 1. `overlapsAny` = TRUE, TRUE, TRUE.
+
+**B7.** (a) Enrichment $30 / 12 = 2.5$; $p = (4 + 1) / (999 + 1) = 0.005$. (b) $p = (0 + 1)/(99 + 1) = 0.01$; report "$p \le 0.01$ (none of 99 shuffles reached the observed value)", together with the enrichment. Run more shuffles if you need a smaller bound. (c) Too high. Shuffled peaks land in places where no real peak can be (centromeres, gaps, unplaced contigs, chrY in a female cell line), so the shuffled overlaps are too low and the ratio observed/shuffled too high.
+:::
+
+::: {.callout-note collapse="true" title="Solutions — command line"}
+
+**C1.** (a) H3K4me3 53 912 peaks (mean width 781 bp), H3K27ac 52 455 (1156 bp), CTCF 44 217 (181 bp; median 216, maximum 452). CTCF is a sequence-specific TF: it binds one ~20 bp motif, so its peaks are as narrow as the fragment size allows. Histone marks cover several nucleosomes, and H3K27ac spreads over whole enhancers and promoters. (b) chr1–22 and chrX. No chrY in the CTCF file; one H3K27ac peak on chrY (`chrY 15882971 15883161`, weak: signalValue 5). GM12878 is female, so this must be reads from elsewhere that align to chrY: sequence shared with the X chromosome, or a repeat. A good reason to check, and to exclude chrY from a female sample.
+
+**C2.** (a) `-F'\t'` splits on tabs only (column 9 contains spaces); `$3 == "transcript"` keeps transcript lines; the regular expression keeps protein-coding transcripts; `match`/`substr` cut the gene name out of the attributes; the TSS is column 4 (start) on + and column 5 (end) on −; GTF is 1-based, so the one-base BED interval is `tss − 1, tss`. You should get 56 260 lines. (b) The APP gene is `chr21 25880535 26171128 −`; its TSSs are at 26 140 460 and 26 170 654 … 26 171 128 (BED end column): the large coordinates, the end of the gene. APP has 8 distinct TSSs in GENCODE basic. (c) 56 154 lines. With `-k`, `sort -u` compares only the sort keys (chromosome and start), so two TSSs at the same position are collapsed even if they belong to different genes or strands. A silent loss of data.
+
+**C3.** (a) H3K4me3 21 390 / 53 912 = **39.7%**, H3K27ac 14 320 / 52 455 = **27.3%**, CTCF 6016 / 44 217 = **13.6%**. The order matches: H3K4me3 is the promoter mark, H3K27ac marks active promoters and enhancers, CTCF binds mostly away from promoters. (b) 63 214 lines (B5).
+
+**C4.** (a) Strongest 10 000: 8653 (**87%**); weakest 10 000: 1559 (**16%**). (b) Promoters of genes that are not protein-coding (lncRNAs, unannotated transcripts); bivalent or weakly active sites, and enhancers, which carry some H3K4me3 when highly active. The weak end of a peak list also contains noise. Including all GENCODE basic transcript start sites raises the fraction from 21 390 to 24 715 peaks (46%).
+
+**C5.** (a) 22 330 candidate enhancers, median distance **28.6 kb** to the nearest protein-coding TSS, against 2.7 kb for H3K4me3, 10.9 kb for H3K27ac and 23.8 kb for CTCF peaks. (H3K4me3's median is above 1 kb because 60% of its peaks are not at protein-coding promoters, C4.) (b) `chr21:5101753-5102097`, nearest TSS TPTE at about 5.4 Mb. At that distance (in a region near the chr21 centromere with few genes) nearest-gene assignment means little; the integration unit uses contacts and activity instead.
+
+**C6.** (a) 65 446 merged regions: wherever an H3K4me3 and an H3K27ac peak overlap (active promoters), merging makes one region of the two. (b) H3K4me3–H3K27ac 0.41, CTCF–H3K27ac 0.018. The CTCF Jaccard is small partly because CTCF peaks are narrow (few bases each), so even complete overlap of every CTCF peak would give a small fraction of the union. Jaccard measures shared *bases*, not shared *sites*.
+
+**C7.** (a) Observed 7464. Restricted shuffles: mean about 1120 (range about 1000–1200; the exact numbers depend on the order of lines and the seeds), enrichment about **6.7**, empirical $p = 1/101 \approx 0.01$ (none of the 100 shuffles came close). (b) Naive: mean about 950, enrichment about **7.8**: larger, because shuffled peaks fall into regions where no peak can be (B7c). (c) "17% of CTCF peaks (7464 of 44 217) overlapped an H3K27ac peak, 6.7 times more than expected from 100 shuffles of the H3K27ac peaks within their chromosomes outside blacklisted regions ($p \le 0.01$)." Significant but partial: most CTCF sites are not in active regulatory elements.
+:::
+
+::: {.callout-note collapse="true" title="Solutions — R"}
+
+**R1.** (a) R's start is the file's start + 1 (53 676 108 vs 53 676 107); widths agree (246). (b) No. `start` is now 1-based (file start + 1), so `start + peak` = 53 676 234, which happens to be the 1-based summit position: (file start + 1) + peak. Coincidence of conventions, worth checking each time. (c) Width 247: the 0-based start was used as a 1-based start, adding a base on the left. Fix: `IRanges(raw$V2 + 1, raw$V3)`, or `makeGRangesFromDataFrame(..., starts.in.df.are.0based = TRUE)`.
+
+**R2.** (a) 56 260, the same as C2 (with the plain `sort -u`). (b) The APP TSSs are the same 8 positions. `fix = "start"` keeps the *biological* start of the range, which is the end coordinate on the − strand. (c) Yes: `tss + 1000` has width 2001, the TSS base plus 1000 on each side, the same bases as `slop -b 1000` on the BED TSS.
+
+**R3.** (a) Identical fractions: 0.397, 0.273, 0.136. The pair counts (63 214, 43 651, 15 474) equal the default bedtools line counts. (b) The peaks have strand `*`, which overlaps ranges on either strand anyway.
+
+**R4.** (a) For non-overlapping ranges, `distance()` counts the bases between them (adjacent ranges: 0), bedtools reports one more (adjacent: 1). Overlaps are 0 in both. (b) H3K4me3: a large spike at 0 (promoters) plus a spread of weaker peaks; H3K27ac: a spike at 0 and a broad hump at 10–100 kb (enhancers); CTCF: mostly 1–100 kb, a small spike at 0.
+
+**R5.** The red line would sit inside the grey histogram. Here it is about seven times further right than the mean of the shuffles.
+:::
+
+## Where this leads
+
+- *From reads to coverage* makes the peaks and bigWigs we used here from raw reads.
+- *Differential accessibility* merges peaks from many samples into a consensus set (C6) and counts reads in it.
+- *Motifs and footprinting* uses windows around summits (B2) and GC-matched backgrounds, a better null than C7.
+- *Linking regulatory elements to genes* replaces "nearest gene" (C5b) with contacts and activity.
+
+## Key papers (optional further reading)
+
+*Not required reading and not examined.*
+
+- Quinlan & Hall 2010, *Bioinformatics*. [BEDTools: a flexible suite of utilities for comparing genomic features](https://doi.org/10.1093/bioinformatics/btq033).
+- Lawrence et al. 2013, *PLoS Comput Biol*. [Software for computing and annotating genomic ranges](https://doi.org/10.1371/journal.pcbi.1003118).
+- Kent et al. 2010, *Bioinformatics*. [BigWig and BigBed: enabling browsing of large distributed datasets](https://doi.org/10.1093/bioinformatics/btq351).
+- Frankish et al. 2019, *Nucleic Acids Res*. [GENCODE reference annotation for the human and mouse genomes](https://doi.org/10.1093/nar/gky955).
+- ENCODE Project Consortium 2020, *Nature*. [Expanded encyclopaedias of DNA elements in the human and mouse genomes](https://doi.org/10.1038/s41586-020-2493-4).

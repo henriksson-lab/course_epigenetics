@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 450" width="1120" height="450" font-family="Helvetica, Arial, sans-serif">
+<defs><pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="#ffffff"/><line x1="0" y1="0" x2="0" y2="8" stroke="#5b6b7a" stroke-width="3"/></pattern><pattern id="hatchl" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#c5ced6" stroke-width="2"/></pattern></defs>
+<rect width="1120" height="450" fill="#ffffff"/>
+<g transform="translate(30,0)">
+<rect x="340" y="108" width="60" height="50" fill="url(#hatchl)"/>
+<rect x="340" y="212" width="60" height="22" fill="url(#hatchl)"/>
+<rect x="340" y="298" width="60" height="32" fill="url(#hatchl)"/>
+<rect x="500" y="108" width="40" height="50" fill="url(#hatchl)"/>
+<rect x="500" y="212" width="40" height="22" fill="url(#hatchl)"/>
+<rect x="500" y="298" width="40" height="32" fill="url(#hatchl)"/>
+<rect x="650" y="108" width="50" height="50" fill="url(#hatchl)"/>
+<rect x="650" y="212" width="50" height="22" fill="url(#hatchl)"/>
+<rect x="650" y="298" width="50" height="32" fill="url(#hatchl)"/>
+<path d="M50,48 L50,40 L330,40 L330,48" fill="none" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="190.0" y="33" text-anchor="middle" font-size="15" fill="#1b2a3a">gene-dense, GC-rich</text>
+<path d="M340,48 L340,40 L400,40 L400,48" fill="none" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="370.0" y="33" text-anchor="middle" font-size="15" fill="#1b2a3a">gap (NNNN)</text>
+<path d="M500,48 L500,40 L540,40 L540,48" fill="none" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="520.0" y="33" text-anchor="middle" font-size="15" fill="#1b2a3a">centromere</text>
+<path d="M650,48 L650,40 L700,40 L700,48" fill="none" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="675.0" y="33" text-anchor="middle" font-size="15" fill="#1b2a3a">blacklist repeat</text>
+<path d="M720,48 L720,40 L1040,40 L1040,48" fill="none" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="880.0" y="33" text-anchor="middle" font-size="15" fill="#1b2a3a">gene-poor, AT-rich</text>
+<rect x="58" y="58" width="9" height="12" fill="#1b2a3a"/>
+<rect x="74" y="58" width="9" height="12" fill="#1b2a3a"/>
+<rect x="92" y="58" width="9" height="12" fill="#1b2a3a"/>
+<rect x="105" y="58" width="9" height="12" fill="#1b2a3a"/>
+<rect x="128" y="58" width="9" height="12" fill="#1b2a3a"/>
+<rect x="146" y="58" width="9" height="12" fill="#1b2a3a"/>
+<rect x="160" y="58" width="9" height="12" fill="#1b2a3a"/>
+<rect x="183" y="58" width="9" height="12" fill="#1b2a3a"/>
+<rect x="201" y="58" width="9" height="12" fill="#1b2a3a"/>
+<rect x="222" y="58" width="9" height="12" fill="#1b2a3a"/>
+<rect x="240" y="58" width="9" height="12" fill="#1b2a3a"/>
+<rect x="256" y="58" width="9" height="12" fill="#1b2a3a"/>
+<rect x="279" y="58" width="9" height="12" fill="#1b2a3a"/>
+<rect x="297" y="58" width="9" height="12" fill="#1b2a3a"/>
+<rect x="315" y="58" width="9" height="12" fill="#1b2a3a"/>
+<rect x="430" y="58" width="9" height="12" fill="#1b2a3a"/>
+<rect x="470" y="58" width="9" height="12" fill="#1b2a3a"/>
+<rect x="575" y="58" width="9" height="12" fill="#1b2a3a"/>
+<rect x="612" y="58" width="9" height="12" fill="#1b2a3a"/>
+<rect x="790" y="58" width="9" height="12" fill="#1b2a3a"/>
+<rect x="930" y="58" width="9" height="12" fill="#1b2a3a"/>
+<line x1="40" y1="64" x2="1050" y2="64" stroke="#5b6b7a" stroke-width="1"/>
+<text x="34" y="69" text-anchor="end" font-size="13" fill="#5b6b7a">genes</text>
+<rect x="40" y="82" width="460" height="22" rx="11" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.5"/>
+<rect x="540" y="82" width="510" height="22" rx="11" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.5"/>
+<path d="M492,83 L520.0,93.0 L548,83 L548,103 L520.0,93.0 L492,103 Z" fill="#a8324a" stroke="none"/>
+<rect x="50" y="83" width="280" height="20" fill="#c9d8e6"/>
+<rect x="340" y="82" width="60" height="22" fill="url(#hatch)" stroke="#1b2a3a" stroke-width="1"/>
+<rect x="650" y="82" width="50" height="22" fill="#5b6b7a" stroke="#1b2a3a" stroke-width="1"/>
+<text x="40" y="128" font-size="16" font-weight="bold" fill="#1b2a3a">Observed peaks</text>
+<line x1="40" y1="150" x2="1050" y2="150" stroke="#5b6b7a" stroke-width="1.5"/>
+<rect x="62" y="136" width="16" height="14" fill="#2a6f97"/>
+<rect x="98" y="136" width="16" height="14" fill="#2a6f97"/>
+<rect x="133" y="136" width="16" height="14" fill="#2a6f97"/>
+<rect x="165" y="136" width="16" height="14" fill="#2a6f97"/>
+<rect x="196" y="136" width="16" height="14" fill="#2a6f97"/>
+<rect x="230" y="136" width="16" height="14" fill="#2a6f97"/>
+<rect x="262" y="136" width="16" height="14" fill="#2a6f97"/>
+<rect x="300" y="136" width="16" height="14" fill="#2a6f97"/>
+<rect x="445" y="136" width="16" height="14" fill="#2a6f97"/>
+<rect x="595" y="136" width="16" height="14" fill="#2a6f97"/>
+<rect x="860" y="136" width="16" height="14" fill="#2a6f97"/>
+<text x="40" y="206" font-size="16" font-weight="bold" fill="#1b2a3a">Naive shuffle: anywhere on the genome </text>
+<path d="M405,195 L417,207 M405,207 L417,195" stroke="#c0392b" stroke-width="3"/>
+<text x="424" y="206" font-size="16" fill="#c0392b">= impossible positions</text>
+<line x1="40" y1="228" x2="1050" y2="228" stroke="#5b6b7a" stroke-width="1.5"/>
+<rect x="90" y="214" width="16" height="14" fill="#2a6f97"/>
+<rect x="250" y="214" width="16" height="14" fill="#2a6f97"/>
+<rect x="455" y="214" width="16" height="14" fill="#2a6f97"/>
+<rect x="600" y="214" width="16" height="14" fill="#2a6f97"/>
+<rect x="760" y="214" width="16" height="14" fill="#2a6f97"/>
+<rect x="840" y="214" width="16" height="14" fill="#2a6f97"/>
+<rect x="935" y="214" width="16" height="14" fill="#2a6f97"/>
+<rect x="1010" y="214" width="16" height="14" fill="#2a6f97"/>
+<rect x="362" y="214" width="16" height="14" fill="#2a6f97"/>
+<rect x="512" y="214" width="16" height="14" fill="#2a6f97"/>
+<rect x="667" y="214" width="16" height="14" fill="#2a6f97"/>
+<path d="M359,210 L381,232 M359,232 L381,210" stroke="#c0392b" stroke-width="3"/>
+<path d="M509,210 L531,232 M509,232 L531,210" stroke="#c0392b" stroke-width="3"/>
+<path d="M664,210 L686,232 M664,232 L686,210" stroke="#c0392b" stroke-width="3"/>
+<text x="370" y="250" text-anchor="middle" font-size="14" fill="#c0392b">in gap</text>
+<text x="520" y="250" text-anchor="middle" font-size="14" fill="#c0392b">in centromere</text>
+<text x="675" y="250" text-anchor="middle" font-size="14" fill="#c0392b">unmappable</text>
+<text x="40" y="294" font-size="16" font-weight="bold" fill="#1b2a3a">Restricted shuffle: <tspan font-family="Courier New, monospace" font-weight="normal">bedtools shuffle -chrom -incl mappable.bed -excl blacklist.bed</tspan></text>
+<rect x="40" y="302" width="300" height="22" fill="#2e8b57" fill-opacity="0.18"/>
+<line x1="40" y1="324" x2="340" y2="324" stroke="#2e8b57" stroke-width="3"/>
+<rect x="400" y="302" width="100" height="22" fill="#2e8b57" fill-opacity="0.18"/>
+<line x1="400" y1="324" x2="500" y2="324" stroke="#2e8b57" stroke-width="3"/>
+<rect x="540" y="302" width="110" height="22" fill="#2e8b57" fill-opacity="0.18"/>
+<line x1="540" y1="324" x2="650" y2="324" stroke="#2e8b57" stroke-width="3"/>
+<rect x="700" y="302" width="350" height="22" fill="#2e8b57" fill-opacity="0.18"/>
+<line x1="700" y1="324" x2="1050" y2="324" stroke="#2e8b57" stroke-width="3"/>
+<rect x="70" y="306" width="16" height="14" fill="#2a6f97"/>
+<rect x="180" y="306" width="16" height="14" fill="#2a6f97"/>
+<rect x="300" y="306" width="16" height="14" fill="#2a6f97"/>
+<rect x="420" y="306" width="16" height="14" fill="#2a6f97"/>
+<rect x="470" y="306" width="16" height="14" fill="#2a6f97"/>
+<rect x="560" y="306" width="16" height="14" fill="#2a6f97"/>
+<rect x="620" y="306" width="16" height="14" fill="#2a6f97"/>
+<rect x="730" y="306" width="16" height="14" fill="#2a6f97"/>
+<rect x="820" y="306" width="16" height="14" fill="#2a6f97"/>
+<rect x="905" y="306" width="16" height="14" fill="#2a6f97"/>
+<rect x="990" y="306" width="16" height="14" fill="#2a6f97"/>
+<text x="1050" y="344" text-anchor="end" font-size="14" fill="#2e8b57">green = allowed (mappable, not blacklisted)</text>
+<rect x="170" y="374" width="720" height="40" rx="6" fill="#f4f6f8" stroke="#d5dde5"/>
+<text x="530" y="400" text-anchor="middle" font-size="16" fill="#1b2a3a">Peaks also prefer GC-rich, gene-dense regions → match the background to that too</text>
+</g>
+</svg>
