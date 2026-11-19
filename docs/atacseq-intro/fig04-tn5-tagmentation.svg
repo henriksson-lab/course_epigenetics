@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 430" width="1120" height="430" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker><marker id="ahk" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker><marker id="ahd" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker><marker id="ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker><marker id="ahb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a6f97"/></marker><marker id="aho" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e67e22"/></marker></defs>
+<rect width="1120" height="430" fill="#ffffff"/>
+<text x="30.0" y="32.0" font-size="17" text-anchor="start" font-weight="bold" fill="#1b2a3a">1. Tn5 dimer loaded with adapters</text>
+<ellipse cx="160.0" cy="150.0" rx="30.0" ry="44.0" fill="#8c9db0" stroke="#1b2a3a" stroke-width="1.5"/>
+<ellipse cx="220.0" cy="150.0" rx="30.0" ry="44.0" fill="#8c9db0" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="190.0" y="220.0" font-size="15" text-anchor="middle" fill="#1b2a3a">Tn5 transposase</text>
+<line x1="38.0" y1="144.0" x2="132.0" y2="144.0" stroke="#2a6f97" stroke-width="3"/>
+<line x1="38.0" y1="154.0" x2="132.0" y2="154.0" stroke="#2a6f97" stroke-width="3"/>
+<line x1="248.0" y1="144.0" x2="342.0" y2="144.0" stroke="#e67e22" stroke-width="3"/>
+<line x1="248.0" y1="154.0" x2="342.0" y2="154.0" stroke="#e67e22" stroke-width="3"/>
+<text x="85.0" y="128.0" font-size="15" text-anchor="middle" font-weight="bold" fill="#2a6f97">adapter A</text>
+<text x="295.0" y="128.0" font-size="15" text-anchor="middle" font-weight="bold" fill="#e67e22">adapter B</text>
+<text x="85.0" y="180.0" font-size="13" text-anchor="middle" fill="#2a6f97">(read 1 primer)</text>
+<text x="295.0" y="180.0" font-size="13" text-anchor="middle" fill="#e67e22">(read 2 primer)</text>
+<text x="190.0" y="270.0" font-size="14" text-anchor="middle" fill="#5b6b7a">each adapter ends in the 19-bp</text>
+<text x="190.0" y="288.0" font-size="14" text-anchor="middle" fill="#5b6b7a">mosaic end that Tn5 binds</text>
+<text x="392.0" y="32.0" font-size="17" text-anchor="start" font-weight="bold" fill="#1b2a3a">2. Cut and paste in one step</text>
+<line x1="390.0" y1="150.0" x2="720.0" y2="150.0" stroke="#1b2a3a" stroke-width="2.5"/>
+<line x1="390.0" y1="162.0" x2="720.0" y2="162.0" stroke="#1b2a3a" stroke-width="2.5"/>
+<ellipse cx="532.0" cy="110.0" rx="30.0" ry="26.0" fill="#8c9db0" stroke="#1b2a3a" stroke-width="1.5"/>
+<ellipse cx="586.0" cy="110.0" rx="30.0" ry="26.0" fill="#8c9db0" stroke="#1b2a3a" stroke-width="1.5"/>
+<line x1="470.0" y1="100.0" x2="506.0" y2="100.0" stroke="#2a6f97" stroke-width="4"/>
+<line x1="612.0" y1="100.0" x2="648.0" y2="100.0" stroke="#e67e22" stroke-width="4"/>
+<line x1="532.0" y1="140.0" x2="532.0" y2="154.0" stroke="#c0392b" stroke-width="3"/>
+<line x1="586.0" y1="158.0" x2="586.0" y2="172.0" stroke="#c0392b" stroke-width="3"/>
+<path d="M532,188 h54" fill="none" stroke="#c0392b" stroke-width="2"/>
+<line x1="532.0" y1="182.0" x2="532.0" y2="194.0" stroke="#c0392b" stroke-width="2"/>
+<line x1="586.0" y1="182.0" x2="586.0" y2="194.0" stroke="#c0392b" stroke-width="2"/>
+<text x="559.0" y="214.0" font-size="15" text-anchor="middle" fill="#c0392b">cuts 9 bp apart</text>
+<text x="555.0" y="270.0" font-size="14" text-anchor="middle" fill="#5b6b7a">Tn5 cuts both strands and joins</text>
+<text x="555.0" y="288.0" font-size="14" text-anchor="middle" fill="#5b6b7a">an adapter to each new end</text>
+<text x="765.0" y="32.0" font-size="17" text-anchor="start" font-weight="bold" fill="#1b2a3a">3. Two tagged ends, 9 bp gap</text>
+<line x1="770.0" y1="100.0" x2="900.0" y2="100.0" stroke="#1b2a3a" stroke-width="2.5"/>
+<line x1="770.0" y1="112.0" x2="954.0" y2="112.0" stroke="#1b2a3a" stroke-width="2.5"/>
+<rect x="900.0" y="95.0" width="54.0" height="10.0" rx="0" fill="none" stroke="#d4a017" stroke-width="2" stroke-dasharray="4 3"/>
+<line x1="954.0" y1="112.0" x2="1000.0" y2="112.0" stroke="#2a6f97" stroke-width="4"/>
+<text x="927.0" y="88.0" font-size="14" text-anchor="middle" font-weight="bold" fill="#d4a017">gap</text>
+<line x1="900.0" y1="170.0" x2="1090.0" y2="170.0" stroke="#1b2a3a" stroke-width="2.5"/>
+<line x1="954.0" y1="182.0" x2="1090.0" y2="182.0" stroke="#1b2a3a" stroke-width="2.5"/>
+<line x1="854.0" y1="170.0" x2="900.0" y2="170.0" stroke="#e67e22" stroke-width="4"/>
+<rect x="900.0" y="177.0" width="54.0" height="10.0" rx="0" fill="none" stroke="#d4a017" stroke-width="2" stroke-dasharray="4 3"/>
+<text x="927.0" y="206.0" font-size="14" text-anchor="middle" font-weight="bold" fill="#d4a017">gap</text>
+<text x="765.0" y="248.0" font-size="15" text-anchor="start" font-weight="bold" fill="#1b2a3a">after gap filling (first PCR step):</text>
+<line x1="770.0" y1="280.0" x2="954.0" y2="280.0" stroke="#1b2a3a" stroke-width="2.5"/>
+<line x1="770.0" y1="292.0" x2="954.0" y2="292.0" stroke="#1b2a3a" stroke-width="2.5"/>
+<rect x="900.0" y="276.0" width="54.0" height="20.0" rx="0" fill="#d4a017" stroke="none" stroke-width="1.5" fill-opacity="0.55"/>
+<line x1="954.0" y1="292.0" x2="1000.0" y2="292.0" stroke="#2a6f97" stroke-width="4"/>
+<line x1="900.0" y1="330.0" x2="1090.0" y2="330.0" stroke="#1b2a3a" stroke-width="2.5"/>
+<line x1="900.0" y1="342.0" x2="1090.0" y2="342.0" stroke="#1b2a3a" stroke-width="2.5"/>
+<rect x="900.0" y="326.0" width="54.0" height="20.0" rx="0" fill="#d4a017" stroke="none" stroke-width="1.5" fill-opacity="0.55"/>
+<line x1="854.0" y1="330.0" x2="900.0" y2="330.0" stroke="#e67e22" stroke-width="4"/>
+<text x="1012.0" y="298.0" font-size="14" text-anchor="start" fill="#5b6b7a">fragment 1</text>
+<text x="1012.0" y="320.0" font-size="14" text-anchor="start" fill="#5b6b7a">fragment 2</text>
+<text x="927.0" y="390.0" font-size="15" text-anchor="middle" fill="#1b2a3a">the same 9 bp end up on both fragments</text>
+<text x="927.0" y="410.0" font-size="14" text-anchor="middle" fill="#5b6b7a">(why reads are shifted +4 / −5 later)</text>
+<line x1="375.0" y1="20.0" x2="375.0" y2="410.0" stroke="#d5dde5" stroke-width="1"/>
+<line x1="745.0" y1="20.0" x2="745.0" y2="410.0" stroke="#d5dde5" stroke-width="1"/>
+</svg>

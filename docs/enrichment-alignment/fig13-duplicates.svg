@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 400" width="1120" height="400" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/>
+    </marker>
+  </defs>
+  <rect width="1120" height="400" fill="#ffffff"/>
+
+  <!-- molecules -->
+  <text x="20" y="30" font-size="17" font-weight="bold" fill="#1b2a3a">1. Library: few unique molecules</text>
+  <g>
+    <rect x="40" y="56" width="120" height="12" rx="2" fill="#2a6f97"/>
+    <rect x="80" y="80" width="130" height="12" rx="2" fill="#2e8b57"/>
+    <rect x="60" y="104" width="110" height="12" rx="2" fill="#e67e22"/>
+  </g>
+  <line x1="230" y1="86" x2="300" y2="86" stroke="#1b2a3a" stroke-width="2.2" marker-end="url(#arr)"/>
+  <text x="265" y="76" font-size="14" fill="#5b6b7a" text-anchor="middle">PCR</text>
+
+  <!-- 2 copies -->
+  <text x="320" y="30" font-size="17" font-weight="bold" fill="#1b2a3a">2. Copies are sequenced again and again</text>
+  <g>
+    <rect x="330" y="56" width="120" height="12" rx="2" fill="#2a6f97"/>
+    <rect x="330" y="72" width="120" height="12" rx="2" fill="#2a6f97"/>
+    <rect x="330" y="88" width="120" height="12" rx="2" fill="#2a6f97"/>
+    <rect x="330" y="104" width="120" height="12" rx="2" fill="#2a6f97"/>
+    <rect x="480" y="56" width="130" height="12" rx="2" fill="#2e8b57"/>
+    <rect x="480" y="72" width="130" height="12" rx="2" fill="#2e8b57"/>
+    <rect x="640" y="56" width="110" height="12" rx="2" fill="#e67e22"/>
+  </g>
+
+  <!-- 3 aligned -->
+  <text x="20" y="158" font-size="17" font-weight="bold" fill="#1b2a3a">3. Aligned: duplicates have the same start and strand</text>
+  <line x1="40" y1="290" x2="760" y2="290" stroke="#1b2a3a" stroke-width="3"/>
+  <!-- x scale: bp -->
+  <g>
+    <rect x="200" y="194" width="120" height="12" rx="2" fill="#2a6f97"/>
+    <rect x="200" y="212" width="120" height="12" rx="2" fill="#2a6f97" fill-opacity="0.35"/>
+    <rect x="200" y="230" width="120" height="12" rx="2" fill="#2a6f97" fill-opacity="0.35"/>
+    <rect x="200" y="248" width="120" height="12" rx="2" fill="#2a6f97" fill-opacity="0.35"/>
+    <rect x="240" y="266" width="130" height="12" rx="2" fill="#2e8b57"/>
+    <rect x="240" y="176" width="130" height="12" rx="2" fill="#2e8b57" fill-opacity="0.35"/>
+    <rect x="560" y="230" width="110" height="12" rx="2" fill="#e67e22"/>
+  </g>
+  <line x1="200" y1="186" x2="200" y2="296" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="196" y="312" font-size="14" fill="#c0392b" text-anchor="middle">same start</text>
+  <text x="400" y="230" font-size="15" fill="#1b2a3a">faded = flagged</text>
+  <text x="400" y="250" font-size="15" fill="#1b2a3a">as duplicates (1024)</text>
+  <text x="40" y="340" font-size="15" fill="#1b2a3a">7 reads, 3 unique molecules: duplicate fraction 4/7 = 57%.</text>
+  <text x="40" y="362" font-size="15" fill="#1b2a3a">Without removal, one fragment amplified 4 times looks like 4 independent fragments: a fake peak.</text>
+  <text x="40" y="384" font-size="14" fill="#5b6b7a">Paired-end: both ends must match. Optical duplicates (one cluster read twice) are marked too.</text>
+
+  <!-- right: RNA vs ChIP -->
+  <rect x="800" y="44" width="300" height="340" rx="8" fill="#f4f6f8" stroke="#cfd8e0"/>
+  <text x="816" y="72" font-size="16" font-weight="bold" fill="#1b2a3a">Why it matters more here</text>
+  <text x="816" y="102" font-size="15" font-weight="bold" fill="#2e8b57">RNA-seq</text>
+  <text x="816" y="124" font-size="15" fill="#1b2a3a">a highly expressed gene</text>
+  <text x="816" y="144" font-size="15" fill="#1b2a3a">really gives many fragments</text>
+  <text x="816" y="164" font-size="15" fill="#1b2a3a">with the same start:</text>
+  <text x="816" y="184" font-size="15" fill="#1b2a3a">usually <tspan font-weight="bold">not</tspan> removed</text>
+  <text x="816" y="222" font-size="15" font-weight="bold" fill="#8c564b">ChIP / ATAC / CUT&amp;Tag</text>
+  <text x="816" y="244" font-size="15" fill="#1b2a3a">each position is covered</text>
+  <text x="816" y="264" font-size="15" fill="#1b2a3a">by a few fragments, from</text>
+  <text x="816" y="284" font-size="15" fill="#1b2a3a">little input DNA: identical</text>
+  <text x="816" y="304" font-size="15" fill="#1b2a3a">starts are mostly PCR copies,</text>
+  <text x="816" y="324" font-size="15" fill="#1b2a3a">so <tspan font-weight="bold">mark and remove</tspan></text>
+  <text x="816" y="358" font-size="14" fill="#5b6b7a">(exception: very deep data;</text>
+  <text x="816" y="376" font-size="14" fill="#5b6b7a">see library complexity in QC)</text>
+</svg>

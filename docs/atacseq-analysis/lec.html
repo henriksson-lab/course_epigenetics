@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-662ae1889177880cb371f83234c0a158.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.7.30">
+
+  <meta name="author" content="Epigenetics">
+  <title>Epigenetics – ATAC-seq processing and peak calling</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-bf56578b9c06c165c166475cd19dbcd1.css">
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">ATAC-seq processing and peak calling</h1>
+  <p class="subtitle">From raw reads to Tn5 insertion sites, peaks, replicate agreement and a consensus peak set</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Epigenetics 
+</div>
+</div>
+</div>
+
+</section>
+<section id="about-this-lecture" class="slide level2">
+<h2>About this lecture</h2>
+<p>In <em>ATAC-seq: Tn5, fragment sizes, nucleosome ladder</em> you saw what the assay measures. This lecture turns the reads into the things every downstream analysis starts from: <strong>peaks</strong> and a <strong>consensus peak set</strong>.</p>
+<ul>
+<li><strong>Reads to a clean BAM</strong>: trimming Nextera adapters, alignment with long fragments allowed, and five filters, each with a reason.</li>
+<li><strong>Tn5 insertion sites</strong>: the +4/−5 shift, and when to think in fragments or in cut sites.</li>
+<li><strong>Peak calling</strong>: what MACS3 computes (a local Poisson background), and the two ways to run it on ATAC-seq.</li>
+<li><strong>Replicates</strong>: naive overlap vs rank consistency (IDR) and pseudoreplicates.</li>
+<li><strong>Consensus peaks</strong> across samples, <strong>FRiP</strong>, comparison with ENCODE, and where the peaks sit.</li>
+</ul>
+<aside class="notes">
+<p>The running example is real: ENCODE GM12878 ATAC-seq (experiment ENCSR095QNB), two biological replicates, paired-end 2 × 100 bp, restricted to the reads that ENCODE aligned to chromosome 21 or the mitochondrial genome. The reads are untouched, adapters and all, so every step in this lecture is one students run in the exercise, and every number on the slides comes from that run. The analysis continues in <em>Differential accessibility</em>, which starts from a count matrix over fixed-width 500-bp peaks: the consensus procedure at the end of this lecture is how such a matrix is built.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-atac-seq-pipeline-end-to-end" class="slide level2 smaller">
+<h2>The ATAC-seq pipeline, end to end</h2>
+
+<img data-src="fig01-atac-pipeline.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><ul>
+<li>Ten steps; each one answers a specific problem with the raw data. We go through them in order.</li>
+<li>Production pipelines do exactly this: <strong>nf-core/atacseq</strong> (Nextflow) and the <strong>ENCODE ATAC-seq pipeline</strong> (WDL). Learn the steps on one sample by hand, then run the pipeline on all of them.</li>
+</ul>
+<aside class="notes">
+<p>Top row: from FASTQ to a filtered BAM; bottom row: from the BAM to peaks and a peak set that can be counted. The QC line at the bottom lists what to look at along the way; the fragment-size distribution and TSS enrichment belong to the previous unit, FRiP and replicate agreement to this one. The two production pipelines differ in details (nf-core uses BWA by default and calls broad peaks on fragments by default; ENCODE uses Bowtie2, shifts reads, calls narrow peaks on insertion sites and runs IDR), but the logic is the same. nf-core is the easiest to run on an HPC cluster with SLURM; it is a single command with a sample sheet once Nextflow and a container engine are available. Point out the arrow from Shift to Signal track: most of the downstream work uses insertion sites rather than reads.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="trim-the-adapters-first" class="slide level2 smaller">
+<h2>Trim the adapters first</h2>
+
+<img data-src="fig02-adapter-readthrough.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"><ul>
+<li>Tn5 loads the <strong>Nextera</strong> adapters. Both reads of a short fragment run into the adapter: <code>CTGTCTCTTATACACATCT…</code>.</li>
+<li>ATAC-seq is <em>made</em> of short fragments: in our data fastp trimmed adapter bases from <strong>38%</strong> of the reads.</li>
+<li>Untrimmed, these reads fail to align end to end or align with mismatches at the ends; trim with <strong>fastp</strong>, <strong>cutadapt</strong> or <strong>Trim Galore</strong>.</li>
+</ul>
+<aside class="notes">
+<p>The sequence CTGTCTCTTATACACATCT is the reverse complement of the 19-bp Tn5 mosaic end; it is the same at both ends of every fragment, so R1 and R2 read into the same adapter sequence. In RNA-seq with TruSeq libraries and 300-bp inserts you could almost ignore adapters; in ATAC-seq the nucleosome-free fragments are often shorter than the read. fastp also detects adapters automatically from the overlap of R1 and R2, which works well for paired-end data; we give it the sequence explicitly to be sure. A minimum length (we use 20 bp) removes reads that are too short to align uniquely. The fraction quoted on the slide comes from the fastp report of replicate 1 (4.67 M of 12.18 M reads; replicate 2: 40%). fastp also reports an “insert size peak” of 42 bp for replicate 1: it can only estimate the insert size from pairs whose reads overlap, i.e.&nbsp;short fragments, so this is not the fragment-size mode.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="align-with-room-for-long-fragments" class="slide level2">
+<h2>Align with room for long fragments</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" tabindex="-1"></a><span class="ex">bowtie2</span> <span class="at">-p</span> 8 <span class="at">--very-sensitive</span> <span class="at">-X</span> 2000 <span class="at">-x</span> hg38_chr21_chrM <span class="dt">\</span></span>
+<span id="cb1-2"><a aria-hidden="true" tabindex="-1"></a>        <span class="at">-1</span> rep1_R1.trim.fq.gz <span class="at">-2</span> rep1_R2.trim.fq.gz <span class="dv">2</span><span class="op">&gt;</span> rep1.bowtie2.log <span class="dt">\</span></span>
+<span id="cb1-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="ex">samtools</span> fixmate <span class="at">-m</span> <span class="at">-u</span> <span class="at">-</span> <span class="at">-</span> <span class="kw">|</span> <span class="ex">samtools</span> sort <span class="at">-o</span> rep1.raw.bam</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><code>-X 2000</code>: pairs up to 2 kb count as <strong>concordant</strong>. The default (500) makes di- and tri-nucleosome fragments “improper”.</li>
+<li><code>fixmate -m</code> adds the mate tags that <code>samtools markdup</code> needs later.</li>
+<li>Reference: <strong>chr21 + chrM</strong> only, an honest shortcut (see notes).</li>
+</ul>
+<aside class="notes">
+<p>Bowtie2 in end-to-end mode is what the ENCODE pipeline uses (bowtie2 -X2000 –mm); nf-core/atacseq uses BWA-MEM by default. –very-sensitive is a common choice for short ATAC reads. Our reference is chr21 + chrM only: reads from other chromosomes are absent by construction, and with the whole genome you would also see reads that mis-align from elsewhere. The fragment-length ceiling matters because the next filter keeps only proper pairs (flag 0x2): with the default ceiling, every fragment longer than 500 bp would be thrown away, and with it the di-nucleosome peak of the ladder. In the exercise the alignment of one replicate takes a few minutes on 8 threads. Our reads are the ones ENCODE aligned to chr21 or chrM in the full genome, so almost all of them align again (99.6% overall, 98.9% of pairs concordantly with -X 2000; without -X 2000 only 94.7% of pairs are concordant, about 250 000 pairs fewer); a real sample aligned to the full genome typically aligns at over 95%.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="five-filters-five-reasons" class="slide level2 smaller">
+<h2>Five filters, five reasons</h2>
+
+<img data-src="fig03-read-filters.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>Keep a pair only if <strong>both mates</strong> pass: unique (MAPQ ≥ 30), properly paired, not chrM, not a duplicate.</li>
+<li><strong>Blacklisted regions</strong> (Amemiya et al.&nbsp;2019) are removed from the insertion sites and from the peaks.</li>
+</ul>
+<aside class="notes">
+<p>Each filter has a reason. Multi-mappers (low MAPQ) cannot be placed, and in repeats they create false peaks. Improper pairs are mostly artefacts (chimeras, rearrangements, a mate in another chromosome). Mitochondrial DNA has no nucleosomes and many copies per cell, so Tn5 loves it: chrM reads are often 20–50% of an ATAC library and would dominate every normalisation; the Omni-ATAC protocol reduced this, but it is still checked. Duplicates in ATAC-seq: a pair with the same start and the same end as another pair is almost always a PCR copy, because two independent Tn5 events would have to hit both exact ends. For paired-end data this is reliable; for single-end data it removes some real reads at very strong sites. The blacklist (ENCODE exclusion list) marks regions with artefactual high signal in every assay; ENCODE removes peaks there, nf-core removes reads. We filter reads by flags, then remove blacklisted insertion sites and peaks.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="real-data-reads-through-the-pipeline" class="slide level2 smaller">
+<h2>Real data: reads through the pipeline</h2>
+
+<img data-src="fig04-reads-per-step.png" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"><ul>
+<li>GM12878 replicate 1: 6.1 M read pairs in, <strong>0.25 M</strong> usable fragments on chr21 out.</li>
+<li>Biggest losses: <strong>chrM</strong> (91% of our pairs; 14% of the whole library), <strong>MAPQ</strong> (43% of the chr21 pairs) and <strong>duplicates</strong> (20%).</li>
+</ul>
+<aside class="notes">
+<p>Numbers from make-atacanalysis-figs.R (and the exercise). Our FASTQ files contain only the reads that ENCODE placed on chr21 or chrM: 6.09 M of the 38.2 M read pairs of the replicate-1 library. So 91% chrM is the fraction in our subset; in the whole library chrM is about 5.4 M of 38.2 M pairs, 14%, which is typical. The MAPQ filter removes 43% of the chr21 pairs: chr21 contains repeats and segments present twice in the reference, where a read cannot be placed uniquely (we come back to this when comparing with ENCODE). Duplicates: 63 852 of 316 329 filtered pairs (20%); the duplicate rate depends on library complexity and depth, and rises as you sequence deeper. ENCODE asks for 25 million non-duplicate, non-mitochondrial fragments per replicate genome-wide; chr21 is about 1.5% of the genome, so our 0.25 M chr21 fragments correspond to a library of roughly that size. Replicate 2: 4.1 M pairs in, 0.26 M fragments out.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="tn5-cuts-the-two-strands-9-bp-apart" class="slide level2 smaller">
+<h2>Tn5 cuts the two strands 9 bp apart</h2>
+
+<img data-src="fig05-tn5-9bp.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>The Tn5 dimer joins adapters to the two strands <strong>9 bp apart</strong>. Gap filling copies those 9 bp, so <strong>both fragments</strong> carry them.</li>
+<li>The insertion “point” is the centre of the 9-bp duplication: <strong>+4</strong> from a + read’s start, <strong>−5</strong> from a − read’s end (BED coordinates).</li>
+</ul>
+<aside class="notes">
+<p>Walk through the three rows. Row 1: the transposase dimer cuts the top strand before base 106 and the bottom strand after base 114 (0-based), a 9-bp stagger. Row 2 and 3: each piece gets an adapter on one 5’ end and has a 9-nt single-stranded gap on the other strand, which the polymerase fills in during the first PCR cycle (the 72 °C step). So the 9 bp 106–114 are now present on both fragments. A read on the right fragment starts at 106 on the + strand; a read on the left fragment ends at 114 on the − strand. The centre of the 9 bp is base 110: start + 4 for the + read, and BED end (115) − 5 for the − read. In 1-based coordinates the same rule is +4 and −4 (115 − 4 = 111, the 1-based number of base 110): the asymmetric −5 is only the half-open BED end. Buenrostro et al.&nbsp;2013 introduced the +4/−5 offsets. The shift moves positions by only a few bases: it does not matter for 500-bp peaks, but it matters for TF footprints, where a few bp are the signal.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="from-a-read-pair-to-two-insertion-sites" class="slide level2 smaller">
+<h2>From a read pair to two insertion sites</h2>
+
+<img data-src="fig06-read-pair-to-insertions.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><ul>
+<li>Every properly paired fragment gives <strong>two</strong> insertion sites, one at each end.</li>
+<li>In BED: + read <code>start + 4</code>, − read <code>end − 5</code>. Tools: <code>awk</code> on a BEDPE file, or <code>alignmentSieve --ATACshift</code> (deepTools).</li>
+</ul>
+<aside class="notes">
+<p>A − strand read is stored in BAM by its leftmost base, but its 5’ end, where Tn5 cut, is its rightmost base: POS + aligned length − 1 in 1-based, which equals the BED end. This is the most common bug when people shift reads by hand: shifting the − strand read’s start instead of its end puts the insertion 100 bp off for a 100-bp read. In the exercise we convert the BAM to BEDPE with bedtools bamtobed -bedpe (one line per pair), take the leftmost start and the rightmost end, and apply +4 and −5. Single-cell ATAC “fragment files” (Cell Ranger ATAC, ArchR, Signac) store exactly such shifted fragments; their exact off-by-one conventions differ slightly between tools, which again only matters for footprinting.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="fragments-or-insertion-sites" class="slide level2 smaller">
+<h2>Fragments or insertion sites?</h2>
+
+<img data-src="fig07-fragments-vs-insertions.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"><ul>
+<li><strong>Fragment coverage</strong> counts the DNA between two cuts: smooth, but fragments that span a nucleosome fill it in.</li>
+<li><strong>Insertion sites</strong> count only where Tn5 cut: sharper, closer to “accessibility” in the strict sense.</li>
+<li>Peaks, signal tracks and counts can use either. Be explicit about which.</li>
+</ul>
+<aside class="notes">
+<p>Fragment coverage is what you would get from a ChIP-seq-style pileup; it answers “where was DNA released?”. Insertion counts answer “where could Tn5 reach the DNA?”, which is the definition of accessibility. Long fragments are the clearest case: a 350-bp fragment spanning a nucleosome is evidence of two accessible linkers, not of an accessible nucleosome. Most ATAC-specific tools (ENCODE pipeline, ArchR, chromVAR counting, footprinting) work on insertions; nf-core/atacseq and many papers call peaks on fragments. Both find the same strong peaks; they differ in peak width and in the weak, broad stuff.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="real-data-insertions-vs-fragment-coverage" class="slide level2 smaller">
+<h2>Real data: insertions vs fragment coverage</h2>
+
+<img data-src="fig08-insertions-vs-fragments-real.png" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>GM12878 replicate 1 at the <strong>SOD1</strong> promoter (chr21). Same reads, two tracks, both CPM.</li>
+<li>Insertions concentrate at the open sites; fragment coverage is broader and also covers the flanking nucleosomes.</li>
+</ul>
+<aside class="notes">
+<p>At the SOD1 promoter the insertions are concentrated in a few hundred bp just upstream of the TSS, with the highest bins at the nucleosome-free region; the fragment coverage is a broad hump that extends about 1 kb into the gene, because fragments starting in the open region end in the flanking linkers. MACS3 calls a somewhat wider peak on fragments here (1183 vs 970 bp); across chr21 the median peak width is 611 bp with fragments and 290 bp with insertions. Both tracks are CPM-scaled (per million fragments or insertions), the same normalisation as the bigWigs students make.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="signal-tracks-for-the-browser" class="slide level2">
+<h2>Signal tracks for the browser</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># insertion sites (one line per cut), sorted, as bedGraph -&gt; bigWig, CPM-scaled</span></span>
+<span id="cb2-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span> <span class="at">-k1,1</span> <span class="at">-k2,2n</span> rep1.ins.bed <span class="op">&gt;</span> rep1.ins.sorted.bed</span>
+<span id="cb2-3"><a aria-hidden="true" tabindex="-1"></a><span class="va">n</span><span class="op">=</span><span class="va">$(</span><span class="fu">wc</span> <span class="at">-l</span> <span class="op">&lt;</span> rep1.ins.sorted.bed<span class="va">)</span></span>
+<span id="cb2-4"><a aria-hidden="true" tabindex="-1"></a><span class="ex">bedtools</span> genomecov <span class="at">-i</span> rep1.ins.sorted.bed <span class="at">-g</span> chrom.sizes <span class="at">-bg</span> <span class="at">-scale</span> <span class="va">$(</span><span class="bu">echo</span> <span class="st">"1000000 / </span><span class="va">$n</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span><span class="va">)</span> <span class="dt">\</span></span>
+<span id="cb2-5"><a aria-hidden="true" tabindex="-1"></a>  <span class="op">&gt;</span> rep1.ins.cpm.bedGraph</span>
+<span id="cb2-6"><a aria-hidden="true" tabindex="-1"></a><span class="ex">bedGraphToBigWig</span> rep1.ins.cpm.bedGraph chrom.sizes rep1.ins.cpm.bw</span>
+<span id="cb2-7"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a aria-hidden="true" tabindex="-1"></a><span class="co"># or from the BAM with deepTools: fragment coverage, CPM</span></span>
+<span id="cb2-9"><a aria-hidden="true" tabindex="-1"></a><span class="ex">bamCoverage</span> <span class="at">-b</span> rep1.dedup.bam <span class="at">-o</span> rep1.frag.cpm.bw <span class="at">--extendReads</span> <span class="at">--normalizeUsing</span> CPM <span class="at">-bs</span> 10</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><strong>CPM</strong> (counts per million) makes samples of different depth comparable on screen. It is a display normalisation, not the one for differential tests.</li>
+</ul>
+<aside class="notes">
+<p>genomecov on a BED of single-base insertions gives the count of insertions per base; -scale multiplies by 10^6 / total insertions. Many people smooth insertions (for example a 150-bp window, like the MACS3 pileup) before display, otherwise the track is spiky at base resolution; IGV smooths automatically when zoomed out. bamCoverage with –extendReads on paired-end data fills in the whole fragment between the mates, which is the fragment-coverage track. bamCoverage also has –Offset and alignmentSieve has –ATACshift for insertion-based tracks. In Differential accessibility we come back to normalisation: CPM assumes the total amount of accessible chromatin is the same in all samples.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="what-a-peak-caller-does" class="slide level2 smaller">
+<h2>What a peak caller does</h2>
+
+<img data-src="fig09-peak-caller.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><ul>
+<li><strong>Pile up</strong> the reads (or insertion windows) along the genome.</li>
+<li>At each position compare the pileup <span class="math inline">k</span> with the <strong>expected</strong> count <span class="math inline">\lambda</span> under background: <span class="math inline">p = P(X \ge k)</span>, <span class="math inline">X \sim \text{Poisson}(\lambda)</span>.</li>
+<li>A <strong>peak</strong> is a run of positions below the cutoff; its <strong>summit</strong> is the highest point.</li>
+</ul>
+<aside class="notes">
+<p>This is the MACS model (Zhang et al.&nbsp;2008), which students will meet again in the ChIP-seq unit. A Poisson model for the number of reads landing in a window is reasonable if reads fall independently and uniformly under background; the real background is not uniform, which is why λ is estimated locally (next slide). MACS computes the p-value at every position of the pileup, joins adjacent positions passing the cutoff into peaks (gaps shorter than a small distance are bridged), and reports the summit. The narrowPeak columns are the peak’s fold enrichment at the summit, −log10 p and −log10 q at the summit, and the summit offset (see <em>Genomic intervals</em>).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-local-λ-background-is-not-uniform" class="slide level2 smaller">
+<h2>The local λ: background is not uniform</h2>
+
+<img data-src="fig10-local-lambda.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><ul>
+<li><span class="math inline">\lambda_\text{BG}</span> = total reads × window / genome size. But open domains, copy-number gains and mappability make background vary.</li>
+<li>MACS uses <span class="math inline">\lambda_\text{local} = \max(\lambda_\text{BG}, \lambda_\text{1k}, \lambda_\text{5k}, \lambda_\text{10k})</span>: the <strong>largest</strong> estimate, the conservative choice.</li>
+<li>Without a control (ATAC-seq), MACS3 uses <span class="math inline">\lambda_\text{BG}</span> and the sample’s own <strong>10-kb</strong> window.</li>
+</ul>
+<aside class="notes">
+<p>All λ values are expected counts in a window of the same size as the one in which k is counted (MACS scales each window’s count to that size). In the original paper, the 1k, 5k and 10k windows were measured in the control (input DNA), and λBG from the genome-wide average. Taking the maximum protects against local biases: a region with high background everywhere does not get peaks just for being high. In MACS3 the defaults are –slocal 1000 and –llocal 10000. With no control, using the 1-kb window of the sample itself would include the peak and swallow it, so MACS3 skips it and uses only the 10-kb window and the genome background. Worked example on the slide: λBG = 3, λ1k = 8, λ5k = 7, λ10k = 6, so λlocal = 8, and the candidate with 25 reads gets p = P(X ≥ 25 | 8) ≈ 1.2 × 10⁻⁶ instead of 3 × 10⁻¹⁵ against the genome average. The exercise has a similar calculation by hand.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="from-counts-to-p-values-and-q-values" class="slide level2 smaller">
+<h2>From counts to p-values and q-values</h2>
+
+<img data-src="fig11-poisson-test.png" class="quarto-figure quarto-figure-center r-stretch" style="width:85.0%"><ul>
+<li>The same 25 reads are extremely surprising against <span class="math inline">\lambda = 3</span> and much less so against <span class="math inline">\lambda = 8</span>.</li>
+<li>Millions of positions are tested, so MACS converts p to <strong>q-values</strong> (Benjamini–Hochberg FDR). <code>-q 0.01</code>: expect about 1% of called peaks to be false.</li>
+</ul>
+<aside class="notes">
+<p>Read the figure: bars are the Poisson probabilities of each count under the two λ values; the shaded tail is P(X ≥ 25). Against the genome-wide background the tail is 3 × 10⁻¹⁵; against the local background 1.2 × 10⁻⁶. Students know the Benjamini–Hochberg procedure from RNA-seq; MACS applies it to the p-scores of the pileup. Two caveats worth saying: the Poisson model ignores overdispersion, so MACS p-values are too small in absolute terms and are best used to rank peaks; and the q-value is computed per position, not strictly per peak. That is one reason replicate-based methods (IDR) are used to choose the final number of peaks.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="two-ways-to-run-macs3-on-atac-seq" class="slide level2 smaller">
+<h2>Two ways to run MACS3 on ATAC-seq</h2>
+
+<img data-src="fig12-macs3-modes.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><ul>
+<li><strong>A. <code>-f BAMPE</code></strong>: the pileup is the real fragments, no model, no shift. Simple; nucleosome-spanning fragments widen the peaks.</li>
+<li><strong>B. Insertion sites as BED</strong>, <code>--nomodel --shift -75 --extsize 150</code>: every cut becomes a 150-bp window centred on it. Used by ENCODE and Corces et al.&nbsp;2018.</li>
+</ul>
+<aside class="notes">
+<p>MACS was written for ChIP-seq single-end reads, where it estimates the fragment size d from the shift between + and − strand peaks (the “model”) and extends each read by d.&nbsp;For ATAC-seq that model makes no sense, so it is always switched off (–nomodel). Mode A uses the fragments as measured. Mode B uses each insertion independently: –shift -75 moves the 5’ end 75 bp upstream and –extsize 150 extends it to 150 bp, so the window is centred on the cut. Our insertion BED has one line per cut with the strand set to +, so MACS treats the start as the 5’ end. Mode B counts both ends of every fragment and ignores what lies between them; this matches “insertion sites” in the previous slides. Other callers: Genrich (has an ATAC mode with replicates built in) and HMMRATAC (MACS3 hmmratac subcommand, models nucleosome-free and nucleosomal fragments with an HMM); neither is needed in this course.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="macs3-in-practice" class="slide level2">
+<h2>MACS3 in practice</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># A: fragments</span></span>
+<span id="cb3-2"><a aria-hidden="true" tabindex="-1"></a><span class="ex">macs3</span> callpeak <span class="at">-t</span> rep1.dedup.bam <span class="at">-f</span> BAMPE <span class="at">-g</span> 4.0e7 <span class="at">--keep-dup</span> all <span class="at">-q</span> 0.01 <span class="at">-n</span> rep1_frag</span>
+<span id="cb3-3"><a aria-hidden="true" tabindex="-1"></a><span class="co"># B: insertion sites</span></span>
+<span id="cb3-4"><a aria-hidden="true" tabindex="-1"></a><span class="ex">macs3</span> callpeak <span class="at">-t</span> rep1.ins.bed <span class="at">-f</span> BED <span class="at">--nomodel</span> <span class="at">--shift</span> <span class="at">-75</span> <span class="at">--extsize</span> 150 <span class="dt">\</span></span>
+<span id="cb3-5"><a aria-hidden="true" tabindex="-1"></a>               <span class="at">-g</span> 4.0e7 <span class="at">--keep-dup</span> all <span class="at">-q</span> 0.01 <span class="at">-n</span> rep1_cuts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><code>-g</code>: effective genome size, sets λ<sub>BG</sub> (<code>hs</code> ≈ 2.7e9; here chr21 only, 4.0e7).</li>
+<li><code>-q</code> / <code>-p</code>: the cutoff; a lenient <code>-p 0.01</code> when IDR chooses the final set.</li>
+<li><code>--keep-dup all</code>: duplicates were already removed. <code>--call-summits</code>: several summits per broad peak.</li>
+</ul>
+<aside class="notes">
+<p>Flags are not examined; the logic is. -g matters here because our data come from one chromosome: telling MACS3 the genome is 2.7 Gb would make λBG about 70 times too small. It would not change the result much, because λlocal = max(…) is then dominated by the 10-kb window, but it is the kind of mistake that hides in a methods section. The default –keep-dup 1 keeps one read per position; after samtools markdup that is no longer needed, and for insertions it would wrongly collapse independent cuts at the same base. Outputs: _peaks.narrowPeak (the peaks), _summits.bed (one line per summit), _peaks.xls (a tab-separated table with a header of settings). On our chr21 data one MACS3 call takes about a second; on a full genome a few minutes.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="real-data-how-many-peaks" class="slide level2 smaller">
+<h2>Real data: how many peaks?</h2>
+
+<img data-src="fig13-peaks-vs-threshold.png" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"><ul>
+<li>Replicate 1, chr21, q &lt; 0.01: <strong>685</strong> peaks with fragments (<code>BAMPE</code>), <strong>1262</strong> with insertion sites. ENCODE’s IDR set has 1784.</li>
+<li>The number of peaks depends smoothly on the cutoff: there is <strong>no natural threshold</strong>. Weak peaks are a continuum, not a separate class.</li>
+</ul>
+<aside class="notes">
+<p>Left: from p &lt; 0.01 to q &lt; 1e-10 the number of insertion-mode peaks falls from 1739 to 812, smoothly, without a plateau. Fragment mode gives about half as many, wider peaks at every cutoff: the pileup of whole fragments is smoother, and nearby sites merge into one peak. Right: the stricter the cutoff, the larger the fraction of peaks that ENCODE also has (insertion mode: 56% at p &lt; 0.01, 74% at q &lt; 0.01, 92% at q &lt; 1e-10). Strict cutoffs give few, reliable peaks; lax cutoffs give more peaks and more noise. ENCODE has more peaks than we do at any cutoff partly because its pipeline pools deeper data and keeps multi-mapping reads (later slide). The point: “the number of peaks” is a choice, so two papers with different cutoffs report different numbers for the same cells, and replicates are the principled way to choose.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="replicates-overlap-vs-rank-consistency" class="slide level2 smaller">
+<h2>Replicates: overlap vs rank consistency</h2>
+
+<img data-src="fig14-idr-concept.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><ul>
+<li>Naive: call peaks in each replicate, keep those found in both. The answer depends on the cutoff, and a lax cutoff lets noise in.</li>
+<li><strong>IDR</strong> (Li et al.&nbsp;2011) uses the <strong>ranks</strong>: real peaks rank similarly in both replicates, noise does not. It finds where the agreement breaks down.</li>
+</ul>
+<aside class="notes">
+<p>IDR is to replicates what a q-value is to a single sample: a per-peak measure, estimated from the data, that lets you set a cutoff in terms of a rate. The model is a two-component copula mixture: a reproducible component in which the ranks are correlated and an irreproducible one in which they are independent. IDR needs many peaks including noise, so it is run on lenient calls (ENCODE: MACS2 -p 0.01, top 300 000 peaks per replicate), never on already-thresholded peaks. The output is the set of peaks with IDR below a threshold (ENCODE ATAC: 0.05). In the exercise we do not run the idr package; we plot the rank consistency ourselves, which shows the same thing.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="pseudoreplicates-and-encodes-peak-sets" class="slide level2 smaller">
+<h2>Pseudoreplicates and ENCODE’s peak sets</h2>
+
+<img data-src="fig15-pseudoreplicates.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><ul>
+<li>Pool the replicates, shuffle the reads, split in two: <strong>pseudoreplicates</strong> differ only by sampling.</li>
+<li>If true replicates agree much less than pseudoreplicates (ratio &gt; 2), the replicates differ in biology or quality, not just depth.</li>
+</ul>
+<aside class="notes">
+<p>Pseudoreplicates answer: how many peaks would be reproducible if the two replicates were perfect copies of each other? Np (pooled pseudoreplicates) is usually somewhat larger than Nt (true replicates), because biological replicates also differ biologically. ENCODE reports both, the “rescue ratio” max(Np, Nt)/min(Np, Nt) and the “self-consistency ratio” between the two replicates’ self-pseudoreplicate counts N1 and N2; an experiment passes if both are below 2. Pseudoreplicates are also the way to get a reproducibility-filtered peak set from a single replicate, with the obvious caveat that they say nothing about biological variation. The file we compare with (gm12878_atac_peaks.bed.gz) is ENCODE’s IDR thresholded peak set from replicates 1 and 2.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="real-data-do-the-replicates-agree" class="slide level2 smaller">
+<h2>Real data: do the replicates agree?</h2>
+
+<img data-src="fig16-rank-consistency.png" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><ul>
+<li>Left: −log10 p of matched peaks in replicate 1 vs 2. Right: of the top <em>N</em> peaks of replicate 1, the fraction also found in replicate 2.</li>
+<li>The top 750 peaks: 99% found in replicate 2. Agreement stays ≥ 90% up to about 1450 peaks, then falls (82% for all 1739).</li>
+</ul>
+<aside class="notes">
+<p>Peaks were called with a lenient cutoff (-p 0.01) in each replicate, as for IDR: 1739 and 1909 peaks. Matching is by overlap; unmatched peaks are drawn at the bottom of the left panel, and they are almost all weak. The Spearman correlation of matched scores is 0.82. The right panel is a “correspondence at the top” curve, the simple cousin of IDR: it stays flat while we add real peaks and bends down when we start adding noise, here somewhere around 1300–1500 peaks, close to the 1262 peaks at q &lt; 0.01. ENCODE’s IDR set on chr21 is larger (1784) because it was made from deeper, pooled data and keeps multi-mapping reads.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="real-data-our-peaks-and-encodes" class="slide level2 smaller">
+<h2>Real data: our peaks and ENCODE’s</h2>
+
+<img data-src="fig17-peaks-locus.png" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>74% of our 1262 replicate-1 peaks are in ENCODE’s set; 89% of ENCODE’s 1784 chr21 peaks are in ours.</li>
+<li>Left: 1680 read pairs but only 7 with MAPQ ≥ 30 (sequence present twice). We drop them; ENCODE keeps multi-mappers.</li>
+</ul>
+<aside class="notes">
+<p>Locus: DNMT3L and AIRE (chr21:44.24–44.30 Mb). Where both replicates have signal, the three peak sets agree. On the left there are ENCODE peaks and no reads at all in our tracks: the reads are there in the raw BAM, but they align equally well to another place on chr21 (MAPQ ≈ 1), so our MAPQ ≥ 30 filter removes them. GRCh38 is known to contain falsely duplicated segments on chr21. The ENCODE ATAC-seq pipeline keeps reads with up to 4 alignments and assigns each to one of them at random (its multimapping = 4 setting), so it calls peaks in both copies. Most of the ENCODE peaks we miss are in such regions (43–44 Mb and 5–8 Mb). Neither choice is wrong: unique reads are conservative; random assignment recovers signal in duplicated regions at the price of not knowing which copy it came from. The other direction: 26% of our peaks are not in the ENCODE set; they are mostly weak peaks below ENCODE’s IDR threshold. Discussion: which set would you use for a motif analysis, and which for a differential analysis?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-consensus-peak-set-across-samples" class="slide level2 smaller">
+<h2>A consensus peak set across samples</h2>
+
+<img data-src="fig18-consensus-merge-vs-fixed.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>To count reads per peak in many samples (<em>Differential accessibility</em>), every sample needs the <strong>same regions</strong>.</li>
+<li><strong>Merge</strong> (<code>bedtools merge</code>): simple, but overlaps chain into wide regions of very different widths.</li>
+<li><strong>Fixed width</strong>: summit ± 250 bp, overlaps resolved by significance. Every region is 500 bp, centred on a summit.</li>
+</ul>
+<aside class="notes">
+<p>This is the step where ATAC-seq analysis differs most from RNA-seq: there the genes are given, here we make the features. nf-core/atacseq builds its consensus by merging the peaks of all samples (and requires a peak to be present in a minimum number of samples); DiffBind does something similar by default. Fixed-width peaks were introduced for large ATAC-seq atlases (Corces et al.&nbsp;2016 and 2018; ArchR uses the same idea). Advantages: equal widths make counts comparable between regions (GC content, length effects), and adding a sample does not merge two elements into one. The 500-bp peaks of the Corces 2016 haematopoiesis count matrix used in <em>Differential accessibility</em> were built this way. On our data, with only two replicates, merging is harmless: 1442 merged regions, median 289 bp, the longest 1820 bp. The chaining problem grows with the number of samples, which is where fixed-width peaks pay off.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="iterative-overlap-removal" class="slide level2 smaller">
+<h2>Iterative overlap removal</h2>
+
+<img data-src="fig19-iterative-removal.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><ul>
+<li>Sort the 500-bp peaks by significance; keep the best; drop the peaks that <strong>overlap it</strong>; repeat with the next best that is left.</li>
+<li>Across samples, first make the scores comparable (e.g.&nbsp;−log10 p divided by the sample’s total, “score per million”), then run the same procedure on all peaks together.</li>
+</ul>
+<aside class="notes">
+<p>The subtle point is in step 3: peak 6 overlaps peak 10, but 10 was already removed by 15, so 6 is compared only with peaks that were kept and survives. The procedure therefore keeps local maxima of significance and removes their overlapping neighbours, without chaining. In Corces et al.&nbsp;2018 this was done per sample, then on all samples together after normalising the peak scores to a score per million, and peaks had to be reproducible in at least two samples. In R it is a short loop over findOverlaps, which students write in the exercise. On our chr21 data: 1262 and 1323 peaks become 1116 and 1123 non-overlapping 500-bp peaks per replicate, 1286 in the joint consensus, and 958 of these are supported by both replicates.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="frip-fraction-of-reads-in-peaks" class="slide level2 smaller">
+<h2>FRiP: fraction of reads in peaks</h2>
+
+<img data-src="fig20-frip.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><ul>
+<li>FRiP = insertions (or reads) in peaks / all. A signal-to-noise measure: how much of the library is in accessible sites?</li>
+<li>Ours: <strong>0.57</strong> (replicate 1) and <strong>0.48</strong> (replicate 2), insertions in own q &lt; 0.01 peaks. ENCODE standard for ATAC-seq: &gt; 0.3, &gt; 0.2 acceptable.</li>
+</ul>
+<aside class="notes">
+<p>FRiP depends on the peak set: more lenient peaks give a higher FRiP, so compare FRiP between samples only with comparable peak calling (or with a fixed reference peak set). It is also lower in cell types with less open chromatin. In ATAC-seq a low FRiP usually means many reads from closed chromatin: over-digestion, dead cells (naked DNA), or too little nuclei clean-up. TSS enrichment, from the previous unit, is the other main signal-to-noise measure and does not need peaks at all. With ENCODE’s peaks instead of our own, replicate 1’s FRiP is 0.58.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="where-are-the-peaks" class="slide level2 smaller">
+<h2>Where are the peaks?</h2>
+
+<img data-src="fig21-promoter-fraction.png" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"><ul>
+<li>Fraction of peaks within 1 kb of a protein-coding TSS, by peak strength (<em>Genomic intervals</em>).</li>
+<li>Strongest 10% of consensus peaks: <strong>70%</strong> at a promoter; the other deciles: 5–25%. Overall 17% (ours) and 26% (ENCODE).</li>
+<li>Most peaks are <strong>distal</strong>: candidate enhancers and insulators.</li>
+</ul>
+<aside class="notes">
+<p>The reproducible consensus has 958 peaks on chr21; 59% of the 602 distinct protein-coding TSS positions on chr21 have one within 1 kb, plausible since many genes are not expressed in a B-cell line. ENCODE’s set has a higher promoter fraction (26%) than ours because it reaches further into weak peaks in duplicated, gene-dense regions and because IDR keeps a different set of weak peaks. This is the same overlap logic as the genomic-intervals exercise, applied to our own peaks. The promoter fraction is a useful sanity check: an ATAC-seq peak set with very few promoter peaks suggests a problem, and a set with almost only promoter peaks suggests low sensitivity (only the strongest sites were found). The distal peaks are where cell-type-specific regulation lives, and the starting point for motif analysis (<em>Motifs, motif enrichment and TF footprinting</em>).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="pitfalls" class="slide level2 smaller">
+<h2>Pitfalls</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>pitfall</th>
+<th>what happens</th>
+<th>fix</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>chrM left in</td>
+<td>8 peaks on the 16.6-kb chrM; 91% of the reads; fewer real peaks</td>
+<td>drop chrM reads</td>
+</tr>
+<tr class="even">
+<td>no blacklist</td>
+<td>peaks in satellite repeats, also in “differential” lists</td>
+<td>remove blacklisted peaks and insertions</td>
+</tr>
+<tr class="odd">
+<td>wrong <code>-g</code></td>
+<td>λ<sub>BG</sub> wrong by orders of magnitude</td>
+<td>effective size of what you aligned to</td>
+</tr>
+<tr class="even">
+<td><code>--keep-dup 1</code> on insertions</td>
+<td>independent cuts at the same base collapsed</td>
+<td><code>--keep-dup all</code> after deduplication</td>
+</tr>
+<tr class="odd">
+<td>too lax a cutoff</td>
+<td>many peaks, low reproducibility, inflated FRiP</td>
+<td>IDR or rank consistency to choose</td>
+</tr>
+<tr class="even">
+<td>−strand read not shifted from its end</td>
+<td>insertions off by a read length</td>
+<td>shift BED end, not start</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>Each row is something that has happened in published analyses. The chrM numbers come from calling peaks on the unfiltered replicate-1 BAM in make-atacanalysis-figs.R: 590 peaks, 8 of them on chrM (two among the top 20) and 7 in blacklisted regions, and fewer peaks on chr21 (582 vs 685), because the 5 M chrM fragments inflate the genome-wide background λ. A good habit: after peak calling, look at the number of peaks per chromosome and at the top 20 peaks in a browser; artefacts are usually at the top of the list.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="summary" class="slide level2 smaller">
+<h2>Summary</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>step</th>
+<th>key idea</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>trim</td>
+<td>Nextera adapter <code>CTGTCTCTTATACACATCT</code>; short fragments read through</td>
+</tr>
+<tr class="even">
+<td>align</td>
+<td><code>-X 2000</code> so nucleosome-spanning pairs stay proper</td>
+</tr>
+<tr class="odd">
+<td>filter</td>
+<td>MAPQ, proper pairs, chrM, duplicates (same both ends), blacklist</td>
+</tr>
+<tr class="even">
+<td>shift</td>
+<td>insertion = centre of the 9-bp duplication: + start +4, − end −5 (BED)</td>
+</tr>
+<tr class="odd">
+<td>represent</td>
+<td>fragments (smooth) or insertion sites (where Tn5 cut)</td>
+</tr>
+<tr class="even">
+<td>peaks</td>
+<td>Poisson test against <span class="math inline">\lambda_\text{local} = \max(\lambda_\text{BG}, \lambda_\text{1k}, \lambda_\text{5k}, \lambda_\text{10k})</span>; q-values by BH</td>
+</tr>
+<tr class="odd">
+<td>MACS3 for ATAC</td>
+<td><code>BAMPE</code>, or insertions with <code>--nomodel --shift -75 --extsize 150</code></td>
+</tr>
+<tr class="even">
+<td>replicates</td>
+<td>rank consistency (IDR) beats naive overlap; pseudoreplicates for depth</td>
+</tr>
+<tr class="odd">
+<td>consensus</td>
+<td>fixed 500-bp summit peaks, iterative overlap removal</td>
+</tr>
+<tr class="even">
+<td>QC</td>
+<td>FRiP &gt; 0.3; promoter fraction; agreement with a reference set</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>Students should leave able to: shift a read pair to insertion sites by hand, choose λlocal and compute a Poisson p-value, explain the two MACS3 modes and when each is used, explain why IDR uses ranks, build a fixed-width consensus set by hand on a small example, and compute FRiP. Next: <em>Differential accessibility</em>, which starts from a count matrix over such a consensus set.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="key-papers-optional-further-reading" class="slide level2 smaller">
+<h2>Key papers (optional further reading)</h2>
+<p><em>Not required reading and not examined. For those who want the primary literature.</em></p>
+<ul>
+<li>Buenrostro et al.&nbsp;2013, <em>Nat Methods</em>. <a href="https://doi.org/10.1038/nmeth.2688">Transposition of native chromatin for fast and sensitive epigenomic profiling of open chromatin, DNA-binding proteins and nucleosome position</a>. The assay, and the +4/−5 shift.</li>
+<li>Zhang et al.&nbsp;2008, <em>Genome Biol</em>. <a href="https://doi.org/10.1186/gb-2008-9-9-r137">Model-based Analysis of ChIP-Seq (MACS)</a>. The local-λ Poisson peak caller.</li>
+<li>Li et al.&nbsp;2011, <em>Ann Appl Stat</em>. <a href="https://doi.org/10.1214/11-AOAS466">Measuring reproducibility of high-throughput experiments</a>. IDR.</li>
+<li>Corces et al.&nbsp;2018, <em>Science</em>. <a href="https://doi.org/10.1126/science.aav1898">The chromatin accessibility landscape of primary human cancers</a>. Fixed-width peaks and iterative overlap removal at scale.</li>
+<li>Yan et al.&nbsp;2020, <em>Genome Biol</em>. <a href="https://doi.org/10.1186/s13059-020-1929-3">From reads to insight: a hitchhiker’s guide to ATAC-seq data analysis</a>. A review of every step and the tools.</li>
+<li>Ewels et al.&nbsp;2020, <em>Nat Biotechnol</em>. <a href="https://doi.org/10.1038/s41587-020-0439-x">The nf-core framework for community-curated bioinformatics pipelines</a>. The pipeline framework behind nf-core/atacseq.</li>
+</ul>
+
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'visible',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: false,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+            const codeEl = trigger.previousElementSibling.cloneNode(true);
+            for (const childEl of codeEl.children) {
+              if (isCodeAnnotation(childEl)) {
+                childEl.remove();
+              }
+            }
+            return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

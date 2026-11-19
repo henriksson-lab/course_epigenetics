@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 410" width="1120" height="410" font-family="Helvetica, Arial, sans-serif">
+  <rect width="1120" height="410" fill="#ffffff"/>
+  <text x="200" y="32" font-size="18" font-weight="bold" fill="#1b2a3a" text-anchor="middle">1. Log-odds matrix (RUNX-like)</text>
+  <g font-size="15" fill="#1b2a3a" text-anchor="middle">
+    <text x="85" y="70" font-weight="bold">pos</text>
+    <text x="130" y="70">1</text>
+    <text x="175" y="70">2</text>
+    <text x="220" y="70">3</text>
+    <text x="265" y="70">4</text>
+    <text x="310" y="70">5</text>
+    <text x="355" y="70">6</text>
+    <text x="85" y="102" font-weight="bold">A</text>
+    <text x="85" y="134" font-weight="bold">C</text>
+    <text x="85" y="166" font-weight="bold">G</text>
+    <text x="85" y="198" font-weight="bold">T</text>
+  </g>
+  <rect x="108" y="80" width="270" height="128" fill="#f4f6f8" stroke="#5b6b7a"/>
+  <text x="130" y="102" font-size="15" fill="#5b6b7a" text-anchor="middle">−2</text>
+  <text x="130" y="134" font-size="15" fill="#5b6b7a" text-anchor="middle">−2</text>
+  <text x="130" y="166" font-size="15" fill="#5b6b7a" text-anchor="middle">−1</text>
+  <text x="130" y="198" font-size="15" font-weight="bold" fill="#e67e22" text-anchor="middle">+1.8</text>
+  <text x="175" y="102" font-size="15" fill="#5b6b7a" text-anchor="middle">−2</text>
+  <text x="175" y="134" font-size="15" fill="#5b6b7a" text-anchor="middle">−2</text>
+  <text x="175" y="166" font-size="15" font-weight="bold" fill="#e67e22" text-anchor="middle">+1.9</text>
+  <text x="175" y="198" font-size="15" fill="#5b6b7a" text-anchor="middle">−1</text>
+  <text x="220" y="102" font-size="15" fill="#5b6b7a" text-anchor="middle">−2</text>
+  <text x="220" y="134" font-size="15" fill="#5b6b7a" text-anchor="middle">−2</text>
+  <text x="220" y="166" font-size="15" fill="#5b6b7a" text-anchor="middle">−1</text>
+  <text x="220" y="198" font-size="15" font-weight="bold" fill="#e67e22" text-anchor="middle">+1.8</text>
+  <text x="265" y="102" font-size="15" fill="#5b6b7a" text-anchor="middle">−2</text>
+  <text x="265" y="134" font-size="15" fill="#5b6b7a" text-anchor="middle">−2</text>
+  <text x="265" y="166" font-size="15" font-weight="bold" fill="#e67e22" text-anchor="middle">+1.9</text>
+  <text x="265" y="198" font-size="15" fill="#5b6b7a" text-anchor="middle">−1</text>
+  <text x="310" y="102" font-size="15" fill="#5b6b7a" text-anchor="middle">−2</text>
+  <text x="310" y="134" font-size="15" fill="#5b6b7a" text-anchor="middle">−2</text>
+  <text x="310" y="166" font-size="15" font-weight="bold" fill="#e67e22" text-anchor="middle">+1.7</text>
+  <text x="310" y="198" font-size="15" fill="#5b6b7a" text-anchor="middle">−1</text>
+  <text x="355" y="102" font-size="15" fill="#5b6b7a" text-anchor="middle">−2</text>
+  <text x="355" y="134" font-size="15" fill="#5b6b7a" text-anchor="middle">−1</text>
+  <text x="355" y="166" font-size="15" fill="#5b6b7a" text-anchor="middle">−2</text>
+  <text x="355" y="198" font-size="15" font-weight="bold" fill="#e67e22" text-anchor="middle">+1.5</text>
+  <text x="243" y="236" font-size="15" fill="#1b2a3a" text-anchor="middle">entry = log2( P(base | site) / P(base | background) )</text>
+  <text x="243" y="258" font-size="14" fill="#5b6b7a" text-anchor="middle">values rounded for illustration</text>
+  <text x="610" y="32" font-size="18" font-weight="bold" fill="#1b2a3a" text-anchor="middle">2. Slide along both strands, sum</text>
+  <text x="470" y="90" font-family="Courier New, monospace" font-size="19" font-weight="bold" fill="#5b6b7a" text-anchor="middle">C</text>
+  <text x="494" y="90" font-family="Courier New, monospace" font-size="19" font-weight="bold" fill="#5b6b7a" text-anchor="middle">A</text>
+  <text x="518" y="90" font-family="Courier New, monospace" font-size="19" font-weight="bold" fill="#5b6b7a" text-anchor="middle">G</text>
+  <text x="542" y="90" font-family="Courier New, monospace" font-size="19" font-weight="bold" fill="#5b6b7a" text-anchor="middle">T</text>
+  <text x="566" y="90" font-family="Courier New, monospace" font-size="19" font-weight="bold" fill="#5b6b7a" text-anchor="middle">G</text>
+  <text x="590" y="90" font-family="Courier New, monospace" font-size="19" font-weight="bold" fill="#5b6b7a" text-anchor="middle">T</text>
+  <text x="614" y="90" font-family="Courier New, monospace" font-size="19" font-weight="bold" fill="#5b6b7a" text-anchor="middle">G</text>
+  <text x="638" y="90" font-family="Courier New, monospace" font-size="19" font-weight="bold" fill="#5b6b7a" text-anchor="middle">G</text>
+  <text x="662" y="90" font-family="Courier New, monospace" font-size="19" font-weight="bold" fill="#5b6b7a" text-anchor="middle">T</text>
+  <text x="686" y="90" font-family="Courier New, monospace" font-size="19" font-weight="bold" fill="#5b6b7a" text-anchor="middle">C</text>
+  <text x="710" y="90" font-family="Courier New, monospace" font-size="19" font-weight="bold" fill="#5b6b7a" text-anchor="middle">A</text>
+  <text x="470" y="162" font-family="Courier New, monospace" font-size="19" font-weight="bold" fill="#1b2a3a" text-anchor="middle">C</text>
+  <text x="494" y="162" font-family="Courier New, monospace" font-size="19" font-weight="bold" fill="#1b2a3a" text-anchor="middle">A</text>
+  <text x="518" y="162" font-family="Courier New, monospace" font-size="19" font-weight="bold" fill="#1b2a3a" text-anchor="middle">G</text>
+  <text x="542" y="162" font-family="Courier New, monospace" font-size="19" font-weight="bold" fill="#1b2a3a" text-anchor="middle">T</text>
+  <text x="566" y="162" font-family="Courier New, monospace" font-size="19" font-weight="bold" fill="#1b2a3a" text-anchor="middle">G</text>
+  <text x="590" y="162" font-family="Courier New, monospace" font-size="19" font-weight="bold" fill="#1b2a3a" text-anchor="middle">T</text>
+  <text x="614" y="162" font-family="Courier New, monospace" font-size="19" font-weight="bold" fill="#1b2a3a" text-anchor="middle">G</text>
+  <text x="638" y="162" font-family="Courier New, monospace" font-size="19" font-weight="bold" fill="#1b2a3a" text-anchor="middle">G</text>
+  <text x="662" y="162" font-family="Courier New, monospace" font-size="19" font-weight="bold" fill="#1b2a3a" text-anchor="middle">T</text>
+  <text x="686" y="162" font-family="Courier New, monospace" font-size="19" font-weight="bold" fill="#1b2a3a" text-anchor="middle">C</text>
+  <text x="710" y="162" font-family="Courier New, monospace" font-size="19" font-weight="bold" fill="#1b2a3a" text-anchor="middle">A</text>
+  <rect x="458" y="68" width="144" height="30" fill="none" stroke="#5b6b7a" stroke-width="2" stroke-dasharray="5,4" rx="4"/>
+  <text x="470" y="122" font-size="15" fill="#5b6b7a">CAGTGT: −2 −2 −1 −1 +1.7 +1.5 = −2.8</text>
+  <rect x="530" y="140" width="144" height="30" fill="none" stroke="#e67e22" stroke-width="2.5" rx="4"/>
+  <text x="470" y="194" font-size="15" fill="#1b2a3a">TGTGGT: 1.8+1.9+1.8+1.9+1.7+1.5 = <tspan font-weight="bold" fill="#e67e22">10.6</tspan></text>
+  <text x="470" y="228" font-size="15" fill="#1b2a3a">… then the reverse complement:</text>
+  <text x="470" y="250" font-size="15" fill="#1b2a3a">ACCACA on + reads TGTGGT on −</text>
+  <text x="955" y="32" font-size="18" font-weight="bold" fill="#1b2a3a" text-anchor="middle">3. Threshold by p-value</text>
+  <line x1="815" y1="230" x2="1095" y2="230" stroke="#1b2a3a" stroke-width="2"/>
+  <path d="M820,229 C860,229 880,90 925,90 C970,90 990,226 1040,228 L1092,229" fill="#eaf1f7" stroke="#2a6f97" stroke-width="2.5"/>
+  <line x1="1050" y1="230" x2="1050" y2="80" stroke="#c0392b" stroke-width="2.5" stroke-dasharray="6,4"/>
+  <text x="1005" y="70" font-size="15" fill="#c0392b">p = 5×10<tspan dy="-6" font-size="11">−5</tspan></text>
+  <text x="925" y="160" font-size="15" fill="#2a6f97" text-anchor="middle">random</text>
+  <text x="925" y="180" font-size="15" fill="#2a6f97" text-anchor="middle">sequence</text>
+  <text x="955" y="252" font-size="15" fill="#1b2a3a" text-anchor="middle">motif score</text>
+  <rect x="60" y="282" width="1000" height="112" rx="8" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1.5"/>
+  <text x="560" y="312" font-size="17" font-weight="bold" fill="#1b2a3a" text-anchor="middle">Matches by chance are unavoidable</text>
+  <text x="560" y="342" font-size="16" fill="#1b2a3a" text-anchor="middle">a 500-bp peak has about 2 × 500 = 1000 positions to test (two strands)</text>
+  <text x="200" y="370" font-size="16" fill="#1b2a3a">expected chance matches per peak ≈ 1000 × 5×10<tspan dy="-6" font-size="12">−5</tspan><tspan dy="6"> = 0.05  →  in 200 000 peaks ≈ 10 000</tspan></text>
+</svg>

@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 400" width="1120" height="400" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker><marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker><marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker><marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a6f97"/></marker><marker id="ao" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e67e22"/></marker><marker id="ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8c564b"/></marker></defs>
+<rect width="1120" height="400" fill="#ffffff"/>
+<rect x="10" y="10" width="540" height="382" rx="10" fill="none" stroke="#c9d3dc" stroke-width="1.5" />
+<text x="280" y="38" font-size="18" fill="#c0392b" text-anchor="middle" font-weight="bold">Confounded</text>
+<rect x="50" y="56" width="220" height="92" rx="6" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1.2" />
+<text x="160" y="74" font-size="14" fill="#5b6b7a" text-anchor="middle">batch 1 (day 1)</text>
+<circle cx="90" cy="112" r="20" fill="#9aa5b1" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="90" y="118" font-size="16" fill="#ffffff" text-anchor="middle" font-weight="bold">C</text>
+<circle cx="160" cy="112" r="20" fill="#9aa5b1" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="160" y="118" font-size="16" fill="#ffffff" text-anchor="middle" font-weight="bold">C</text>
+<circle cx="230" cy="112" r="20" fill="#9aa5b1" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="230" y="118" font-size="16" fill="#ffffff" text-anchor="middle" font-weight="bold">C</text>
+<rect x="290" y="56" width="220" height="92" rx="6" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1.2" />
+<text x="400" y="74" font-size="14" fill="#5b6b7a" text-anchor="middle">batch 2 (day 2)</text>
+<circle cx="330" cy="112" r="20" fill="#c0392b" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="330" y="118" font-size="16" fill="#ffffff" text-anchor="middle" font-weight="bold">T</text>
+<circle cx="400" cy="112" r="20" fill="#c0392b" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="400" y="118" font-size="16" fill="#ffffff" text-anchor="middle" font-weight="bold">T</text>
+<circle cx="470" cy="112" r="20" fill="#c0392b" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="470" y="118" font-size="16" fill="#ffffff" text-anchor="middle" font-weight="bold">T</text>
+<text x="100" y="174" font-size="14" fill="#5b6b7a" text-anchor="start">design matrix  ~ batch + condition</text>
+<text x="210" y="196" font-size="14" fill="#1b2a3a" text-anchor="middle" font-weight="bold">(Int.)</text>
+<text x="290" y="196" font-size="14" fill="#1b2a3a" text-anchor="middle" font-weight="bold">batch2</text>
+<text x="370" y="196" font-size="14" fill="#1b2a3a" text-anchor="middle" font-weight="bold">treated</text>
+<text x="150" y="218" font-size="14" fill="#5b6b7a" text-anchor="middle">s1</text>
+<text x="210" y="218" font-size="15" fill="#1b2a3a" text-anchor="middle">1</text>
+<text x="290" y="218" font-size="15" fill="#c0392b" text-anchor="middle">0</text>
+<text x="370" y="218" font-size="15" fill="#c0392b" text-anchor="middle">0</text>
+<text x="150" y="239" font-size="14" fill="#5b6b7a" text-anchor="middle">s2</text>
+<text x="210" y="239" font-size="15" fill="#1b2a3a" text-anchor="middle">1</text>
+<text x="290" y="239" font-size="15" fill="#c0392b" text-anchor="middle">0</text>
+<text x="370" y="239" font-size="15" fill="#c0392b" text-anchor="middle">0</text>
+<text x="150" y="260" font-size="14" fill="#5b6b7a" text-anchor="middle">s3</text>
+<text x="210" y="260" font-size="15" fill="#1b2a3a" text-anchor="middle">1</text>
+<text x="290" y="260" font-size="15" fill="#c0392b" text-anchor="middle">0</text>
+<text x="370" y="260" font-size="15" fill="#c0392b" text-anchor="middle">0</text>
+<text x="150" y="281" font-size="14" fill="#5b6b7a" text-anchor="middle">s4</text>
+<text x="210" y="281" font-size="15" fill="#1b2a3a" text-anchor="middle">1</text>
+<text x="290" y="281" font-size="15" fill="#c0392b" text-anchor="middle">1</text>
+<text x="370" y="281" font-size="15" fill="#c0392b" text-anchor="middle">1</text>
+<text x="150" y="302" font-size="14" fill="#5b6b7a" text-anchor="middle">s5</text>
+<text x="210" y="302" font-size="15" fill="#1b2a3a" text-anchor="middle">1</text>
+<text x="290" y="302" font-size="15" fill="#c0392b" text-anchor="middle">1</text>
+<text x="370" y="302" font-size="15" fill="#c0392b" text-anchor="middle">1</text>
+<text x="150" y="323" font-size="14" fill="#5b6b7a" text-anchor="middle">s6</text>
+<text x="210" y="323" font-size="15" fill="#1b2a3a" text-anchor="middle">1</text>
+<text x="290" y="323" font-size="15" fill="#c0392b" text-anchor="middle">1</text>
+<text x="370" y="323" font-size="15" fill="#c0392b" text-anchor="middle">1</text>
+<path d="M168,202 L162,202 L162,332 L168,332" fill="none" stroke="#1b2a3a" stroke-width="1.5" />
+<path d="M404,202 L410,202 L410,332 L404,332" fill="none" stroke="#1b2a3a" stroke-width="1.5" />
+<rect x="262" y="202" width="136" height="134" rx="6" fill="none" stroke="#c0392b" stroke-width="2" />
+<text x="280" y="368" font-size="15" fill="#c0392b" text-anchor="middle"><tspan x="280" dy="0">batch2 = treated in every row:</tspan><tspan x="280" dy="19">the two effects cannot be separated</tspan></text>
+<rect x="570" y="10" width="540" height="382" rx="10" fill="none" stroke="#c9d3dc" stroke-width="1.5" />
+<text x="840" y="38" font-size="18" fill="#2e8b57" text-anchor="middle" font-weight="bold">Balanced</text>
+<rect x="610" y="56" width="220" height="92" rx="6" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1.2" />
+<text x="720" y="74" font-size="14" fill="#5b6b7a" text-anchor="middle">batch 1 (day 1)</text>
+<circle cx="650" cy="112" r="20" fill="#9aa5b1" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="650" y="118" font-size="16" fill="#ffffff" text-anchor="middle" font-weight="bold">C</text>
+<circle cx="720" cy="112" r="20" fill="#c0392b" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="720" y="118" font-size="16" fill="#ffffff" text-anchor="middle" font-weight="bold">T</text>
+<circle cx="790" cy="112" r="20" fill="#9aa5b1" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="790" y="118" font-size="16" fill="#ffffff" text-anchor="middle" font-weight="bold">C</text>
+<rect x="850" y="56" width="220" height="92" rx="6" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1.2" />
+<text x="960" y="74" font-size="14" fill="#5b6b7a" text-anchor="middle">batch 2 (day 2)</text>
+<circle cx="890" cy="112" r="20" fill="#c0392b" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="890" y="118" font-size="16" fill="#ffffff" text-anchor="middle" font-weight="bold">T</text>
+<circle cx="960" cy="112" r="20" fill="#9aa5b1" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="960" y="118" font-size="16" fill="#ffffff" text-anchor="middle" font-weight="bold">C</text>
+<circle cx="1030" cy="112" r="20" fill="#c0392b" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="1030" y="118" font-size="16" fill="#ffffff" text-anchor="middle" font-weight="bold">T</text>
+<text x="660" y="174" font-size="14" fill="#5b6b7a" text-anchor="start">design matrix  ~ batch + condition</text>
+<text x="770" y="196" font-size="14" fill="#1b2a3a" text-anchor="middle" font-weight="bold">(Int.)</text>
+<text x="850" y="196" font-size="14" fill="#1b2a3a" text-anchor="middle" font-weight="bold">batch2</text>
+<text x="930" y="196" font-size="14" fill="#1b2a3a" text-anchor="middle" font-weight="bold">treated</text>
+<text x="710" y="218" font-size="14" fill="#5b6b7a" text-anchor="middle">s1</text>
+<text x="770" y="218" font-size="15" fill="#1b2a3a" text-anchor="middle">1</text>
+<text x="850" y="218" font-size="15" fill="#1b2a3a" text-anchor="middle">0</text>
+<text x="930" y="218" font-size="15" fill="#1b2a3a" text-anchor="middle">0</text>
+<text x="710" y="239" font-size="14" fill="#5b6b7a" text-anchor="middle">s2</text>
+<text x="770" y="239" font-size="15" fill="#1b2a3a" text-anchor="middle">1</text>
+<text x="850" y="239" font-size="15" fill="#1b2a3a" text-anchor="middle">0</text>
+<text x="930" y="239" font-size="15" fill="#1b2a3a" text-anchor="middle">1</text>
+<text x="710" y="260" font-size="14" fill="#5b6b7a" text-anchor="middle">s3</text>
+<text x="770" y="260" font-size="15" fill="#1b2a3a" text-anchor="middle">1</text>
+<text x="850" y="260" font-size="15" fill="#1b2a3a" text-anchor="middle">0</text>
+<text x="930" y="260" font-size="15" fill="#1b2a3a" text-anchor="middle">0</text>
+<text x="710" y="281" font-size="14" fill="#5b6b7a" text-anchor="middle">s4</text>
+<text x="770" y="281" font-size="15" fill="#1b2a3a" text-anchor="middle">1</text>
+<text x="850" y="281" font-size="15" fill="#1b2a3a" text-anchor="middle">1</text>
+<text x="930" y="281" font-size="15" fill="#1b2a3a" text-anchor="middle">1</text>
+<text x="710" y="302" font-size="14" fill="#5b6b7a" text-anchor="middle">s5</text>
+<text x="770" y="302" font-size="15" fill="#1b2a3a" text-anchor="middle">1</text>
+<text x="850" y="302" font-size="15" fill="#1b2a3a" text-anchor="middle">1</text>
+<text x="930" y="302" font-size="15" fill="#1b2a3a" text-anchor="middle">0</text>
+<text x="710" y="323" font-size="14" fill="#5b6b7a" text-anchor="middle">s6</text>
+<text x="770" y="323" font-size="15" fill="#1b2a3a" text-anchor="middle">1</text>
+<text x="850" y="323" font-size="15" fill="#1b2a3a" text-anchor="middle">1</text>
+<text x="930" y="323" font-size="15" fill="#1b2a3a" text-anchor="middle">1</text>
+<path d="M728,202 L722,202 L722,332 L728,332" fill="none" stroke="#1b2a3a" stroke-width="1.5" />
+<path d="M964,202 L970,202 L970,332 L964,332" fill="none" stroke="#1b2a3a" stroke-width="1.5" />
+<text x="840" y="368" font-size="15" fill="#2e8b57" text-anchor="middle"><tspan x="840" dy="0">each batch has both conditions:</tspan><tspan x="840" dy="19">~ batch + condition is estimable</tspan></text>
+</svg>

@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-662ae1889177880cb371f83234c0a158.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.7.30">
+
+  <meta name="author" content="Epigenetics">
+  <title>Epigenetics – Gene regulation</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-bf56578b9c06c165c166475cd19dbcd1.css">
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Gene regulation</h1>
+  <p class="subtitle">Promoters, enhancers, insulators and transcription factors</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Epigenetics 
+</div>
+</div>
+</div>
+
+</section>
+<section id="about-this-lecture" class="slide level2">
+<h2>About this lecture</h2>
+<p>Chromatin marks tell you <em>where</em> the regulatory DNA is. This lecture is about <em>what</em> that DNA is and <em>who</em> reads it: short sequence elements (promoters, enhancers, silencers, insulators) and the sequence-specific <strong>transcription factors</strong> (TFs) that bind them.</p>
+<ul>
+<li>The <strong>cis-regulatory code</strong>: core promoters, enhancers, silencers, insulators.</li>
+<li><strong>Transcription factors</strong>: DNA-binding domains, and motifs written as <strong>position weight matrices</strong>.</li>
+<li>Why a TF binds only a small fraction of its motif matches: accessibility, <strong>pioneer factors</strong>, cooperation.</li>
+<li><strong>Combinatorial control</strong>: the B-cell TFs behind the GM12878 data.</li>
+<li>How all of this shows up in ATAC-seq, ChIP-seq, Hi-C and motif analysis.</li>
+</ul>
+<aside class="notes">
+<p>Students know transcription and “a TF binds a promoter” from their bachelor’s, and from <em>What is epigenetics?</em> they know the six histone marks and that open chromatin is nucleosome-depleted. This unit supplies the sequence side: what the regulatory elements are, how a TF recognises DNA, and how to write that down as a matrix one can scan a genome with. The running example is GM12878, the B-lymphoblastoid cell line used throughout the course: we look at its CTCF peaks, its ATAC peaks and an enhancer cluster at PAX5, the master regulator of B-cell identity. Every later assay unit measures one of the things introduced here.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-cis-regulatory-code" class="slide level2 smaller">
+<h2>The cis-regulatory code</h2>
+
+<img data-src="fig01-cis-regulatory-code.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>A gene’s expression is set by short DNA elements in <strong>cis</strong> (on the same molecule): the <strong>core promoter</strong>, <strong>enhancers</strong> that activate, <strong>silencers</strong> that repress, and <strong>insulators</strong> that delimit their reach.</li>
+<li>Each element is a cluster of <strong>TF binding sites</strong>, typically 6–20 bp each, in a stretch of a few hundred bp.</li>
+<li>The proteins that read them (TFs, co-factors) act in <strong>trans</strong>: they are encoded elsewhere and diffuse to their sites.</li>
+</ul>
+<aside class="notes">
+<p>The cis/trans distinction comes from genetics: a cis-acting mutation affects only the allele on the same chromosome, a trans-acting one (in a TF gene) affects both alleles. Most variants associated with disease in genome-wide association studies are non-coding and fall in enhancers, so this code matters for human genetics too. Scale: a promoter’s core is about 80 bp; an enhancer a few hundred bp; the regulatory domain of a gene can be up to a megabase, usually bounded by CTCF sites (insulators). ENCODE lists close to a million candidate cis-regulatory elements in the human genome, against about 20 000 protein-coding genes: most genes have several enhancers.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-first-enhancer-1981" class="slide level2 smaller">
+<h2>The first enhancer (1981)</h2>
+
+<img data-src="fig02-first-enhancer.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><ul>
+<li>A 72-bp repeat from the SV40 virus raised transcription of a β-globin gene on the same plasmid about <strong>200-fold</strong>.</li>
+<li>It worked in <strong>either orientation</strong>, <strong>upstream or downstream</strong>, and <strong>kilobases away</strong> from the start site (1.4 kb upstream, 3.3 kb downstream).</li>
+<li>This defines an <strong>enhancer</strong>: a DNA element that activates transcription from a distance, independent of orientation.</li>
+</ul>
+<aside class="notes">
+<p>Banerji, Rusconi and Schaffner transfected HeLa cells with a rabbit β-globin gene and measured correctly initiated transcripts by S1 mapping. On its own the plasmid gave barely detectable transcripts; with SV40 DNA in cis, 200 times more, and the activity mapped to the 72-bp repeat. The bars in the figure are schematic: the paper reports the 200-fold enhancement and that the element acted “in either orientation at many positions”. The key word is cis: SV40 DNA on a separate plasmid did nothing. The same year a polyoma virus element gave the same result, and within two years the first cellular enhancer was found in the immunoglobulin heavy-chain locus, in B cells, which fits our running example. Reporter assays like this one are still the standard functional test; today they are run in parallel on thousands of fragments (massively parallel reporter assays, STARR-seq).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-core-promoter" class="slide level2 smaller">
+<h2>The core promoter</h2>
+
+<img data-src="fig03-core-promoter.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><ul>
+<li>The <strong>core promoter</strong> (about −40 to +40 around the transcription start site, TSS) is where RNA polymerase II and the <strong>general transcription factors</strong> assemble the pre-initiation complex.</li>
+<li>Known elements: <strong>TATA box</strong> (about −30, bound by TBP), <strong>Initiator</strong> (Inr, at the TSS), <strong>DPE</strong>, <strong>BRE</strong>. Each promoter has only some of them; a minority have a TATA box.</li>
+<li>The core promoter decides <em>where</em> transcription starts and in which direction. How <em>often</em> it starts is set mostly by TFs at proximal sites and enhancers.</li>
+</ul>
+<aside class="notes">
+<p>The general transcription factors (TFIID, which contains the TATA-binding protein TBP and about 13 TAF subunits, plus TFIIA, B, E, F and H) are present in every cell; they are not what makes a gene cell-type specific. The core elements are short and degenerate, so you cannot find promoters by searching for TATA boxes: only a minority of human promoters (often quoted as 10–20%) have one, mostly highly regulated tissue-specific genes. Letters in the consensus sequences are IUPAC codes (W = A or T, R = A or G, Y = C or T, S = C or G). In practice, promoters are mapped from the data: 5’ ends of transcripts (CAGE), H3K4me3, and the GENCODE annotation you used in <em>Genomic intervals</em>. Review: Haberle and Stark 2018.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="two-kinds-of-promoters" class="slide level2 smaller">
+<h2>Two kinds of promoters</h2>
+
+<img data-src="fig04-cpg-promoters.png" class="quarto-figure quarto-figure-center r-stretch" style="width:85.0%"><ul>
+<li>CpG observed/expected around all 19 989 protein-coding TSSs: <strong>two populations</strong>. About half are <strong>CpG-island promoters</strong> (52% by a strict cutoff), the rest are CpG-poor.</li>
+<li><strong>CpG-island promoters</strong>: housekeeping and developmental genes, broad TSS, rarely a TATA box, kept unmethylated. 78% carry H3K4me3 in GM12878.</li>
+<li><strong>Non-CpG promoters</strong>: often tissue-specific, sharper TSS, more TATA boxes. Only 31% are marked in a B-cell line.</li>
+</ul>
+<aside class="notes">
+<p>CpG observed/expected is the number of CG dinucleotides divided by (number of C × number of G / length): about 0.2–0.25 in bulk human DNA because methylated CpGs mutate to TpG over evolution; near 1 in CpG islands, which escaped methylation in the germline. The cutoff (o/e &gt; 0.6 and GC &gt; 55%, over ±500 bp) is a strict version of the classic Gardiner-Garden and Frommer definition; looser definitions give 55–70% CGI promoters. The H3K4me3 colouring shows why the two classes matter for epigenomics: CpG-island promoters are marked in most cell types (CFP1 binds unmethylated CpG and recruits the H3K4 methyltransferase), while non-CpG promoters are marked only where the gene is used. Silencing differs too: CpG-island promoters of developmental genes are silenced by Polycomb (H3K27me3), and stably by DNA methylation in, for example, X inactivation and cancer. Made with make-generegulation-figs.R.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="promoters-are-bidirectional" class="slide level2 smaller">
+<h2>Promoters are bidirectional</h2>
+
+<img data-src="fig05-bidirectional.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><ul>
+<li>A promoter’s nucleosome-depleted region usually contains <strong>two</strong> core promoters facing away from each other.</li>
+<li>The sense transcript becomes the mRNA. The antisense transcript (<strong>PROMPT</strong> or upstream antisense RNA) is short, terminated early and degraded by the RNA exosome.</li>
+<li>When both directions are productive you get a <strong>head-to-head gene pair</strong> sharing one promoter region.</li>
+</ul>
+<aside class="notes">
+<p>Divergent transcription was found by sequencing nascent RNA (GRO-seq) and RNA in cells lacking the nuclear exosome (Preker et al.&nbsp;2008). The asymmetry comes from sequence downstream of each TSS: the sense direction has 5’ splice sites (U1 snRNP binding suppresses early termination), the antisense direction has early polyadenylation signals. Relevance for the course: an ATAC-seq peak at a promoter is a single NDR, but it hosts two initiation sites, and H3K4me3 and H3K27ac are found on both sides of it (the bimodal shape in the next units). Enhancers show the same bidirectional initiation, which leads to the eRNAs a few slides on.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="enhancers-can-act-from-far-away" class="slide level2 smaller">
+<h2>Enhancers can act from far away</h2>
+
+<img data-src="fig06-enhancer-far.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>The <strong>ZRS</strong> controls <em>SHH</em> in the developing limb from about <strong>1 Mb</strong> away, inside an intron of <em>LMBR1</em>, across a gene desert.</li>
+<li>Single-base changes in the ZRS cause extra digits (preaxial polydactyly); deleting it in mice abolishes <em>Shh</em> expression in the limb: limbs without digits, an otherwise normal animal.</li>
+<li>Lesson: the <strong>nearest gene is often not the target</strong>. Enhancers are tissue-specific modules; one gene can have many, each for one tissue or stage.</li>
+</ul>
+<aside class="notes">
+<p>The ZRS (zone of polarising activity regulatory sequence) is the textbook long-range enhancer (Lettice et al.&nbsp;2003; Sagai et al.&nbsp;2005). It shows three features at once: distance (about 1 Mb in human), position inside another gene whose expression it does not control, and modularity: SHH has other enhancers for the brain, the gut and the notochord, and only the limb one is lost in these mutants, so the phenotype is restricted to the limbs. This is why “nearest gene” assignment of peaks, which students did in <em>Genomic intervals</em>, is only a first guess. Linking enhancers to genes properly uses 3D contacts (Hi-C, the 3D genome units), correlation across samples, and perturbation (CRISPRi), the topic of the integration unit. Coordinates in the figure are hg38 from GENCODE; the ZRS position is approximate.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="how-an-enhancer-reaches-its-promoter" class="slide level2 smaller">
+<h2>How an enhancer reaches its promoter</h2>
+
+<img data-src="fig07-enhancer-promoter-loop.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"><ul>
+<li>The DNA between enhancer and promoter <strong>loops out</strong>, so that proteins bound at both meet in 3D.</li>
+<li>TFs on the enhancer bind co-activators such as <strong>Mediator</strong>, which contacts RNA polymerase II at the promoter. <strong>Cohesin</strong> extrudes and holds loops.</li>
+<li>Active enhancers are themselves transcribed: short, bidirectional <strong>enhancer RNAs (eRNAs)</strong>, a sign of activity used to map enhancers.</li>
+</ul>
+<aside class="notes">
+<p>The looping model is supported by chromosome conformation capture (3C, Hi-C, Micro-C) and microscopy, and by experiments where forcing a loop (tethering a protein that self-associates) activates a gene. It is not the whole story: imaging often shows enhancer and promoter several hundred nm apart even when the gene is on, and some models propose transcriptional “hubs” or condensates in which many TFs and co-activators are concentrated. Mediator is a complex of about 30 subunits; it binds activation domains of TFs and Pol II. eRNAs were found by Kim et al.&nbsp;2010; FANTOM5 (Andersson et al.&nbsp;2014) used bidirectional CAGE signal to define about 43 000 active enhancers across human cell types. Whether eRNAs have a function or are a by-product is debated; as a marker they are very useful. Loops and cohesin come back in the 3D genome units.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="enhancer-states-and-their-marks" class="slide level2 smaller">
+<h2>Enhancer states and their marks</h2>
+
+<img data-src="fig08-enhancer-states.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"><ul>
+<li><strong>Primed</strong>: H3K4me1, a pioneer TF may be bound, little accessibility. <strong>Active</strong>: open core with TFs, H3K4me1 <strong>and H3K27ac</strong>, eRNAs. <strong>Poised</strong> (in stem cells): H3K4me1 with H3K27me3.</li>
+<li>The core is a nucleosome-depleted region of a few hundred bp; the marks sit on the <strong>flanking</strong> nucleosomes.</li>
+<li>This is why “H3K27ac peak, distal to a TSS, no H3K4me3” is the standard working definition of an active enhancer.</li>
+</ul>
+<aside class="notes">
+<p>This connects the marks table of <em>What is epigenetics?</em> to enhancer biology. Creyghton et al.&nbsp;2010 and Rada-Iglesias et al.&nbsp;2011 showed that H3K27ac separates active from primed or poised enhancers carrying H3K4me1. The poised state (H3K4me1 + H3K27me3) is mostly described in embryonic stem cells, at developmental enhancers that become active upon differentiation. The marks are correlates of activity, not proof of function (the cause-or-consequence slide in <em>What is epigenetics?</em>): only a fraction of H3K27ac-marked elements activate a reporter, and some functional enhancers carry little H3K27ac. The definition H3K27ac minus H3K4me3, away from TSSs, is the one students used to build an enhancer set in <em>Genomic intervals</em>. In the table, “weak” ATAC means accessible in some cells or partly: primed enhancers often give small peaks.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="real-data-an-enhancer-cluster-at-pax5" class="slide level2 smaller">
+<h2>Real data: an enhancer cluster at PAX5</h2>
+
+<img data-src="fig09-bcell-enhancers.png" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"><ul>
+<li>PAX5 is the master regulator of B-cell identity. In GM12878, 500 kb around <em>PAX5</em> contain <strong>91 ATAC peaks</strong> and <strong>71 H3K27ac peaks</strong>, most of them far from any TSS, many inside the neighbouring gene <em>ZCCHC7</em>.</li>
+<li>H3K4me1 is broad over the whole cluster; H3K27ac and ATAC mark the active cores; H3K4me3 marks the <em>PAX5</em> promoter (and, weakly, some strong enhancers).</li>
+</ul>
+<aside class="notes">
+<p>ENCODE fold-change tracks (500-bp bins, maximum per bin) and ATAC IDR peaks from GM12878, plotted by make-generegulation-figs.R. PAX5 is on the minus strand, so its promoter is at the right end of the gene, near 37.03 Mb; the gene extends to the left beyond the window. Many of the active elements lie inside ZCCHC7; which gene each one regulates cannot be read from these tracks (the problem of the ZRS slide again), it needs contact or perturbation data. CTCF peaks are few and sharp: they mark boundaries and loop anchors, not enhancers. Point out the scales: H3K27ac reaches 100-fold enrichment, H3K4me1 only 20-fold, because H3K4me1 is spread over many nucleosomes. Weak H3K4me3 at very active enhancers is normal; it is a reason not to define promoters by H3K4me3 alone.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="super-enhancers-a-useful-ranking-a-contested-category" class="slide level2 smaller">
+<h2>“Super-enhancers”: a useful ranking, a contested category</h2>
+
+<img data-src="fig10-super-enhancers.png" class="quarto-figure quarto-figure-center r-stretch" style="width:85.0%"><ul>
+<li>Stitch distal H3K27ac peaks within 12.5 kb, rank by total signal, and cut where the curve turns up: <strong>929 regions (6%) hold 45% of the signal</strong> in GM12878. They sit near B-cell genes (<em>ETV6</em>, <em>PLCG2</em>, <em>BCL2</em>, <em>PAX5</em> …).</li>
+<li>Whyte et al.&nbsp;2013 called such regions <strong>super-enhancers</strong> and proposed they drive cell identity genes.</li>
+<li><strong>Critique</strong>: the cutoff is arbitrary on a continuous distribution, and dissected super-enhancers often behave as <strong>several ordinary enhancers adding up</strong>. Use the ranking, be careful with the category.</li>
+</ul>
+<aside class="notes">
+<p>The method (ROSE) stitches enhancer peaks within 12.5 kb, excludes peaks near TSSs, ranks stitched regions by signal (originally Mediator or H3K27ac ChIP), and draws the cutoff where a line of slope 1 touches the normalised curve. Our version uses H3K27ac peaks and fold-change bigWig signal, so numbers differ from published lists. The biology behind it is real: genes with large, highly active enhancer clusters tend to be cell identity genes and oncogenes, and those clusters are sensitive to BET inhibitors (BRD4) and to loss of Mediator. The critique (Pott and Lieb 2015; Hay et al.&nbsp;2016 on the α-globin locus) is that there is no evidence for a distinct class with emergent properties: the distribution has no gap, and deleting individual constituents mostly gives additive effects. Read “super-enhancer” as “the top of a ranking of enhancer clusters”.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="silencers-and-insulators" class="slide level2 smaller">
+<h2>Silencers and insulators</h2>
+
+<img data-src="fig11-silencer-insulator.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li><strong>Silencers</strong> bind repressors that recruit <strong>co-repressors</strong> (HDACs, histone methyltransferases). Example: REST binds the RE1 element and silences neuronal genes in non-neuronal cells.</li>
+<li><strong>Insulators</strong> delimit where regulation acts: <strong>enhancer-blocking</strong> (an enhancer cannot activate a promoter on the other side) and <strong>barrier</strong> (heterochromatin cannot spread past).</li>
+<li>In vertebrates most insulator activity depends on <strong>CTCF</strong>.</li>
+</ul>
+<aside class="notes">
+<p>Silencers are much less catalogued than enhancers, partly because a loss of function is harder to measure than a gain; recent screens suggest some elements act as enhancers in one cell type and silencers in another. The classic vertebrate insulator is the chicken β-globin HS4 element: its enhancer-blocking activity needs a CTCF site (Bell, West and Felsenfeld 1999), its barrier activity other proteins. A beautiful human example combines CTCF and DNA methylation: at the H19/IGF2 imprinting control region CTCF binds only the unmethylated maternal allele and blocks the shared enhancers from reaching IGF2; on the methylated paternal allele CTCF cannot bind and IGF2 is expressed. We return to methylation-sensitive binding a few slides on.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="ctcf-and-loop-extrusion" class="slide level2 smaller">
+<h2>CTCF and loop extrusion</h2>
+
+<img data-src="fig12-ctcf-loops.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li><strong>Cohesin</strong> loads on DNA and extrudes a growing loop until it meets CTCF bound in the right <strong>orientation</strong>.</li>
+<li>Loops form between <strong>convergent</strong> CTCF sites (motifs pointing towards each other): about 90% of loops with a CTCF motif at both anchors in high-resolution Hi-C. Flip one site and the loop is lost.</li>
+<li>The result: insulated domains (TADs) in which enhancers find their promoters more easily than across the boundary.</li>
+</ul>
+<aside class="notes">
+<p>CTCF has 11 zinc fingers and binds a long (about 20 bp) asymmetric motif, so each site has an orientation; the N-terminus of CTCF faces the loop and stops cohesin coming from that side. Rao et al.&nbsp;2014 found that loop anchors are mostly convergent pairs of CTCF motifs; inverting a single CTCF site with CRISPR re-wires the loop (de Wit et al.&nbsp;2015; Guo et al.&nbsp;2015). Removing CTCF or cohesin acutely (degron experiments) erases most TADs and loops but changes the expression of surprisingly few genes in the short term, a reminder that boundaries are one layer among several. This slide sets up the 3D genome units and the motif-strand question in the exercise. GM12878 has about 44 000 CTCF peaks in the file we use.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="transcription-factors" class="slide level2 smaller">
+<h2>Transcription factors</h2>
+
+<img data-src="fig13-tf-domains.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>A TF has a <strong>DNA-binding domain</strong> (DBD) that reads a short motif, and effector domains that recruit co-activators or co-repressors.</li>
+<li>Humans have about <strong>1600 TFs</strong>, classified by DBD family; half are C2H2 zinc fingers. Members of one family bind similar motifs.</li>
+<li>About a quarter still have <strong>no known motif</strong>.</li>
+</ul>
+<aside class="notes">
+<p>Numbers from Lambert et al.&nbsp;2018, a manually curated census (1639 TFs; the counts in the figure are from its database). Each DBD family has a typical motif shape: bHLH factors bind the E-box CANNTG as dimers, bZIP factors palindromes, homeodomains TAAT cores, ETS factors GGAA cores (PU.1 is an ETS factor), forkheads TGTTTAC. Many paralogues share nearly identical motifs, so a motif match rarely tells you which family member binds: an ETS motif in a peak could be PU.1, ETS1, ELF1 or FLI1. Activation domains are mostly intrinsically disordered, acidic or rich in glutamine or proline. The KRAB zinc fingers (344 in the database) mostly silence transposable elements by recruiting KAP1/TRIM28 and SETDB1, which writes H3K9me3; this is the H3K9me3 at ZNF clusters seen in <em>What is epigenetics?</em>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-motif-as-a-matrix" class="slide level2 smaller">
+<h2>A motif as a matrix</h2>
+
+<img data-src="fig14-pwm-build.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>Align known binding sites, <strong>count</strong> each base at each position, add a <strong>pseudocount</strong>, divide to get <strong>frequencies</strong> <span class="math inline">p_{b,j}</span>.</li>
+<li>The <strong>log-odds</strong> weight of base <span class="math inline">b</span> at position <span class="math inline">j</span> against a background <span class="math inline">q_b</span>: <span class="math inline">\;w_{b,j} = \log_2 \dfrac{p_{b,j}}{q_b}</span>. Positive: preferred; negative: disfavoured.</li>
+<li>The pseudocount keeps unseen bases from getting <span class="math inline">-\infty</span>: with only 8 sites, “never seen” does not mean “impossible”.</li>
+</ul>
+<aside class="notes">
+<p>This is the position weight matrix (PWM), the standard representation of a TF motif (Stormo 2000; Wasserman and Sandelin 2004). The example is an ETS-type site with the GGAA core that PU.1 binds. Walk through one column: column 1 has 6 G, 1 A, 1 C, 0 T. With a pseudocount of 1 per base and 8 sites the frequencies are 7/12, 2/12, 2/12 and 1/12; against a uniform background of 0.25, G scores log2(0.583/0.25) = +1.2 and T scores log2(0.083/0.25) = −1.6. Pseudocount choices vary (JASPAR tools use 0.8 in total, others 1 per base or a fraction proportional to the background); the more sites, the less it matters. A real background is not uniform: the human genome is 41% GC, so q(G) = q(C) ≈ 0.2 and q(A) = q(T) ≈ 0.3. The exercise builds a matrix like this by hand.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="scanning-a-sequence" class="slide level2 smaller">
+<h2>Scanning a sequence</h2>
+
+<img data-src="fig15-pwm-scan.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>The score of a window is the <strong>sum</strong> of the weights of its bases. Slide the window along the sequence, on <strong>both strands</strong> (the reverse complement).</li>
+<li>A score above a <strong>threshold</strong> is a <strong>match</strong> (a predicted site). Tools set the threshold from a <span class="math inline">p</span>-value: the chance that a random window scores as high.</li>
+<li>Summing log-odds assumes the positions contribute <strong>independently</strong>. Usually a good approximation; dinucleotide models and neural networks relax it.</li>
+</ul>
+<aside class="notes">
+<p>The second match in the figure only appears on the minus strand: the top strand reads ACTTCC, whose reverse complement is GGAAGT. A scanner reports it with strand “−”, and the motif then points to the left on the genome; this matters for CTCF orientation. The best possible score is the sum of the column maxima (8.4 here); the worst is the sum of the minima. Tools such as FIMO (MEME suite), HOMER, motifmatchr and Biostrings::matchPWM compute an exact p-value per score from the matrix and the background. With p &lt; 1e-4 per window and strand, about 200 windows per Mb pass the threshold by chance, which is the topic of the next slides. The independence assumption fails for some TFs (e.g.&nbsp;flexible spacing in dimers); this is part of why convolutional neural networks, which learn motifs from data, outperform PWMs (machine-learning units).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="information-content-and-sequence-logos" class="slide level2 smaller">
+<h2>Information content and sequence logos</h2>
+
+<img data-src="fig16-ctcf-logo.png" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"><ul>
+<li><strong>Information content</strong> of a column (uniform background): <span class="math inline">\;IC_j = 2 + \sum_b p_{b,j} \log_2 p_{b,j}</span> bits. 2 bits: one base only; 0 bits: all four equally likely.</li>
+<li>A <strong>sequence logo</strong> draws each column as a stack of height <span class="math inline">IC_j</span>, each letter scaled by its frequency.</li>
+<li>CTCF (JASPAR MA0139.2, from 913 ChIP-seq sites): 15 positions, <strong>16.1 bits</strong> in total; the core CCA·…AGGGGGC carries most of it.</li>
+</ul>
+<aside class="notes">
+<p>Information content is the reduction in uncertainty compared with a random base (2 bits for DNA). Column 3 of CTCF (C in 903 of 913 sites) has 1.9 bits; column 1 only 0.34. The total information content gives a rule of thumb for how often a motif occurs by chance: roughly once every 2^IC bp per strand, so 2^16 ≈ 70 000 bp for a high-scoring CTCF match. JASPAR is the open database of curated TF matrices (2024 release: Rauluseviciute et al.); CIS-BP, HOCOMOCO and the HOMER and MEME collections are alternatives. Logo made with universalmotif in make-generegulation-figs.R. Note that this matrix was derived from ChIP-seq peaks, so it describes in vivo binding sites, including bias from the experiment; other matrices come from in vitro assays (SELEX, protein-binding microarrays).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="how-many-matches-by-chance" class="slide level2 smaller">
+<h2>How many matches by chance?</h2>
+
+<img data-src="fig17-chance-matches.png" class="quarto-figure quarto-figure-center r-stretch" style="width:82.0%"><ul>
+<li>At a <span class="math inline">p</span>-value threshold <span class="math inline">p</span>, a sequence of length <span class="math inline">L</span> has about <span class="math inline">\;2 L p\;</span> matches by chance (two strands).</li>
+<li>chr21 (40 Mb of sequence): <strong>8583</strong> CTCF matches at <span class="math inline">p &lt; 10^{-4}</span>, close to the 8018 expected by chance. Genome-wide, about <strong>600 000</strong> are expected.</li>
+<li>GM12878 has 44 217 CTCF peaks. Even a long, informative motif has <strong>far more matches than bound sites</strong>.</li>
+</ul>
+<aside class="notes">
+<p>Log scale on the y axis. This is the point of the slide: motif matches are cheap. A 6-bp exact word occurs once every 4^6 = 4096 bp per strand, about 500 times per Mb on both strands; a typical TF motif with 10–12 bits of information occurs thousands of times per Mb at usual thresholds. The observed counts are close to the expectation because the expectation is computed from the matrix itself with a uniform background, and chr21 is not uniform (41% GC); at stricter thresholds the observed count exceeds the expected one, partly because real CTCF sites are enriched (there are a few hundred bound sites on chr21) and partly because of base composition and repeats. Numbers computed in make-generegulation-figs.R with motifmatchr (exercise R7).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="real-data-ctcf-peaks-contain-the-ctcf-motif" class="slide level2 smaller">
+<h2>Real data: CTCF peaks contain the CTCF motif</h2>
+
+<img data-src="fig18-ctcf-motif-in-peaks.png" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"><ul>
+<li>Of 200 bp around each CTCF summit, <strong>78%</strong> contain a match (<span class="math inline">p &lt; 10^{-4}</span>), against <strong>8%</strong> of GC-matched genomic windows and 9% of the same sequences shuffled.</li>
+<li>The stronger the peak, the more likely the motif: <strong>62%</strong> of the weakest quarter, <strong>92%</strong> of the strongest.</li>
+<li>Weak peaks without a motif: indirect binding, weaker motif variants, or noise.</li>
+</ul>
+<aside class="notes">
+<p>Three backgrounds: random genomic windows (4%), windows matched to the GC content of the peaks (8%, because the CTCF motif is GC-rich and so occurs more often in GC-rich DNA), and the peak sequences shuffled so that each keeps its dinucleotide composition (9%). The GC-matched background is the fair one; a random-genome background would overstate the enrichment by a factor of two. This is exactly the issue of the null from the shuffle test in <em>Genomic intervals</em>: here the null must match sequence composition. HOMER uses GC-matched genomic background, MEME/SEA shuffled sequences. The strong dependence on peak strength is typical of ChIP-seq of a direct DNA binder and is a quality check: if the strongest peaks of your TF ChIP do not contain its motif, worry about the antibody.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="real-data-the-motif-sits-at-the-summit" class="slide level2 smaller">
+<h2>Real data: the motif sits at the summit</h2>
+
+<img data-src="fig19-ctcf-centrality.png" class="quarto-figure quarto-figure-center r-stretch" style="width:85.0%"><ul>
+<li>Position of the best CTCF match in 500 bp around each summit: a sharp peak at 0. <strong>94%</strong> of best matches are within 50 bp of the summit (median distance 6 bp).</li>
+<li>In GC-matched background windows the best matches are spread evenly.</li>
+<li><strong>Centrality</strong> is strong evidence that the motif is what the TF binds; tools such as CentriMo use it as a test.</li>
+</ul>
+<aside class="notes">
+<p>The summit is the position with the most ChIP fragments, which pile up symmetrically around the protein’s binding position, so a directly bound motif should be at the summit within the precision of the experiment (tens of bp). A motif that is enriched in peaks but spread evenly over them suggests a partner factor or a sequence bias of the region, not the immunoprecipitated TF itself. The same plot centred on ATAC-seq summits is noisier, because an ATAC peak can contain several TFs. Only peaks with a match contribute (81% of peaks within ±250 bp; 17% of the 500-bp background windows have one). The exercise reproduces this histogram on 5000 peaks.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="most-motif-matches-are-not-bound" class="slide level2 smaller">
+<h2>Most motif matches are not bound</h2>
+
+<img data-src="fig20-unbound-matches.png" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"><ul>
+<li>Of the 8583 CTCF matches on chr21, only <strong>369 (4.3%)</strong> lie in a GM12878 CTCF peak, although CTCF is one of the most motif-driven TFs.</li>
+<li>Matches in <strong>accessible</strong> DNA (ATAC peaks) are bound <strong>39%</strong> of the time, matches elsewhere <strong>2%</strong>. The best-scoring quarter of matches is bound 12% of the time, the rest under 2%.</li>
+<li>Conversely, 79% of chr21 CTCF peaks have a match: the motif is nearly <strong>necessary</strong>, far from <strong>sufficient</strong>.</li>
+</ul>
+<aside class="notes">
+<p>This is the central quantitative message of the lecture. Accessibility and binding are not independent (CTCF binding itself creates an ATAC peak), so the 39% is not a causal estimate; but the asymmetry is the general pattern. For most TFs the fraction of bound matches is far lower than for CTCF, often well under 1%. The reasons are on the next slide. A consequence for analysis: predicting binding from sequence alone fails; combining sequence with accessibility (as chromVAR and many ML models do) works much better. Numbers from make-generegulation-figs.R; the exercise recomputes them (R7).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="why-a-motif-is-bound-or-not" class="slide level2 smaller">
+<h2>Why a motif is bound or not</h2>
+
+<img data-src="fig21-binding-determinants.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li><strong>Nucleosomes</strong>: most TFs cannot bind a motif wrapped on a histone octamer. <strong>DNA methylation</strong>: some TFs, CTCF among them, do not bind a motif with a methylated CpG.</li>
+<li><strong>Cooperativity</strong>: TFs that bind next to each other stabilise each other, so a weak site is bound when a partner is there.</li>
+<li><strong>TF concentration and competition</strong> with other proteins set how many sites are occupied.</li>
+</ul>
+<aside class="notes">
+<p>Each panel is a determinant that explains part of the gap on the previous slide. Nucleosomes: DNA on the octamer is bent and one face is blocked; access needs a pioneer factor or a remodeller (next slide). Methylation: the CTCF motif often contains CpGs (positions 13–14 of the JASPAR consensus GCCACCAGGGGGCGC); methylation there blocks binding, as at the H19 imprinting control region. Methyl-CpG can also increase binding for some TFs (the methyl-SELEX work of Yin et al.&nbsp;2017). Cooperativity can be direct (protein–protein contacts, e.g.&nbsp;PU.1 with IRF4 or IRF8 on composite ETS–IRF elements in B cells) or indirect, through competition with the same nucleosome. TF concentration: a TF at higher levels occupies weaker sites; this is how dosage-sensitive TFs act.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="pioneer-factors-open-closed-chromatin" class="slide level2 smaller">
+<h2>Pioneer factors open closed chromatin</h2>
+
+<img data-src="fig22-pioneer.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li><strong>Pioneer factors</strong> bind their motif on nucleosomal DNA, recruit remodellers (SWI/SNF/BAF), and make the site accessible for other TFs.</li>
+<li>Classic example: <strong>FOXA1/FOXA2</strong> in liver; its forkhead domain resembles linker histone H1. In B cells <strong>PU.1</strong> and <strong>EBF1</strong> act as pioneers.</li>
+<li>Pioneers set up <strong>competence</strong>: which enhancers <em>can</em> become active in a lineage. Signal-dependent TFs (NF-κB, steroid receptors) mostly bind where pioneers already opened the chromatin.</li>
+</ul>
+<aside class="notes">
+<p>Zaret and Carroll 2011 is the review. FOXA binds its site on the nucleosome surface and can open compacted chromatin in vitro without ATP-dependent remodellers (Cirillo et al.&nbsp;2002), though in cells it works with remodellers. Pioneering is a spectrum, not a binary class: many TFs can bind partial motifs on nucleosomes to some degree. The definition is operational: a TF that binds closed chromatin and is needed for its opening. PU.1 opens thousands of sites in macrophages and B cells (Heinz et al.&nbsp;2010); EBF1 opens chromatin at B-cell genes during B-cell commitment (Boller et al.&nbsp;2016). The steps in the figure map onto assays: step 1 has a ChIP peak but little ATAC; step 3 has ATAC, H3K27ac and other TFs. For the ML units: pioneers are exactly where sequence alone predicts accessibility best.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="combinatorial-control-the-b-cell-example" class="slide level2 smaller">
+<h2>Combinatorial control: the B-cell example</h2>
+
+<img data-src="fig23-bcell-tfs.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>B-cell identity rests on a few TFs: <strong>PU.1</strong> and <strong>E2A</strong> induce <strong>EBF1</strong>, EBF1 and <strong>PAX5</strong> activate each other and the B-cell programme, PAX5 represses other lineages.</li>
+<li>An enhancer is active only with the <strong>right combination</strong> of TFs. PU.1 is in both B cells and macrophages, but binds different sites with different partners.</li>
+<li>Combinations of ~1600 TFs give far more cell types than single TFs could.</li>
+</ul>
+<aside class="notes">
+<p>The hierarchy is from mouse genetics: mice without E2A or EBF1 have no B cells, and Pax5-deficient pro-B cells can still become macrophages or T cells, so PAX5 is the commitment factor (Nutt et al.&nbsp;1999). PAX5 targets include CD19 and CD79A (activated) and CSF1R (repressed). Heinz et al.&nbsp;2010 is the key paper on the right panel: PU.1 binds tens of thousands of sites in macrophages and in B cells, but largely different ones, next to C/EBP motifs in macrophages and EBF/E2A/OCT motifs in B cells; collaboratively they choose which sites become enhancers. GM12878 is an Epstein–Barr-virus-transformed B cell, so in addition to the B-cell factors it has very active NF-κB and IRF4 (EBV activates them), relevant when you look at its motif enrichment.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="real-data-b-cell-motifs-in-gm12878-open-chromatin" class="slide level2 smaller">
+<h2>Real data: B-cell motifs in GM12878 open chromatin</h2>
+
+<img data-src="fig24-bcell-motifs.png" class="quarto-figure quarto-figure-center r-stretch" style="width:85.0%"><ul>
+<li>Distal ATAC peaks (summit more than 2 kb from a protein-coding TSS), 200 bp around the summit, against GC-matched genomic windows.</li>
+<li><strong>IRF4</strong> (3.4×), <strong>CTCF</strong> (2.6×) and <strong>PU.1</strong> (1.8×) motifs are the most enriched; OCT2, RUNX3 and EBF1 modestly (1.3–1.4×). Motifs of liver and erythroid TFs (HNF4A, FOXA1, GATA1) are not (≈1×).</li>
+<li>The open chromatin of a cell type tells you its TFs: the basis of motif enrichment analysis and chromVAR.</li>
+</ul>
+<aside class="notes">
+<p>Numbers next to the bars are the fraction of peaks with a match and the fraction of background windows with a match; 116 758 distal peaks of 155 151. Enrichments of 1.3–3-fold are typical: each motif occurs in only a minority of peaks, and many matches in either set are chance hits. IRF4 at the top fits an EBV-transformed B cell, where EBV drives IRF4; IRF and PU.1 motifs also occur together as composite ETS–IRF elements. Two honest caveats: PAX5’s JASPAR matrix is short (8 bp) and captures only part of its long bipartite site, so its enrichment is underestimated; and MEF2B, a germinal-centre B-cell TF, is depleted, a reminder that motif enrichment depends on the matrix, the background and the window, and that absence of enrichment does not mean absence of function. Formal motif enrichment (HOMER, MEME-SEA, chromVAR) and footprinting are taught in <em>Motifs, motif enrichment and TF footprinting</em>; here the point is qualitative. Made with motifmatchr and JASPAR 2024 matrices in make-generegulation-figs.R.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="co-activators-turn-binding-into-activity" class="slide level2 smaller">
+<h2>Co-activators turn binding into activity</h2>
+
+<img data-src="fig25-coactivators.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>Activation domains recruit <strong>p300/CBP</strong>, which acetylates H3K27 (and TFs): the <strong>H3K27ac</strong> you map at active enhancers and promoters.</li>
+<li><strong>BRD4</strong> reads acetyl-lysine with its bromodomains and, with <strong>Mediator</strong>, helps recruit and release RNA polymerase II.</li>
+<li>Repressors recruit the opposite: HDACs, Polycomb, H3K9 methyltransferases.</li>
+</ul>
+<aside class="notes">
+<p>This closes the loop with the writers/readers/erasers framing of <em>What is epigenetics?</em>: TF binding at a sequence leads to the writing of a mark (H3K27ac by p300/CBP), which is read by BRD4, which helps the transcription machinery. It also explains why H3K27ac is such a good marker of active enhancers, and why p300 ChIP-seq was one of the first ways enhancers were mapped (Visel et al.&nbsp;2009). Drugs: BET inhibitors (JQ1) displace BRD4 and hit super-enhancer-driven oncogenes such as MYC; p300/CBP inhibitors and degraders are in development. Pol II often pauses about 50 bp downstream of the TSS; release requires P-TEFb, which BRD4 recruits. Repressive co-factors are the other half: HDAC-containing complexes, Polycomb (H3K27me3) and SETDB1 (H3K9me3).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="from-mechanism-to-assay" class="slide level2 smaller">
+<h2>From mechanism to assay</h2>
+
+<img data-src="fig26-assay-map.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:85.0%"><ul>
+<li><strong>ATAC-seq</strong> finds the open, TF-bound cores of promoters, enhancers and CTCF sites. <strong>ChIP-seq of a TF</strong> finds its bound sites, motif at the summit.</li>
+<li><strong>Histone ChIP / CUT&amp;Tag</strong> shows the marks on flanking nucleosomes. <strong>Hi-C</strong> shows the loops between CTCF sites and between enhancers and promoters.</li>
+<li><strong>Motif analysis</strong> links the peaks back to the TFs that explain them.</li>
+</ul>
+<aside class="notes">
+<p>This is the map for the rest of the course. Each assay sees one layer of what we discussed: accessibility (a consequence of TF binding), the TF itself, the co-activator footprint as histone marks, and the 3D contacts. A useful exercise for students is to predict, for an element of their choice, what each track should look like, and then check it in the data. Note the bimodal histone signal: the marks are on the nucleosomes flanking the NDR, so a histone ChIP peak often has a dip where the ATAC peak is. Motif enrichment and footprinting have their own unit; the ML units train models that read the sequence directly.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="summary" class="slide level2 smaller">
+<h2>Summary</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>idea</th>
+<th>key fact</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>cis-regulatory elements</td>
+<td>core promoter, enhancers, silencers, insulators: clusters of TF sites</td>
+</tr>
+<tr class="even">
+<td>core promoter</td>
+<td>about −40 to +40; TATA, Inr, DPE; CpG-island (about half, broad, housekeeping) vs non-CpG (tissue-specific)</td>
+</tr>
+<tr class="odd">
+<td>enhancer</td>
+<td>activates at a distance (up to ~1 Mb), either orientation; often not the nearest gene</td>
+</tr>
+<tr class="even">
+<td>active enhancer</td>
+<td>open core with TFs; H3K4me1 + H3K27ac on flanking nucleosomes; eRNAs</td>
+</tr>
+<tr class="odd">
+<td>insulator</td>
+<td>CTCF; loops between convergent CTCF sites by cohesin extrusion</td>
+</tr>
+<tr class="even">
+<td>TF</td>
+<td>DNA-binding domain + effector domain; ~1600 in human</td>
+</tr>
+<tr class="odd">
+<td>PWM</td>
+<td>counts → frequencies (pseudocount) → log-odds <span class="math inline">\log_2(p/q)</span>; score = sum over positions</td>
+</tr>
+<tr class="even">
+<td>information content</td>
+<td><span class="math inline">2 + \sum p \log_2 p</span> per column; logo; chance match ≈ every <span class="math inline">2^{IC}</span> bp</td>
+</tr>
+<tr class="odd">
+<td>binding</td>
+<td>motif ≈ necessary, not sufficient: 4% of chr21 CTCF matches bound; accessibility, pioneers, partners</td>
+</tr>
+<tr class="even">
+<td>B cells</td>
+<td>PU.1, E2A → EBF1 ↔︎ PAX5; combinations select enhancers</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>Students should be able to: build a PWM from a few aligned sites and score a sequence by hand; compute information content of a column; estimate the number of chance matches of a motif in a genome; explain why most matches are unbound; describe the marks of an active enhancer; and predict what ATAC-seq, TF ChIP-seq, histone ChIP-seq and Hi-C show at a promoter, an enhancer and a CTCF site. Next units: <em>Genomic intervals</em> (if not yet done), then the assay blocks, starting with ATAC-seq.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="key-papers-optional-further-reading" class="slide level2 smaller">
+<h2>Key papers (optional further reading)</h2>
+<p><em>Not required reading and not examined. For those who want the primary literature.</em></p>
+<ul>
+<li>Banerji, Rusconi &amp; Schaffner 1981, <em>Cell</em>. <a href="https://doi.org/10.1016/0092-8674(81)90413-X">Expression of a β-globin gene is enhanced by remote SV40 DNA sequences</a>. The discovery of enhancers.</li>
+<li>Spitz &amp; Furlong 2012, <em>Nat Rev Genet</em>. <a href="https://doi.org/10.1038/nrg3207">Transcription factors: from enhancer binding to developmental control</a>. A clear review of enhancers, TF binding and combinatorial control.</li>
+<li>Lambert et al.&nbsp;2018, <em>Cell</em>. <a href="https://doi.org/10.1016/j.cell.2018.01.029">The human transcription factors</a>. The census of ~1600 human TFs, their domains and motifs.</li>
+<li>Wasserman &amp; Sandelin 2004, <em>Nat Rev Genet</em>. <a href="https://doi.org/10.1038/nrg1315">Applied bioinformatics for the identification of regulatory elements</a>. PWMs, information content and why most predicted sites are not functional (“the futility theorem”).</li>
+<li>Zaret &amp; Carroll 2011, <em>Genes Dev</em>. <a href="https://doi.org/10.1101/gad.176826.111">Pioneer transcription factors: establishing competence for gene expression</a>. The pioneer factor concept.</li>
+<li>Heinz et al.&nbsp;2010, <em>Mol Cell</em>. <a href="https://doi.org/10.1016/j.molcel.2010.05.004">Simple combinations of lineage-determining transcription factors prime cis-regulatory elements required for macrophage and B cell identities</a>. PU.1 and its partners choose enhancers; also introduced HOMER.</li>
+</ul>
+
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'visible',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: false,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+            const codeEl = trigger.previousElementSibling.cloneNode(true);
+            for (const childEl of codeEl.children) {
+              if (isCodeAnnotation(childEl)) {
+                childEl.remove();
+              }
+            }
+            return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 300" width="1120" height="300" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker><marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker><marker id="ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a8324a"/></marker><marker id="as" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker><marker id="ao" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e67e22"/></marker><marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a6f97"/></marker><marker id="ap" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b4fa0"/></marker><marker id="at" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a9d8f"/></marker><marker id="an" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8c564b"/></marker></defs>
+<rect width="1120" height="300" fill="#ffffff"/>
+<text x="20" y="30" font-size="17" text-anchor="start" font-weight="bold" fill="#1b2a3a">Silencer</text>
+<line x1="20" y1="200" x2="350" y2="200" stroke="#1b2a3a" stroke-width="2.2"/>
+<rect x="60" y="190" width="70" height="20" rx="0" fill="#f3d9de" stroke="#a8324a" stroke-width="2"/>
+<path d="M77.0,190 C73.0,158 117.0,158 113.0,190 Z" fill="#a8324a" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="95" y="177.0" font-size="14" text-anchor="middle" font-weight="bold" fill="#ffffff">R</text>
+<rect x="55" y="108" width="85" height="34" rx="12" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="97" y="130" font-size="15" text-anchor="middle" font-weight="bold" fill="#1b2a3a">HDAC</text>
+<line x1="97" y1="157" x2="97" y2="142" stroke="#1b2a3a" stroke-width="2"/>
+<text x="97" y="96" font-size="14" text-anchor="middle" font-weight="normal" fill="#5b6b7a">co-repressor</text>
+<rect x="250" y="190" width="40" height="20" rx="0" fill="#1b2a3a" stroke="#1b2a3a" stroke-width="1.5"/>
+<path d="M290,190 V162 H324" fill="none" stroke="#5b6b7a" stroke-width="2.5" marker-end="url(#as)"/>
+<path d="M145,125 C200,110 250,130 265,170" fill="none" stroke="#a8324a" stroke-width="2.5"/>
+<line x1="255" y1="174" x2="277" y2="164" stroke="#a8324a" stroke-width="3"/>
+<text x="185" y="250" font-size="15" text-anchor="middle" font-weight="normal" fill="#5b6b7a">repressor binds, recruits deacetylases</text>
+<text x="185" y="270" font-size="15" text-anchor="middle" font-weight="normal" fill="#5b6b7a">and other co-repressors</text>
+<line x1="375" y1="20" x2="375" y2="280" stroke="#d0d7de" stroke-width="1.5"/>
+<text x="390" y="30" font-size="17" text-anchor="start" font-weight="bold" fill="#1b2a3a">Insulator: enhancer blocking</text>
+<line x1="390" y1="200" x2="720" y2="200" stroke="#1b2a3a" stroke-width="2.2"/>
+<rect x="410" y="190" width="70" height="20" rx="0" fill="#d5ecdf" stroke="#2e8b57" stroke-width="2"/>
+<text x="445" y="235" font-size="15" text-anchor="middle" font-weight="bold" fill="#2e8b57">enhancer</text>
+<polygon points="533,186.4 556.8,186.4 568.7,200 556.8,213.6 533,213.6" fill="#8c564b" stroke="#1b2a3a" stroke-width="1.2"/>
+<text x="550" y="235" font-size="15" text-anchor="middle" font-weight="bold" fill="#8c564b">CTCF</text>
+<rect x="640" y="190" width="40" height="20" rx="0" fill="#1b2a3a" stroke="#1b2a3a" stroke-width="1.5"/>
+<path d="M680,190 V162 H714" fill="none" stroke="#1b2a3a" stroke-width="2.5" marker-end="url(#ak)"/>
+<path d="M445,184 C460,90 530,90 545,150" fill="none" stroke="#2e8b57" stroke-width="2.5" stroke-dasharray="7,5"/>
+<line x1="533" y1="154" x2="557" y2="154" stroke="#a8324a" stroke-width="3.5"/>
+<text x="555" y="260" font-size="15" text-anchor="middle" font-weight="normal" fill="#5b6b7a">an enhancer does not reach a promoter</text>
+<text x="555" y="280" font-size="15" text-anchor="middle" font-weight="normal" fill="#5b6b7a">on the other side of the boundary</text>
+<line x1="745" y1="20" x2="745" y2="280" stroke="#d0d7de" stroke-width="1.5"/>
+<text x="760" y="30" font-size="17" text-anchor="start" font-weight="bold" fill="#1b2a3a">Insulator: barrier</text>
+<line x1="760" y1="200" x2="1100" y2="200" stroke="#1b2a3a" stroke-width="2.2"/>
+<ellipse cx="790" cy="200" rx="28" ry="19" fill="#cdbfe3" stroke="#1b2a3a" stroke-width="1.5"/>
+<circle cx="784" cy="174" r="5" fill="#6b4fa0" stroke="#1b2a3a" stroke-width="1"/>
+<circle cx="796" cy="174" r="5" fill="#6b4fa0" stroke="#1b2a3a" stroke-width="1"/>
+<ellipse cx="855" cy="200" rx="28" ry="19" fill="#cdbfe3" stroke="#1b2a3a" stroke-width="1.5"/>
+<circle cx="849" cy="174" r="5" fill="#6b4fa0" stroke="#1b2a3a" stroke-width="1"/>
+<circle cx="861" cy="174" r="5" fill="#6b4fa0" stroke="#1b2a3a" stroke-width="1"/>
+<text x="822" y="130" font-size="15" text-anchor="middle" font-weight="bold" fill="#6b4fa0">heterochromatin</text>
+<line x1="880" y1="150" x2="910" y2="150" stroke="#6b4fa0" stroke-width="2.5" marker-end="url(#ap)"/>
+<polygon points="913,186.4 936.8,186.4 948.7,200 936.8,213.6 913,213.6" fill="#8c564b" stroke="#1b2a3a" stroke-width="1.2"/>
+<line x1="930" y1="138" x2="930" y2="162" stroke="#a8324a" stroke-width="3.5"/>
+<ellipse cx="1000" cy="200" rx="28" ry="19" fill="#c9d8e6" stroke="#1b2a3a" stroke-width="1.5"/>
+<circle cx="1000" cy="174" r="5" fill="#e67e22" stroke="#1b2a3a" stroke-width="1"/>
+<ellipse cx="1065" cy="200" rx="28" ry="19" fill="#c9d8e6" stroke="#1b2a3a" stroke-width="1.5"/>
+<circle cx="1065" cy="174" r="5" fill="#e67e22" stroke="#1b2a3a" stroke-width="1"/>
+<text x="1032" y="130" font-size="15" text-anchor="middle" font-weight="bold" fill="#2e8b57">active chromatin</text>
+<text x="930" y="260" font-size="15" text-anchor="middle" font-weight="normal" fill="#5b6b7a">spreading of repressive marks</text>
+<text x="930" y="280" font-size="15" text-anchor="middle" font-weight="normal" fill="#5b6b7a">stops at the boundary</text>
+</svg>

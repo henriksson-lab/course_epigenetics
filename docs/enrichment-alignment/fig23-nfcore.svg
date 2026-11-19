@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 450" width="1120" height="450" font-family="Helvetica, Arial, sans-serif">
+  <rect width="1120" height="450" fill="#ffffff"/>
+
+  <!-- header -->
+  <text x="20" y="30" font-size="16" font-weight="bold" fill="#5b6b7a">step</text>
+  <text x="220" y="30" font-size="16" font-weight="bold" fill="#2a6f97">by hand, this unit</text>
+  <text x="560" y="30" font-size="16" font-weight="bold" fill="#2e8b57">nf-core/chipseq and nf-core/atacseq</text>
+  <line x1="20" y1="42" x2="1100" y2="42" stroke="#1b2a3a" stroke-width="1.5"/>
+
+  <!-- rows y = 70 + 40*i -->
+  <g fill="#f4f6f8">
+    <rect x="20" y="48" width="1080" height="36"/>
+    <rect x="20" y="128" width="1080" height="36"/>
+    <rect x="20" y="208" width="1080" height="36"/>
+    <rect x="20" y="288" width="1080" height="36"/>
+  </g>
+  <g font-size="15" fill="#1b2a3a">
+    <text x="30" y="72">read QC, trimming</text>
+    <text x="30" y="112">alignment</text>
+    <text x="30" y="152">duplicates</text>
+    <text x="30" y="192">filtering</text>
+    <text x="30" y="232">coverage track</text>
+    <text x="30" y="272">enrichment QC</text>
+    <text x="30" y="312">peaks</text>
+    <text x="30" y="352">report</text>
+  </g>
+  <g font-size="15" fill="#2a6f97" font-family="Courier New, monospace">
+    <text x="220" y="72">fastp</text>
+    <text x="220" y="112">bowtie2</text>
+    <text x="220" y="152">samtools markdup</text>
+    <text x="220" y="192">samtools view, bedtools</text>
+    <text x="220" y="232">bamCoverage, bamCompare</text>
+  </g>
+  <g font-size="15" fill="#5b6b7a" font-style="italic">
+    <text x="220" y="272">Experimental design and QC</text>
+    <text x="220" y="312">ChIP and ATAC units</text>
+    <text x="220" y="352">your notes</text>
+  </g>
+  <g font-size="15" fill="#2e8b57">
+    <text x="560" y="72">FastQC, Trim Galore!</text>
+    <text x="560" y="112">BWA (default), Bowtie2, Chromap or STAR</text>
+    <text x="560" y="152">Picard MarkDuplicates; library complexity with Preseq</text>
+    <text x="560" y="192">blacklist, dups, non-primary, multi-mappers, &gt; 4 mismatches; ATAC: chrM</text>
+    <text x="560" y="232">bigWig scaled to 1 million mapped reads</text>
+    <text x="560" y="272">deepTools fingerprint, phantompeakqualtools (ChIP), ataqv (ATAC)</text>
+    <text x="560" y="312">MACS, HOMER annotation, consensus peaks, featureCounts, DESeq2</text>
+    <text x="560" y="352">MultiQC report, IGV session file</text>
+  </g>
+  <line x1="20" y1="364" x2="1100" y2="364" stroke="#1b2a3a" stroke-width="1.5"/>
+
+  <rect x="20" y="378" width="1080" height="62" rx="6" fill="#eaf1f7" stroke="#cfd8e0"/>
+  <text x="36" y="403" font-size="15" fill="#1b2a3a">One command per project: <tspan font-family="Courier New, monospace">nextflow run nf-core/chipseq -profile singularity --input samplesheet.csv --genome GRCh38 …</tspan></text>
+  <text x="36" y="427" font-size="15" fill="#1b2a3a">Same steps, same decisions. Knowing what each step does lets you read its MultiQC report and choose its options.</text>
+</svg>

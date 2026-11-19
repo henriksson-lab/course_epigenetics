@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 330" width="1120" height="330" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker><marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker><marker id="ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a8324a"/></marker><marker id="as" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker><marker id="ao" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e67e22"/></marker><marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a6f97"/></marker><marker id="ap" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b4fa0"/></marker><marker id="at" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a9d8f"/></marker><marker id="an" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8c564b"/></marker></defs>
+<rect width="1120" height="330" fill="#ffffff"/>
+<line x1="20" y1="240" x2="1100" y2="240" stroke="#1b2a3a" stroke-width="2.5"/>
+<ellipse cx="90" cy="240" rx="40" ry="25" fill="#c9d8e6" stroke="#1b2a3a" stroke-width="1.5"/>
+<circle cx="80" cy="207" r="6" fill="#e67e22" stroke="#1b2a3a" stroke-width="1"/>
+<circle cx="100" cy="207" r="6" fill="#e67e22" stroke="#1b2a3a" stroke-width="1"/>
+<ellipse cx="390" cy="240" rx="40" ry="25" fill="#c9d8e6" stroke="#1b2a3a" stroke-width="1.5"/>
+<circle cx="380" cy="207" r="6" fill="#e67e22" stroke="#1b2a3a" stroke-width="1"/>
+<circle cx="400" cy="207" r="6" fill="#e67e22" stroke="#1b2a3a" stroke-width="1"/>
+<text x="90" y="290" font-size="15" text-anchor="middle" font-weight="bold" fill="#e67e22">H3K27ac</text>
+<text x="390" y="290" font-size="15" text-anchor="middle" font-weight="bold" fill="#e67e22">H3K27ac</text>
+<path d="M168.0,240 C164.0,204 216.0,204 212.0,240 Z" fill="#2a9d8f" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="190" y="225.0" font-size="14" text-anchor="middle" font-weight="bold" fill="#ffffff"></text>
+<path d="M218.0,240 C214.0,204 266.0,204 262.0,240 Z" fill="#6b4fa0" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="240" y="225.0" font-size="14" text-anchor="middle" font-weight="bold" fill="#ffffff"></text>
+<path d="M268.0,240 C264.0,204 316.0,204 312.0,240 Z" fill="#2a6f97" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="290" y="225.0" font-size="14" text-anchor="middle" font-weight="bold" fill="#ffffff"></text>
+<text x="240" y="270" font-size="15" text-anchor="middle" font-weight="normal" fill="#1b2a3a">TFs on the enhancer</text>
+<rect x="185" y="110" width="110" height="40" rx="16" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="240" y="136" font-size="16" text-anchor="middle" font-weight="bold" fill="#1b2a3a">p300/CBP</text>
+<line x1="240" y1="150" x2="240" y2="200" stroke="#1b2a3a" stroke-width="2"/>
+<path d="M185,125 C130,120 100,150 92,195" fill="none" stroke="#e67e22" stroke-width="2.5" marker-end="url(#ao)"/>
+<path d="M295,125 C350,120 380,150 388,195" fill="none" stroke="#e67e22" stroke-width="2.5" marker-end="url(#ao)"/>
+<text x="240" y="90" font-size="15" text-anchor="middle" font-weight="bold" fill="#e67e22">writes H3K27ac</text>
+<rect x="430" y="150" width="80" height="36" rx="14" fill="#f6e3cf" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="470" y="174" font-size="16" text-anchor="middle" font-weight="bold" fill="#1b2a3a">BRD4</text>
+<line x1="445" y1="186" x2="405" y2="205" stroke="#1b2a3a" stroke-width="2"/>
+<text x="470" y="135" font-size="15" text-anchor="middle" font-weight="normal" fill="#5b6b7a">reads it</text>
+<rect x="560" y="110" width="200" height="48" rx="20" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.8"/>
+<text x="660" y="140" font-size="16" text-anchor="middle" font-weight="bold" fill="#1b2a3a">Mediator</text>
+<line x1="510" y1="166" x2="560" y2="145" stroke="#1b2a3a" stroke-width="2"/>
+<rect x="820" y="230" width="46" height="20" rx="0" fill="#1b2a3a" stroke="#1b2a3a" stroke-width="1.5"/>
+<path d="M866,230 V200 H904" fill="none" stroke="#1b2a3a" stroke-width="2.5" marker-end="url(#ak)"/>
+<ellipse cx="795" cy="204" rx="36" ry="18" fill="#c7e3d2" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="795" y="209" font-size="15" text-anchor="middle" font-weight="bold" fill="#1b2a3a">Pol II</text>
+<line x1="735" y1="158" x2="790" y2="186" stroke="#1b2a3a" stroke-width="2"/>
+<rect x="866" y="228" width="54" height="24" rx="0" fill="#5b6b7a" stroke="#1b2a3a" stroke-width="1.5"/>
+<rect x="980" y="228" width="30" height="24" rx="0" fill="#5b6b7a" stroke="#1b2a3a" stroke-width="1.5"/>
+<rect x="1050" y="228" width="40" height="24" rx="0" fill="#5b6b7a" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="843" y="290" font-size="15" text-anchor="middle" font-weight="bold" fill="#1b2a3a">promoter</text>
+<text x="630" y="200" font-size="15" text-anchor="middle" font-weight="normal" fill="#5b6b7a">bridge to the promoter;</text>
+<text x="630" y="218" font-size="15" text-anchor="middle" font-weight="normal" fill="#5b6b7a">Pol II recruitment and release</text>
+<text x="20" y="318" font-size="15" text-anchor="start" font-weight="normal" fill="#5b6b7a">Erasers: HDACs (in co-repressor complexes) remove the acetyl. Drug targets: p300 and BET (BRD4) inhibitors.</text>
+<text x="20" y="30" font-size="17" text-anchor="start" font-weight="bold" fill="#1b2a3a">Co-activators turn TF binding into transcription</text>
+</svg>

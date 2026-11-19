@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 360" width="1120" height="360" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker><marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker><marker id="ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a8324a"/></marker><marker id="as" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker><marker id="ao" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e67e22"/></marker><marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a6f97"/></marker><marker id="ap" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b4fa0"/></marker><marker id="at" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a9d8f"/></marker><marker id="an" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8c564b"/></marker></defs>
+<rect width="1120" height="360" fill="#ffffff"/>
+<text x="20" y="30" font-size="17" text-anchor="start" font-weight="bold" fill="#1b2a3a">B-cell identity: a small TF network</text>
+<rect x="55.0" y="70" width="110" height="40" rx="18" fill="#e67e22" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="110" y="96" font-size="16" text-anchor="middle" font-weight="bold" fill="#ffffff">PU.1</text>
+<rect x="245.0" y="70" width="110" height="40" rx="18" fill="#2a6f97" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="300" y="96" font-size="16" text-anchor="middle" font-weight="bold" fill="#ffffff">E2A</text>
+<rect x="150.0" y="170" width="110" height="40" rx="18" fill="#2a9d8f" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="205" y="196" font-size="16" text-anchor="middle" font-weight="bold" fill="#ffffff">EBF1</text>
+<rect x="150.0" y="270" width="110" height="40" rx="18" fill="#6b4fa0" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="205" y="296" font-size="16" text-anchor="middle" font-weight="bold" fill="#ffffff">PAX5</text>
+<line x1="130" y1="112" x2="185" y2="166" stroke="#1b2a3a" stroke-width="2.2" marker-end="url(#ak)"/>
+<line x1="280" y1="112" x2="225" y2="166" stroke="#1b2a3a" stroke-width="2.2" marker-end="url(#ak)"/>
+<path d="M192,212 C178,235 178,248 192,268" fill="none" stroke="#1b2a3a" stroke-width="2.2" marker-end="url(#ak)"/>
+<path d="M218,268 C232,248 232,235 218,212" fill="none" stroke="#1b2a3a" stroke-width="2.2" marker-end="url(#ak)"/>
+<text x="245" y="245" font-size="14" text-anchor="start" font-weight="normal" fill="#5b6b7a">feed-forward and</text>
+<text x="245" y="262" font-size="14" text-anchor="start" font-weight="normal" fill="#5b6b7a">mutual activation</text>
+<line x1="262" y1="290" x2="330" y2="290" stroke="#2e8b57" stroke-width="2.2" marker-end="url(#ag)"/>
+<text x="338" y="285" font-size="15" text-anchor="start" font-weight="bold" fill="#2e8b57">B-cell genes</text>
+<text x="338" y="303" font-size="14" text-anchor="start" font-weight="normal" fill="#5b6b7a" font-style="italic">CD19, CD79A, BLNK</text>
+<line x1="262" y1="316" x2="330" y2="335" stroke="#a8324a" stroke-width="2.2"/>
+<line x1="330" y1="327" x2="330" y2="343" stroke="#a8324a" stroke-width="3"/>
+<text x="338" y="346" font-size="14" text-anchor="start" font-weight="normal" fill="#a8324a">other lineages</text>
+<line x1="505" y1="20" x2="505" y2="345" stroke="#d0d7de" stroke-width="1.5"/>
+<text x="530" y="30" font-size="17" text-anchor="start" font-weight="bold" fill="#1b2a3a">Same TF, different partners, different enhancers</text>
+<text x="530" y="85" font-size="16" text-anchor="start" font-weight="bold" fill="#1b2a3a">B cell</text>
+<line x1="530" y1="140" x2="1090" y2="140" stroke="#1b2a3a" stroke-width="2.2"/>
+<rect x="586" y="135" width="48" height="10" rx="0" fill="#e67e22" stroke="none" stroke-width="1.5"/>
+<path d="M581.0,135 C577.0,97 643.0,97 639.0,135 Z" fill="#e67e22" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="610" y="119.0" font-size="12" text-anchor="middle" font-weight="bold" fill="#ffffff">PU.1</text>
+<rect x="648" y="135" width="48" height="10" rx="0" fill="#2a9d8f" stroke="none" stroke-width="1.5"/>
+<path d="M643.0,135 C639.0,97 705.0,97 701.0,135 Z" fill="#2a9d8f" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="672" y="119.0" font-size="12" text-anchor="middle" font-weight="bold" fill="#ffffff">EBF1</text>
+<rect x="710" y="135" width="48" height="10" rx="0" fill="#2a6f97" stroke="none" stroke-width="1.5"/>
+<path d="M705.0,135 C701.0,97 767.0,97 763.0,135 Z" fill="#2a6f97" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="734" y="119.0" font-size="12" text-anchor="middle" font-weight="bold" fill="#ffffff">E2A</text>
+<rect x="772" y="135" width="48" height="10" rx="0" fill="#9c6644" stroke="none" stroke-width="1.5"/>
+<path d="M767.0,135 C763.0,97 829.0,97 825.0,135 Z" fill="#9c6644" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="796" y="119.0" font-size="12" text-anchor="middle" font-weight="bold" fill="#ffffff">OCT2</text>
+<text x="1090" y="170" font-size="15" text-anchor="end" font-weight="bold" fill="#2e8b57">B-cell enhancer active</text>
+<text x="530" y="210" font-size="16" text-anchor="start" font-weight="bold" fill="#1b2a3a">macrophage</text>
+<line x1="530" y1="265" x2="1090" y2="265" stroke="#1b2a3a" stroke-width="2.2"/>
+<rect x="586" y="260" width="48" height="10" rx="0" fill="#e67e22" stroke="none" stroke-width="1.5"/>
+<path d="M581.0,260 C577.0,222 643.0,222 639.0,260 Z" fill="#e67e22" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="610" y="244.0" font-size="12" text-anchor="middle" font-weight="bold" fill="#ffffff">PU.1</text>
+<rect x="648" y="260" width="48" height="10" rx="0" fill="#a8324a" stroke="none" stroke-width="1.5"/>
+<path d="M643.0,260 C639.0,222 705.0,222 701.0,260 Z" fill="#a8324a" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="672" y="244.0" font-size="12" text-anchor="middle" font-weight="bold" fill="#ffffff">C/EBP</text>
+<rect x="710" y="260" width="48" height="10" rx="0" fill="#5b6b7a" stroke="none" stroke-width="1.5"/>
+<path d="M705.0,260 C701.0,222 767.0,222 763.0,260 Z" fill="#5b6b7a" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="734" y="244.0" font-size="12" text-anchor="middle" font-weight="bold" fill="#ffffff">AP-1</text>
+<text x="1090" y="295" font-size="15" text-anchor="end" font-weight="bold" fill="#2e8b57">macrophage enhancer active</text>
+<text x="530" y="345" font-size="15" text-anchor="start" font-weight="normal" fill="#5b6b7a">PU.1 binds a different set of its motifs in each cell type (Heinz et al. 2010)</text>
+</svg>

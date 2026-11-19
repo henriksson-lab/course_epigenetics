@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 440" width="1120" height="440" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="aB" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2a6f97"/>
+    </marker>
+    <marker id="aO" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#e67e22"/>
+    </marker>
+    <marker id="dim" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/>
+    </marker>
+  </defs>
+  <rect width="1120" height="440" fill="#ffffff"/>
+
+  <!-- LEFT: reads only. site at x=280 -->
+  <text x="20" y="30" font-size="17" font-weight="bold" fill="#1b2a3a">Reads only (36 bp)</text>
+  <rect x="268" y="44" width="24" height="96" fill="#8c564b" fill-opacity="0.15"/>
+  <!-- plus reads: start at x in 140..220, length 36 -->
+  <g stroke="#2a6f97" stroke-width="4" marker-end="url(#aB)">
+    <line x1="150" y1="60" x2="186" y2="60"/>
+    <line x1="170" y1="74" x2="206" y2="74"/>
+    <line x1="160" y1="88" x2="196" y2="88"/>
+    <line x1="182" y1="102" x2="218" y2="102"/>
+    <line x1="140" y1="116" x2="176" y2="116"/>
+  </g>
+  <g stroke="#e67e22" stroke-width="4" marker-end="url(#aO)">
+    <line x1="400" y1="60" x2="364" y2="60"/>
+    <line x1="380" y1="74" x2="344" y2="74"/>
+    <line x1="410" y1="88" x2="374" y2="88"/>
+    <line x1="390" y1="102" x2="354" y2="102"/>
+    <line x1="420" y1="116" x2="384" y2="116"/>
+  </g>
+  <line x1="60" y1="140" x2="500" y2="140" stroke="#1b2a3a" stroke-width="3"/>
+  <text x="280" y="160" font-size="14" fill="#8c564b" text-anchor="middle">binding site</text>
+  <!-- coverage: two humps -->
+  <path d="M60,240 L130,240 C150,240 160,190 180,190 C200,190 210,240 230,240 L330,240 C350,240 360,190 380,190 C400,190 410,240 430,240 L500,240" fill="none" stroke="#1b2a3a" stroke-width="2.4"/>
+  <path d="M130,240 C150,240 160,190 180,190 C200,190 210,240 230,240 Z" fill="#2a6f97" fill-opacity="0.3"/>
+  <path d="M330,240 C350,240 360,190 380,190 C400,190 410,240 430,240 Z" fill="#e67e22" fill-opacity="0.3"/>
+  <line x1="180" y1="178" x2="380" y2="178" stroke="#1b2a3a" stroke-width="1.5" marker-start="url(#dim)" marker-end="url(#dim)"/>
+  <text x="280" y="196" font-size="14" fill="#1b2a3a" text-anchor="middle">≈ fragment length</text>
+  <text x="60" y="270" font-size="15" fill="#1b2a3a">+ strand reads sit left of the site,</text>
+  <text x="60" y="290" font-size="15" fill="#1b2a3a">− strand reads right of it: two humps,</text>
+  <text x="60" y="310" font-size="15" fill="#1b2a3a">and the site itself is not covered.</text>
+
+  <line x1="560" y1="20" x2="560" y2="320" stroke="#cfd8e0" stroke-width="1.5"/>
+
+  <!-- RIGHT: extended. offset +560 -->
+  <text x="590" y="30" font-size="17" font-weight="bold" fill="#1b2a3a">Each read extended to the fragment length</text>
+  <rect x="828" y="44" width="24" height="96" fill="#8c564b" fill-opacity="0.15"/>
+  <g stroke="#2a6f97" stroke-width="4" stroke-opacity="0.85">
+    <line x1="710" y1="60" x2="910" y2="60"/>
+    <line x1="730" y1="74" x2="930" y2="74"/>
+    <line x1="720" y1="88" x2="920" y2="88"/>
+    <line x1="742" y1="102" x2="942" y2="102"/>
+    <line x1="700" y1="116" x2="900" y2="116"/>
+  </g>
+  <g stroke="#e67e22" stroke-width="4" stroke-opacity="0.85">
+    <line x1="760" y1="67" x2="960" y2="67"/>
+    <line x1="740" y1="81" x2="940" y2="81"/>
+    <line x1="770" y1="95" x2="970" y2="95"/>
+    <line x1="750" y1="109" x2="950" y2="109"/>
+    <line x1="780" y1="123" x2="980" y2="123"/>
+  </g>
+  <line x1="620" y1="140" x2="1060" y2="140" stroke="#1b2a3a" stroke-width="3"/>
+  <text x="840" y="160" font-size="14" fill="#8c564b" text-anchor="middle">binding site</text>
+  <path d="M620,240 L690,240 C750,240 780,180 840,180 C900,180 930,240 990,240 L1060,240" fill="#8c564b" fill-opacity="0.3" stroke="#8c564b" stroke-width="2.4"/>
+  <text x="620" y="270" font-size="15" fill="#1b2a3a">One peak, centred on the site.</text>
+  <text x="620" y="290" font-size="15" fill="#1b2a3a"><tspan font-family="Courier New, monospace">bamCoverage --extendReads 100</tspan></text>
+  <text x="620" y="310" font-size="15" fill="#1b2a3a">(paired-end: <tspan font-family="Courier New, monospace">--extendReads</tspan> uses the real fragment)</text>
+
+  <rect x="20" y="340" width="1080" height="88" rx="6" fill="#f4f6f8" stroke="#cfd8e0"/>
+  <text x="36" y="366" font-size="15" fill="#1b2a3a"><tspan font-weight="bold">Fragment length</tspan> for single-end data is estimated from this very pattern: shift the + strand coverage to the right until it</text>
+  <text x="36" y="388" font-size="15" fill="#1b2a3a">best matches the − strand coverage (strand cross-correlation; MACS3 <tspan font-family="Courier New, monospace">predictd</tspan>). The shift that fits best is the fragment length.</text>
+  <text x="36" y="412" font-size="15" fill="#5b6b7a">ATAC is different: the Tn5 cut site itself is the signal, so ATAC tracks often use the read ends, not extended reads.</text>
+</svg>

@@ -1,0 +1,1700 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.30">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Exercise: Differential accessibility – Epigenetics</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-662ae1889177880cb371f83234c0a158.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-d37fb74fd9c61f52627c5754f4dbd5bd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Epigenetics</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-course-info" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Course info</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-course-info">    
+        <li>
+    <a class="dropdown-item" href="../courseplan.html">
+ <span class="dropdown-text">Course plan</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Chromatin accessibility (ATAC-seq)</li><li class="breadcrumb-item"><a href="../differential-accessibility/lec.html">Differential accessibility</a></li><li class="breadcrumb-item"><a href="../differential-accessibility/exercise.html">Exercise</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Course info</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../courseplan.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Course plan</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../elo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Learning outcomes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../intro/install.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Install software</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dictionary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Glossary</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Foundations</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">What is epigenetics?</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chromatin-intro/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chromatin-intro/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chromatin-intro/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Genomic intervals</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../genomic-intervals/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../genomic-intervals/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../genomic-intervals/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text">Gene regulation</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../gene-regulation/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../gene-regulation/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../gene-regulation/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false">
+ <span class="menu-text">From reads to coverage</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../enrichment-alignment/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../enrichment-alignment/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../enrichment-alignment/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false">
+ <span class="menu-text">Experimental design and QC</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epigenomics-design/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epigenomics-design/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epigenomics-design/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
+ <span class="menu-text">Chromatin accessibility (ATAC-seq)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="false">
+ <span class="menu-text">ATAC-seq: Tn5, fragment sizes, nucleosome ladder</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atacseq-intro/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atacseq-intro/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atacseq-intro/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false">
+ <span class="menu-text">ATAC-seq processing and peak calling</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atacseq-analysis/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atacseq-analysis/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atacseq-analysis/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="true">
+ <span class="menu-text">Differential accessibility</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../differential-accessibility/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../differential-accessibility/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../differential-accessibility/exercise.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="false">
+ <span class="menu-text">Motifs, motif enrichment and TF footprinting</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../motifs-footprinting/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../motifs-footprinting/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../motifs-footprinting/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#goal" id="toc-goal" class="nav-link active" data-scroll-target="#goal">Goal</a></li>
+  <li><a href="#background" id="toc-background" class="nav-link" data-scroll-target="#background">Background</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
+  <li><a href="#by-hand" id="toc-by-hand" class="nav-link" data-scroll-target="#by-hand">By hand</a></li>
+  <li><a href="#on-the-command-line" id="toc-on-the-command-line" class="nav-link" data-scroll-target="#on-the-command-line">On the command line</a>
+  <ul class="collapse">
+  <li><a href="#c1-look-at-the-count-matrix" id="toc-c1-look-at-the-count-matrix" class="nav-link" data-scroll-target="#c1-look-at-the-count-matrix">C1 — Look at the count matrix</a></li>
+  <li><a href="#c2-reads-in-peaks-for-one-library-and-the-peaks-as-bed" id="toc-c2-reads-in-peaks-for-one-library-and-the-peaks-as-bed" class="nav-link" data-scroll-target="#c2-reads-in-peaks-for-one-library-and-the-peaks-as-bed">C2 — Reads in peaks for one library, and the peaks as BED</a></li>
+  </ul></li>
+  <li><a href="#in-r" id="toc-in-r" class="nav-link" data-scroll-target="#in-r">In R</a>
+  <ul class="collapse">
+  <li><a href="#r1-load-and-decode-the-samples" id="toc-r1-load-and-decode-the-samples" class="nav-link" data-scroll-target="#r1-load-and-decode-the-samples">R1 — Load and decode the samples</a></li>
+  <li><a href="#r2-lift-the-peaks-to-grch38" id="toc-r2-lift-the-peaks-to-grch38" class="nav-link" data-scroll-target="#r2-lift-the-peaks-to-grch38">R2 — Lift the peaks to GRCh38</a></li>
+  <li><a href="#r3-a-summarizedexperiment-of-the-eight-libraries" id="toc-r3-a-summarizedexperiment-of-the-eight-libraries" class="nav-link" data-scroll-target="#r3-a-summarizedexperiment-of-the-eight-libraries">R3 — A SummarizedExperiment of the eight libraries</a></li>
+  <li><a href="#r4-pca-all-cell-types-then-our-six-samples" id="toc-r4-pca-all-cell-types-then-our-six-samples" class="nav-link" data-scroll-target="#r4-pca-all-cell-types-then-our-six-samples">R4 — PCA: all cell types, then our six samples</a></li>
+  <li><a href="#r5-deseq2-with-the-paired-design" id="toc-r5-deseq2-with-the-paired-design" class="nav-link" data-scroll-target="#r5-deseq2-with-the-paired-design">R5 — DESeq2 with the paired design</a></li>
+  <li><a href="#r6-fold-change-shrinkage-ma-and-volcano-plots" id="toc-r6-fold-change-shrinkage-ma-and-volcano-plots" class="nav-link" data-scroll-target="#r6-fold-change-shrinkage-ma-and-volcano-plots">R6 — Fold-change shrinkage, MA and volcano plots</a></li>
+  <li><a href="#r7-three-normalisations" id="toc-r7-three-normalisations" class="nav-link" data-scroll-target="#r7-three-normalisations">R7 — Three normalisations</a></li>
+  <li><a href="#r8-paired-vs-unpaired" id="toc-r8-paired-vs-unpaired" class="nav-link" data-scroll-target="#r8-paired-vs-unpaired">R8 — Paired vs unpaired</a></li>
+  <li><a href="#r9-nearest-gene-and-marker-genes" id="toc-r9-nearest-gene-and-marker-genes" class="nav-link" data-scroll-target="#r9-nearest-gene-and-marker-genes">R9 — Nearest gene and marker genes</a></li>
+  <li><a href="#r10-does-it-agree-with-rna-seq" id="toc-r10-does-it-agree-with-rna-seq" class="nav-link" data-scroll-target="#r10-does-it-agree-with-rna-seq">R10 — Does it agree with RNA-seq?</a></li>
+  <li><a href="#r11-save-the-result" id="toc-r11-save-the-result" class="nav-link" data-scroll-target="#r11-save-the-result">R11 — Save the result</a></li>
+  </ul></li>
+  <li><a href="#hints" id="toc-hints" class="nav-link" data-scroll-target="#hints">Hints</a></li>
+  <li><a href="#solutions" id="toc-solutions" class="nav-link" data-scroll-target="#solutions">Solutions</a></li>
+  <li><a href="#where-this-leads" id="toc-where-this-leads" class="nav-link" data-scroll-target="#where-this-leads">Where this leads</a></li>
+  <li><a href="#key-papers-optional-further-reading" id="toc-key-papers-optional-further-reading" class="nav-link" data-scroll-target="#key-papers-optional-further-reading">Key papers (optional further reading)</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Chromatin accessibility (ATAC-seq)</li><li class="breadcrumb-item"><a href="../differential-accessibility/lec.html">Differential accessibility</a></li><li class="breadcrumb-item"><a href="../differential-accessibility/exercise.html">Exercise</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Exercise: Differential accessibility</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="goal" class="level2">
+<h2 class="anchored" data-anchor-id="goal">Goal</h2>
+<p>After this exercise you will be able to:</p>
+<ul>
+<li>Compute <strong>median-of-ratios size factors</strong> by hand, and predict what a <strong>global change</strong> in accessibility or a difference in signal-to-noise does to them.</li>
+<li>Write and explain the <strong>design matrix</strong> of a paired experiment (<code>~ donor + celltype</code>), and say when pairing helps.</li>
+<li>Read an <strong>MA plot</strong> and a <strong>volcano plot</strong> of peaks, and interpret a log2 fold change and an adjusted <span class="math inline">\(p\)</span>-value.</li>
+<li>Turn a public peak × sample count matrix into a differential accessibility analysis in R: decode the samples, <strong>lift the peaks to GRCh38</strong>, build a <code>SummarizedExperiment</code>, explore, run <a href="https://bioconductor.org/packages/release/bioc/html/DESeq2.html">DESeq2</a> with collapsed technical replicates, shrink fold changes, and compare normalisations and designs.</li>
+<li>Annotate differential peaks with their nearest gene, check them against known markers and against RNA-seq, and <strong>save the result</strong> for <em>Motifs, motif enrichment and TF footprinting</em>.</li>
+</ul>
+</section>
+<section id="background" class="level2">
+<h2 class="anchored" data-anchor-id="background">Background</h2>
+<p><strong>The count matrix.</strong> One row per peak (a consensus set shared by all samples), one column per library, integer counts of fragments in the peak. From here on the analysis is the RNA-seq one: DESeq2 or edgeR.</p>
+<p><strong>Size factors (DESeq2, median of ratios).</strong> For peak <span class="math inline">\(i\)</span> and sample <span class="math inline">\(j\)</span> with count <span class="math inline">\(k_{ij}\)</span> and <span class="math inline">\(m\)</span> samples:</p>
+<p><span class="math display">\[ s_j = \operatorname{median}_i \frac{k_{ij}}{\left( \prod_{v=1}^{m} k_{iv} \right)^{1/m}} \]</span></p>
+<p>Peaks with a zero in any sample are left out of the median. Normalised count = <span class="math inline">\(k_{ij} / s_j\)</span>. The assumption: <strong>the typical peak does not change</strong>. TMM (edgeR) makes the same assumption; normalising by total reads assumes the total signal per cell is the same; background-bin normalisation (csaw) assumes that reads outside peaks are constant.</p>
+<p><strong>Design.</strong> <code>~ donor + celltype</code> fits one baseline per donor and one cell-type effect shared by all donors: the cell-type coefficient is the within-donor log2 fold change. <code>~ celltype</code> ignores who is who.</p>
+<p><strong>FRiP</strong> (fraction of reads in peaks) = reads in peaks / all reads. Expected count in a peak ≈ depth × FRiP × (that peak’s share of the reads in peaks).</p>
+<p><strong>Our definition of a differential peak</strong>, used again in <em>Motifs, motif enrichment and TF footprinting</em>: adjusted <span class="math inline">\(p\)</span> &lt; 0.05 <strong>and</strong> |shrunken log2 fold change| &gt; 1. Positive = more open in B cells (<code>B_up</code>), negative = more open in CD4 T cells (<code>T_up</code>).</p>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<p>ATAC-seq and RNA-seq count matrices from Corces et al.&nbsp;2016 (GEO <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE74912">GSE74912</a> and <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE74246">GSE74246</a>), the UCSC hg19 → hg38 liftOver chain, and the GENCODE v46 annotation. From the course repository:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">data/download.sh</span> differential-accessibility      <span class="co"># about 70 MB (plus the GTF, 40 MB)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/epi/diffacc <span class="kw">&amp;&amp;</span> <span class="bu">cd</span> ~/epi/diffacc</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="va">D</span><span class="op">=</span>/path/to/course/data                           <span class="co"># where download.sh put the files</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><code>corces2016_atac_counts.txt.gz</code>: columns <code>Chr Start End</code> (hg19, 0-based starts, 590 650 peaks of 500 bp) followed by 132 libraries (77 from healthy donors, the rest from AML patients and bulk CD34+ cells).</li>
+<li><code>corces2016_rna_counts.txt.gz</code>: gene symbols × 81 RNA-seq libraries.</li>
+</ul>
+<p><strong>What the column names mean.</strong> From the GEO sample table of GSE74912 (each library is listed with its donor and cell type): <code>Donor4983-CD4-9A-150120</code> is donor 4983, CD4 T cells, cell-type code 9, library A, sequenced on 2015-01-20. The early libraries have only donor and code: <code>4983-7A</code> is donor 4983, code 7 (monocytes), library A. The codes are 1 HSC, 2 MPP, 3 LMPP, 4 CMP, 5 GMP, 6 MEP, 7 monocyte, 9 CD4 T cell, 10 CD8 T cell, 11 NK cell, 13 B cell, 14 CLP, 15 erythroblast. Libraries A, B (C) of the same donor and cell type are <strong>technical replicates</strong> (Corces et al.&nbsp;2016, Supplementary Table 1).</p>
+<p><strong>Shortcuts, said plainly.</strong> We start from the authors’ count matrix, not from BAM files (counting is shown in the lecture and in <em>ATAC-seq processing and peak calling</em>), and the peaks were called on hg19 and are lifted to GRCh38 rather than re-called.</p>
+<p>The R part runs in about 12 minutes in total and needs about 4 GB of memory. On the cluster, run the R part in an interactive job or wrap it in an <code>sbatch</code> script (<code>Rscript diffacc.R</code>).</p>
+</section>
+<section id="by-hand" class="level2">
+<h2 class="anchored" data-anchor-id="by-hand">By hand</h2>
+<p>Do these on paper.</p>
+<p><strong>B1. Median of ratios.</strong> Four peaks, three samples:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>peak</th>
+<th style="text-align: right;">S1</th>
+<th style="text-align: right;">S2</th>
+<th style="text-align: right;">S3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>p1</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">50</td>
+</tr>
+<tr class="even">
+<td>p2</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">80</td>
+<td style="text-align: right;">20</td>
+</tr>
+<tr class="odd">
+<td>p3</td>
+<td style="text-align: right;">300</td>
+<td style="text-align: right;">600</td>
+<td style="text-align: right;">150</td>
+</tr>
+<tr class="even">
+<td>p4</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">320</td>
+<td style="text-align: right;">10</td>
+</tr>
+</tbody>
+</table>
+<ol type="a">
+<li><p>Compute the geometric mean of each row. (Hint: <span class="math inline">\(100 \cdot 200 \cdot 50 = 10^6\)</span>.)</p></li>
+<li><p>Divide each count by its row’s geometric mean, and take the median per column. These are the size factors.</p></li>
+<li><p>Compute the normalised counts of p4. Which peak changes, and in which sample?</p></li>
+<li><p>Compute size factors from total counts instead (column sums, divided by their geometric mean; a calculator helps). Why is S2’s factor larger than with the median of ratios, and what does that do to p1–p3 in S2?</p></li>
+</ol>
+<p><strong>B2. A global opening.</strong> A drug is expected to open chromatin. Both libraries are sequenced to 1000 fragments (a toy scale). Counts in four peaks and in the background (all reads outside peaks):</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: right;">p1</th>
+<th style="text-align: right;">p2</th>
+<th style="text-align: right;">p3</th>
+<th style="text-align: right;">p4</th>
+<th style="text-align: right;">background</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>control</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">150</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">500</td>
+</tr>
+<tr class="even">
+<td>drug</td>
+<td style="text-align: right;">80</td>
+<td style="text-align: right;">160</td>
+<td style="text-align: right;">240</td>
+<td style="text-align: right;">320</td>
+<td style="text-align: right;">200</td>
+</tr>
+</tbody>
+</table>
+<ol type="a">
+<li><p>What is the FRiP of each library?</p></li>
+<li><p>Normalise with the median of ratios computed on the four peaks (two samples: the ratio drug/control of the size factors is the median of the per-peak ratios). What fold change do you report for each peak?</p></li>
+<li><p>Normalise instead by the background reads. What fold change do you report now?</p></li>
+<li><p>Normalise by total reads. What do you get?</p></li>
+<li><p>Give one biological and one technical explanation for the data. What extra information would let you decide between them?</p></li>
+</ol>
+<p><strong>B3. Paired or unpaired.</strong> Three donors give B cells and CD4 T cells (6 samples, ordered D1-T, D1-B, D2-T, D2-B, D3-T, D3-B, with CD4 T as the reference level).</p>
+<ol type="a">
+<li><p>Write the design matrix for <code>~ celltype</code> (columns: intercept, celltypeBcell).</p></li>
+<li><p>Write the design matrix for <code>~ donor + celltype</code> (columns: intercept, donorD2, donorD3, celltypeBcell).</p></li>
+<li><p>How many residual degrees of freedom does each model have? What does the intercept mean in (b)?</p></li>
+<li><p>In the toy figure of the lecture, the paired test wins clearly. In the real data, 47 peaks have a significant donor effect and the paired model finds fewer differential peaks (36 703 vs 41 671 at padj &lt; 0.05). Explain both observations. Which model would you report, and why?</p></li>
+</ol>
+<p><strong>B4. Technical replicates.</strong> Donor 5483 has two B-cell libraries, A and B, with 120 and 80 fragments in a peak.</p>
+<ol type="a">
+<li><p>What count goes into the collapsed sample?</p></li>
+<li><p>A colleague instead keeps A and B as two samples in <code>~ celltype</code>. How many “B-cell replicates” does the model think there are? Will the <span class="math inline">\(p\)</span>-values be too small or too large? Why?</p></li>
+</ol>
+<p><strong>B5. How many reads per peak?</strong> A library has 40 million fragments and FRiP 0.25; the consensus set has 100 000 peaks.</p>
+<ol type="a">
+<li><p>What is the mean number of fragments per peak?</p></li>
+<li><p>Another library has 10 million fragments and FRiP 0.4. Mean per peak? Which library gives more information per peak?</p></li>
+<li><p>A peak gets 5 fragments in a sample. Ignoring biological variation (Poisson), what is the relative standard deviation of that count? Would you trust a 4-fold difference between 5 and 20 fragments in two single samples?</p></li>
+</ol>
+<p><strong>B6. Read the MA plot.</strong> Look at the MA plots in the lecture (MLE on the left, apeglm-shrunk on the right).</p>
+<p><img src="fig18-ma-shrink.png" class="img-fluid" style="width:100.0%"></p>
+<ol type="a">
+<li><p>Why do the MLE fold changes fan out to ±8 at the left of the plot?</p></li>
+<li><p>Why does shrinkage change the left of the plot much more than the right?</p></li>
+<li><p>Where is the centre of the grey cloud? What would you suspect if it were at +0.7?</p></li>
+<li><p>Are there coloured points with small mean counts on the right panel? Why are there few?</p></li>
+</ol>
+<p><strong>B7. Interpret the table.</strong> Four rows of a DESeq2 result for B vs CD4 (positive = more open in B):</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>peak</th>
+<th style="text-align: right;">baseMean</th>
+<th style="text-align: right;">log2FC (MLE)</th>
+<th style="text-align: right;">log2FC (shrunk)</th>
+<th style="text-align: right;">padj</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>a</td>
+<td style="text-align: right;">1800</td>
+<td style="text-align: right;">−2.3</td>
+<td style="text-align: right;">−2.3</td>
+<td style="text-align: right;"><span class="math inline">\(10^{-40}\)</span></td>
+</tr>
+<tr class="even">
+<td>b</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">6.1</td>
+<td style="text-align: right;">0.4</td>
+<td style="text-align: right;">0.30</td>
+</tr>
+<tr class="odd">
+<td>c</td>
+<td style="text-align: right;">250</td>
+<td style="text-align: right;">0.8</td>
+<td style="text-align: right;">0.7</td>
+<td style="text-align: right;">0.001</td>
+</tr>
+<tr class="even">
+<td>d</td>
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">3.0</td>
+<td style="text-align: right;">2.6</td>
+<td style="text-align: right;">0.02</td>
+</tr>
+</tbody>
+</table>
+<ol type="a">
+<li><p>Which peaks are differential by our definition, and in which direction?</p></li>
+<li><p>How many times more open is peak a in CD4 T cells than in B cells?</p></li>
+<li><p>Peak c is significant but not differential by our definition. Is it “not changed”? What would you write about it?</p></li>
+<li><p>Why is peak b’s MLE fold change so large, and why is it not significant?</p></li>
+</ol>
+<p><strong>B8. Judge the claim.</strong> A paper reports: “Peaks more open in B cells are near genes such as <em>PAX5</em> and <em>CD79A</em>, so these peaks drive B-cell gene expression. Moreover, 30% of B-specific peaks are near genes that are <em>not</em> more expressed in B cells, showing that accessibility and expression are uncoupled.”</p>
+<p>Give two reasons why the first sentence overstates what was shown, and two reasons why a B-specific peak can sit next to a gene that is not differentially expressed.</p>
+</section>
+<section id="on-the-command-line" class="level2">
+<h2 class="anchored" data-anchor-id="on-the-command-line">On the command line</h2>
+<section id="c1-look-at-the-count-matrix" class="level3">
+<h3 class="anchored" data-anchor-id="c1-look-at-the-count-matrix">C1 — Look at the count matrix</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="va">$D</span>/corces2016_atac_counts.txt.gz <span class="kw">|</span> <span class="fu">head</span> <span class="at">-1</span> <span class="kw">|</span> <span class="fu">tr</span> <span class="st">'\t'</span> <span class="st">'\n'</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-30</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="va">$D</span>/corces2016_atac_counts.txt.gz <span class="kw">|</span> <span class="fu">head</span> <span class="at">-1</span> <span class="kw">|</span> <span class="fu">tr</span> <span class="st">'\t'</span> <span class="st">'\n'</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-c</span> .</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="va">$D</span>/corces2016_atac_counts.txt.gz <span class="kw">|</span> <span class="fu">head</span> <span class="at">-1</span> <span class="kw">|</span> <span class="fu">tr</span> <span class="st">'\t'</span> <span class="st">'\n'</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-E</span> <span class="at">--</span> <span class="st">'-(Bcell|CD4)-'</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="va">$D</span>/corces2016_atac_counts.txt.gz <span class="kw">|</span> <span class="fu">head</span> <span class="at">-3</span> <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f1-6</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="va">$D</span>/corces2016_atac_counts.txt.gz <span class="kw">|</span> <span class="fu">tail</span> <span class="at">-n</span> +2 <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'{ w[$3 - $2]++ } END { for (k in w) print k, w[k] }'</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="va">$D</span>/corces2016_atac_counts.txt.gz <span class="kw">|</span> <span class="fu">tail</span> <span class="at">-n</span> +2 <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f1</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-k1,1nr</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-25</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>How many columns, and how many libraries? Which B-cell and CD4 T-cell libraries are there, and from which donors? Which donors have both?</p></li>
+<li><p>Are the coordinates 0-based or 1-based? (Use the widths.)</p></li>
+<li><p>Which chromosomes are present? Which are absent, and what would that mean for comparing male and female donors?</p></li>
+</ol>
+</section>
+<section id="c2-reads-in-peaks-for-one-library-and-the-peaks-as-bed" class="level3">
+<h3 class="anchored" data-anchor-id="c2-reads-in-peaks-for-one-library-and-the-peaks-as-bed">C2 — Reads in peaks for one library, and the peaks as BED</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="va">$D</span>/corces2016_atac_counts.txt.gz <span class="kw">|</span> <span class="fu">awk</span> <span class="at">-F</span><span class="st">'\t'</span> <span class="st">'</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="st">  NR == 1 { for (i = 1; i &lt;= NF; i++) if ($i == "Donor1022-Bcell-13-150120") c = i; next }</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="st">  { s += $c; if ($c == 0) z++ }</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="st">  END { print "column", c, "reads in peaks", s, "peaks with 0 reads", z }'</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="va">$D</span>/corces2016_atac_counts.txt.gz <span class="kw">|</span> <span class="fu">tail</span> <span class="at">-n</span> +2 <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f1-3</span> <span class="op">&gt;</span> corces_hg19.bed</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-2</span> corces_hg19.bed</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>How many reads in peaks does the B-cell library of donor 1022 have, and in how many peaks does it have no read at all?</p></li>
+<li><p>Why do so many peaks have zero reads in a B-cell library? (Where were the peaks called?)</p></li>
+</ol>
+</section>
+</section>
+<section id="in-r" class="level2">
+<h2 class="anchored" data-anchor-id="in-r">In R</h2>
+<p>You need DESeq2, edgeR, apeglm, GenomicRanges, rtracklayer, data.table, ggplot2 and ggrepel (see <em>Install the software you need</em>).</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressPackageStartupMessages</span>({</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(data.table); <span class="fu">library</span>(GenomicRanges); <span class="fu">library</span>(rtracklayer)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(SummarizedExperiment); <span class="fu">library</span>(DESeq2); <span class="fu">library</span>(edgeR); <span class="fu">library</span>(ggplot2); <span class="fu">library</span>(ggrepel)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>D <span class="ot">&lt;-</span> <span class="st">"/path/to/course/data"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="r1-load-and-decode-the-samples" class="level3">
+<h3 class="anchored" data-anchor-id="r1-load-and-decode-the-samples">R1 — Load and decode the samples</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>atac <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="fu">file.path</span>(D, <span class="st">"corces2016_atac_counts.txt.gz"</span>))        <span class="co"># about 5 s</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(atac)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>cn <span class="ot">&lt;-</span> <span class="fu">names</span>(atac)[<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>)]</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>healthy <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="st">"^(Donor)?[0-9]+-"</span>, cn, <span class="at">value =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>re <span class="ot">&lt;-</span> <span class="st">"^(?:Donor)?([0-9]+)-(?:[A-Za-z][A-Za-z0-9]*-)?([0-9]+)([A-C]?)(?:-[0-9]+)?$"</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>m  <span class="ot">&lt;-</span> <span class="fu">regmatches</span>(healthy, <span class="fu">regexec</span>(re, healthy, <span class="at">perl =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>code2type <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"HSC"</span>, <span class="st">`</span><span class="at">2</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"MPP"</span>, <span class="st">`</span><span class="at">3</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"LMPP"</span>, <span class="st">`</span><span class="at">4</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"CMP"</span>, <span class="st">`</span><span class="at">5</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"GMP"</span>, <span class="st">`</span><span class="at">6</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"MEP"</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>               <span class="st">`</span><span class="at">7</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"Mono"</span>, <span class="st">`</span><span class="at">9</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"CD4"</span>, <span class="st">`</span><span class="at">10</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"CD8"</span>, <span class="st">`</span><span class="at">11</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"NK"</span>, <span class="st">`</span><span class="at">13</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"Bcell"</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>               <span class="st">`</span><span class="at">14</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"CLP"</span>, <span class="st">`</span><span class="at">15</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"Ery"</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">sample =</span> healthy, <span class="at">donor =</span> <span class="fu">sapply</span>(m, <span class="st">`</span><span class="at">[</span><span class="st">`</span>, <span class="dv">2</span>),</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>                      <span class="at">celltype =</span> <span class="fu">unname</span>(code2type[<span class="fu">sapply</span>(m, <span class="st">`</span><span class="at">[</span><span class="st">`</span>, <span class="dv">3</span>)]), <span class="at">rep =</span> <span class="fu">sapply</span>(m, <span class="st">`</span><span class="at">[</span><span class="st">`</span>, <span class="dv">4</span>))</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(samples<span class="sc">$</span>celltype, samples<span class="sc">$</span>donor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>Explain the regular expression piece by piece. Which part captures the donor, the cell-type code and the replicate letter? Why must the optional cell-type word start with a letter? (Try what happens to <code>Donor7256-1A-110614</code> if it may start with a digit.)</p></li>
+<li><p>How many healthy libraries, donors and cell types are there? Which donors have both B cells and CD4 T cells?</p></li>
+<li><p>Which columns did <code>grep</code> leave out, and what are they?</p></li>
+</ol>
+</section>
+<section id="r2-lift-the-peaks-to-grch38" class="level3">
+<h3 class="anchored" data-anchor-id="r2-lift-the-peaks-to-grch38">R2 — Lift the peaks to GRCh38</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>gr19 <span class="ot">&lt;-</span> <span class="fu">GRanges</span>(atac<span class="sc">$</span>Chr, <span class="fu">IRanges</span>(atac<span class="sc">$</span>Start <span class="sc">+</span> <span class="dv">1</span>, atac<span class="sc">$</span>End))</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>chainf <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="at">fileext =</span> <span class="st">".chain"</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(<span class="fu">readLines</span>(<span class="fu">gzfile</span>(<span class="fu">file.path</span>(D, <span class="st">"hg19ToHg38.over.chain.gz"</span>))), chainf)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>lo <span class="ot">&lt;-</span> <span class="fu">liftOver</span>(gr19, <span class="fu">import.chain</span>(chainf))</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="fu">pmin</span>(<span class="fu">lengths</span>(lo), <span class="dv">2</span>))                                     <span class="co"># 0, 1, 2 or more pieces</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>keep <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">lengths</span>(lo) <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>gr38 <span class="ot">&lt;-</span> <span class="fu">unlist</span>(lo[keep])</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>ok <span class="ot">&lt;-</span> <span class="fu">width</span>(gr38) <span class="sc">==</span> <span class="dv">500</span> <span class="sc">&amp;</span> <span class="fu">as.character</span>(<span class="fu">seqnames</span>(gr38)) <span class="sc">==</span> <span class="fu">as.character</span>(<span class="fu">seqnames</span>(gr19)[keep])</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="sc">!</span>ok)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>keep <span class="ot">&lt;-</span> keep[ok]; gr38 <span class="ot">&lt;-</span> gr38[ok]</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(gr38) <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">"peak%06d"</span>, keep)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(gr38)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>How many peaks fail, how many split into several pieces, and how many single pieces change width or chromosome? What fraction is kept?</p></li>
+<li><p>Why <code>atac$Start + 1</code>?</p></li>
+<li><p>Why name the peaks by their row number in the original file?</p></li>
+</ol>
+</section>
+<section id="r3-a-summarizedexperiment-of-the-eight-libraries" class="level3">
+<h3 class="anchored" data-anchor-id="r3-a-summarizedexperiment-of-the-eight-libraries">R3 — A SummarizedExperiment of the eight libraries</h3>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>sel <span class="ot">&lt;-</span> samples[samples<span class="sc">$</span>celltype <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Bcell"</span>, <span class="st">"CD4"</span>) <span class="sc">&amp;</span> samples<span class="sc">$</span>donor <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"1022"</span>, <span class="st">"4983"</span>, <span class="st">"5483"</span>), ]</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>cnt <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(atac[keep, sel<span class="sc">$</span>sample, <span class="at">with =</span> <span class="cn">FALSE</span>])</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(cnt) <span class="ot">&lt;-</span> <span class="fu">names</span>(gr38)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>cd <span class="ot">&lt;-</span> <span class="fu">DataFrame</span>(<span class="at">donor =</span> <span class="fu">factor</span>(sel<span class="sc">$</span>donor), <span class="at">celltype =</span> <span class="fu">factor</span>(sel<span class="sc">$</span>celltype, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"CD4"</span>, <span class="st">"Bcell"</span>)),</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">rep =</span> sel<span class="sc">$</span>rep, <span class="at">row.names =</span> sel<span class="sc">$</span>sample)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>cd<span class="sc">$</span>unit <span class="ot">&lt;-</span> <span class="fu">paste</span>(cd<span class="sc">$</span>donor, cd<span class="sc">$</span>celltype, <span class="at">sep =</span> <span class="st">"_"</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="fu">SummarizedExperiment</span>(<span class="at">assays =</span> <span class="fu">list</span>(<span class="at">counts =</span> cnt), <span class="at">rowRanges =</span> gr38, <span class="at">colData =</span> cd)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>se</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">assay</span>(se)) <span class="sc">/</span> <span class="fl">1e6</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>lcpm <span class="ot">&lt;-</span> <span class="fu">cpm</span>(<span class="fu">assay</span>(se), <span class="at">log =</span> <span class="cn">TRUE</span>, <span class="at">prior.count =</span> <span class="dv">2</span>)[<span class="fu">rowMeans</span>(<span class="fu">cpm</span>(<span class="fu">assay</span>(se))) <span class="sc">&gt;=</span> <span class="dv">2</span>, ]</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">cor</span>(lcpm), <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>How many reads in peaks does each library have? Which is the smallest?</p></li>
+<li><p>What is the correlation between the technical replicates of donor 5483 (B cells; CD4 T cells)? Between the B-cell libraries of different donors? Between B and T cells?</p></li>
+</ol>
+</section>
+<section id="r4-pca-all-cell-types-then-our-six-samples" class="level3">
+<h3 class="anchored" data-anchor-id="r4-pca-all-cell-types-then-our-six-samples">R4 — PCA: all cell types, then our six samples</h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>cnt_all <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(atac[keep, samples<span class="sc">$</span>sample, <span class="at">with =</span> <span class="cn">FALSE</span>])</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>use <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(cnt_all) <span class="sc">&gt;=</span> <span class="dv">10</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>dall <span class="ot">&lt;-</span> <span class="fu">DESeqDataSetFromMatrix</span>(cnt_all[use, ], <span class="fu">data.frame</span>(samples[, <span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>], <span class="at">row.names =</span> samples<span class="sc">$</span>sample), <span class="sc">~</span> <span class="dv">1</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>vall <span class="ot">&lt;-</span> <span class="fu">vst</span>(dall, <span class="at">blind =</span> <span class="cn">TRUE</span>)                                  <span class="co"># a few seconds</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plotPCA</span>(vall, <span class="at">intgroup =</span> <span class="st">"celltype"</span>, <span class="at">ntop =</span> <span class="dv">10000</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeqDataSet</span>(se, <span class="at">design =</span> <span class="sc">~</span> donor <span class="sc">+</span> celltype)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">collapseReplicates</span>(dds, <span class="at">groupby =</span> dds<span class="sc">$</span>unit)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="fu">colData</span>(dds)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>vsd <span class="ot">&lt;-</span> <span class="fu">vst</span>(dds, <span class="at">blind =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plotPCA</span>(vsd, <span class="at">intgroup =</span> <span class="fu">c</span>(<span class="st">"celltype"</span>, <span class="st">"donor"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>In the PCA of all 77 libraries, which cell types group together? Is there a donor effect you can see?</p></li>
+<li><p>After <code>collapseReplicates</code>, how many columns are there, and what are the counts of <code>5483_Bcell</code> (compare with the two libraries in <code>se</code>)?</p></li>
+<li><p>In the PCA of the six samples, what separates on PC1? On PC2?</p></li>
+</ol>
+</section>
+<section id="r5-deseq2-with-the-paired-design" class="level3">
+<h3 class="anchored" data-anchor-id="r5-deseq2-with-the-paired-design">R5 — DESeq2 with the paired design</h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> dds[<span class="fu">rowSums</span>(<span class="fu">counts</span>(dds) <span class="sc">&gt;=</span> <span class="dv">10</span>) <span class="sc">&gt;=</span> <span class="dv">3</span>, ]</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(dds)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(dds <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(dds))</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">resultsNames</span>(dds)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plotDispEsts</span>(dds)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">name =</span> <span class="st">"celltype_Bcell_vs_CD4"</span>, <span class="at">alpha =</span> <span class="fl">0.05</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(res)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>How many peaks pass the filter? Why “≥ 10 reads in ≥ 3 samples” and not “in all 6”?</p></li>
+<li><p>How long does <code>DESeq()</code> take? What is the typical dispersion (<code>median(dispersions(dds))</code>)? What coefficient of variation between donors is that?</p></li>
+<li><p>How many peaks have padj &lt; 0.05, in each direction?</p></li>
+</ol>
+</section>
+<section id="r6-fold-change-shrinkage-ma-and-volcano-plots" class="level3">
+<h3 class="anchored" data-anchor-id="r6-fold-change-shrinkage-ma-and-volcano-plots">R6 — Fold-change shrinkage, MA and volcano plots</h3>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(shr <span class="ot">&lt;-</span> <span class="fu">lfcShrink</span>(dds, <span class="at">coef =</span> <span class="st">"celltype_Bcell_vs_CD4"</span>, <span class="at">type =</span> <span class="st">"apeglm"</span>))</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plotMA</span>(res, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">8</span>, <span class="dv">8</span>), <span class="at">main =</span> <span class="st">"MLE"</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plotMA</span>(shr, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">8</span>, <span class="dv">8</span>), <span class="at">main =</span> <span class="st">"apeglm"</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>cls <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="sc">!</span><span class="fu">is.na</span>(res<span class="sc">$</span>padj) <span class="sc">&amp;</span> res<span class="sc">$</span>padj <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">&amp;</span> shr<span class="sc">$</span>log2FoldChange <span class="sc">&gt;</span>  <span class="dv">1</span>, <span class="st">"B_up"</span>,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>       <span class="fu">ifelse</span>(<span class="sc">!</span><span class="fu">is.na</span>(res<span class="sc">$</span>padj) <span class="sc">&amp;</span> res<span class="sc">$</span>padj <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">&amp;</span> shr<span class="sc">$</span>log2FoldChange <span class="sc">&lt;</span> <span class="sc">-</span><span class="dv">1</span>, <span class="st">"T_up"</span>, <span class="st">"ns"</span>))</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(cls)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>vol <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">lfc =</span> shr<span class="sc">$</span>log2FoldChange, <span class="at">p =</span> <span class="sc">-</span><span class="fu">log10</span>(res<span class="sc">$</span>padj), <span class="at">cls =</span> cls)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(vol[<span class="sc">!</span><span class="fu">is.na</span>(vol<span class="sc">$</span>p), ], <span class="fu">aes</span>(lfc, p, <span class="at">colour =</span> cls)) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="at">B_up =</span> <span class="st">"#2a6f97"</span>, <span class="at">T_up =</span> <span class="st">"#e67e22"</span>, <span class="at">ns =</span> <span class="st">"grey70"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>How many B_up and T_up peaks are there?</p></li>
+<li><p>Compare <code>res$log2FoldChange</code> and <code>shr$log2FoldChange</code> for the peaks with <code>baseMean &lt; 20</code>. What does shrinkage do to them?</p></li>
+<li><p>How many peaks would pass <code>|MLE log2FC| &gt; 1</code> instead? Why is the difference small here?</p></li>
+</ol>
+</section>
+<section id="r7-three-normalisations" class="level3">
+<h3 class="anchored" data-anchor-id="r7-three-normalisations">R7 — Three normalisations</h3>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>tot <span class="ot">&lt;-</span> <span class="fu">colSums</span>(<span class="fu">counts</span>(dds))</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">normLibSizes</span>(<span class="fu">DGEList</span>(<span class="fu">counts</span>(dds)))</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>eff <span class="ot">&lt;-</span> y<span class="sc">$</span>samples<span class="sc">$</span>lib.size <span class="sc">*</span> y<span class="sc">$</span>samples<span class="sc">$</span>norm.factors</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>sf <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="at">DESeq2 =</span> <span class="fu">sizeFactors</span>(dds), <span class="at">TMM =</span> eff <span class="sc">/</span> <span class="fu">exp</span>(<span class="fu">mean</span>(<span class="fu">log</span>(eff))), <span class="at">total =</span> tot <span class="sc">/</span> <span class="fu">exp</span>(<span class="fu">mean</span>(<span class="fu">log</span>(tot))))</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(sf, <span class="dv">2</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> dds</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="fu">sizeFactors</span>(dt) <span class="ot">&lt;-</span> sf[<span class="st">"total"</span>, ]</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(dt, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>rt <span class="ot">&lt;-</span> <span class="fu">results</span>(dt, <span class="at">name =</span> <span class="st">"celltype_Bcell_vs_CD4"</span>, <span class="at">alpha =</span> <span class="fl">0.05</span>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">B_up =</span> <span class="fu">sum</span>(rt<span class="sc">$</span>padj <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">&amp;</span> rt<span class="sc">$</span>log2FoldChange <span class="sc">&gt;</span> <span class="dv">1</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">T_up =</span> <span class="fu">sum</span>(rt<span class="sc">$</span>padj <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">&amp;</span> rt<span class="sc">$</span>log2FoldChange <span class="sc">&lt;</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">DESeq2 =</span> <span class="fu">median</span>(res<span class="sc">$</span>log2FoldChange, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">total =</span> <span class="fu">median</span>(rt<span class="sc">$</span>log2FoldChange, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>Compare the three rows of size factors. Which libraries differ most between the median-of-ratios and the total-count factors?</p></li>
+<li><p>How many peaks are differential (here with the MLE fold change) with total-count normalisation? Compare with <code>sum(res$padj &lt; 0.05 &amp; res$log2FoldChange &gt; 1, na.rm = TRUE)</code> and the same for <code>&lt; -1</code>.</p></li>
+<li><p>What is the median log2 fold change under each normalisation? What would have to be true for the total-count result to be the right one?</p></li>
+</ol>
+</section>
+<section id="r8-paired-vs-unpaired" class="level3">
+<h3 class="anchored" data-anchor-id="r8-paired-vs-unpaired">R8 — Paired vs unpaired</h3>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>du <span class="ot">&lt;-</span> dds</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">design</span>(du) <span class="ot">&lt;-</span> <span class="er">~</span> celltype</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>du <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(du, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>ru <span class="ot">&lt;-</span> <span class="fu">results</span>(du, <span class="at">name =</span> <span class="st">"celltype_Bcell_vs_CD4"</span>, <span class="at">alpha =</span> <span class="fl">0.05</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">paired =</span> <span class="fu">sum</span>(res<span class="sc">$</span>padj <span class="sc">&lt;</span> <span class="fl">0.05</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">unpaired =</span> <span class="fu">sum</span>(ru<span class="sc">$</span>padj <span class="sc">&lt;</span> <span class="fl">0.05</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">both =</span> <span class="fu">sum</span>(res<span class="sc">$</span>padj <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">&amp;</span> ru<span class="sc">$</span>padj <span class="sc">&lt;</span> <span class="fl">0.05</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">paired =</span> <span class="fu">median</span>(<span class="fu">dispersions</span>(dds)), <span class="at">unpaired =</span> <span class="fu">median</span>(<span class="fu">dispersions</span>(du)))</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>dl <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(dds, <span class="at">test =</span> <span class="st">"LRT"</span>, <span class="at">reduced =</span> <span class="sc">~</span> celltype, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">results</span>(dl)<span class="sc">$</span>padj <span class="sc">&lt;</span> <span class="fl">0.05</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>Which design finds more peaks? How much do the two lists overlap?</p></li>
+<li><p>How many peaks have a significant donor effect (LRT)? Relate this to B3d.</p></li>
+</ol>
+</section>
+<section id="r9-nearest-gene-and-marker-genes" class="level3">
+<h3 class="anchored" data-anchor-id="r9-nearest-gene-and-marker-genes">R9 — Nearest gene and marker genes</h3>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>gtf <span class="ot">&lt;-</span> <span class="fu">import</span>(<span class="fu">file.path</span>(D, <span class="st">"gencode.v46.basic.annotation.gtf.gz"</span>), <span class="at">feature.type =</span> <span class="st">"transcript"</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>tss <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">resize</span>(gtf[gtf<span class="sc">$</span>transcript_type <span class="sc">==</span> <span class="st">"protein_coding"</span>], <span class="at">width =</span> <span class="dv">1</span>, <span class="at">fix =</span> <span class="st">"start"</span>))</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mcols</span>(tss) <span class="ot">&lt;-</span> <span class="fu">mcols</span>(tss)[<span class="st">"gene_name"</span>]</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>dn <span class="ot">&lt;-</span> <span class="fu">distanceToNearest</span>(<span class="fu">rowRanges</span>(dds), tss, <span class="at">ignore.strand =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>ann <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">peak =</span> <span class="fu">rownames</span>(dds), <span class="at">gene =</span> tss<span class="sc">$</span>gene_name[<span class="fu">subjectHits</span>(dn)], <span class="at">dist =</span> <span class="fu">mcols</span>(dn)<span class="sc">$</span>distance,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">lfc =</span> shr<span class="sc">$</span>log2FoldChange, <span class="at">padj =</span> res<span class="sc">$</span>padj, <span class="at">cls =</span> cls)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="fu">tapply</span>(ann<span class="sc">$</span>dist <span class="sc">&lt;=</span> <span class="dv">1000</span>, ann<span class="sc">$</span>cls, mean)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>mk <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"PAX5"</span>, <span class="st">"CD79A"</span>, <span class="st">"MS4A1"</span>, <span class="st">"CD19"</span>, <span class="st">"EBF1"</span>, <span class="st">"BLK"</span>, <span class="st">"CD3E"</span>, <span class="st">"BCL11B"</span>, <span class="st">"TCF7"</span>, <span class="st">"LEF1"</span>, <span class="st">"GATA3"</span>, <span class="st">"CD28"</span>)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="fu">t</span>(<span class="fu">sapply</span>(mk, <span class="cf">function</span>(g) <span class="fu">table</span>(<span class="fu">factor</span>(ann<span class="sc">$</span>cls[ann<span class="sc">$</span>gene <span class="sc">==</span> g], <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"B_up"</span>, <span class="st">"T_up"</span>, <span class="st">"ns"</span>)))))</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(ann[<span class="fu">order</span>(ann<span class="sc">$</span>padj), ], <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>What fraction of B_up, T_up and non-differential peaks lie within 1 kb of a protein-coding TSS? Why are differential peaks depleted at promoters?</p></li>
+<li><p>Do the B-cell markers have B_up peaks and the T-cell markers T_up peaks? Which marker has peaks in both directions?</p></li>
+<li><p>Look at the 10 most significant peaks. How far are they from their nearest TSS? Would you name these genes in a paper as “targets”?</p></li>
+</ol>
+</section>
+<section id="r10-does-it-agree-with-rna-seq" class="level3">
+<h3 class="anchored" data-anchor-id="r10-does-it-agree-with-rna-seq">R10 — Does it agree with RNA-seq?</h3>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>rna <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="fu">file.path</span>(D, <span class="st">"corces2016_rna_counts.txt.gz"</span>))</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>rc <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(rna[, <span class="sc">-</span><span class="dv">1</span>]); <span class="fu">rownames</span>(rc) <span class="ot">&lt;-</span> rna[[<span class="dv">1</span>]]</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>rcol <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="st">"-(Bcell|CD4Tcell)$"</span>, <span class="fu">colnames</span>(rc), <span class="at">value =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>rcd <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">donor =</span> <span class="fu">factor</span>(<span class="fu">sub</span>(<span class="st">"-.*"</span>, <span class="st">""</span>, rcol)),</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">celltype =</span> <span class="fu">factor</span>(<span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"Bcell"</span>, rcol), <span class="st">"Bcell"</span>, <span class="st">"CD4"</span>), <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"CD4"</span>, <span class="st">"Bcell"</span>)),</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">row.names =</span> rcol)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>ddr <span class="ot">&lt;-</span> <span class="fu">DESeqDataSetFromMatrix</span>(rc[, rcol], rcd, <span class="sc">~</span> donor <span class="sc">+</span> celltype)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>ddr <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(ddr[<span class="fu">rowSums</span>(<span class="fu">counts</span>(ddr) <span class="sc">&gt;=</span> <span class="dv">10</span>) <span class="sc">&gt;=</span> <span class="dv">2</span>, ], <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>rr <span class="ot">&lt;-</span> <span class="fu">results</span>(ddr, <span class="at">name =</span> <span class="st">"celltype_Bcell_vs_CD4"</span>)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>ann<span class="sc">$</span>rna <span class="ot">&lt;-</span> rr<span class="sc">$</span>log2FoldChange[<span class="fu">match</span>(ann<span class="sc">$</span>gene, <span class="fu">rownames</span>(rr))]</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="fu">tapply</span>(ann<span class="sc">$</span>rna, ann<span class="sc">$</span>cls, median, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>prom <span class="ot">&lt;-</span> ann<span class="sc">$</span>cls <span class="sc">!=</span> <span class="st">"ns"</span> <span class="sc">&amp;</span> ann<span class="sc">$</span>dist <span class="sc">&lt;=</span> <span class="dv">1000</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(ann<span class="sc">$</span>rna)</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>dist <span class="ot">&lt;-</span> ann<span class="sc">$</span>cls <span class="sc">!=</span> <span class="st">"ns"</span> <span class="sc">&amp;</span> ann<span class="sc">$</span>dist <span class="sc">&gt;</span>  <span class="dv">1000</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(ann<span class="sc">$</span>rna)</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">promoter =</span> <span class="fu">cor</span>(ann<span class="sc">$</span>lfc[prom], ann<span class="sc">$</span>rna[prom], <span class="at">method =</span> <span class="st">"spearman"</span>),</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">distal   =</span> <span class="fu">cor</span>(ann<span class="sc">$</span>lfc[dist], ann<span class="sc">$</span>rna[dist], <span class="at">method =</span> <span class="st">"spearman"</span>))</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ann[prom, ], <span class="fu">aes</span>(lfc, rna, <span class="at">colour =</span> cls)) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="at">data =</span> ann[prom <span class="sc">&amp;</span> ann<span class="sc">$</span>gene <span class="sc">%in%</span> mk, ], <span class="fu">aes</span>(<span class="at">label =</span> gene), <span class="at">colour =</span> <span class="st">"black"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>Which donors are in the RNA-seq comparison? Are they the same as in the ATAC comparison?</p></li>
+<li><p>What is the median RNA log2 fold change of the genes nearest to B_up, T_up and non-differential peaks?</p></li>
+<li><p>Why is the correlation higher for promoter peaks than for distal peaks?</p></li>
+</ol>
+</section>
+<section id="r11-save-the-result" class="level3">
+<h3 class="anchored" data-anchor-id="r11-save-the-result">R11 — Save the result</h3>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">peak_id =</span> <span class="fu">rownames</span>(dds), <span class="at">chr =</span> <span class="fu">as.character</span>(<span class="fu">seqnames</span>(dds)), <span class="at">start =</span> <span class="fu">start</span>(dds), <span class="at">end =</span> <span class="fu">end</span>(dds),</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">baseMean =</span> res<span class="sc">$</span>baseMean, <span class="at">log2FoldChange =</span> shr<span class="sc">$</span>log2FoldChange, <span class="at">lfcSE =</span> shr<span class="sc">$</span>lfcSE,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">log2FoldChange_mle =</span> res<span class="sc">$</span>log2FoldChange, <span class="at">pvalue =</span> res<span class="sc">$</span>pvalue, <span class="at">padj =</span> res<span class="sc">$</span>padj,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">nearest_gene =</span> ann<span class="sc">$</span>gene, <span class="at">dist_to_tss =</span> ann<span class="sc">$</span>dist, <span class="at">class =</span> cls)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(tab, <span class="st">"differential_peaks.tsv"</span>, <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">quote =</span> <span class="cn">FALSE</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(tab<span class="sc">$</span>class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The file has one row per tested peak (GRCh38, 1-based closed coordinates as in GRanges, 500 bp). <em>Motifs, motif enrichment and TF footprinting</em> starts from it.</p>
+</section>
+</section>
+<section id="hints" class="level2">
+<h2 class="anchored" data-anchor-id="hints">Hints</h2>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 1 — size factors (B1, B2, R7)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 1 — size factors (B1, B2, R7)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Geometric mean of three numbers = cube root of their product. With two samples, the median of the per-peak ratios S2/S1 is the ratio of the two size factors. Normalised count = count / size factor. The DESeq2 vignette explains <a href="https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#sample-gene-dependent-normalization-factors">size factors</a>; TMM is in <a href="https://rdrr.io/bioc/edgeR/man/calcNormFactors.html"><code>normLibSizes</code></a> (formerly <code>calcNormFactors</code>) and <a href="https://doi.org/10.1186/gb-2010-11-3-r25">Robinson &amp; Oshlack 2010</a>; background bins in the <a href="https://bioconductor.org/books/release/csawBook/">csaw book</a>.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 2 — design matrices (B3, R5, R8)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 2 — design matrices (B3, R5, R8)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><code>model.matrix(~ donor + celltype, data)</code> prints the matrix in R. Residual degrees of freedom = samples − columns. The intercept in <code>~ donor + celltype</code> is the reference donor in the reference cell type. <a href="https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#multi-factor-designs">DESeq2 vignette: multi-factor designs</a>; the <a href="https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#likelihood-ratio-test">likelihood ratio test</a> compares a full and a reduced design.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 3 — replicates (B4, R3, R4)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 3 — replicates (B4, R3, R4)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><a href="https://rdrr.io/bioc/DESeq2/man/collapseReplicates.html"><code>collapseReplicates</code></a> sums the counts of columns with the same <code>groupby</code> value. A <code>SummarizedExperiment</code> holds the matrix, the row ranges and the sample table together (<a href="https://bioconductor.org/packages/release/bioc/vignettes/SummarizedExperiment/inst/doc/SummarizedExperiment.html">vignette</a>); <code>DESeqDataSet(se, design)</code> turns it into a DESeq2 object.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 4 — Poisson and depth (B5)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 4 — Poisson and depth (B5)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>For a Poisson count with mean <span class="math inline">\(\lambda\)</span> the standard deviation is <span class="math inline">\(\sqrt{\lambda}\)</span>, so the relative SD is <span class="math inline">\(1/\sqrt{\lambda}\)</span>. Real replicates add biological variation on top (the dispersion).</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 5 — MA plots, shrinkage and results (B6, B7, R6)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 5 — MA plots, shrinkage and results (B6, B7, R6)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><a href="https://rdrr.io/bioc/DESeq2/man/plotMA.html"><code>plotMA</code></a>, <a href="https://rdrr.io/bioc/DESeq2/man/lfcShrink.html"><code>lfcShrink</code></a> with <code>type = "apeglm"</code> (<a href="https://doi.org/10.1093/bioinformatics/bty895">Zhu et al.&nbsp;2019</a>). A log2 fold change of <span class="math inline">\(-2.3\)</span> is a ratio of <span class="math inline">\(2^{-2.3}\)</span>. Shrinkage changes fold changes, not <span class="math inline">\(p\)</span>-values.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 6 — liftOver and annotation (R2, R9)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 6 — liftOver and annotation (R2, R9)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><a href="https://rdrr.io/bioc/rtracklayer/man/liftOver.html"><code>rtracklayer::liftOver</code></a> returns a <code>GRangesList</code>; <code>lengths()</code> gives the number of pieces per peak. <code>import.chain</code> needs an uncompressed chain file. <a href="https://rdrr.io/bioc/GenomicRanges/man/nearest-methods.html"><code>distanceToNearest</code></a> gives the nearest TSS, as in <em>Genomic intervals</em>. The UCSC <a href="https://genome.ucsc.edu/cgi-bin/hgLiftOver">liftOver documentation</a> explains the chain files.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 7 — reading the data (C1, C2, R1)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 7 — reading the data (C1, C2, R1)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The GEO sample list of <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE74912">GSE74912</a> gives donor and cell type for every library. <a href="https://rdatatable.gitlab.io/data.table/reference/fread.html"><code>data.table::fread</code></a> reads gzipped files directly. In the regular expression, <code>(?:...)</code> is a group that is not captured, <code>?</code> makes it optional; see <code>?regex</code> in R.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="solutions" class="level2">
+<h2 class="anchored" data-anchor-id="solutions">Solutions</h2>
+<div class="callout callout-style-default callout-note callout-titled" title="Solutions — by hand">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions — by hand
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>B1.</strong> (a) p1: <span class="math inline">\((10^6)^{1/3} = 100\)</span>; p2: <span class="math inline">\((64\,000)^{1/3} = 40\)</span>; p3: <span class="math inline">\((2.7 \times 10^7)^{1/3} = 300\)</span>; p4: <span class="math inline">\((64\,000)^{1/3} = 40\)</span>. (b) Ratios S1: 1, 1, 1, 0.5 → median (of four: the mean of the middle two) <strong>1</strong>. S2: 2, 2, 2, 8 → <strong>2</strong>. S3: 0.5, 0.5, 0.5, 0.25 → <strong>0.5</strong>. (c) p4 normalised: 20, 160, 20. p4 is 8-fold more open in S2; p1–p3 are identical in all samples after normalisation. (d) Column sums 460, 1200, 230; geometric mean <span class="math inline">\((460 \cdot 1200 \cdot 230)^{1/3} \approx 503\)</span>; factors 0.92, <strong>2.39</strong>, 0.46. S2’s total includes the extra reads in p4, so its factor is too large: p1–p3 in S2 become <span class="math inline">\(200/2.39 = 84\)</span> instead of 100, a false 16% decrease, and p4’s increase shrinks from 8-fold to about 6.1-fold (21.9 in S1, 134 in S2). One strongly changing peak drags the total; the median ignores it.</p>
+<p><strong>B2.</strong> (a) Control FRiP <span class="math inline">\(500/1000 = 0.5\)</span>; drug <span class="math inline">\(800/1000 = 0.8\)</span>. (b) Per-peak ratios drug/control are all 1.6, so the size-factor ratio is 1.6, and every normalised fold change is <strong>1</strong>: no differential peak. (c) Background ratio <span class="math inline">\(200/500 = 0.4\)</span>; normalised fold change <span class="math inline">\(1.6/0.4 =\)</span> <strong>4</strong> for every peak: a global 4-fold opening. (d) Totals are equal (1000), so the fold change is the raw <strong>1.6</strong>. (e) Biological: the drug opens chromatin everywhere (e.g.&nbsp;an HDAC inhibitor), so the true answer is close to (c). Technical: the control library has more background (more dead or damaged cells, worse transposition), so its peaks look weaker; then (b) is right and the “opening” is an artefact. To decide: QC per library (TSS enrichment, fragment-size distribution, mitochondrial fraction, FRiP across replicates), a spike-in (a fixed number of foreign nuclei per sample), or an orthogonal measurement (e.g.&nbsp;imaging of chromatin compaction, or a set of loci known not to change).</p>
+<p><strong>B3.</strong> (a)</p>
+<pre><code>     (Intercept) celltypeBcell
+D1-T     1            0
+D1-B     1            1
+D2-T     1            0
+D2-B     1            1
+D3-T     1            0
+D3-B     1            1</code></pre>
+<ol start="2" type="a">
+<li></li>
+</ol>
+<pre><code>     (Intercept) donorD2 donorD3 celltypeBcell
+D1-T     1          0       0         0
+D1-B     1          0       0         1
+D2-T     1          1       0         0
+D2-B     1          1       0         1
+D3-T     1          0       1         0
+D3-B     1          0       1         1</code></pre>
+<ol start="3" type="a">
+<li><span class="math inline">\(6 - 2 = 4\)</span> and <span class="math inline">\(6 - 4 = 2\)</span>. In (b) the intercept is the (log) level of donor D1’s CD4 T cells; <code>donorD2</code> is how much D2 differs from D1 in both cell types; <code>celltypeBcell</code> is the B vs T log2 fold change within a donor.</li>
+<li>Pairing removes donor-to-donor variation that both cell types share, but costs one parameter per extra donor. In this dataset (sorted cells from healthy adults) donors differ little, so the gain is small and the loss of 2 of 4 residual degrees of freedom dominates: fewer hits. Report the paired model: it is the design of the experiment, chosen before seeing results; choosing the model that gives more hits is a form of <span class="math inline">\(p\)</span>-hacking. With patients or donors that differ more (genotype, age, treatment), pairing usually gains a lot.</li>
+</ol>
+<p><strong>B4.</strong> (a) <span class="math inline">\(120 + 80 = 200\)</span>. (b) Four B-cell “replicates” instead of three (the model thinks 5483 is two people). The variance between technical replicates is smaller than between people, so the dispersion is underestimated and the <span class="math inline">\(p\)</span>-values are <strong>too small</strong> (pseudo-replication). Also, donor 5483 gets double weight.</p>
+<p><strong>B5.</strong> (a) <span class="math inline">\(40 \times 10^6 \times 0.25 / 10^5 = 100\)</span>. (b) <span class="math inline">\(10 \times 10^6 \times 0.4 / 10^5 = 40\)</span>. The first: depth beats FRiP here (100 vs 40 reads per peak), although the second library is cleaner. (c) <span class="math inline">\(1/\sqrt{5} \approx 0.45\)</span>: 45%. Between 5 and 20 the Poisson noise alone is large (and biological variation adds to it); a 4-fold difference between two single samples at this depth is weak evidence. This is what dispersion estimation and shrinkage handle.</p>
+<p><strong>B6.</strong> (a) Few reads: a peak with 0 vs 3 fragments has an MLE fold change that is huge and poorly determined. (b) apeglm shrinks in proportion to the uncertainty: weak peaks have large standard errors and are pulled to 0; strong peaks are well measured and keep their fold change. (c) At 0. A centre at +0.7 means the typical peak looks 1.6-fold more open in B cells: either a global difference (B cells more open overall) that peak-based normalisation should have removed (so check the normalisation), or a normalisation computed on a different set of peaks than the one plotted. (d) Few: a peak needs enough reads to reach |shrunk LFC| &gt; 1 and padj &lt; 0.05; weak peaks are shrunk below 1 or not significant.</p>
+<p><strong>B7.</strong> (a) a: T_up (padj tiny, shrunk −2.3); d: B_up (padj 0.02, shrunk 2.6). b and c are not. (b) <span class="math inline">\(2^{2.3} \approx 4.9\)</span> times more open in CD4 T cells. (c) No: it is significantly more open in B cells, by about <span class="math inline">\(2^{0.7} \approx 1.6\)</span>-fold. It fails only our effect-size threshold. Write “modestly more accessible (1.6-fold, padj 0.001)” if it matters; the threshold is a convention for making lists, not a test of “no change”. (d) baseMean 4: a few reads, so the MLE is noisy and huge; the standard error is also huge, so the Wald test is not significant and apeglm shrinks it to 0.4.</p>
+<p><strong>B8.</strong> First sentence: “near” a gene is not “regulating” it (the nearest gene is a guess, often wrong for distal elements); and correlation of accessibility and expression is not causation (“drive” needs perturbation, e.g.&nbsp;CRISPR deletion or inhibition of the element). A B-specific peak next to a non-DE gene: the peak regulates a different, more distant gene; the gene is expressed in both cell types from other elements; the element is primed (open before expression starts, or a repressor binds); or the gene is not expressed in either because another factor is missing. 30% non-concordance is therefore expected, not evidence of “uncoupling”.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Solutions — command line">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions — command line
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>C1.</strong> (a) 135 columns: <code>Chr Start End</code> and 132 libraries. B cells: <code>Donor1022-Bcell-13-150120</code>, <code>Donor4983-Bcell-13A-150120</code>, <code>Donor5483-Bcell-13A-150305</code>, <code>Donor5483-Bcell-13B-150305</code>. CD4 T cells: <code>Donor1022-CD4-9-150120</code>, <code>Donor2596-CD4-9A-150303</code>, <code>Donor4983-CD4-9A-150120</code>, <code>Donor5483-CD4-9A-150305</code>, <code>Donor5483-CD4-9B-150305</code>. Donors 1022, 4983 and 5483 have both; 2596 has CD4 T cells only. (b) Every peak has End − Start = 500 (590 650 peaks), so the file uses BED-style 0-based starts, from summit − 250 to summit + 250. (c) chr1–22 and chrX (chr1 has the most peaks, 51 405; chr21 the fewest, 6887). No chrY and no chrM: the authors removed them (chrM reads are a known ATAC artefact). Without chrY, male and female donors differ only on chrX, where one X is inactive in females; a donor’s sex can still create chrX differences, which the paired design absorbs.</p>
+<p><strong>C2.</strong> (a) Column 27; 4 650 539 reads in peaks; 46 335 peaks with no read at all. (b) The peaks were called on all 13 cell types (and AML samples) together, so many are elements open only in other cell types (e.g.&nbsp;erythroid or myeloid enhancers).</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Solutions — R">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions — R
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Run times are from one server core; a laptop is 1.5–3 times slower.</p>
+<p><strong>R1.</strong> (a) <code>^(?:Donor)?</code> an optional “Donor” prefix; <code>([0-9]+)</code> the donor ID (group 1); <code>-(?:[A-Za-z][A-Za-z0-9]*-)?</code> an optional cell-type word such as <code>CD4-</code> or <code>Erythroblast-</code>; <code>([0-9]+)</code> the cell-type code (group 2); <code>([A-C]?)</code> the replicate letter (group 3, may be empty); <code>(?:-[0-9]+)?$</code> an optional run date. If the word could start with a digit, in <code>Donor7256-1A-110614</code> the regex would take <code>1A-</code> as the word and <code>110614</code> as the code. (b) 77 libraries, 7 donors, 13 cell types; B cells and CD4 T cells both in donors 1022, 4983 and 5483. (c) The 52 AML columns (<code>SU…</code>: leukaemia, LSC and pre-leukaemic HSC samples) and the 3 bulk CD34+ samples (<code>BM-CD34-1</code>, <code>BM-CD34-2</code>, <code>CB102-CD34-150627</code>), whose names do not start with digits or <code>Donor</code> + digits.</p>
+<p><strong>R2.</strong> (a) 159 fail, 1375 split, 46 single pieces of the wrong width or on another chromosome; 589 070 kept (99.7%). (b) The file’s starts are 0-based (BED-like); GRanges is 1-based. (c) A stable ID that links the lifted peak back to the hg19 row (and to other analyses of the same file, such as <em>Motifs</em>), independent of filtering.</p>
+<p><strong>R3.</strong> (a) Reads in peaks after liftOver (millions): 1022 B 4.64, 1022 CD4 6.35, 4983 B 17.89, 4983 CD4 11.22, 5483 B 10.50 + 6.35, 5483 CD4 8.22 + 5.99. The smallest is the B-cell library of donor 1022. (b) Technical replicates r = 0.94 (both cell types); B cells of different donors 0.77–0.88 (lowest with 1022), CD4 T cells of different donors 0.87–0.93; B vs CD4 0.19–0.37 (75 922 peaks with mean CPM ≥ 2). B vs CD4 is low because many peaks are open in only one of the two.</p>
+<p><strong>R4.</strong> (a) Lymphocytes (B, CD4, CD8, NK) separate from stem, progenitor and myeloid cells on PC1; erythroblasts and MEPs form their own direction; CD4 and CD8 T cells overlap, NK cells next to them. Libraries cluster by cell type, not by donor. Monocytes sit close to the lymphocytes on PC1–PC2 (both are mature cells) and separate on later components. (127 515 peaks have mean ≥ 10; <code>vst</code> takes about 5 s.) (b) 6 columns; <code>5483_Bcell</code> = the sum of the two 5483 B-cell libraries (10.50 + 6.35 = 16.85 M reads in peaks). (c) PC1 (95% of the variance of the 500 most variable peaks): B vs T. PC2 (2%) separates the CD4 samples of 4983 and 5483 and does nothing for the B cells: no consistent donor effect.</p>
+<p><strong>R5.</strong> (a) 211 824 of 589 070. “In ≥ 3” keeps peaks open in only one cell type (3 samples), which are exactly the most interesting; “in all 6” would remove them. (b) About 1.3 min. Median dispersion 0.39 → coefficient of variation <span class="math inline">\(\sqrt{0.39} \approx 0.63\)</span>, about 60% between donors. (c) padj &lt; 0.05: 19 439 up in B and 17 264 up in CD4 T (36 703 in total; 24 641 peaks removed by independent filtering).</p>
+<p><strong>R6.</strong> (a) B_up 19 404, T_up 16 897 (about 2.5 min for apeglm). (b) For weak peaks the MLE fold changes are spread widely (many beyond ±3); shrinkage pulls them towards 0. (c) 19 438 and 17 202 with the MLE: almost the same, because peaks with padj &lt; 0.05 are mostly well measured, so shrinkage changes their fold changes little.</p>
+<p><strong>R7.</strong> (a)</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: right;">1022_B</th>
+<th style="text-align: right;">1022_CD4</th>
+<th style="text-align: right;">4983_B</th>
+<th style="text-align: right;">4983_CD4</th>
+<th style="text-align: right;">5483_B</th>
+<th style="text-align: right;">5483_CD4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>DESeq2</td>
+<td style="text-align: right;">0.46</td>
+<td style="text-align: right;">0.57</td>
+<td style="text-align: right;">1.88</td>
+<td style="text-align: right;">1.23</td>
+<td style="text-align: right;">1.55</td>
+<td style="text-align: right;">1.37</td>
+</tr>
+<tr class="even">
+<td>TMM</td>
+<td style="text-align: right;">0.47</td>
+<td style="text-align: right;">0.55</td>
+<td style="text-align: right;">1.82</td>
+<td style="text-align: right;">1.15</td>
+<td style="text-align: right;">1.49</td>
+<td style="text-align: right;">1.23</td>
+</tr>
+<tr class="odd">
+<td>total</td>
+<td style="text-align: right;">0.35</td>
+<td style="text-align: right;">0.69</td>
+<td style="text-align: right;">1.49</td>
+<td style="text-align: right;">1.10</td>
+<td style="text-align: right;">1.68</td>
+<td style="text-align: right;">1.49</td>
+</tr>
+</tbody>
+</table>
+<p>DESeq2 and TMM agree within about 10%; total counts differ most for 1022_Bcell (0.35 vs 0.46), 4983_Bcell (1.49 vs 1.88) and 1022_CD4 (0.69 vs 0.57). (b) Total counts: 23 703 B_up and 13 540 T_up; DESeq2 factors: 19 438 and 17 202 (MLE thresholds). (c) Median log2 fold change 0.26 with DESeq2 factors and <strong>0.52</strong> with total counts: total-count normalisation moves every fold change by about 0.26 towards B. (Even with DESeq2 factors the median over all tested peaks is not 0: many peaks are all-or-none, and the size factors are computed only from peaks without zeros.) The total-count result is right only if every sample truly has the same total accessible signal per cell <em>and</em> the same signal-to-noise; then B cells would be globally more open than T cells. Without a spike-in we cannot check this, so we keep the peak-based normalisation and say so.</p>
+<p><strong>R8.</strong> (a) Paired 36 703, unpaired 41 671 at padj &lt; 0.05; 35 031 of the 36 703 paired hits are also unpaired hits. Median dispersion 0.39 paired, 0.28 unpaired. (b) 47 peaks with a donor effect: donors differ very little here, so the donor term mostly costs degrees of freedom (B3d).</p>
+<p><strong>R9.</strong> (a) Within 1 kb of a protein-coding TSS: B_up 7.5%, T_up 13.5%, ns 21.5% (all tested peaks: 19.6%). Promoters tend to be open in many cell types (housekeeping and poised promoters); cell-type-specific regulation sits in distal enhancers. (b) Yes: PAX5 31 B_up, 0 T_up; CD79A 3/0; MS4A1 4/0; CD19 2/0; BLK 13/1; CD3E 1/3; BCL11B 1/58; TCF7 0/13; LEF1 0/27; GATA3 1/33; CD28 2/19. EBF1 has 32 B_up but also 4 T_up peaks (its large locus contains elements used in T cells too). (c) All ten are T_up, and only one is within 3 kb of a TSS (<em>ATP6V0A4</em>, 2.9 kb); the others are 13–175 kb away (<em>THEMIS</em> 53 kb, <em>SYTL2</em>, <em>IL21</em>, <em>TGFBR3</em>, <em>CSGALNACT1</em>, <em>MBD5</em>, <em>CD44</em>, <em>QDPR</em>, <em>NFKB1</em>). Some names are plausible (<em>THEMIS</em> is a T-cell signalling gene, <em>IL21</em> a T-helper cytokine), but proximity alone does not make a gene a target: say “near”, not “regulates”.</p>
+<p><strong>R10.</strong> (a) RNA: donors 1022, 2596, 5852, 7653 (4 per cell type). Only 1022 is in both comparisons, so this is a comparison of cell types across partly different people. (b) Median RNA log2 FC +0.46 near B_up, −0.61 near T_up, −0.09 near non-differential peaks. 67% (B_up) and 71% (T_up) of DA peaks have a nearest gene that changes in the same direction. (c) Spearman 0.69 for promoter DA peaks (2876 peaks with an RNA value), 0.42 for distal ones (24 673). A promoter peak belongs to its gene; a distal peak may regulate another gene, and many distal elements act together.</p>
+<p><strong>R11.</strong> <code>table(tab$class)</code>: B_up 19 404, T_up 16 897, ns 175 523. The file has 211 824 rows.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="where-this-leads" class="level2">
+<h2 class="anchored" data-anchor-id="where-this-leads">Where this leads</h2>
+<ul>
+<li><em>Motifs, motif enrichment and TF footprinting</em> reads <code>differential_peaks.tsv</code>, extracts the sequences of B_up and T_up peaks (GRCh38) and asks which transcription factor motifs are enriched, using the <code>ns</code> peaks as background.</li>
+<li><em>Linking regulatory elements to genes</em> replaces “nearest TSS” (R9) with contacts and activity, and returns to the RNA concordance (R10).</li>
+<li><em>Experimental design and QC</em> covers spike-ins and FRiP, the tools for deciding between the normalisations in B2 and R7.</li>
+<li>Single-cell ATAC (ArchR, Signac) uses the same consensus peaks and counts, summed over cells of a type (“pseudobulk”) for differential tests.</li>
+</ul>
+</section>
+<section id="key-papers-optional-further-reading" class="level2">
+<h2 class="anchored" data-anchor-id="key-papers-optional-further-reading">Key papers (optional further reading)</h2>
+<p><em>Not required reading and not examined.</em></p>
+<ul>
+<li>Corces et al.&nbsp;2016, <em>Nat Genet</em>. <a href="https://doi.org/10.1038/ng.3646">Lineage-specific and single-cell chromatin accessibility charts human hematopoiesis and leukemia evolution</a>.</li>
+<li>Love, Huber &amp; Anders 2014, <em>Genome Biol</em>. <a href="https://doi.org/10.1186/s13059-014-0550-8">Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2</a>.</li>
+<li>Ross-Innes et al.&nbsp;2012, <em>Nature</em>. <a href="https://doi.org/10.1038/nature10730">Differential oestrogen receptor binding is associated with clinical outcome in breast cancer</a>.</li>
+<li>Lun &amp; Smyth 2016, <em>Nucleic Acids Res</em>. <a href="https://doi.org/10.1093/nar/gkv1191">csaw: a Bioconductor package for differential binding analysis of ChIP-seq data using sliding windows</a>.</li>
+<li>Robinson &amp; Oshlack 2010, <em>Genome Biol</em>. <a href="https://doi.org/10.1186/gb-2010-11-3-r25">A scaling normalization method for differential expression analysis of RNA-seq data</a>.</li>
+<li>Reske, Wilson &amp; Chandler 2020, <em>Epigenetics Chromatin</em>. <a href="https://doi.org/10.1186/s13072-020-00342-y">ATAC-seq normalization method can significantly affect differential accessibility analysis and interpretation</a>.</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

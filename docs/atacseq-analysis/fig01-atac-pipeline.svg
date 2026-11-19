@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 430" width="1120" height="430" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker></defs>
+<rect width="1120" height="430" fill="white"/>
+<text x="1104" y="42" text-anchor="end" font-size="15" font-style="italic" fill="#5b6b7a">from reads to a clean BAM</text>
+<rect x="16" y="52" width="192" height="112" rx="8" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="112.0" y="80" text-anchor="middle" font-size="17" font-weight="bold" fill="#1b2a3a">Reads</text>
+<text x="112.0" y="106" text-anchor="middle" font-size="15" fill="#1b2a3a">paired-end FASTQ</text>
+<text x="112.0" y="126" text-anchor="middle" font-size="15" fill="#1b2a3a">R1 + R2</text>
+<line x1="211" y1="108" x2="235" y2="108" stroke="#1b2a3a" stroke-width="2.2" marker-end="url(#ak)"/>
+<rect x="238" y="52" width="192" height="112" rx="8" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="334.0" y="80" text-anchor="middle" font-size="17" font-weight="bold" fill="#1b2a3a">Trim</text>
+<text x="334.0" y="106" text-anchor="middle" font-size="15" fill="#1b2a3a">Nextera adapters</text>
+<text x="334.0" y="126" text-anchor="middle" font-size="15" fill="#1b2a3a">fastp / cutadapt /</text>
+<text x="334.0" y="146" text-anchor="middle" font-size="15" fill="#1b2a3a">Trim Galore</text>
+<line x1="433" y1="108" x2="457" y2="108" stroke="#1b2a3a" stroke-width="2.2" marker-end="url(#ak)"/>
+<rect x="460" y="52" width="192" height="112" rx="8" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="556.0" y="80" text-anchor="middle" font-size="17" font-weight="bold" fill="#1b2a3a">Align</text>
+<text x="556.0" y="106" text-anchor="middle" font-size="15" fill="#1b2a3a">bowtie2 -X 2000</text>
+<text x="556.0" y="126" text-anchor="middle" font-size="15" fill="#1b2a3a">(or BWA-MEM)</text>
+<line x1="655" y1="108" x2="679" y2="108" stroke="#1b2a3a" stroke-width="2.2" marker-end="url(#ak)"/>
+<rect x="682" y="52" width="192" height="112" rx="8" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="778.0" y="80" text-anchor="middle" font-size="17" font-weight="bold" fill="#1b2a3a">Filter</text>
+<text x="778.0" y="106" text-anchor="middle" font-size="15" fill="#1b2a3a">MAPQ ≥ 30, proper pairs</text>
+<text x="778.0" y="126" text-anchor="middle" font-size="15" fill="#1b2a3a">no chrM, no duplicates,</text>
+<text x="778.0" y="146" text-anchor="middle" font-size="15" fill="#1b2a3a">no blacklist</text>
+<line x1="877" y1="108" x2="901" y2="108" stroke="#1b2a3a" stroke-width="2.2" marker-end="url(#ak)"/>
+<rect x="904" y="52" width="192" height="112" rx="8" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="1000.0" y="80" text-anchor="middle" font-size="17" font-weight="bold" fill="#1b2a3a">Shift</text>
+<text x="1000.0" y="106" text-anchor="middle" font-size="15" fill="#1b2a3a">fragment ends →</text>
+<text x="1000.0" y="126" text-anchor="middle" font-size="15" fill="#1b2a3a">Tn5 insertion sites</text>
+<text x="1000.0" y="146" text-anchor="middle" font-size="15" fill="#1b2a3a">(+4 / −5)</text>
+<text x="1104" y="220" text-anchor="end" font-size="15" font-style="italic" fill="#5b6b7a">from a clean BAM to peaks</text>
+<rect x="16" y="230" width="192" height="112" rx="8" fill="#e3f2e9" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="112.0" y="258" text-anchor="middle" font-size="17" font-weight="bold" fill="#1b2a3a">Signal track</text>
+<text x="112.0" y="284" text-anchor="middle" font-size="15" fill="#1b2a3a">insertions per base,</text>
+<text x="112.0" y="304" text-anchor="middle" font-size="15" fill="#1b2a3a">CPM-scaled bigWig</text>
+<line x1="211" y1="286" x2="235" y2="286" stroke="#1b2a3a" stroke-width="2.2" marker-end="url(#ak)"/>
+<rect x="238" y="230" width="192" height="112" rx="8" fill="#e3f2e9" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="334.0" y="258" text-anchor="middle" font-size="17" font-weight="bold" fill="#1b2a3a">Call peaks</text>
+<text x="334.0" y="284" text-anchor="middle" font-size="15" fill="#1b2a3a">MACS3, one call</text>
+<text x="334.0" y="304" text-anchor="middle" font-size="15" fill="#1b2a3a">per replicate</text>
+<line x1="433" y1="286" x2="457" y2="286" stroke="#1b2a3a" stroke-width="2.2" marker-end="url(#ak)"/>
+<rect x="460" y="230" width="192" height="112" rx="8" fill="#e3f2e9" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="556.0" y="258" text-anchor="middle" font-size="17" font-weight="bold" fill="#1b2a3a">Replicates</text>
+<text x="556.0" y="284" text-anchor="middle" font-size="15" fill="#1b2a3a">rank consistency (IDR)</text>
+<text x="556.0" y="304" text-anchor="middle" font-size="15" fill="#1b2a3a">or overlap;</text>
+<text x="556.0" y="324" text-anchor="middle" font-size="15" fill="#1b2a3a">pseudoreplicates</text>
+<line x1="655" y1="286" x2="679" y2="286" stroke="#1b2a3a" stroke-width="2.2" marker-end="url(#ak)"/>
+<rect x="682" y="230" width="192" height="112" rx="8" fill="#e3f2e9" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="778.0" y="258" text-anchor="middle" font-size="17" font-weight="bold" fill="#1b2a3a">Consensus</text>
+<text x="778.0" y="284" text-anchor="middle" font-size="15" fill="#1b2a3a">merge, or fixed-width</text>
+<text x="778.0" y="304" text-anchor="middle" font-size="15" fill="#1b2a3a">500-bp summit peaks</text>
+<line x1="877" y1="286" x2="901" y2="286" stroke="#1b2a3a" stroke-width="2.2" marker-end="url(#ak)"/>
+<rect x="904" y="230" width="192" height="112" rx="8" fill="#e3f2e9" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="1000.0" y="258" text-anchor="middle" font-size="17" font-weight="bold" fill="#1b2a3a">Annotate, count</text>
+<text x="1000.0" y="284" text-anchor="middle" font-size="15" fill="#1b2a3a">promoter / distal;</text>
+<text x="1000.0" y="304" text-anchor="middle" font-size="15" fill="#1b2a3a">counts per peak →</text>
+<text x="1000.0" y="324" text-anchor="middle" font-size="15" fill="#1b2a3a">differential analysis</text>
+<path d="M1000.0,167 V188 H372.0 " fill="none" stroke="#1b2a3a" stroke-width="2.2"/>
+<path d="M372.0,188 H112.0 V227" fill="none" stroke="#1b2a3a" stroke-width="2.2" marker-end="url(#ak)"/>
+<text x="16" y="382" font-size="15" fill="#5b6b7a"><tspan font-weight="bold" fill="#1b2a3a">QC along the way:</tspan>  read quality, adapter content · alignment rate · chrM fraction · duplicates · fragment sizes · TSS enrichment · FRiP · replicate agreement</text>
+<text x="16" y="410" font-size="15" fill="#5b6b7a"><tspan font-weight="bold" fill="#1b2a3a">The same steps at scale:</tspan>  nf-core/atacseq (Nextflow) · the ENCODE ATAC-seq pipeline (WDL, run with Caper)</text>
+</svg>

@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 400" width="1120" height="400" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker><marker id="aa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a6f97"/></marker></defs>
+<rect width="1120" height="400" fill="white"/>
+<text x="20" y="28" font-size="18" font-weight="bold" fill="#1b2a3a">One read pair = one fragment = two insertion sites</text>
+<line x1="180.0" y1="62" x2="948.0" y2="62" stroke="#5b6b7a" stroke-width="1.5"/>
+<line x1="204.0" y1="57" x2="204.0" y2="67" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="204.0" y="52" text-anchor="middle" font-size="13" fill="#5b6b7a">1000</text>
+<line x1="324.0" y1="57" x2="324.0" y2="67" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="324.0" y="52" text-anchor="middle" font-size="13" fill="#5b6b7a">1050</text>
+<line x1="444.0" y1="57" x2="444.0" y2="67" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="444.0" y="52" text-anchor="middle" font-size="13" fill="#5b6b7a">1100</text>
+<line x1="564.0" y1="57" x2="564.0" y2="67" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="564.0" y="52" text-anchor="middle" font-size="13" fill="#5b6b7a">1150</text>
+<line x1="684.0" y1="57" x2="684.0" y2="67" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="684.0" y="52" text-anchor="middle" font-size="13" fill="#5b6b7a">1200</text>
+<line x1="804.0" y1="57" x2="804.0" y2="67" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="804.0" y="52" text-anchor="middle" font-size="13" fill="#5b6b7a">1250</text>
+<line x1="924.0" y1="57" x2="924.0" y2="67" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="924.0" y="52" text-anchor="middle" font-size="13" fill="#5b6b7a">1300</text>
+<text x="170.0" y="67" text-anchor="end" font-size="14" fill="#5b6b7a">BED coordinate</text>
+<rect x="204.0" y="84" width="21.599999999999998" height="76" fill="#e67e22" fill-opacity="0.22"/>
+<rect x="902.4" y="84" width="21.599999999999998" height="76" fill="#e67e22" fill-opacity="0.22"/>
+<rect x="170.0" y="124" width="34" height="12" fill="#d9dee3" stroke="#5b6b7a"/>
+<rect x="924.0" y="124" width="34" height="12" fill="#d9dee3" stroke="#5b6b7a"/>
+<line x1="204.0" y1="130" x2="924.0" y2="130" stroke="#1b2a3a" stroke-width="5"/>
+<text x="968.0" y="135" font-size="15" fill="#1b2a3a">300-bp fragment</text>
+<text x="164.0" y="135" text-anchor="end" font-size="14" fill="#5b6b7a">adapter</text>
+<line x1="204.0" y1="108" x2="324.0" y2="108" stroke="#2a6f97" stroke-width="3" marker-end="url(#aa)"/>
+<text x="334.0" y="113" font-size="15" fill="#2a6f97">read 1 (+)  [1000, 1050)</text>
+<line x1="924.0" y1="152" x2="804.0" y2="152" stroke="#2a6f97" stroke-width="3" marker-end="url(#aa)"/>
+<text x="794.0" y="157" text-anchor="end" font-size="15" fill="#2a6f97">read 2 (−)  [1250, 1300)</text>
+<path d="M207.79999999999998,182 L221.79999999999998,182 L214.79999999999998,168 z" fill="#c0392b"/>
+<text x="210.79999999999998" y="202" text-anchor="start" font-size="15" font-weight="bold" fill="#c0392b">insertion 1004</text>
+<path d="M906.2,182 L920.2,182 L913.2,168 z" fill="#c0392b"/>
+<text x="917.2" y="202" text-anchor="end" font-size="15" font-weight="bold" fill="#c0392b">insertion 1295</text>
+<text x="564.0" y="202" text-anchor="middle" font-size="14" fill="#e67e22">orange: the 9-bp duplications at the two ends</text>
+<text x="40" y="248" font-size="15" font-weight="bold" fill="#1b2a3a"></text>
+<text x="300" y="248" font-size="15" font-weight="bold" fill="#1b2a3a">in the BAM (SAM text, 1-based)</text>
+<text x="600" y="248" font-size="15" font-weight="bold" fill="#1b2a3a">as BED (0-based)</text>
+<text x="860" y="248" font-size="15" font-weight="bold" fill="#1b2a3a">insertion site (BED)</text>
+<line x1="40" y1="258" x2="1090" y2="258" stroke="#5b6b7a" stroke-width="1"/>
+<text x="40" y="284" font-size="15" fill="#1b2a3a">read 1, + strand</text>
+<text x="300" y="284" font-size="15" fill="#1b2a3a">POS 1001, CIGAR 50M</text>
+<text x="600" y="284" font-size="15" fill="#1b2a3a">start 1000, end 1050</text>
+<text x="860" y="284" font-size="15" fill="#c0392b">start + 4 = 1004</text>
+<text x="40" y="314" font-size="15" fill="#1b2a3a">read 2, − strand</text>
+<text x="300" y="314" font-size="15" fill="#1b2a3a">POS 1251, CIGAR 50M</text>
+<text x="600" y="314" font-size="15" fill="#1b2a3a">start 1250, end 1300</text>
+<text x="860" y="314" font-size="15" fill="#c0392b">end − 5 = 1295</text>
+<text x="40" y="344" font-size="15" fill="#1b2a3a">fragment</text>
+<text x="300" y="344" font-size="15" fill="#1b2a3a">TLEN 300</text>
+<text x="600" y="344" font-size="15" fill="#1b2a3a">[1000, 1300)</text>
+<text x="860" y="344" font-size="15" fill="#1b2a3a">insertions 291 bp apart</text>
+<text x="40" y="386" font-size="14" fill="#5b6b7a">A − strand read is reported by its leftmost base (POS): its 5&#39; end, where Tn5 cut, is the alignment end, 1251 + 50 − 1 = 1300 (1-based).</text>
+</svg>
