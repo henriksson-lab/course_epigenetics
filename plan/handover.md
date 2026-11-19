@@ -1,49 +1,34 @@
-# Handover (2026-11-18, before reboot)
+# Handover (2026-11-19)
 
 ## State
-- Committed and pushed (origin = github.com/henriksson-lab/course_epigenetics, branch `main`,
-  GitHub Pages on from `main` `/docs`): scaffold + `chromatin-intro` + `genomic-intervals`
-  (commit 057d976).
-- **Not yet committed:** seven new units and integration edits (see `git status`):
-  `gene-regulation`, `enrichment-alignment`, `epigenomics-design`, `atacseq-intro`,
-  `atacseq-analysis`, `differential-accessibility`, `motifs-footprinting`; plus
-  `data/prepare-reads.sh`, `data/filter_fastq_by_names.py`, new `data/download.sh`
-  (handles `prepare-reads.sh` and `derived` sources), `data/manifest.tsv` (used_by
-  lists + prepared/derived rows), `_quarto.yml` sidebar (Foundations + ATAC block),
-  `intro/install.qmd`, `index.qmd`, `.gitignore`, `plan/unit-writing-brief.md`.
-- The units were written by parallel agents; each ran its code against `data/` and
-  checked its slides by screenshot. Six reported complete. **`epigenomics-design`
-  was still in its final checks at reboot**: files are all present (lec, exercise,
-  quiz, 24 figs, make-design-figs.R) but it has not reported. Review it first:
-  render, screenshot the slides, check that the numbers in the solutions match a run,
-  and that the referenced figures exist.
+- Pushed to github.com/henriksson-lab/course_epigenetics `main` (commit a3d3e1f),
+  GitHub Pages builds from `main` `/docs`. **29 of 31 units written**, rendered and
+  live (see the `written` rows in `contentplan.md`).
+- **Not written:** `epigenetic-inheritance` and `cancer-epigenetics`. The agent
+  writing them was stopped by the API's safety filter (a false positive on
+  biology content); partial files are in those folders and `data/prepare-dis.sh`,
+  **untracked and unreviewed** — do not use them as they are. The user decides
+  how to proceed (another model, or write them by hand).
+- Pushing over SSH failed after a reboot (key not loaded); pushes used
+  `git -c credential.helper='!gh auth git-credential' push https://github.com/...`.
 
-## Remaining integration TODO (then `make`, commit, push — user asked to push when done)
-1. Review `epigenomics-design` (above). Check its cross-references by title.
-2. `contentplan.md`: mark the seven units `written`.
-3. `plan/key-papers.md`: tick and add the verified DOIs reported by the agents
-   (listed in each unit's Key papers section; all verified via doi.org).
-4. `CODE_AUDIT_CHECKLIST.md`: add the seven units' lec/exercise/make-*-figs.R entries.
-5. `dictionary.qmd`: add glossary terms (agents suggested lists; at least the core:
-   PWM, motif, pioneer factor, enhancer, MAPQ, SAM FLAG, duplicate, blacklist, CPM/RPGC,
-   FRiP, fingerprint, NSC/RSC, NRF/PBC, IDR, Tn5 shift, TSS enrichment, local lambda,
-   consensus peaks, size factor/TMM, chromVAR, footprint).
-6. `make render`, then screenshot-check a few slides of each new deck, commit
-   (no LLM attribution), push, and confirm the Pages build succeeds.
+## How the material was made
+- Units were written by parallel agents following `plan/unit-writing-brief.md`
+  and `plan/parallel-authoring.md`; each ran its exercise code against `data/` and
+  screenshot-checked its slides. Integration: `plan/merge-manifests.py` (merges
+  `plan/manifest-<block>.tsv` into `data/manifest.tsv`, recomputes used_by by
+  scanning units), `plan/build-key-papers.py` (rebuilds `plan/key-papers.md`
+  from each written unit's Key papers slide).
+- Render units one file at a time (`quarto render <unit>/lec.qmd`): a multi-file
+  `quarto render a b c` only rendered the first file here.
 
-## Facts worth knowing
-- Datasets: ENCODE GM12878 (GRCh38) for processing units; reads are chr21+chrM subsets
-  built by `data/prepare-reads.sh` (fixed: strips `/1` from BAM read names).
-  CTCF ChIP/input FASTQs are **Phred+64** (the unit converts them with perl).
-  Corces et al. 2016 (GSE74912 ATAC counts, GSE74246 RNA) for differential and motif
-  units: B cells vs CD4 T cells, donors 1022/4983/5483, `~ donor + celltype`,
-  technical reps summed; lifted hg19→hg38.
-- `differential-accessibility` uses the apeglm-shrunk LFC (19 404 B-up / 16 897 T-up);
-  `motifs-footprinting` uses the MLE LFC (19 439 / 16 972) and says so in its R1 solution.
-- Host for the prepared reads (~1 GB) for students: **undecided** (data/README.md).
-- This machine: the conda `samtools` first on PATH is 1.3.1 (too old for markdup); use
-  `/usr/bin/samtools`. System deepTools needs `LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu`.
-- Tools installed only in the session scratchpad (may be gone after reboot): MACS3
-  venv and an R library with JASPAR2024/TFBSTools/motifmatchr/chromVAR/universalmotif.
-  Reinstall if needed (system GSL: build with conda removed from PATH).
-- Next units in `contentplan.md` after this: the ChIP-seq block.
+## Open items
+- Hosting of prepared data for students (reads, subsets; built by
+  `data/prepare-*.sh`) is undecided (`data/README.md`). `data/README.md` does not
+  yet describe the blocks added on 2026-11-19 (their files are in the manifest).
+- `CODE_AUDIT_CHECKLIST.md`: nothing independently audited yet except
+  `epigenomics-design` (re-run 2026-11-19, numbers agree).
+- Overlapping data: two sets of GM12878/K562 H3K27ac and input chr21 BAMs
+  (`prepare-chip.sh` per replicate, `prepare-cuttag.sh` merged) — kept both.
+- This machine: conda `samtools` first on PATH is 1.3.1 (use `/usr/bin/samtools`);
+  deepTools needs `LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu`.
