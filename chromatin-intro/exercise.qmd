@@ -94,6 +94,35 @@ S2: ATGCATTGCAAGTCCATGCA
 
 **B8. Cause or consequence?** A paper shows that genes with high H3K36me3 are highly expressed and concludes that "H3K36me3 activates transcription". Give an alternative explanation, and propose one experiment that could tell the two apart.
 
+## Explore: read–write feedback and memory through replication {#explore}
+
+The demo simulates 150 cells, each with a Polycomb domain of 60 nucleosomes that are marked (H3K27me3) or unmarked, in the spirit of Dodd et al. 2007 (*Cell*, [doi:10.1016/j.cell.2007.02.053](https://doi.org/10.1016/j.cell.2007.02.053)). A marked nucleosome loses its mark at the **turnover** rate. An unmarked nucleosome is marked at a rate set by the **read–write feedback** and by how many of its neighbours within the **recruitment range** are marked (the rate grows with the square of the marked fraction, because PRC2 is activated by H3K27me3; a linear loop does not give a stable switch). At every **replication** each marked nucleosome goes to the followed daughter with probability ½ and is otherwise replaced by a new, unmarked histone (B6). A **nucleation pulse** (think of the cold that silences *FLC* in vernalisation) marks the six central nucleosomes for the chosen time. Panel (a) shows four cells as kymographs (time to the right, nucleosomes as rows, ▼ = replication), (b) the fraction marked over time, (c) how many cells end up silenced. A simplification: nothing opposes marking outside the domain (in cells, transcription and active marks do).
+
+```{=html}
+<link rel="stylesheet" href="../demos/dist/demo.css">
+<div data-demo="polycombmemory" data-preset="strong"></div>
+<script src="../demos/dist/polycombmemory.js"></script>
+```
+
+**E1.** Start with **strong feedback, start silenced**. What happens to a cell's domain at each replication, and how long does it take to recover? What fraction of the domain stays marked, and how many cells are still silenced at the end? Then click **weak feedback, start silenced**. Compare with B6(a).
+
+**E2.** Click **weak feedback, no division**. How many cells keep the mark now? Go back to **strong feedback, start silenced** and lower the feedback step by step (1.2, 1.1, 1.0, 0.9, 0.8). Where is memory lost? At feedback 1.0, set replication to every 12 h. What does this say about histone-based memory in fast-dividing cells?
+
+**E3.** Click **2 days of cold**: all cells start unmarked and the nucleation region is marked during the pulse. Look at the four kymographs and the histogram in (c). Is a cell partly silenced, or silenced or not? Set the pulse to 12, 24, 48, 96 and 168 h and note the % silenced each time. How does this explain vernalisation, where the longer the winter, the more *FLC* is silenced?
+
+**E4.** With **1 week of cold**, set the feedback to 0.6. What is left after the cold? Then return to **2 days of cold** and set the recruitment range to "all" (any nucleosome can recruit any other). Why do fewer cells switch?
+
+::: {.callout-note collapse="true" title="Solutions"}
+
+**E1.** At each replication about half of the marks are lost at once (a light vertical stripe in the kymograph, a drop to about 40–45% in the single-cell curves), and the read–write loop re-marks the gaps within a few hours. The domain stays about 84% marked (turnover keeps it below 100%), and **all 150 cells** are still silenced at 480 h. With weak feedback (0.6 per hour) the loop cannot restore the mark between divisions: the mean is 21% at 96 h and 0 at the end, 0% silenced. Without any re-marking, B6(a) gives $(1/2)^n$, 3% after 5 divisions; weak feedback only slows the loss.
+
+**E2.** Without division, the same weak feedback keeps 74% of the cells silenced (60% of the domain marked on average, a broad spread between cells). Replication is the hard part: the mark must be rebuilt from a 50% template every cycle. With division every 22 h, the % of cells silenced at the end is 100% at feedback 1.2 and 1.1, 95% at 1.0, 83% at 0.9, 32% at 0.8 and 0% at 0.6. At feedback 1.0 and replication every 12 h only 38% stay silenced. The faster the cells divide, the stronger the feedback must be; this is one reason why histone-based memory is debated, while DNA methylation, copied site by site by DNMT1, is the textbook memory mark.
+
+**E3.** Each cell is either silenced (70–90% marked) or not (0%): in (c), 44 cells sit at 0 and 106 at 70% or more, none in between (71% silenced). Silenced: 30% after 12 h, 48% after 24 h, 71% after 48 h, 94% after 96 h, 99% after 168 h. A cell switches when the nucleation region happens to collect enough marks for the feedback to take over; a longer pulse gives more chances. So the **fraction of cells** switched grows with the length of the cold, while each cell is all-or-none, which is how Angel et al. 2011 ([doi:10.1038/nature10241](https://doi.org/10.1038/nature10241)) explained quantitative vernalisation: a Polycomb-based switch that flips independently in each cell.
+
+**E4.** With feedback 0.6 even a week of cold leaves nothing: 6% of the domain is marked at the end of the cold and 0% of cells are silenced at 480 h. Nucleation without the read–write loop leaves no memory. With recruitment from the whole domain, the few marks in the nucleation region are diluted among 59 unmarked nucleosomes, so the local density stays low and (with the squared rate) the loop does not start: only 7% of cells switch, against 71% with ±4. Local spreading from a nucleation site, then maintenance, is the picture for *FLC* and for Polycomb response elements in flies.
+:::
+
 ## In R
 
 ```r

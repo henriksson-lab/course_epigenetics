@@ -182,6 +182,35 @@ head -2 corces_hg19.bed
 
 (b) Why do so many peaks have zero reads in a B-cell library? (Where were the peaks called?)
 
+## Explore: normalisation under a global change {#explore}
+
+The demo simulates 3 control and 3 treated libraries (about 2 million reads each) over 2000 peaks, 2000 background bins and a spike-in added in a fixed amount per cell. Because the simulation knows how much material each cell had, it can show the **true size factor** of every library (red lines in panel b). **Scenario** sets the biology: a fraction of the peaks changes by a common log2 fold change (a global loss, as for H3K27me3 after an EZH2 inhibitor, or a global gain, as for a drug that opens chromatin everywhere), and 100 peaks are always truly up 4-fold. **Extra background in treated** adds unenriched DNA to the treated libraries (dead cells, a poorer transposition or IP): their FRiP drops without any change in the cells. **Normalise by** picks the size factors: total reads, median of ratios on the peaks (DESeq2), TMM on the peaks (edgeR), median of ratios on the background bins (csaw-like), or spike-in reads. Panel (a) is the MA plot, coloured by the simulated truth; solid points are called at BH 5% (a moderated t-test on log counts, simpler than DESeq2), and red rings are false calls. Panel (b) counts the calls.
+
+```{=html}
+<link rel="stylesheet" href="../demos/dist/demo.css">
+<div data-demo="globalnorm" data-scenario="none"></div>
+<script src="../demos/dist/globalnorm.js"></script>
+```
+
+**E1.** Start with **no global change**. Click through the five normalisations. How close are the size factors to the true ones (red lines), and how many true and false calls does each give?
+
+**E2.** Click **global loss (EZH2 inhibitor)**: 90% of the peaks drop to 25% (log2 FC −2). With the median of ratios, where does the cloud of truly changed peaks sit in the MA plot, how many peaks are called down, and how many false calls up are there? Where are the 190 unchanged peaks? Compare the size factors of T1–T3 with the true ones. Then switch to TMM, total reads, background bins and spike-in.
+
+**E3.** Click **noisier treated libraries only**: no peak changes except the 100 truly up ones, but the treated libraries carry twice as much background. Read the FRiP of each library. Which normalisations now give hundreds of false calls, and in which direction? Why is the error larger with background bins than with total reads?
+
+**E4.** Click **loss + noisier libraries**. Which normalisation still gives the right answer? Which assumption does each of the others break? This unit is ATAC-seq, but *Annotation and differential binding* makes the same argument for ChIP-seq: what would a peak-based normalisation report for an H3K27me3 ChIP after EZH2 inhibition, and what does the experiment need?
+
+::: {.callout-note collapse="true" title="Solutions"}
+
+**E1.** With no global change all five agree with the truth to within a few percent (the spike-in factors scatter most, because of the 5% pipetting error simulated for each sample) and all find the 100 truly up peaks, with at most one false call. When nothing global happens and FRiP is similar, the choice of normalisation hardly matters.
+
+**E2.** Median of ratios assumes that the typical peak is unchanged. Here the typical peak *did* change, so the method makes it unchanged: the 1710 truly lost peaks sit around log2 FC 0 (median log2 FC of all peaks −0.07), only 6 are called down, and the 190 unchanged peaks are pushed up to about +2, giving **191 false calls up** (the 100 truly up peaks now sit at +4). The treated size factors (0.74, 0.44, 0.61) are about half the true ones (1.43, 0.85, 1.18). TMM makes the same assumption and gives the same answer (191 false up). Spike-in and background bins recover the truth: 1708 of 1810 changed peaks called down, 100 true up, one false call. Total reads lands in between (1706 down, 16 false up, median log2 FC −1.78 instead of −2): the loss also lowers FRiP from 29% to 16–19%, so the total is only partly driven by the peaks.
+
+**E3.** FRiP is 29% in the control libraries and 17–20% in the treated ones. Median of ratios, TMM and spike-in are right (no false calls). Total reads gives **1675 false calls down** and background bins **1823**. With more background, a treated library spends fewer reads in peaks, so per total read its peaks look lower. Background bins are worse because their assumption (background is the same in every library) is exactly what was broken: the treated size factor follows the inflated background, and every peak is pushed down by the full factor 2.
+
+**E4.** Only the **spike-in** is right (1707 down, 100 up, 2 false up): it counts reads per cell, whatever happens to the peaks or the background. Median of ratios and TMM assume most peaks are unchanged (189 false up, 5 down); total reads and background bins assume the background per cell is the same (132 and 185 false down). For ChIP-seq this is the case of the *Annotation and differential binding* lecture: after an EZH2 inhibitor, peak-based normalisation hides the loss of H3K27me3 and makes the few unchanged sites look **gained**; an IP that worked less well behaves like the extra background here. Plan spike-in chromatin (ChIP-Rx) before the experiment, or measure the total amount of the mark (western blot, mass spectrometry). For ATAC-seq, spike-ins are not yet routine, so think about whether a global change is plausible and report how the result depends on the normalisation (R7).
+:::
+
 ## In R
 
 You need DESeq2, edgeR, apeglm, GenomicRanges, rtracklayer, data.table, ggplot2 and ggrepel (see *Install the software you need*).

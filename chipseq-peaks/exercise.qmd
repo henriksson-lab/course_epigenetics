@@ -243,6 +243,35 @@ idr_pair ctcf_pool.pr1.bam ctcf_pool.pr2.bam ctcf_pool_p01.narrowPeak Np
 
 (b) Compute the rescue and self-consistency ratios with $N_t$ from C6. Does the experiment pass ENCODE's criteria? Which replicate limits it?
 
+## Explore: a Poisson peak caller {#explore}
+
+The demo runs the MACS test of the Background on simulated data: 20 kb of a 2.7-Gb genome with four true binding sites A–D (▲, strengths 100%, 30%, 55% and 15%), fragments $d = 200$ bp. The top track shows the ChIP pileup $k$ (brown), the input pileup (grey) and $\lambda_\text{local}$ (blue); the strip below it shows which estimate sets $\lambda_\text{local}$ at each base. The bottom track shows $-\log_{10} p$ or $-\log_{10} q$, the cutoff (red) and the called peaks (green at a true site, crimson elsewhere). The sliders set the depth of the ChIP, the depth of the input (as % of the ChIP), the signal at the strongest site (fragments per 10 M reads), the local background (× the genome average, in ChIP and input alike), a 2-kb **bump** of extra background in both ChIP and input (open chromatin or a copy-number gain), and the cutoff. The tick boxes switch the input and the local windows off; without an input the demo does what MACS does: $\max(\lambda_\text{BG}, \lambda_\text{10k})$ from the ChIP itself. Drag the cursor to read the by-hand numbers at one base; the table gives them at the four sites. The q-values are Benjamini–Hochberg over the 2000 scored positions of this window (MACS uses all bases of the genome, which is stricter).
+
+```{=html}
+<link rel="stylesheet" href="../demos/dist/demo.css">
+<div data-demo="peakcaller"></div>
+<script src="../demos/dist/peakcaller.js"></script>
+```
+
+**E1. The calculation of B1, live.** At the start, drag the cursor to site A. Read $k$ and the four λ values. Which one sets $\lambda_\text{local}$, and how many input reads does it correspond to? Check the fold enrichment. Now look at site D in the table: what sets its λ, and how far above $\lambda_\text{BG}$ is it? Untick **local λ windows**: what happens to the p-value at D?
+
+**E2. A bump in the background.** Click **open-chromatin bump** (×8 in ChIP and input, input used). Are there false peaks? Put the cursor at 10.5 kb, in the bump: what are $k$ and $\lambda_\text{local}$, and which window sets it? Then click **… without input**: how many false peaks now, and what is λ at 10.5 kb? Why does the 10-kb window of the ChIP not catch the bump? Finally tick **use input control** again but untick **local λ windows**. What does this say about why MACS takes the *maximum* of several λ estimates?
+
+**E3. Depth and power.** Click **start** and move **ChIP reads** through 5, 10, 20, 40 and 80 M (the input follows). Which sites are called at each depth? How do $k$ and λ at site A change with depth, and what happens to the fold enrichment and to the p-value?
+
+**E4. A shallow input.** Click **shallow input** (the input has 10% of the ChIP's reads). What happened to the ChIP pileup and to $\lambda_\text{BG}$? How many sites are called now? Look at site C: what sets its λ? Compare with B2.
+
+::: {.callout-note collapse="true" title="Solutions"}
+
+**E1.** At site A, $k = 65$ fragments; $\lambda_\text{BG} = 20 \times 10^6 \times 200 / 2.7 \times 10^9 = 1.48$, $\lambda_d = 2.00$, $\lambda_\text{1k} = 1.60$, $\lambda_\text{10k} = 1.76$. The 200-bp window sets $\lambda_\text{local} = 2.00$: $\lambda_d$ = (input reads in 200 bp) × 200/200, so two input reads. $-\log_{10} p = 72.2$; fold enrichment $(65 + 1)/(2 + 1) = 22.0$. Site D: $k = 14$, and four input reads happen to fall within 100 bp of it, so $\lambda_d = 4.00$, 2.7 times $\lambda_\text{BG}$; $-\log_{10} p = 4.1$, $-\log_{10} q = 2.7$, just called. Against $\lambda_\text{BG}$ alone (local windows off), $\lambda = 1.48$ and $-\log_{10} p = 9.1$: a handful of input reads moves the p-value by five orders of magnitude, which is why a shallow input makes λ noisy (B2).
+
+**E2.** With the input: still 4 peaks, all at true sites, no false ones. At 10.5 kb, $k = 13$ but $\lambda_\text{1k} = 13.0$ (13 input reads in 1 kb, × 200/1000), so $\lambda_\text{local} = 13.0$ and $-\log_{10} p = 0.3$: nothing. Without the input: 6 peaks, 2 of them false, inside the bump ($-\log_{10} q$ up to 4.9); at 10.5 kb $\lambda_\text{local} = 4.56$ (the ChIP's 10-kb window) and $-\log_{10} p = 3.0$. A 10-kb window averages the 2-kb bump with 8 kb of ordinary background, so it sees roughly $(8 + 2 \times 8)/10 = 2.4$ times the background, not 8 times; a 1-kb window of the ChIP would include the peak itself, which is why MACS cannot use one without an input. With the input but no local windows ($\lambda_\text{BG}$ only), the whole bump becomes one false peak of about 2 kb ($-\log_{10} q = 13$). Each λ estimate catches bias at one scale: $\lambda_d$ a narrow pile-up of input reads, $\lambda_\text{1k}$ an open-chromatin bump, $\lambda_\text{10k}$ a broad region such as a copy-number gain, and $\lambda_\text{BG}$ is the floor where the input is too sparse to say anything. The maximum is the conservative choice: a base must beat the worst of them. (Note that the bump also costs sites B and C some significance: their 10-kb windows include it.)
+
+**E3.** 5 M and 10 M: A, B and C are called, D is not ($k = 3$ and 6). 20, 40 and 80 M: all four, with D at $-\log_{10} q$ = 2.7, 8.4 and 16.4. At site A, $k$ = 12, 31, 65, 129, 255 and $\lambda_\text{local}$ = 1.0, 1.0, 2.0, 3.2, 5.9: both grow with the depth. The enrichment over the genome average, $k/\lambda_\text{BG}$, stays near 40 (32, 42, 44, 44, 43); the reported fold enrichment $(k+1)/(\lambda+1)$ rises from 6.5 to 37, because at low depth the pseudocount of 1 and λ values set by single input reads weigh heavily. The p-value improves enormously ($-\log_{10} p$ from 9 to 310). Relative Poisson noise falls as $1/\sqrt{\lambda}$: more reads do not make a site more enriched, they make the same enrichment more certain. Weak sites need depth; the number of peaks depends on depth, so do not compare peak numbers between samples of different depth.
+
+**E4.** The ChIP is scaled down to the input: its pileup is multiplied by 0.10 and rounded up, so $k$ at A is $\lceil 65 \times 0.1 \rceil = 7$, and $\lambda_\text{BG} = 2 \times 10^6 \times 200 / 2.7 \times 10^9 = 0.15$. Only site A is called ($-\log_{10} q = 6.8$). At site C ($k = 4$), a single input read falls in the 200-bp window: $\lambda_d = 1.00$, almost 7 times $\lambda_\text{BG}$, and $-\log_{10} p = 1.7$. With a shallow input, λ is decided by single reads, and scaling the ChIP down throws away most of its information: sequence the input at least as deeply as the ChIP (B2).
+:::
+
 ## In R
 
 ```r

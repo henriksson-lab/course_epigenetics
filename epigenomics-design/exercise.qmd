@@ -293,6 +293,71 @@ cat cor10000.txt cor1000.txt
 
 (c) A correlation of 0.9 between replicates sounds excellent. Why is it not enough to show that the *peaks* are reproducible? (Lecture: IDR.)
 
+## Explore: fingerprint and library complexity {#explore-fingerprint}
+
+The demo simulates a ChIP-seq library of 200 000 reads in 20 000 bins of 1 kb (8% of the bins cannot receive reads) and draws its fingerprint, with an input of the same depth (dashed) and the diagonal of a perfectly uniform sample. **Enriched reads** (the share of reads that come from enriched bins) moves the sample from input-like (0%) to a strong ChIP; **enriched bins** (% of the genome) sets how many bins share that signal (a TF binds in few places, a broad mark covers many). **Complexity** is the number of distinct molecules in the library per read sequenced: below about ×3 the same molecules are read again and again. The right panel counts reads per position (5' end + strand) before duplicate removal and gives NRF, PBC1 and PBC2 with ENCODE's classes, and the FRiP, with the enriched bins playing the role of peaks.
+
+```{=html}
+<link rel="stylesheet" href="../demos/dist/demo.css">
+<div data-demo="fingerprint"></div>
+<script src="../demos/dist/fingerprint.js"></script>
+```
+
+**E1. Three shapes.** Click **input-like**, **TF ChIP** and **broad mark** in turn. For each, note the share of reads in the top 10% and top 1% of bins and the FRiP. Where does each curve leave the input? Which of the curves A–D of B3 does each resemble?
+
+**E2. A failed ChIP.** Click **failed ChIP** (3% of reads from 0.5% of the bins). How different is its fingerprint from the input? What is its FRiP, and would it pass the 1% guideline? What would a peak caller make of this sample?
+
+**E3. Complexity.** Click **TF ChIP**, then lower the complexity step by step from ×10 to ×0.5 (**bottlenecked TF**). Note NRF, PBC1, PBC2 and the duplicates, and watch the bar chart. Then go to ×100: why is NRF still not close to 1? (Which positions are shared?)
+
+**E4. Duplicates and the fingerprint.** Click **input-like** and set the complexity to ×0.5. Compare the curve with the input and read the top 10%. Then tick **remove duplicates first**. What does a bottlenecked library do to a fingerprint, and what does deduplication do to the FRiP of the **TF ChIP**?
+
+::: {.callout-note collapse="true" title="Solutions"}
+
+**E1.** Input-like: top 10% of bins hold 21% of the reads, the top 1% 3%; FRiP 0.5% (the "peaks" are 0.5% of the bins). TF ChIP: 45% and 32%, FRiP 30% (the input has 0.6% in the same bins); the curve runs below the input and then rises almost vertically in the last 0.5% of bins: a sharp elbow at the very end, like curve B. Broad mark: 48% and only 11%, FRiP 61% (input 22%, because the domains cover 20% of the genome); the curve bends away from the diagonal gradually over the whole range, like curve C. All curves stay at 0 for the first 8% of bins: the unmappable bins (C4b). Even the input is below the diagonal, because counts vary by chance (about 10 reads per bin) and by the mild background bias.
+
+**E2.** The failed ChIP follows the input almost exactly (top 10% 23% vs 21%, top 1% 5% vs 3%). Its FRiP is 3.5%, which passes the 1% guideline, but only because we count in the true sites; a peak caller would find few of them, and the FRiP in its own peaks would be low and dominated by noise. The fingerprint alone does not tell a weak ChIP from an input; compare with the input at the same depth and look at the other metrics.
+
+**E3.** ×10: NRF 0.87, PBC1 0.88, PBC2 8.6, 13% duplicates (compliant, mild). ×3: 0.75, 0.75, 4.0, 25%. ×1: 0.53, 0.51, 1.9, 47%. ×0.5: NRF 0.36 (concerning), PBC1 0.32 (severe), PBC2 1.3 (moderate), 64% duplicates; the bar chart shifts from "almost all positions have 1 read" to many positions with 2, 3 and 5+ reads. At ×100 NRF is 0.92 and PBC2 17.7, not 1 and ∞: 30% of the reads come from only 100 bins, so independent fragments in strong peaks often start at the same base. Those are not PCR copies, but duplicate marking cannot tell them apart; this is why TF ChIP-seq with very strong peaks can have a lower NRF than its input.
+
+**E4.** A bottlenecked input (×0.5, NRF 0.37) bends further from the diagonal than the complex input: its top 10% of bins hold 26% of the reads instead of 21%, because some molecules were amplified and read many times (jackpots), which looks like enrichment. After duplicate removal it is closer to the input again (24%). For the TF ChIP, removing duplicates lowers the FRiP from 30.4% to 25.6%: duplicate removal caps the count at each position, and the strongest peaks lose the most. Judge a fingerprint together with the complexity metrics, and compare ChIP and input processed the same way.
+:::
+
+## Explore: strand cross-correlation {#explore-crosscorr}
+
+The demo simulates single-end ChIP-seq (200 000 reads on a 1-Mb genome with 300 binding sites). Short repeats make some read start positions unmappable; a longer read reaches unique sequence more often. The left panel sums the 5' ends of + strand reads (blue) and − strand reads (red) around all binding sites, or around the left edges of the repeats; the **shift** slider moves the − strand to the left by $k$ bp. The right panel is the cross-correlation $CC(k)$ of the + strand at $x$ and the − strand at $x + k$, computed as in R1, for $k$ = 0–600, with the fragment-length peak (green), the read-length peak (orange), the minimum, and NSC and RSC. As in phantompeakqualtools, the fragment peak is searched outside shifts 10 to $L + 10$. The other sliders set the share of reads that come from binding sites (**reads from sites**), the fragment length and the read length $L$.
+
+```{=html}
+<link rel="stylesheet" href="../demos/dist/demo.css">
+<div data-demo="crosscorr"></div>
+<script src="../demos/dist/crosscorr.js"></script>
+```
+
+**E1. Why the strands are offset.** At the start ($k = 0$), where are the + strand and − strand reads relative to the binding site, and why? Move the shift until the two peaks lie on top of each other. What $k$ is that, what is $CC(k)$ there, and how does it compare with the fragment length the demo estimates?
+
+**E2. The phantom peak.** Set $k = 36$ (the read length) and click **repeat edges**. What lines up, and why? Now click **input**: which peak is left? Read NSC and RSC, and the estimated fragment length.
+
+**E3. How much signal is enough?** Click **good TF ChIP**, then lower **reads from sites** to 10, 8, 6, 4 and 0%. Note NSC and RSC. Where does RSC cross ENCODE's 0.8? What about NSC and its 1.05?
+
+**E4. Read length and fragment length.** Click **100-bp reads**: where is the phantom peak now, and what happens to RSC? Why? Then click **short fragments** (95 bp). Compare with the course's CTCF data in R1.
+
+::: {.callout-note collapse="true" title="Solutions"}
+
+**E1.** + strand reads pile up about 100 bp to the left of the site, − strand reads about 100 bp to the right: a + strand read starts at the left end of a fragment that covers the site, a − strand read at its right end, and fragments are about 200 bp long. The two peaks coincide at $k \approx 200$, where $CC(200) = 0.123$; the demo's fragment estimate is 202 bp with $CC = 0.125$. This is how the fragment length is estimated from single-end data (MACS's model and `predictd` use the same idea).
+
+**E2.** Around repeat edges the + strand reads drop just after the edge (a read that starts in the repeat cannot be mapped), and the − strand reads drop $L = 36$ bp further right (a − strand read's 5' end is at the end of its $L$-mer). Shifting the − strand by 36 bp lines up the two gaps; the same happens at every repeat, so the strands correlate at $k = L$ in any library, whatever the IP did. In the input only this phantom peak is left ($CC(36) = 0.107$, minimum 0.070): NSC 1.12, RSC 0.23, and the "fragment length" of 58 bp is just the highest point of a flat, noisy curve outside the excluded shifts.
+
+**E3.**
+
+| reads from sites | 15% | 10% | 8% | 6% | 4% | 0% |
+|---|---:|---:|---:|---:|---:|---:|
+| NSC | 2.92 | 1.79 | 1.52 | 1.32 | 1.18 | 1.12 |
+| RSC | 2.57 | 1.20 | 0.85 | 0.55 | 0.33 | 0.23 |
+
+RSC crosses 0.8 between 6% and 8%: below that the fragment peak is lower than the phantom peak. NSC stays above 1.05 even for the input: NSC divides by the minimum of the curve, so its value depends on how the background correlation is estimated (here the simulated genome has strong regional coverage differences); RSC, a ratio of differences above the minimum, is the more robust of the two (R1c).
+
+**E4.** With 100-bp reads the phantom peak moves to $k = 100$, and RSC rises from 2.57 to 5.67: longer reads are unique at more positions (91% vs 81% of start positions), so the phantom peak is smaller ($CC(100) = 0.068$) and the background correlation is higher (min 0.052). With 95-bp fragments the fragment peak is at 93 bp, close to the read length: the phantom peak at 36 bp sits on its rising flank, as in the course's 2008 CTCF library (fragment 93 bp, R1a); NSC 3.22, RSC 2.63.
+:::
+
 ## In R
 
 You need `GenomicAlignments` and `ggplot2`. Work in the same folder:

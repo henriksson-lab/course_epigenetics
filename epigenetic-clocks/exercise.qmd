@@ -152,6 +152,34 @@ grep -c '^cg' $D/horvath2013_coefficients.csv
 
 (c) What is the intercept of Horvath's clock, and how many CpGs does it have?
 
+## Explore: fit a clock, overfit it, leak into it {#explore}
+
+The demo fits an elastic net, as in R2, to simulated data: people aged 20–80, **P** candidate CpGs measured with noise, of which a chosen number change linearly with age (each by 0.008–0.03 in β per decade) and the rest are pure noise. The model is fitted on **N** training people, along a grid of λ values (coordinate descent on standardised CpGs, as glmnet does), and evaluated on 200 test people it never saw. **(a)** Predicted against true age at the chosen λ: test people filled, training people as faint circles, with the median absolute errors and the number of CpGs the model uses. **(b)** Training and test error for every λ, the number of CpGs used at each λ (along the top), and the error of simply guessing the median training age. **α** moves from ridge (0) to lasso (1). The buttons can first keep only the 50 CpGs most correlated with age, chosen either in the training people or in **all** people (the leaky procedure of B4(a) and R5).
+
+```{=html}
+<link rel="stylesheet" href="../demos/dist/demo.css">
+<div data-demo="clockfit"></div>
+<script src="../demos/dist/clockfit.js"></script>
+```
+
+**E1.** (links to **B5**, **R3**) With the defaults (N = 100, P = 1 000, 20 age CpGs, α = 0.5, λ = 1), read the training and test error and the number of CpGs used. Move λ to the weakest penalty (0.010) and to the strongest (100). What happens to the training error, the test error and the number of CpGs? Why does the strongest penalty give the same error as guessing the median? At which λ is the test error lowest, and why should you not choose λ this way in a real analysis?
+
+**E2.** (links to **R4**) At λ = 0.010, compare P = 20 with P = 2 000 candidate CpGs (still 20 age CpGs). Then, with P = 2 000, set N = 400 and N = 20, and read the best test error in (b) for each. What do P ≫ N and the training error have to do with each other?
+
+**E3.** (links to **B3**) Back to N = 100, P = 1 000. Set α = 1 (lasso) and find the λ with the lowest test error: how many CpGs does the model use, and how many are age CpGs? Then set α = 0 (ridge): how many CpGs are used at any λ, and what is the best test error now?
+
+**E4.** (links to **B4**, **R5**) Set α = 0.5, λ = 1, and **0 age CpGs**: nothing in the data is related to age. Compare the test error and test r for **no selection**, **in training people** and **in all people (leaky)**, and the best test error in (b) for each. Which procedure claims to predict age, and why? Finally set 20 age CpGs again and compare the leaky and the honest selection.
+
+::: {.callout-note collapse="true" title="Solutions (E1–E4)"}
+**E1.** At λ = 1: test error **6.0 years**, training error **2.7 years**, test r = 0.92, **145 CpGs** used (18 of the 20 age CpGs and 127 noise CpGs). At λ = 0.010: training error **0.0**, test error 5.8, 262 CpGs: with 1 000 CpGs and 100 people the model can fit the training ages exactly, so the training error says nothing about new people. At λ = 100: **0 CpGs**, training 14.7 and test **15.1 years**: every coefficient is zero, the model predicts the mean training age for everyone, which is as good as guessing the median (15.1). The test error is lowest, **5.7 years at λ = 0.32**. Choosing λ by the test error uses the test people to tune the model, so 5.7 is too optimistic: λ must be chosen by cross-validation within the training set (R2), and the test set used once at the end.
+
+**E2.** At λ = 0.010, P = 20: training **4.4**, test **4.5** years: with 20 CpGs and 100 people the model cannot memorise, and training error is honest. P = 2 000: training **0.0**, test **6.1**: with far more CpGs than people, some combination of noise CpGs always fits the training ages exactly. N = 400 (P = 2 000): best test error **4.1** (at λ = 1, with all 20 age CpGs found); N = 20: best test error **12.2**, hardly better than the 14.7-year guess (only 11 of the 20 age CpGs are found). When P ≫ N a zero training error is guaranteed and meaningless; only held-out error and more training samples help. Unpenalised regression on many CpGs (R4) is the extreme case.
+
+**E3.** α = 1 (lasso): the best test error is **4.7 years at λ = 1.5**, with **26 CpGs**, of which **14 are age CpGs**: the lasso keeps few CpGs and drops most of the noise. α = 0 (ridge): **all 1 000 CpGs** have non-zero coefficients at every λ, and the best test error is only **9.0 years**: ridge shrinks but never removes the 980 noise CpGs, whose small coefficients add up to noise in the prediction. The elastic net (α = 0.5) sits in between (5.7 years, about 200 CpGs). With correlated CpGs (not simulated here) the ridge part of the elastic net would also keep groups of neighbours together (B3).
+
+**E4.** With 0 age CpGs at λ = 1: no selection gives test error **16.1 years**, r = 0.05; selection in the training people **16.1**, r = 0.06: both are as bad as the 15.1-year guess, which is correct, because there is nothing to find. The leaky selection gives test error **11.5 years and r = 0.53** (best **10.1** in (b)): it seems to predict age from pure noise. The 50 CpGs were chosen because they happen to correlate with age *in the test people too*, so the test set is no longer independent of the model. With 20 age CpGs the leak still flatters the model: **4.2** years (leaky) against **5.6** (honest). Every step that looks at the outcome, including feature selection and choosing λ, must be done inside the training data.
+:::
+
 ## In R
 
 ```r

@@ -187,6 +187,34 @@ wc -l < encode_region.bed
 
 (a) How many CpGs have at least one read in our run, and how many in ENCODE's file for the region? (b) Why are the start coordinates of the two files directly comparable here?
 
+## Explore: bisulfite conversion, alignment and calls {#explore}
+
+The demo follows one short piece of simulated genome through the whole pipeline. **(a)** The two strands, with a lollipop on each C of a CpG: click one to cycle it through unmethylated (open), methylated (filled) and methylated in 50% of molecules (half filled); all other Cs are unmethylated, and their context (CHG, CHH) is written next to them. You can type your own top strand (6–30 bases). **(b)** The reads each strand gives after conversion and PCR, written 5'→3' as the sequencer reports them, converted bases in red; tick **non-directional library** to add CTOT and CTOB. **(c)** Bismark's three-letter alignment: each read converted in silico and placed under the converted genome it matches, with the number of mismatches there, at the next-best candidate, and in an ordinary ("plain") alignment. **(d)** The original read against the original genome, with the methylation call letters of the `XM` tag. **(e)** Many simulated reads: a pileup of calls (dark = C kept, light = converted to T, orange = a non-CpG C that was not converted) and the β of each CpG with its 95% interval. The sliders set the number of reads and the conversion efficiency; **C/T** and **T/T** put a C→T SNP at the C of CpG 3.
+
+```{=html}
+<link rel="stylesheet" href="../demos/dist/demo.css">
+<div data-demo="bisulfite"></div>
+<script src="../demos/dist/bisulfite.js"></script>
+```
+
+**E1.** (links to **B1**) Click **B1 (by hand)** and compare panel (b) with your answer to B1(b). Then read panel (c): which converted genome, on which strand, does each read match? How many mismatches would an ordinary aligner see for the OT and the OB read, and why does Bismark convert the read before aligning?
+
+**E2.** Go back to **default**. How many Cs are left in the OT read of 20 bases (b)? In (c), how many mismatches does the OT read have at the next-best candidate? Now tick **non-directional library**: how many candidate alignments does Bismark try per read, and what happens to the margin between the best and the next-best hit? What does this mean for reads from repetitive or low-complexity DNA?
+
+**E3.** (links to **B4**, **B6**) Untick non-directional, set **reads** to 100 and **conversion** to 100%: what β do CpG 2 (unmethylated) and the non-CpG Cs show? Now set conversion to 95%, then 90%. What β does CpG 2 get, and what non-conversion rate do the non-CpG Cs estimate? Compare with $\beta_\text{obs} = \beta + (1-\beta) f$. Then set conversion back to 99.5%, click CpG 2 twice (50%), and compare its 95% interval at 10 and at 100 reads.
+
+**E4.** (links to **B8**, **R5**) Back at **default** (CpG 3 is methylated), with 100 reads and 99.5% conversion, choose **C/T**. What β does CpG 3 get, and why do its top-strand reads look exactly like unmethylated ones? Where in the pileup can you see the SNP? Then choose **T/T**. Why does the β of the bottom-strand C (opposite the G) drop too, although that C is not changed by the SNP?
+
+::: {.callout-note collapse="true" title="Solutions (E1–E4)"}
+**E1.** OT = **ACGTTTGATTAG** and OB = **TTGATTGGACGT**, as in B1. After C→T conversion in silico the OT read matches the **C→T genome on the + strand** with 0 mismatches (6 at the other candidate); the OB read matches the **G→A genome on the − strand** (its reverse complement is the G→A-converted top strand), 0 mismatches against 6. An ordinary aligner sees 3 mismatches for the OT read (the three converted Cs) and 2 for OB, in a read of 12 bases: every unmethylated C would count as an error, and the number of errors would depend on the methylation level, so methylated and unmethylated reads would align differently. Converting both read and genome removes the methylation information from the alignment step; it is put back in step (d), where the original read is compared with the original genome (OT calls `Zxzx`, OB calls `Zzx`).
+
+**E2.** The OT read has only **2 Cs of 20 bases** (the two methylated CpGs): bisulfite reads are mostly A, G and T (the lecture's 1.5% C). In directional mode the next-best candidate is **14 mismatches** away. In non-directional mode Bismark tries **4** alignments per read (C→T and G→A versions of the read against both converted genomes), and the next-best is only **3 mismatches** away for every read type. In a three-letter genome many more sequences look alike, and with four candidates instead of two the chance that a second hit is as good as the first is higher: more reads are ambiguous and are discarded, especially in repeats and low-complexity DNA. This is why directional libraries are the default.
+
+**E3.** At 100% conversion CpG 2 is **0.00** (0/100) and no non-CpG C is kept (0 of 200 calls). At 95%, CpG 2 shows **0.05** (5/100) and the non-CpG Cs **6.0%** (12 of 200); at 90%, **0.08** (8/100) and **10.0%** (20 of 200). With β = 0 the formula gives $\beta_\text{obs} = f$, so CpG 2 and the non-CpG Cs estimate the same non-conversion rate, with sampling noise; this is why CHH calls (or a lambda spike-in) are used to measure conversion. The methylated CpGs stay at 1.00, since 5mC is never converted. At 50% and 99.5% conversion, CpG 2 is **0.50 (5/10), 95% interval 0.24–0.76** with 10 reads, and **0.47 (47/100), 0.38–0.57** with 100 reads: ten times the reads makes the interval about three times narrower ($\sqrt{10}$), as in B6.
+
+**E4.** With **C/T**, CpG 3 drops from 1.00 to **0.52** (52/100), although no molecule lost methylation. Molecules with the T allele have **TG** instead of CG on the top strand: an OT read shows T at the C, exactly what an unmethylated, converted C gives, so Bismark calls it unmethylated. The SNP is visible only on the **bottom-strand reads**: at that position the bottom strand has G (C allele) or A (T allele), which bisulfite does not change, so the T allele shows up on the + strand as a T that conversion cannot explain (the red T, in 18 of the 42 bottom reads). With **T/T**, CpG 3 is **0.00** (0/100). On the T allele the bottom C is now in CpA context, not CpG: it is not maintained as methylated, so it is converted too. Both strands therefore report "unmethylated", which is what B8 and the real data in R5 (heterozygous C/T sites at 0.38, homozygous at 0.01) show. Remove known SNPs at CpGs, or call genotypes from the reads (Bis-SNP, gemBS, BISCUIT).
+:::
+
 ## In R
 
 You need data.table and ggplot2.

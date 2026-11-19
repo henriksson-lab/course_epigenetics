@@ -137,6 +137,38 @@ validation 0.55  0.42  0.36  0.34  0.33  0.34  0.36  0.39  0.42  0.45
 
 **B9. Read a filter.** A first-layer filter's activation logo has the consensus `GCGCCCCCTGGTGGC`. The JASPAR CTCF consensus is `GCCACCAGGGGGCGC`. Is this filter a CTCF filter? On which strand?
 
+## Explore: one filter reads a sequence {#explore}
+
+The demo works through one convolutional filter by hand, from the one-hot input to P(bound). At the top is a 50-bp piece of hg38 around the summit of a GM12878 CTCF peak, one-hot encoded. The orange box is the filter window, which you move with **filter position** or **▶ slide along**. Its score is the sum of the filter weights of the bases in the window; those weights are outlined in orange in the filter heatmap below. The middle track shows the score at every position, as a bar under the middle of its window: brown for the filter, and blue for its reverse complement when **scan both strands** is ticked. The red dashed line is −bias. ReLU keeps only what is above it, and global max pooling keeps the largest value (circle, and dashed box on the sequence). The readout applies the dense layer, $z = w \times \text{max pool} + b$, and the sigmoid. At the bottom is **in-silico mutagenesis** (ISM): the change in P(bound) for every possible single-base substitution (red = lower). Click a cell of the one-hot grid or of the ISM map to make that mutation; **undo** reverts it. The filter presets are the CTCF PWM (JASPAR MA0139.2 as log2 odds, the PWM baseline of R3), a GC filter, a random (untrained) filter and the 4-bp filter of B2; click a weight in the heatmap to edit it. Nothing here is trained: the filter is a PWM, and the bias and dense layer are set by hand. The demo shows what a trained CTCF filter computes, not how it is learned.
+
+```{=html}
+<link rel="stylesheet" href="../demos/dist/demo.css">
+<div data-demo="cnnfilter"></div>
+<script src="../demos/dist/cnnfilter.js"></script>
+```
+
+**E1.** (links to **B2**, **B4**) Click **by-hand B2–B4** (the B2 filter on `TCCAGACTGGA`, bias −5, $w = 1.2$, $b = -2$). Move the filter position from 1 to 8 and check your scores from B2(b). Read the max pool, $z$ and P(bound), and compare with B4(b). Then set the bias to −4 (B2d) and back to −5.
+
+**E2.** (links to **B3**) Still in the B2 example, tick **scan both strands**. Which window does the reverse-complement filter find, and why does P(bound) not change? Now look at the ISM map: which substitutions does it say matter? Click the C at position 2 in row A of the one-hot grid (C→A), read P(bound), then untick **scan both strands**. Explain what you see.
+
+**E3.** Click the example **CTCF**. Which window gives the max pool, on which strand, and with which score? Press **▶ slide along**: how many positions pass the bias? In the ISM map, find the three substitutions that lower P(bound) most and the filter columns they fall in, and compare with the logo. Do bases outside the best window matter in this model?
+
+**E4.** (links to **B3c**, **B9**, **R8**) Click **reverse complement** (sequence presets). Where is the site now, and what is P(bound) with **scan both strands** ticked and unticked? Why does a CNN that scans only one strand learn pairs of filters?
+
+**E5.** (links to **R1**, **R3**) Click **CTCF peak (chr5)**, then **shuffle bases** (same bases, new order). Compare P(bound) for the original and the shuffled sequence with the **CTCF PWM** filter and with the **GC filter**. Which filter can tell a CTCF site from shuffled sequence with the same composition? What does this mean for GC-matched negatives?
+
+::: {.callout-note collapse="true" title="Solutions (E1–E5)"}
+**E1.** Window scores −1, 8, −1, −1, −4, 2, 2, −4 (the window label shows each). Only `CCAG` (positions 2–5) passes −bias = 5: max pool $8 - 5 = 3$, $z = 1.2 \times 3 - 2 = 1.60$, P(bound) $= 0.832$, as in B4(b). With bias −4: max pool 4, $z = 2.80$, P(bound) $= 0.943$. Only `CCAG` still passes, because the next best windows score 2. The bias sets how good a match has to be before it counts.
+
+**E2.** The reverse-complement filter scores 8 at window 7–10 (`CTGG`, the site on the other strand). Two windows now pass, but max pooling keeps only the largest value, 3, so P(bound) stays 0.832: pooling asks whether the motif is anywhere, not how many times. The ISM map is completely white (every Δ = 0). Destroying one site leaves the other, so no single substitution changes the output, although both sites matter. After C→A at position 2 with both strands, P(bound) is still 0.832 (the blue track still finds `CTGG`). Untick both strands and it falls to 0.119 $= \sigma(-2)$, because `CAAG` now scores only 5. ISM measures one substitution at a time, so it misses **redundant** sites (*What did the model learn? Variant effects*).
+
+**E3.** Window 18–32 on the + strand (`ACCACTAGAGGGCAG`), score 19.66: max pool $19.66 - 10 = 9.66$, $z = 0.6 \times 9.66 - 3 = 2.79$, P(bound) $= 0.942$. Only this one of the 72 windows (36 positions × 2 strands) passes −bias = 10; the next best scores −5.80. The largest drops (−0.895 each) are C→G at position 20, G→C at 25 and G→C at 28: filter columns 3, 8 and 11, where 903, 903 and 890 of the about 910 JASPAR sites have that base. These are the tallest letters in the logo. Columns where the site does not match the consensus matter less, and the five substitutions that turn a mismatch into the consensus base (e.g. A→G at 18 and at 26, columns 1 and 9) raise P(bound) by at most 0.02, because it is already close to its maximum of 0.99. Every base outside 18–32 has Δ = 0: this one-filter model only looks at the window that wins the max pooling. A trained CNN with many filters can also use the flanks.
+
+**E4.** The site is now window 19–33 on the − strand. With both strands, P(bound) is 0.942 as before. With the + strand only, the best window scores −5.80, the max pool is 0 and P(bound) is 0.047 $= \sigma(-3)$. A CTCF site can lie in either orientation. A network that scans one strand therefore needs one filter per orientation, and training finds both, as for filters 18 and 22 in R8.
+
+**E5.** CTCF PWM: 0.942 on the original, 0.047 on the first shuffle (best score 7.17, below 10). Another shuffle gives a different sequence, but almost never a site that passes. GC filter (bias −4): 0.142 for both, because its best 8-mer has 7 G/C in both sequences, and shuffling keeps the composition. A GC filter cannot tell the site from shuffled sequence; the PWM can. With GC-matched negatives (R1), GC content is useless (AUC 0.51 in R3), so a network has to learn the motif to separate the classes.
+:::
+
 ## In R
 
 ```r

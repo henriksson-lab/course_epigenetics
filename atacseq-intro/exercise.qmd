@@ -182,6 +182,34 @@ bamCoverage -b rep1.chr21.bam -o rep1.cpm.bw --normalizeUsing CPM --extendReads 
 
 Load `rep1.cpm.bw`, `$D/gm12878_atac_peaks.bed.gz`, `$D/gm12878_h3k4me3_fc.bigWig` and `$D/gm12878_h3k27ac_fc.bigWig` in IGV (genome hg38) and go to `chr21:44,870,000-44,950,000` (*ITGB2*, the β2 integrin of white blood cells). Where are the ATAC peaks relative to the H3K4me3 and H3K27ac signal? Find an ATAC peak with neither mark.
 
+## Explore: where the nucleosome ladder comes from {#explore}
+
+The demo simulates tagmentation of chromatin. The top panel shows one fibre: nucleosomes (147 bp cores) separated by linkers, with a nucleosome-depleted region (NDR) in the middle. Tn5 inserts (red triangles) at random into accessible DNA (linkers, the NDR and empty nucleosome slots) and, ten times more rarely, inside a nucleosome. The DNA is cut at every insertion, each new end gets adapter A or B at random, and only A–B fragments (green) are amplified and sequenced; fragments shorter than 35 bp are lost in the clean-up. The histogram collects the sequenced fragment lengths from 2000 such fibres. Sliders: **linker length** (the nucleosome repeat length is 147 bp + linker), **NDR width**, **nucleosome occupancy** (the chance that a slot holds a nucleosome) and **Tn5 amount** per nucleus; **10.5 bp helical preference** lets Tn5 prefer one face of the DNA helix; **log scale** shows the long tail. Do B2, B5 and B6 first.
+
+```{=html}
+<link rel="stylesheet" href="../demos/dist/demo.css">
+<div data-demo="tn5ladder"></div>
+<script src="../demos/dist/tn5ladder.js"></script>
+```
+
+**E1. The ladder.** At the default settings (linker 45 bp, NDR 300 bp, occupancy 90%, Tn5 ×1), read the peaks of the ladder. What is the step between the mono- and di-nucleosome peaks, and how does it compare with the nucleosome repeat length? Set the linker to 20 bp and then to 70 bp: where do the mono and di peaks go? Use the top panel to explain what a 190 bp fragment contains.
+
+**E2. Two adapters.** Read the share of fragments lost because both ends got the same adapter. Does it change when you move any slider? Compare with your answer to B5(a), and find an A–A or B–B fragment in the top panel.
+
+**E3. Too much and too little Tn5.** Click **too much (×8)** and then **too little (×¼)**. For each, read the nucleosome-free and mono-nucleosome shares, the share of A–B fragments lost as too short, and describe the histogram (try the log scale). Which library of B6 does too much Tn5 resemble? Can any setting of this demo produce library Z, and why not? Why does a peak near 150 bp remain with too much Tn5?
+
+**E4. Open chromatin and the helix.** Back at ×1, set the NDR width to 0 and then to 800 bp, and the occupancy to 60%. Which share changes, and why? Finally untick **log scale** and tick **10.5 bp helical preference**: what new pattern appears on the histogram? Count the spikes between 40 and 100 bp.
+
+::: {.callout-note collapse="true" title="Solutions"}
+**E1.** Peaks near 53, 187, 379 and 561 bp. The mono→di step is 192 bp, the nucleosome repeat length (147 + 45 = 192 bp); the tri peak is about another 190 bp further. Linker 20 bp: mono and di peaks near 171 and 333 bp (repeat length 167); linker 70 bp: near 193 and 405 bp (repeat length 217). A ~190 bp fragment runs from an insertion in one linker to an insertion in the next linker, with one uncut nucleosome in between: the core (147 bp) plus parts of the two linkers. The mono peak sits a little below the repeat length because a fragment runs between *consecutive* cuts: on each side it ends at the cut closest to the nucleosome, so it holds only part of each linker (B2c).
+
+**E2.** About 50% of all fragments (between 49.8% and 50.5% at every setting) are A–A or B–B: each end gets A or B with probability ½, independently, so A–B or B–A has probability $2 \times \tfrac12 \times \tfrac12 = \tfrac12$ (B5a). The loss does not depend on the chromatin or on the amount of Tn5. In the top panel the grey dashed fragments with two blue or two orange ends are lost.
+
+**E3.** Too much Tn5 (×8): 49 insertions per kb instead of 6; 68% of the sequenced fragments are nucleosome-free and only 1.2% are mono-nucleosomal, the di peak is gone, and 83% of the A–B fragments are lost as shorter than 35 bp: the linkers and the NDR are cut into tiny pieces. This is library Y of B6. The peak near 150 bp is the nucleosome core itself: Tn5 cuts the linkers on both sides but rarely inside a nucleosome, so a "core-sized" fragment survives while the mono peak at ~190 bp disappears. Too little Tn5 (×¼): 1.5 insertions per kb; only 13.6% nucleosome-free, 12.9% mono and 19.1% di, a long tail of multi-nucleosome fragments (18% of the A–B fragments are longer than 1000 bp and not shown), and few fragments lost as too short (9.6%). Long fragments dominate and the nucleosome-free peak is weak: the "too little Tn5" curve of the lecture. Library Z cannot be made here: Z is a library of dead cells, whose ladder looks fine; what is wrong is the missing TSS enrichment, which a fragment-length histogram cannot show.
+
+**E4.** The nucleosome-free share changes: NDR 0 bp gives 25.5%, NDR 800 bp gives 35.9% (default 29.5%), and occupancy 60% gives 43.9% with fewer mono and di fragments. More free DNA means more pairs of insertions close together without a nucleosome in between. With the helical preference the histogram gets a ripple: sharp spikes about 10.5 bp apart (near 41, 52, 63, 73, 84 and 94 bp: about six between 40 and 100 bp), on the nucleosome-free peak and continuing onto the mono peak, as on the lecture slide *The 10.5-bp ripple*: Tn5 can only reach the backbone on one face of the helix, once per 10.5 bp turn, so distances between two insertions prefer multiples of 10.5 bp. (In the demo this is a simplification: one face of the whole fibre is "exposed"; in a nucleus it is the DNA lying on the nucleosome surface.)
+:::
+
 ## In R
 
 ```r

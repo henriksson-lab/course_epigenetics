@@ -222,6 +222,34 @@ done > shuffled_naive.txt
 
 (c) Combine with C6: the overlap is highly significant, but what *fraction* of CTCF peaks overlap H3K27ac? Write one sentence for a results section that reports both.
 
+## Explore: the null decides the answer {#explore}
+
+The demo is the shuffle test of B7 and C7 on a simulated toy chromosome of 10 Mb. It has a gap with no sequence (like an unassembled short arm), a centromere, a few blacklisted repeats, and two GC-rich, gene-dense regions. Set A (150 intervals, blue) and set B (100 intervals, orange) both prefer the GC-rich regions and never fall in the gaps or the blacklist, as real peaks do. The statistic is the C7 one: how many A intervals overlap at least one B interval (`bedtools intersect -u -a A -b B | wc -l`). **Shuffle B** places the B intervals at random positions, keeping their widths, once, 10 or 100 times, and adds the counts to the histogram of the null; the red line is the observed count. **Keep out of gaps, centromere and blacklist** is `bedtools shuffle -excl`; **match GC region** keeps each B interval inside its own class (GC-rich or not), a matched background. **The data** switches between a data set where part of B really sits on A, and one where B only shares the GC preference. Each setting keeps its own list of shuffles; **clear shuffles** starts it again. Do B7 first.
+
+```{=html}
+<link rel="stylesheet" href="../demos/dist/demo.css">
+<div data-demo="shufflenull"></div>
+<script src="../demos/dist/shufflenull.js"></script>
+```
+
+**E1. The naive null.** Data: *B is placed near A*; both null boxes unticked. Press **shuffle B ×1** a few times and look at the *shuffled B* row: where do the red-outlined intervals land, and roughly how many per shuffle? Then press **×100**. Read the observed count, the null mean, the enrichment and the empirical $p$-value. Check the $p$-value with $(k + 1)/(N + 1)$.
+
+**E2. Keep out of the gaps.** Tick **keep out of gaps, centromere and blacklist** and shuffle ×100. How do the null mean and the enrichment change? About what fraction of the chromosome did the naive shuffle wrongly allow (count the red outlines, or read the hatched part)? Relate to B7(c).
+
+**E3. Match the GC region.** Tick **match GC region** as well and shuffle ×100. Enrichment and $p$? Press ×100 nine more times (N = 1000): what happens to the $p$-value, and why could it not go below 0.0099 with 100 shuffles? Is B associated with A?
+
+**E4. No association at all.** Switch the data to *B only shares the GC preference* (the observed count drops). Run ×100 with the naive null (both boxes unticked) and then with both boxes ticked. Write the two conclusions a reader would draw. Which one is right, and what does this tell you about C7, where the null keeps peaks on their chromosome and out of the blacklist but does not match GC content?
+
+::: {.callout-note collapse="true" title="Solutions"}
+**E1.** The shuffled intervals fall everywhere, also in the gap at the left end, the centromere and the blacklist (about 15–25 of the 100 per shuffle, red outlines): places where no real peak can be. After 100 shuffles: observed 91 of the 150 A intervals, null mean about 39 (range about 23–56), enrichment 91 / 39 ≈ **2.3**; no shuffle reached 91, so $k = 0$ and $p = (0 + 1)/(100 + 1) = 0.0099$. (If you pressed ×1 first, your numbers differ slightly.)
+
+**E2.** The null mean rises to about 47 and the enrichment falls to about **1.9** ($p$ still 0.0099). The excluded regions are about 19% of this toy chromosome; the naive shuffle put about a fifth of B where nothing can overlap A, so the shuffled overlaps were too low and the enrichment too high (B7c).
+
+**E3.** Null mean about 72, enrichment about **1.26**; with 100 shuffles, $k = 1$ and $p = 2/101 \approx 0.02$. With 1000 shuffles, 6 of them reach 91: $p = 7/1001 \approx 0.007$. With $N = 100$ the smallest possible value is $1/101 = 0.0099$, so more shuffles are needed to show a small $p$. Yes, there is a real association (30% of B were placed on A), but it is much weaker than the naive 2.3-fold suggested: most of the naive "enrichment" came from the shared preference for GC-rich regions and from the gaps.
+
+**E4.** Observed 71. Naive null: mean about 39, enrichment about **1.8**, $p = 0.0099$: "B is strongly enriched at A". Matched null (both boxes): mean about 72, enrichment about **0.99**, $p \approx 0.59$: "no association beyond the shared GC preference". The second is right, because in this data B was placed without looking at A. The same can happen in C7: CTCF and H3K27ac peaks both prefer gene-dense, GC-rich parts of the genome, so part of the 6.7-fold enrichment may be shared preference rather than a direct link. A GC- or distance-matched background (regioneR, LOLA; the motif units) asks the sharper question. The null decides the answer: always state it.
+:::
+
 ## In R
 
 You need `GenomicRanges` and `rtracklayer` (see *Install the software you need*). Set `D` to the data folder:

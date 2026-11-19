@@ -121,6 +121,38 @@ with motif features counting matches in the window.
 
 (c) Horvath's methylation clock used elastic net on about 21 000 CpGs and selected 353. Why is regularisation essential when the number of CpGs is comparable to, or larger than, the number of samples?
 
+## Explore: thresholds, ROC and PR under imbalance {#explore}
+
+The demo simulates the scores of a classifier as two normal distributions with the same spread: closed windows (crimson) around 0 and open windows (green) around the **separation**. Drag the green circle to change the separation and the green square to change the spread (or use the sliders). Each curve is drawn as a number of windows, so a rare class is a small curve. Drag the black **threshold** line: windows to its right are called open. On the right are the confusion matrix (expected counts in 10 000 test windows) and the metrics at that threshold. Below are the ROC and PR curves; the circle on each is the current threshold, and you can drag it along either curve. **Fraction open** sets the class balance from 1% to 50%. The presets give the balanced test set of R6 (46% open), the subsampled test set of R10 (7.7%) and a genome-wide scan (about 1%). **Pin these curves** keeps a dotted copy for comparison. **Simulated test set** draws 2000 windows from the model and adds their stepped curves. The default separation (1.53 standard deviations) gives ROC AUC 0.86, about the same as the lasso model of R9.
+
+```{=html}
+<link rel="stylesheet" href="../demos/dist/demo.css">
+<div data-demo="rocpr"></div>
+<script src="../demos/dist/rocpr.js"></script>
+```
+
+**E1.** (links to **B4**, **R5**) At the default settings (46% open, threshold 0.77), read TP, FP, FN and TN, and compute precision, recall and FPR from them yourself. Then set the threshold to 0 and to 2. Which metrics go up and which go down? Do the ROC and PR curves change?
+
+**E2.** (links to **B6**, **R10**) Click **pin these curves**, then **subsampled: 7.7% open** and **genome-wide: 1% open**. Note the ROC AUC, the average precision (AP) and, at threshold 0.77, precision and recall. What happens to the ROC curve compared with the pinned one, and to the PR curve? Compare with what the real model did in R10.
+
+**E3.** (links to **B4c**, **R10b**) At 1% open, compare the accuracy at threshold 0.77 with the accuracy of calling every window closed. Then move the threshold to get the highest accuracy you can. What is the recall there?
+
+**E4.** Go back to 46% open, tick **simulated test set** and press **new sample** four times, noting the sample AUC and AP. Then do the same at 1% open (20 open windows among 2000). How much do the two numbers vary from sample to sample?
+
+**E5.** At 1% open, how large must the separation be for AP to reach 0.5? What ROC AUC does that model have?
+
+::: {.callout-note collapse="true" title="Solutions (E1–E5)"}
+**E1.** TP 3571, FN 1029, FP 1192, TN 4208. Precision $3571/4763 = 0.750$, recall $3571/4600 = 0.776$, FPR $1192/5400 = 0.221$, accuracy 0.778. Threshold 0: recall 0.937, FPR 0.500, precision 0.615, accuracy 0.701. Threshold 2: recall 0.319, FPR 0.023, precision 0.923, accuracy 0.675. A lower threshold calls more windows open: recall and FPR rise and precision falls. A higher threshold does the opposite. The curves do not change: they already contain every threshold, and only the circle moves along them.
+
+**E2.** The ROC AUC stays 0.860 at all three balances, and the ROC curve lies exactly on the pinned one: TPR is computed among open windows only and FPR among closed windows only, so the ratio between the classes cancels. AP falls from 0.840 to 0.433 to 0.122. At threshold 0.77 recall stays 0.776, but precision falls from 0.750 to 0.227 to 0.034, because the same FPR of 0.221 now applies to many more closed windows (2184 false positives against 78 true ones at 1%). In R10 the real model went from ROC AUC 0.861 and PR AUC 0.835 to 0.871 and 0.412 at 7.7% open: the same pattern, and close to the 0.433 that this model predicts. Always read AP against its baseline, the fraction open (dashed line: 0.46, 0.077, 0.01). An AP of 0.122 at 1% open is 12 times better than random, and still means that most calls are wrong.
+
+**E3.** At threshold 0.77, accuracy is 0.779, below the 0.990 of calling everything closed (the demo warns you). Accuracy rises as the threshold goes up. It reaches 0.990 at a threshold of about 3.8, where only about 1 of the 100 open windows is called (recall about 0.01). The "most accurate" classifier finds almost nothing, because at 1% open, accuracy mostly counts closed windows.
+
+**E4.** At 46% open (about 920 open windows), seeds 1–5 give sample AUC 0.856–0.866 and AP 0.828–0.844, close to the exact 0.860 and 0.840. At 1% open (20 open windows) they give AUC 0.836–0.910 and AP 0.084–0.283: the curves are coarse staircases, and AP varies more than threefold. Your numbers depend on how many times you pressed **new sample**, but the spread will be similar. With few positives, report their number and a confidence interval. The change from 0.861 to 0.871 in R10 (167 open windows) is noise of this kind.
+
+**E5.** A separation of about 2.56 standard deviations, i.e. ROC AUC 0.965 (and AP 0.96 on a balanced test set). For genome-wide predictions to be mostly right, the ROC AUC must be very high. A model with ROC AUC 0.86, which looks good on a balanced test set, gives AP 0.12 at 1% open.
+:::
+
 ## In R
 
 ### R1 — Build the data set: open and closed windows

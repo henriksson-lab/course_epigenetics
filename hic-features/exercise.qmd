@@ -180,6 +180,34 @@ bedtools window -w 20000 -u -a arrowhead_edges.bed -b boundaries_200kb.bed | wc 
 
 What fraction of our boundaries is near an Arrowhead domain edge, and what fraction of Arrowhead edges is near one of our boundaries? Why are the two numbers so different?
 
+## Explore: compartments from a toy map {#explore}
+
+The demo simulates a balanced Hi-C map of a toy chromosome of 48 bins. You set the true compartment of every bin in the top track (**click or drag** to paint A or B). The contact frequency of two bins *s* bins apart is *s*<sup>−exponent</sup> (**decay exponent**), times √*r* if the two bins are of the same type and 1/√*r* if not (so same-type pairs contact *r* times more than A–B pairs at the same distance, **A/B preference *r***), times random log-normal **noise**. The demo then follows the recipe of the lecture: divide by the expected value of each diagonal (O/E), correlate the rows, and find the first eigenvector E1 of the correlation matrix by **power iteration** (multiply a start vector by the matrix again and again, normalising each time, until it stops changing). **Orient E1 with GC** flips the sign if E1 correlates negatively with the GC track (A bins are GC-richer); E1 > 0 is called A, and black dots mark wrong calls. **Skip O/E** correlates the rows of the observed map instead. **New start vector** restarts power iteration from another random vector; **New noise** draws new noise. Simulated data.
+
+```{=html}
+<link rel="stylesheet" href="../demos/dist/demo.css">
+<div data-demo="compartments"></div>
+<script src="../demos/dist/compartments.js"></script>
+```
+
+**E1.** With the default settings (pattern **blocks**), how many power-iteration steps are needed, what are λ1 and λ2, and how many bins are called correctly? Now untick **orient E1 with GC** and press **New start vector** five times, noting the calls each time. What changes, what stays the same, and why? Which line of the readout would warn you in a real analysis?
+
+**E2.** Tick **orient E1 with GC** again and tick **skip O/E**. What does E1 look like now, how many bins are called correctly, and how do λ1 and λ2 compare? Then set the decay exponent to 0. Finally untick **skip O/E** and move the decay exponent between 0 and 2: what happens to the calls, and why?
+
+**E3.** Raise the noise step by step to 1.5. At which noise level do the first calls go wrong? What happens to λ1, to λ2 and to the number of power-iteration steps? Then set the noise back to 0.25 and *r* to 1. What does E1 show now?
+
+**E4.** Press **blocks**, then paint a single B bin in the middle of the long A block (bins 25–34, the fifth run from the left). Is it called B? Is it still called B at noise 0.75? Why can the eigenvector call one isolated bin, where a smoothing method (such as the HMM of *Chromatin states*) might absorb it?
+
+::: {.callout-note collapse="true" title="Solutions"}
+**E1.** **10** steps; λ1 = **25.0** (52% of all variance; for a correlation matrix the eigenvalues sum to the number of bins, 48), λ2 = **2.4**; all **48 of 48** bins are called correctly, and corr(E1, GC) = +0.83 (the solver's sign happened to be right). Without orientation, the five new start vectors give: swapped (all **0 of 48** correct, corr(E1, GC) = −0.83), swapped, correct, swapped, swapped. λ1, the number of steps (10–12) and the *pattern* of E1 stay the same: *v* and −*v* are equally good eigenvectors, and which one power iteration lands on depends only on the start vector. The compartments (which bins go together) are found every time; only the labels A and B are arbitrary. The warning sign is a negative correlation of E1 with GC (or gene density, or active marks).
+
+**E2.** E1 becomes a **left–right split**: bins 1–24 negative, 25–48 positive. Without O/E, every bin's row is dominated by the distance decay, so neighbouring bins have similar rows and the strongest pattern in the correlation matrix is "where along the chromosome". Only **27 of 48** calls are right (chance level), corr(E1, GC) = 0.04, and λ1 = 8.8 (18%) is barely larger than λ2 = 7.0 (so power iteration needs 94 steps). With decay exponent **0** there is no distance effect, and even without O/E E1 is right again (48 of 48, λ1 = 29.8). With O/E, the decay exponent makes **no difference at all** (the readout stays at 48 of 48, λ1 = 25.0 for exponents 0, 1 and 2): dividing by the expected value per diagonal removes the distance decay exactly, because in this model it multiplies every pixel at a given distance by the same factor. In real data, too, O/E is what makes compartments comparable across distances.
+
+**E3.** At noise **0.5** all 48 calls are still right (λ1 = 11.6, 24%; 17 steps); at **0.75** the first 3 bins are wrong (45 of 48; λ1 = 6.6, λ2 = 3.5; 34 steps); at **1.0**, 43 of 48 (λ1 = 4.8, λ2 = 3.7; 79 steps); at **1.5**, 34 of 48 (λ1 = 3.9, λ2 = 3.8; 529 steps). As noise grows, λ1 shrinks towards λ2: there is no longer one dominant pattern, and power iteration converges slowly because each step separates the two eigenvectors only by the factor λ1/λ2. With *r* = 1 there are no compartments: E1 is a pattern of noise, 23 of 48 calls "right" by chance, corr(E1, GC) = 0.12, λ1 = 3.9 (8%). An eigenvector always exists; it only means something if it is clearly larger than the next and agrees with an independent track.
+
+**E4.** Yes: the single B bin gets a negative E1 (−0.14, between neighbours at +0.14 and +0.16) and all 48 calls are right. At noise 0.75 it is still called B (45 of 48 correct overall; the errors are elsewhere). The eigenvector judges each bin by its whole row, that is by its contacts with *all* other bins, not by its neighbours along the chromosome; a B bin contacts the other B bins of the chromosome more, wherever they are. An HMM-style segmentation adds a cost for every switch between neighbours and could absorb a one-bin segment. (Real data are noisier per bin, which is why compartment calls are usually made at 50–250 kb, not at 5 kb.)
+:::
+
 ## In R
 
 ### R1 — CTCF motif orientation at loop anchors

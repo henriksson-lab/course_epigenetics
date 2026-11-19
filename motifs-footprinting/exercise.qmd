@@ -165,6 +165,35 @@ samtools idxstats gm12878_atac_rep1.bam
 
 (c) `markdup.log` reports the duplicates removed. Why are duplicates a particular problem when you count insertions at single bases?
 
+## Explore: a 2×2 motif table, the threshold and the background {#explore}
+
+The demo simulates 1000 target peaks and 8000 other peaks of 300 bp (random bases at each peak's GC content). A PU.1-like motif is planted in a fraction of the target peaks (and in 5% of the other peaks, because bound sites occur there too). A GC box (SP1-like) is planted **nowhere**. Both motifs are scanned on both strands; a peak has a match when its best window passes the **threshold**, given as a p-value per window (motifmatchr's default is $5 \times 10^{-5}$). **Target GC − background GC** makes the target peaks GC-richer (or AT-richer) than the others. **Background** compares the target with all other peaks or with a GC-matched set (two other peaks from the same 1% GC bin per target peak, as in R5). Panel (a) shows the two 2×2 tables with the odds ratio and the exact one-sided Fisher / hypergeometric p-value (computed on the log scale, as in R4), and whether it passes Bonferroni for 879 motifs. Panel (b) shows GC content, panel (c) the odds ratio against the threshold.
+
+```{=html}
+<link rel="stylesheet" href="../demos/dist/demo.css">
+<div data-demo="motif2x2"></div>
+<script src="../demos/dist/motif2x2.js"></script>
+```
+
+**E1.** At the defaults, read the PU.1 table. Compute the two fractions and the odds ratio by hand, and the number of target matches expected if the target were a random draw from all 9000 peaks. Compare with the demo.
+
+**E2.** Move the threshold from $10^{-3}$ to $10^{-6}$ (watch the note under the controls and panel c). How do the number of PU.1 matches in the target, the odds ratio and the p-value change? Why is neither the most lenient nor the strictest threshold best?
+
+**E3.** The GC box is not bound anywhere. What odds ratio and p-value does it get against all other peaks? Would it survive Bonferroni for 879 motifs? Switch to the **GC-matched** background: what happens to the GC box, and to PU.1? Then set the GC difference to 0 and to +0.12 (the data are re-simulated when you release the slider).
+
+**E4.** Set **target peaks with a PU.1 site** to 0%. Why is the PU.1 odds ratio now below 1? Finally: a correction for multiple testing would not have stopped the GC box in E3. Why not, and what else in this demo is a hidden multiple-testing problem?
+
+::: {.callout-note collapse="true" title="Solutions"}
+
+**E1.** $a = 136$, $b = 864$, $c = 456$, $d = 7544$: 13.6% of target peaks against 5.7% of the other peaks have a match. $\mathrm{OR} = (136 \cdot 7544)/(864 \cdot 456) = 2.60$. Expected under the null: $1000 \times (136 + 456)/9000 = 66$, observed 136, $p = 9.3 \times 10^{-18}$. Note that the fraction of bound target peaks is 25%, but only 13.6% have a match: half of the planted sites score below the threshold, and some matches in the target are chance matches (about 3% of peaks have one at this threshold: 0.029 per peak).
+
+**E2.** At $10^{-3}$: 538 target matches (54% against 48%), OR 1.24, $p \approx 10^{-3.2}$: almost every second peak has a chance match, and the real sites drown in them. At $10^{-4}$: 177, OR 2.23, $p \approx 10^{-15.8}$; at $5 \times 10^{-5}$: 136, OR 2.60, $p \approx 10^{-17.0}$; at $10^{-5}$: 76, OR 3.88, $p \approx 10^{-17.3}$; at $10^{-6}$: 22, OR 3.2, $p \approx 10^{-4.6}$. A stricter threshold removes chance matches faster than true sites, so the odds ratio rises, but it also loses true sites (weak matches), and with few counts the estimate becomes noisy and the p-value weak. The threshold trades counts (sensitivity) against specificity.
+
+**E3.** Against all other peaks the GC box has OR 2.24 (4.1% vs 1.9%), $p = 2.2 \times 10^{-5}$: it passes Bonferroni ($p < 5.7 \times 10^{-5}$). It is enriched only because the target peaks are GC-richer (mean GC 0.52 vs 0.44), and a GC-rich word matches more often by chance in GC-rich DNA. Against GC-matched peaks: OR 0.99, $p = 0.56$. PU.1 hardly changes (OR 2.60 → 2.63), because its enrichment is real. With no GC difference the GC box gets OR 1.12 against all peaks; at +0.12 it gets OR 4.55, $p \approx 4 \times 10^{-22}$, and 1.23 against GC-matched peaks. The background decides the question you ask; in the real data (lecture, R5) the same effect works in the other direction, because B-up peaks are AT-richer than the other peaks.
+
+**E4.** With no bound target peaks, PU.1 has OR 0.49 (2.9% vs 5.7%): the background still contains 5% of peaks with a bound site, so the target is depleted relative to it. "Depleted" means "less than in the background", not "avoided". Multiple-testing corrections control errors made by **chance**; the GC box is a **bias** that gets more significant with more data. Only a better background (or a GC-aware test) removes it. The hidden multiple testing: trying several thresholds or backgrounds and reporting the one that gives the best p-value.
+:::
+
 ## In R
 
 Start R in `~/epi/motifs` (where the BAM file is) and load the packages:

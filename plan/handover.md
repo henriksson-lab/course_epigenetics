@@ -32,3 +32,21 @@
   (`prepare-chip.sh` per replicate, `prepare-cuttag.sh` merged) — kept both.
 - This machine: conda `samtools` first on PATH is 1.3.1 (use `/usr/bin/samtools`);
   deepTools needs `LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu`.
+
+## Demos (2026-11-19: built, committed locally, NOT yet linked/rendered/pushed)
+Built per `plan/demo-brief.md` by parallel agents; each embedded an Explore
+section (E-questions + solutions) in its unit's exercise page and built
+`demos/dist/<name>.js`. Done (15): readcoverage, shufflenull, tn5ladder,
+globalnorm, motif2x2, polycombmemory, bisulfite, betabinom, clockfit,
+peakcaller, fingerprint, crosscorr, rocpr, cnnfilter, leakagesim.
+Also done: loopextrusion (genome-3d-intro), compartments (hic-features),
+hmmstates (chromatin-states) — all 18 demos finished and committed locally
+(sources + exercise pages); not yet in the sidebar, not rendered, not pushed.
+Remaining integration: add sidebar "Demo:" links in `_quarto.yml`
+(after each unit's Exercise entry; anchors: `#explore`, and for
+epigenomics-design `#explore-fingerprint`, `#explore-crosscorr`), run
+`make demos` + `node_modules/.bin/tsc --noEmit -p demos`, render the written
+units one file at a time, commit (exclude epigenetic-inheritance/,
+cancer-epigenetics/, data/prepare-dis.sh), push via gh HTTPS.
+Also fixed during this round (uncommitted): differential-accessibility lec note
+(background normalisation deflates, not inflates).

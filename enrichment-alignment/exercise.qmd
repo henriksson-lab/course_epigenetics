@@ -264,6 +264,34 @@ Open IGV, choose the genome **hg38**, and load `chip.cpm.bw`, `input.cpm.bw`, `c
 
 (c) Why is your log2 ratio track so much noisier than ENCODE's fold change away from the peaks? (Count the input reads in the window: `samtools view -c input.final.bam chr21:43775000-43825000`.)
 
+## Explore: from reads to a coverage track {#explore}
+
+The demo simulates single-end ChIP-seq reads in a 1200 bp window around one binding site: 150 fragments that carry the bound protein (so they contain the site), some background fragments, and an input sequenced at half the ChIP's depth. Each fragment is read from one end only: blue reads are on the + strand (read from the fragment's left end), orange reads on the − strand. Move the **fragment length** (the true mean length of the fragments) and the **read length**; **extend reads to the fragment length** extends every read from its 5' end, in its own direction, as `bamCoverage --extendReads` does; **add PCR duplicates** gives a few fragments many identical copies, and **remove duplicates** keeps one read per start position and strand, as `samtools markdup` does for single-end reads. The **track** is the read count per bin, CPM, or the log2 fold change over the input with a pseudocount (as `bamCompare`); the **bin size** sets how wide each bin is. The numbers above the plot update as you move the controls. Do B4–B7 first.
+
+```{=html}
+<link rel="stylesheet" href="../demos/dist/demo.css">
+<div data-demo="readcoverage"></div>
+<script src="../demos/dist/readcoverage.js"></script>
+```
+
+**E1. Two humps.** Start from the default (fragment 200 bp, read 36 bp, not extended, raw counts, 10 bp bins; **reset** brings you back). (a) Read the centres of the + and − read humps. How far apart are they? Compare with *fragment length − read length*. (b) Repeat with fragment lengths 100 and 300 bp. (c) Why is the bin that contains the site much lower than the highest bin? Compare with B9(b).
+
+**E2. Extending.** Back at 200 bp, tick **extend reads to the fragment length**. (a) Where is the highest bin now, and how high is it compared with E1? What is the peak width at half height? (b) Untick extension, and set both the read length and the fragment length to 150 bp. Is there still a dip at the site? Tick extension again: what changes? When does a coverage track need extended reads?
+
+**E3. Duplicates.** Extension off, fragment 200 bp, read 36 bp, bin size **1 bp**. Tick **add PCR duplicates**. (a) How many PCR copies were added, what do they look like in the reads and in the track, and what happens to the library size? (b) Tick **remove duplicates**. How many reads are removed, and how many of them were *not* PCR copies? Why are independent fragments removed too, and why does this happen most at strong peaks with single-end reads (B7c)?
+
+**E4. Units.** Untick both duplicate boxes, tick extension, bin size 10 bp. (a) Switch from raw counts to **CPM**. Read the highest bin and check it from the raw count and the library size (B5). (b) Switch to **log2 fold change over input** with pseudocount 1. What is the value in the bin with the site, and roughly where do the flanks lie? Why there? (c) Set the bin size to 1 bp and the pseudocount to 0.1. Where is the highest bin now, and why is it not a real peak? What does pseudocount 5 do to the site's value?
+
+::: {.callout-note collapse="true" title="Solutions"}
+**E1.** (a) The + hump is centred at −72 bp and the − hump at +87 bp: 159 bp apart, close to 200 − 36 = 164 bp. A + read covers the first 36 bp of a fragment that starts somewhere in the 200 bp before the site (its centre on average about −(200 − 36)/2 bp), a − read the last 36 bp of a fragment that ends after it. (b) 100 bp: −24 and +32 bp, 56 bp apart (100 − 36 = 64); 300 bp: −117 and +143 bp, 260 bp apart (264). The strand shift grows with the fragment length: this is what `macs3 predictd` and the strand cross-correlation measure. (c) The highest bin has 31 reads at −65 bp, the bin with the site only 14. Fragments that carry the protein start at least ~18 bp before the site (the footprint), so a 36 bp + read rarely reaches the site, and likewise for − reads from the other side: the site sits in the gap between the two humps, as in the real CTCF data of B9(b).
+
+**E2.** (a) The highest bin is now the site's own bin (+5 bp), with 154 reads instead of 31: every extended read covers its whole (assumed) fragment, so the two humps merge into one peak centred on the site. Its width at half height is 210 bp, about the fragment length. (b) No dip: with 150 bp reads on ~150 bp fragments the reads already cover the fragments, and the highest bin is the site's bin, 153 reads at +5 bp, without extension, and extension changes almost nothing (153 at +5 bp). Extension is needed when reads are shorter than the fragments, i.e. for single-end data; for paired-end data the real fragment between the mates is used instead.
+
+**E3.** (a) 111 PCR copies (red) stack on top of a few fragments: identical reads, same start, same strand. In the 1 bp track they make narrow spikes (the highest bin goes from 28 to 47 reads at −78 bp), and the library grows from 2.00 M to 3.28 M reads (the demo assumes the same duplicate rate genome-wide). (b) 142 reads are removed: the 111 PCR copies and **31 independent fragments** that happen to share a start and strand with another fragment. At a strong peak, fragments that carry the protein can only start in a window of about one fragment length per strand, so with 150 of them many real starts coincide; removing duplicates therefore also compresses strong peaks (B7c: 49% "duplicates" inside CTCF peaks, 4% outside). With paired-end reads both ends must match, which is much rarer by chance.
+
+**E4.** (a) 77.0 CPM = 154 × 10<sup>6</sup> / 2 000 000. (b) The bin with the site has log2 fold change 4.11 (154 ChIP reads against 8 depth-scaled input reads: log2(155/9)); the highest bin is 4.88 at −25 bp. The flanks lie between about −1.6 and +2.3, scattered around 0: there, ChIP background and input have the same density once scaled to the same depth, and with only a few reads per bin the ratio is noisy. (c) The highest bin moves to +185 bp, at 6.92: a bin where the input has **no** read, so the ratio is (ChIP + 0.1)/0.1 and a handful of background ChIP reads looks like a 100-fold enrichment. A pseudocount of 5 shrinks every ratio towards 0, the small-count bins most: the site's bin drops from 4.09 (pseudocount 1) to 3.59, and the noisy flanks flatten. This is why ratio tracks use bins of 50 bp or more, a pseudocount of 1 or more, or a smoothed input (B6, C8c).
+:::
+
 ## In R
 
 You need `GenomicAlignments` (with `Rsamtools`), `rtracklayer` and `GenomicRanges` (see *Install the software you need*). Run R in the folder with your BAM files:

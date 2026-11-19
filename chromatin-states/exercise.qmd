@@ -183,6 +183,44 @@ awk '$1 == "E1"' overlap_bp.txt | head -5
 
 (b) For your state E1 (and two others of your choice), which Roadmap states does it overlap most? Does it agree with the name you gave it?
 
+## Explore: transitions versus emissions {#explore}
+
+The demo is a small ChromHMM-style model: three hidden states, **TSS** (active promoter), **Tx** (transcribed gene body) and **Pc** (Polycomb-repressed), along 150 bins of 200 bp. Each state emits four binary marks, independently given the state, with the probabilities in the **emission table** (presets or sliders). The **true self-transition** is the probability that the next bin stays in the same state (the rest is split evenly between the other two states); it is used to generate the simulated sequence: first the hidden states, then the marks of each bin (top four rows). The model then forgets the true states and decodes the marks three ways, all with the same emissions: **Viterbi** (the single most probable path), the **posterior** *P*(state | all marks) from the forward–backward algorithm (stacked colours; the most probable state per bin is what ChromHMM reports), and **emissions only** (each bin gets the state that best explains its own marks). The decoder has its own **decoder self-transition**; at 1/3 it has no preference for staying, and Viterbi becomes the same as emissions only. Black ticks under a strip mark wrongly decoded bins. **New sequence** draws new random numbers; any other change re-simulates with the same random numbers.
+
+```{=html}
+<link rel="stylesheet" href="../demos/dist/demo.css">
+<div data-demo="hmmstates"></div>
+<script src="../demos/dist/hmmstates.js"></script>
+```
+
+**E1.** With the default settings (clear marks, both self-transitions 0.9), how many bins does each method decode correctly, and how many segments does each path have? Look at the emissions-only strip inside the long transcribed region (5–15 kb): which state does it give to bins with no mark at all? Compute *P*(no marks | state) for the three states from the emission table to explain it, and say why Viterbi does not do the same.
+
+**E2.** Press **1/3 (emissions only)**, then move the decoder self-transition to 0.6, 0.9 and 0.99. For each, note the Viterbi accuracy, the number of Viterbi segments and log *P*(marks | decoder). At which value is log *P* highest? Try 0.925 too. What does this suggest about how the transition probabilities can be learned?
+
+**E3.** Choose **noisy marks** (decoder 0.9). Compare the three methods. Then set the decoder to 1/3 and to 0.99. When do transitions matter most, and what goes wrong when the decoder is too sticky?
+
+**E4.** Choose **clear marks** again and set the **true** self-transition to 0.6 (short elements), keeping the decoder at 0.9. Compare Viterbi with emissions only. Then press **= true** (decoder 0.6). Which decoder setting fits these data better, by accuracy and by log *P*?
+
+::: {.callout-note collapse="true" title="Solutions"}
+**E1.** Correct: Viterbi **96%**, posterior **98%**, emissions only **79%**; segments: true **12**, Viterbi **10**, posterior **12**, emissions only **55**. Unmarked bins in the gene body are called **Pc** by emissions only: *P*(no marks | Pc) = 0.90 × 0.98 × 0.97 × 0.35 = **0.299**, *P*(no marks | Tx) = 0.95 × 0.90 × 0.30 × 0.97 = **0.249**, *P*(no marks | TSS) = 0.15 × 0.25 × 0.95 × 0.95 = **0.034**. A bin without H3K36me3 is slightly better explained by Pc, whose only common mark (H3K27me3) is also absent. Viterbi keeps such bins in Tx: switching Tx → Pc → Tx costs two transition factors of (1 − 0.9)/2 = 0.05, against staying (0.9 × 0.9), which is far more than the 0.299/0.249 = 1.2-fold gain in the emission. This is the toy example of the lecture with real-looking marks: one missed mark does not split an element.
+
+**E2.**
+
+| decoder self-transition | Viterbi correct | Viterbi segments | log *P* |
+|---|---|---|---|
+| 1/3 | 79% | 55 | −305.5 |
+| 0.6 | 95% | 18 | −264.8 |
+| 0.9 | 96% | 10 | −237.7 |
+| 0.925 | 96% | 10 | −237.3 |
+| 0.99 | 97% | 9 | −246.8 |
+
+At 1/3, Viterbi is identical to emissions only (55 segments). Raising the self-transition smooths the path. Log *P* is highest near the true value: the maximum is at about **0.925**, the fraction of steps that stay in this particular sequence (138 of 149, 12 segments). Choosing the transitions that make the observed marks most probable recovers how long the elements really are: that is what Baum–Welch does when it learns the transition matrix.
+
+**E3.** With noisy marks (decoder 0.9): Viterbi **85%** (8 segments), posterior **89%** (12), emissions only **49%** (84 segments). Single bins are now unreliable, so the neighbours carry most of the information: transitions matter most when the emissions are weak. At decoder 1/3 all methods drop to 49%. At 0.99 the decoder is too sticky: Viterbi merges real elements into **3** segments and falls to **70%** (log *P* −326.8, worse than −321.6 at 0.9).
+
+**E4.** With true self-transition 0.6 the sequence has 70 segments. A decoder at 0.9 over-smooths: Viterbi **82%** (43 segments), worse than emissions only (**87%**, 76 segments). With **= true** (0.6), Viterbi reaches **90%** (57 segments), and log *P* rises from −347.6 to **−313.2**. The transition matrix must describe the data: if it assumes longer elements than exist, the HMM erases short ones (such as a short enhancer between two other states). ChromHMM learns the transitions from the data for this reason.
+:::
+
 ## In R
 
 You need `GenomicRanges`, `rtracklayer` and `ggplot2`. Work in the same folder:

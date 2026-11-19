@@ -297,6 +297,34 @@ print(len(lp), "loops and", len(dm), "domains in the window")
 
 (c) Change `res` to 5000 and to 50000. What can you see at each resolution, and what do you lose?
 
+## Explore: loop extrusion {#explore}
+
+The demo simulates loop extrusion on 1 Mb of chromosome, cut into 200 bins of 5 kb. Cohesin complexes are loaded at random positions (**loads per 100 steps**), extrude a loop by moving both legs outward by one bin per time step, and are released after a random time (mean **lifetime**, in steps). A leg stops at a CTCF site whose motif points *into* the loop (▶ stops legs moving left, ◀ stops legs moving right) with the **CTCF stop probability**; a site in the other orientation is passed. Two legs cannot pass each other. The track under the map shows the loops of one cell (filled circle: leg stopped at CTCF). The triangle above is the contact map averaged over 1 200 snapshots (30 cells × 40 time points), in the same coordinates as the track. In each snapshot two bins contact each other with frequency 1/*d*, where *d* is their distance along the folded chain: the two legs of a cohesin hold the chain together, so a loop is a shortcut. Without cohesin, *d* is the genomic distance and the map is pure distance decay, *P*(*s*) = *s*<sup>−1</sup> (the dashed line in the *P*(*s*) plot). **Click the chain** to add a ▶ site, turn ▶ into ◀, or remove a ◀ site; click the map to read one pixel; **show obs/exp** divides every pixel by the mean of its diagonal. The readout lists the strongest observed/expected pixels between pairs of CTCF sites. Simulated data: every change restarts the simulation from the same seed, so the same settings always give the same numbers.
+
+```{=html}
+<link rel="stylesheet" href="../demos/dist/demo.css">
+<div data-demo="loopextrusion"></div>
+<script src="../demos/dist/loopextrusion.js"></script>
+```
+
+**E1.** Start with **Two domains + stripe**. Which two pairs of CTCF sites give the strongest dots, how are their motifs oriented, and how strong are they (obs/exp)? Where are the two domains? The third pair in the list, 150 kb ▶ – 410 kb ▶, is in tandem: one cohesin cannot be stopped by both sites. Why does its pixel still light up? (Hint: where is 410 kb relative to 400 kb?)
+
+**E2.** Press **Flip one site**: the site at 400 kb now points ▶. What happens to the 150–400 kb dot, and which new pair of sites makes a dot? Compare with the CTCF inversion experiment of the lecture.
+
+**E3.** Press **Delete one site** (the 400 kb site is gone), then **No CTCF**, then **No cohesin**. For each, describe the dots and domains, and note the readout "*P*(*s*) at 250 kb". Which depletion experiment of the lecture does each of the last two mimic, and what does *P*(*s*) tell you that the dots do not?
+
+**E4.** Go back to **Two domains + stripe**. Lower the CTCF stop probability to 0.5, then to 0. Then set it to 0.9 again and tick **one-sided extrusion**. What happens to the dots, to the fraction of legs stopped at CTCF, and to the mean loop size? Where do you now see stripes?
+
+::: {.callout-note collapse="true" title="Solutions"}
+**E1.** The two strongest pixels are both **convergent** pairs: 150 kb ▶ – 400 kb ◀ (obs/exp **8.6**) and 410 kb ▶ – 650 kb ◀ (**7.4**). They are the apexes of two triangles, the domains 150–400 kb and 410–650 kb; inside each, contacts are raised along the edges (the anchors keep reeling in DNA) and the domains are separated by the divergent pair at 400/410 kb. The tandem pair 150 ▶ – 410 ▶ reaches **4.1** because 410 kb is only two bins from 400 kb: in a cell where the 150–400 loop is held, 150 kb sits next to 400 kb and therefore also close to 410 kb. Neighbouring loop anchors cluster; this is also seen in real maps. (The model has 7.9 cohesins per cell, one per 127 kb, and 21% of legs stopped at CTCF.)
+
+**E2.** The 150–400 kb pixel drops from 8.6 to **3.4** and leaves the top of the list. Legs coming from 150 kb now pass the site at 400 kb (it points away from them) and the next site that stops them is 650 kb ◀: a new dot appears at 150 ▶ – 650 ◀ (**4.5**, up from 3.2), the apex of a larger domain. This is the inversion experiment: the A–B loop is lost and an A–C loop forms with the next site in the right orientation. What remains at 150–400 kb comes from cohesins stacked against each other near 400/410 kb.
+
+**E3.** *Delete one site*: the two domains merge; the strongest pixels are 410–650 kb (**5.3**) and 150–650 kb (**3.9**). *No CTCF*: no dots and no domains (the list is empty; any pixel you click is close to 1), but *P*(*s*) at 250 kb is still **2.7×** the no-cohesin line: cohesin still extrudes loops, only at random places. This is the CTCF degron (Nora et al. 2017): loops and domains go, extrusion goes on. *No cohesin*: every pixel has obs/exp 1 and *P*(*s*) is exactly *s*<sup>−1</sup> (**1.0×**): the cohesin degron (Rao et al. 2017), all loop domains gone. With cohesin, *P*(*s*) at 250 kb is **3.1×** the no-cohesin value (default). *P*(*s*) shows whether loops are being extruded at all, even when no single position stands out. (Compartments are not part of this model.)
+
+**E4.** With stop probability **0.5**, the dots weaken (410–650 kb **4.5**, 150–400 kb **3.9**) and 14% of the legs are stopped (21% at 0.9). At **0** nothing is stopped (0%), the dots are gone (≤ 1.1) and the domains disappear, although cohesin still makes loops. With **one-sided extrusion** (stop probability 0.9) only one leg moves, and a dot needs a cohesin that was loaded right at one anchor: the dots almost vanish (150–400 kb **1.9**, 410–650 kb **1.5**), 10% of the legs are stopped and the mean loop size halves (**73 kb**, against 136 kb). What remains are **stripes**: lines running from the CTCF sites along the edges of the domains, e.g. from the ▶ site at 800 kb towards the upper right (click the pixel 800 kb – 900 kb: about 1.4 one-sided against 1.1 two-sided). Purely one-sided extrusion struggles to make dots between convergent sites; this is one argument that cohesin extrudes in both directions, at least on average.
+:::
+
 ## Hints
 
 ::: {.callout-tip collapse="true" title="Hint 1 — reading maps and distance decay (B1, B2)"}

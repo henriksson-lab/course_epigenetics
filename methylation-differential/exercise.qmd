@@ -124,6 +124,34 @@ sort gm12878_wgbs_rep1.cov10 gm12878_wgbs_rep2.cov10 k562_wgbs_rep1.cov10 k562_w
 
 How many CpGs have at least 10 reads in all four samples? Why would a per-CpG test that requires 10 reads everywhere lose many CpGs, and how does smoothing help?
 
+## Explore: why pooling reads gives false DMLs {#explore}
+
+The demo simulates 5 000 CpGs in two groups of replicates. Every replicate has its own true level, drawn from a beta distribution around the group mean with overdispersion **φ** (the beta-binomial of the Background), and its reads are a binomial draw from that level. By default nothing differs between the groups; **differential CpGs** and **their true Δβ** make a fraction of CpGs truly different. Three tests are run on every CpG: **Fisher's exact test on reads pooled per group** (it ignores the replicates), a **beta-binomial** Wald test with one φ estimated from the replicates of all CpGs (what DSS does, without its per-CpG part), and a **t-test on the per-sample β values**. **(a)** shows the p-values of one test, with the CpGs that truly differ stacked in orange; for CpGs that do not differ, a valid test gives a flat histogram. **(b)** shows how many CpGs each test calls at a Benjamini–Hochberg FDR of 5%, split into true and false calls.
+
+```{=html}
+<link rel="stylesheet" href="../demos/dist/demo.css">
+<div data-demo="betabinom"></div>
+<script src="../demos/dist/betabinom.js"></script>
+```
+
+**E1.** (links to **B3**) With the defaults (20 reads, 3 vs 3 samples, φ = 0.1, nothing differs): how many CpGs does Fisher's test call at FDR 5%, and what fraction of CpGs get $p < 0.05$? Describe the p-value histogram. Switch the histogram to the beta-binomial and the t-test: what do they give? Scale Fisher's result up to the 28 million CpGs of a genome.
+
+**E2.** Set φ to 0, then 0.02 and 0.2, and note Fisher's calls and its fraction of $p < 0.05$. Then return to φ = 0.1 and set the reads to 5, 50 and 100. Why does the problem of the pooled test grow with sequencing depth? Use $\text{Var}(X) = Np(1-p)[1 + (N-1)\varphi]$.
+
+**E3.** (links to **B1**) Set φ = 0.05 and click **10% differ** (Δβ = 0.2; 453 CpGs truly differ). With 3 vs 3 samples at 20 reads, how many true CpGs does the beta-binomial test find, and how many of Fisher's calls are false? Raise the reads to 100. Then go back to 20 reads and raise the replicates to 6 and to 8. Which helps more, and why? Compare the total reads per group.
+
+**E4.** Still at φ = 0.05, 10% differ, 20 reads: (a) set the replicates to 1. Which tests can still be run, and can you trust Fisher's list? (b) Set 6 replicates and compare the beta-binomial with the t-test. Both are valid (few false calls); why does the t-test find fewer CpGs?
+
+::: {.callout-note collapse="true" title="Solutions (E1–E4)"}
+**E1.** Fisher calls **340 CpGs, all false**, and **21.6%** of CpGs have $p < 0.05$ instead of 5%. The histogram piles up near 0 instead of being flat; the spike at $p = 1$ comes from CpGs near 0 or 100% methylation, where Fisher's discrete test can rarely give anything else. The beta-binomial test gives **0 calls** with 4.0% below 0.05, the t-test **0 calls** with 4.2%: both use the variation between replicates, and both have flat histograms. 340 of 5 000 is 6.8%; over 28 million CpGs that is about **1.9 million false DMLs**. The real GM12878 replicates of the lecture behave the same way (20 902 Fisher calls on chr21 between two replicates, 17% with $p < 0.05$ in B3).
+
+**E2.** φ = 0: Fisher gives **0 calls** and 3.7% below 0.05 (slightly conservative, as discrete tests are): without biological variation, reads really are independent draws and pooling is fine. φ = 0.02: 0 calls, 7.0%. φ = 0.2: **1 050 calls**, 32.6%. At φ = 0.1 with 5 reads: 0 calls (4.8%); 50 reads: **1 525 calls** (40.3%); 100 reads: **2 406 calls** (54.1%). The pooled test assumes the binomial variance $Np(1-p)$, so its standard error of β shrinks as $1/\sqrt{N}$. The real variance is larger by the factor $1 + (N-1)\varphi$, which *grows* with $N$: at 5 reads it is 1.4, at 100 reads 10.9. With more reads the biological differences between replicates become "significant", although they are the same in both groups. Depth cannot remove biological variation; only a test that measures it can.
+
+**E3.** 3 vs 3 at 20 reads: the beta-binomial finds **4%** of the 453 differential CpGs (22 calls, 2 false); Fisher makes 305 calls of which **116 (38%) are false**. At 100 reads: beta-binomial **25%**; Fisher finds 94% but 1 470 of its 1 895 calls (78%) are false. At 20 reads with 6 replicates: beta-binomial **43%** (201 calls, 8 false); with 8 replicates **58%**. Six samples at 20 reads (120 reads per group) beat three samples at 100 reads (300 reads per group): each extra replicate gives an independent draw of the biological level, while extra reads only measure the same three samples more precisely (B1(c)).
+
+**E4.** (a) With one sample per group only Fisher can run: there is no replicate to estimate φ or a variance from. Its 43 calls contain **19 false (44%)**, and nothing in the data tells you which. A 1 vs 1 comparison can say that two samples differ, not that two groups do. (b) At 6 vs 6 the t-test finds **10%** (46 calls, 0 false), the beta-binomial **43%**. The t-test estimates the variance of each CpG from only 12 values (10 degrees of freedom) and ignores how many reads each β is based on; the beta-binomial uses the read counts and borrows φ from all CpGs, as DSS (and DESeq2 for RNA-seq) shrink dispersions towards a common value.
+:::
+
 ## In R
 
 You need data.table, GenomicRanges, rtracklayer, DSS and ggplot2 (see *Install the software you need*). Run R in the folder where C1 wrote the `.dss.txt` files.
