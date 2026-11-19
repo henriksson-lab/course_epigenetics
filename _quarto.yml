@@ -64,6 +64,8 @@ website:
                 href: chromatin-intro/quiz.qmd
               - text: "Exercise"
                 href: chromatin-intro/exercise.qmd
+              - text: "Demo: Polycomb memory"
+                href: chromatin-intro/exercise.qmd#explore
           - section: "Genomic intervals"
             contents:
               - text: "Lecture (slides)"
@@ -72,6 +74,8 @@ website:
                 href: genomic-intervals/quiz.qmd
               - text: "Exercise"
                 href: genomic-intervals/exercise.qmd
+              - text: "Demo: shuffle null for overlaps"
+                href: genomic-intervals/exercise.qmd#explore
           - section: "Gene regulation"
             contents:
               - text: "Lecture (slides)"
@@ -88,6 +92,8 @@ website:
                 href: enrichment-alignment/quiz.qmd
               - text: "Exercise"
                 href: enrichment-alignment/exercise.qmd
+              - text: "Demo: from reads to coverage"
+                href: enrichment-alignment/exercise.qmd#explore
           - section: "Experimental design and QC"
             contents:
               - text: "Lecture (slides)"
@@ -96,6 +102,10 @@ website:
                 href: epigenomics-design/quiz.qmd
               - text: "Exercise"
                 href: epigenomics-design/exercise.qmd
+              - text: "Demo: fingerprint and library complexity"
+                href: epigenomics-design/exercise.qmd#explore-fingerprint
+              - text: "Demo: strand cross-correlation"
+                href: epigenomics-design/exercise.qmd#explore-crosscorr
       - section: "Chromatin accessibility (ATAC-seq)"
         contents:
           - section: "ATAC-seq: Tn5, fragment sizes, nucleosome ladder"
@@ -106,6 +116,8 @@ website:
                 href: atacseq-intro/quiz.qmd
               - text: "Exercise"
                 href: atacseq-intro/exercise.qmd
+              - text: "Demo: Tn5 and the nucleosome ladder"
+                href: atacseq-intro/exercise.qmd#explore
           - section: "ATAC-seq processing and peak calling"
             contents:
               - text: "Lecture (slides)"
@@ -122,6 +134,8 @@ website:
                 href: differential-accessibility/quiz.qmd
               - text: "Exercise"
                 href: differential-accessibility/exercise.qmd
+              - text: "Demo: normalisation under a global change"
+                href: differential-accessibility/exercise.qmd#explore
           - section: "Motifs, motif enrichment and TF footprinting"
             contents:
               - text: "Lecture (slides)"
@@ -130,6 +144,8 @@ website:
                 href: motifs-footprinting/quiz.qmd
               - text: "Exercise"
                 href: motifs-footprinting/exercise.qmd
+              - text: "Demo: motif enrichment 2×2"
+                href: motifs-footprinting/exercise.qmd#explore
       - section: "Protein–DNA binding and histone marks (ChIP-seq)"
         contents:
           - section: "ChIP-seq: the assay"
@@ -148,6 +164,8 @@ website:
                 href: chipseq-peaks/quiz.qmd
               - text: "Exercise"
                 href: chipseq-peaks/exercise.qmd
+              - text: "Demo: Poisson peak caller"
+                href: chipseq-peaks/exercise.qmd#explore
           - section: "CUT&RUN and CUT&Tag"
             contents:
               - text: "Lecture (slides)"
@@ -172,6 +190,8 @@ website:
                 href: chromatin-states/quiz.qmd
               - text: "Exercise"
                 href: chromatin-states/exercise.qmd
+              - text: "Demo: chromatin-state HMM"
+                href: chromatin-states/exercise.qmd#explore
       - section: "DNA methylation"
         contents:
           - section: "DNA methylation biology"
@@ -190,6 +210,8 @@ website:
                 href: methylation-bisulfite/quiz.qmd
               - text: "Exercise"
                 href: methylation-bisulfite/exercise.qmd
+              - text: "Demo: bisulfite conversion and calls"
+                href: methylation-bisulfite/exercise.qmd#explore
           - section: "Differential methylation"
             contents:
               - text: "Lecture (slides)"
@@ -198,6 +220,8 @@ website:
                 href: methylation-differential/quiz.qmd
               - text: "Exercise"
                 href: methylation-differential/exercise.qmd
+              - text: "Demo: pooled reads vs replicates"
+                href: methylation-differential/exercise.qmd#explore
           - section: "Methylation arrays (Illumina EPIC)"
             contents:
               - text: "Lecture (slides)"
@@ -214,6 +238,8 @@ website:
                 href: epigenetic-clocks/quiz.qmd
               - text: "Exercise"
                 href: epigenetic-clocks/exercise.qmd
+              - text: "Demo: fitting an epigenetic clock"
+                href: epigenetic-clocks/exercise.qmd#explore
           - section: "Methylation and chromatin from long reads"
             contents:
               - text: "Lecture (slides)"
@@ -232,6 +258,8 @@ website:
                 href: genome-3d-intro/quiz.qmd
               - text: "Exercise"
                 href: genome-3d-intro/exercise.qmd
+              - text: "Demo: loop extrusion"
+                href: genome-3d-intro/exercise.qmd#explore
           - section: "Hi-C: from reads to contact matrices"
             contents:
               - text: "Lecture (slides)"
@@ -248,6 +276,8 @@ website:
                 href: hic-features/quiz.qmd
               - text: "Exercise"
                 href: hic-features/exercise.qmd
+              - text: "Demo: compartments and the eigenvector"
+                href: hic-features/exercise.qmd#explore
       - section: "Integration and interpretation"
         contents:
           - section: "Linking regulatory elements to genes"
@@ -276,6 +306,8 @@ website:
                 href: ml-basics/quiz.qmd
               - text: "Exercise"
                 href: ml-basics/exercise.qmd
+              - text: "Demo: ROC and PR under imbalance"
+                href: ml-basics/exercise.qmd#explore
           - section: "What people try to predict"
             contents:
               - text: "Lecture (slides)"
@@ -284,6 +316,8 @@ website:
                 href: ml-prediction-tasks/quiz.qmd
               - text: "Exercise"
                 href: ml-prediction-tasks/exercise.qmd
+              - text: "Demo: leakage in data splits"
+                href: ml-prediction-tasks/exercise.qmd#explore
           - section: "How a CNN reads DNA"
             contents:
               - text: "Lecture (slides)"
@@ -292,6 +326,8 @@ website:
                 href: ml-cnn-dna/quiz.qmd
               - text: "Exercise"
                 href: ml-cnn-dna/exercise.qmd
+              - text: "Demo: a CNN filter reads DNA"
+                href: ml-cnn-dna/exercise.qmd#explore
           - section: "What did the model learn? Variant effects"
             contents:
               - text: "Lecture (slides)"

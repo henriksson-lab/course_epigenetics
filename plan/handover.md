@@ -33,7 +33,7 @@
 - This machine: conda `samtools` first on PATH is 1.3.1 (use `/usr/bin/samtools`);
   deepTools needs `LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu`.
 
-## Demos (2026-11-19: built, committed locally, NOT yet linked/rendered/pushed)
+## Demos (2026-11-19: all 18 built, linked in the sidebar, rendered and pushed)
 Built per `plan/demo-brief.md` by parallel agents; each embedded an Explore
 section (E-questions + solutions) in its unit's exercise page and built
 `demos/dist/<name>.js`. Done (15): readcoverage, shufflenull, tn5ladder,
