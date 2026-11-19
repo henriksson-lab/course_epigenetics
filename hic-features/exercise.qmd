@@ -1,0 +1,464 @@
+---
+title: "Exercise: Calling compartments, TADs and loops"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+## Goal
+
+After this exercise you will be able to:
+
+- Compute observed/expected values, find the compartment pattern and choose the sign of the eigenvector, on a toy matrix by hand.
+- Compute an insulation score and an APA score by hand, and decide whether a bright pixel is a loop.
+- Call compartments, boundaries and dots on real GM12878 Hi-C with `cooltools`, and test them against GC content, histone marks, CTCF ChIP-seq and published calls.
+- Find the orientation of CTCF motifs at loop anchors in R, and judge claims about differential TADs and loops.
+
+## Background
+
+**Observed/expected.** $E(s)$ is the mean balanced contact frequency of all pixels at distance $s$ (one diagonal); O/E = pixel / $E(s)$.
+
+**Compartments.** Correlate the rows of the O/E matrix (or centre it) and take the first eigenvector, E1. Bins with the same sign have similar contact profiles. The sign is arbitrary: flip E1 so that it is positive where GC content (or gene density) is high: that is compartment **A**. A **saddle plot** averages O/E over pairs of E1 groups; **strength** = (AA + BB)/(AB + BA).
+
+**Insulation.** For each position, sum the contacts in a $w \times w$ window that straddles it, just off the diagonal; the score is $\log_2$(sum / mean sum along the chromosome). **Boundaries** are local minima.
+
+**Dots.** A loop pixel is tested against a **local** expected value: its distance-expected $E$ scaled by observed/expected in a neighbourhood (donut, lower-left, horizontal, vertical), with a Poisson test. **APA** averages O/E submatrices around many loops; score = centre / mean of the lower-left corner.
+
+## Data
+
+GM12878 in situ Hi-C (Rao et al. 2014), as reprocessed by ENCODE on GRCh38 (experiment ENCSR410MDC), reduced to chr19 and chr21, and ENCODE's own calls; ChIP-seq from earlier units:
+
+| file | what |
+|---|---|
+| `gm12878_hic_chr19_chr21.mcool` | contacts within chr19 and within chr21, 5 kb to 500 kb, ICE-balanced |
+| `gm12878_hic_loops_hiccups.bedpe.gz` | ENCODE's HiCCUPS loops (genome-wide) |
+| `gm12878_hic_domains_arrowhead.bedpe.gz` | ENCODE's Arrowhead domains |
+| `gm12878_hic_eigenvector_10kb.bigWig` | ENCODE's compartment eigenvector (Juicer, 10 kb) |
+| `gm12878_ctcf_peaks.bed.gz`, `gm12878_ctcf_fc.bigWig` | CTCF ChIP-seq peaks and signal |
+| `gm12878_h3k27ac_fc.bigWig`, `gm12878_h3k9me3_fc.bigWig` | histone mark signal |
+| `hg38.fa.bgz` | the genome, for GC content and motifs |
+
+```bash
+data/download.sh hic-features      # the .mcool is made by data/prepare-hic.sh matrices
+mkdir -p ~/epi/hicfeatures && cd ~/epi/hicfeatures
+D=/path/to/course/data
+```
+
+You need `cooler`, `cooltools`, `samtools` and `bedtools` on the command line; in Python `cooler`, `cooltools`, `bioframe`, `pyfaidx`, `pyBigWig`, `numpy`, `pandas` and `matplotlib` (one conda line: `conda create -n hic -c conda-forge -c bioconda python=3.11 cooler=0.10 cooltools=0.7 pairtools=1.1 bwa samtools bedtools pybigwig pyfaidx bioframe matplotlib`); in R `GenomicRanges`, `rtracklayer`, `Rsamtools`, `JASPAR2024`, `TFBSTools` and `motifmatchr`, as in *Gene regulation*. The whole exercise runs in about 10 minutes on a laptop; `cooltools dots` takes 1–3 minutes.
+
+*Simplification:* we analyse two chromosomes of a published, very deep map, at one or a few resolutions. Calls on a whole genome, on shallower data, or with other callers will differ; that is part of the lesson.
+
+## By hand
+
+**B1. Compartments on a toy chromosome.** A balanced map of six 1-Mb bins (upper triangle):
+
+```
+        1     2     3     4     5     6
+1       –    10    15     9     2     2
+2             –    10     5    10     6
+3                   –    30     5     3
+4                         –    10     5
+5                               –    30
+6                                     –
+```
+
+(a) Compute the expected value $E(s)$ for distances of 1, 2 and 3 bins (the mean of each diagonal).
+
+(b) Compute O/E for pixels (1, 3), (2, 4), (1, 4), (2, 5) and (3, 6). Which bins seem to belong together?
+
+(c) Sort the six bins into two groups by eye from the O/E values.
+
+(d) An eigensolver returns E1 = (−0.41, 0.40, −0.42, −0.40, 0.41, 0.42). GC content of the bins is 0.48, 0.38, 0.50, 0.47, 0.40, 0.37. Which bins are compartment A? What would have happened in a genome-wide analysis if you had not checked the sign?
+
+**B2. Insulation by hand.** In this 8-bin map, bins 1–4 and 5–8 are two domains. Contacts within a domain are 40, 22, 15 at distances 1, 2, 3 bins; across the boundary they are 8, 5, 4, 3 at distances 1, 2, 3, 4.
+
+(a) With a window of $w = 2$ bins, the window for the gap after bin $k$ covers pixels $(k-1, k+1)$, $(k-1, k+2)$, $(k, k+1)$, $(k, k+2)$. Compute the window sums for the gaps after bins 2, 3, 4, 5 and 6.
+
+(b) Compute the insulation score $\log_2$(sum / mean of the five sums) at each gap. Where is the boundary, and how deep is it?
+
+(c) What would happen with $w = 1$, and with $w = 4$, in a real map with nested domains?
+
+**B3. Read a saddle plot.** Three E1 groups (B, middle, A), mean O/E:
+
+```
+            control                 cohesin depleted
+         B     mid    A           B     mid    A
+B       2.0    1.0   0.4         2.4    1.0   0.3
+mid     1.0    1.1   0.9         1.0    1.1   0.9
+A       0.4    0.9   1.5         0.3    0.9   1.9
+```
+
+(a) Compute compartment strength in both conditions. (b) Is the change what you expect from *3D genome organisation*? Why? (c) What must be the same in the two analyses for the comparison to be fair?
+
+**B4. Is it a loop?** Two pixels are 200 kb from the diagonal, where the distance-expected count is $E = 40$.
+
+| | pixel count | donut: observed sum | donut: expected sum |
+|---|---|---|---|
+| pixel X | 120 | 400 | 320 |
+| pixel Y | 70 | 1 120 | 700 |
+
+(a) Compute O/E against the distance-expected value for each pixel.
+
+(b) Compute the donut-corrected local expected value ($E \times$ observed sum / expected sum) and O/E against it. Which pixel is a loop candidate?
+
+(c) Pixel Y lies at the corner of a strong domain. Explain why the distance-expected value alone would mislead you.
+
+(d) For pixel X, is a count of 120 surprising if the true mean is the local expected value? (A Poisson variable with mean 50 has standard deviation about 7.)
+
+**B5. APA.** An APA pileup of 400 loops (O/E, 21 × 21 pixels) has a centre value of 3.2 and a lower-left 6 × 6 mean of 1.4. The same 400 loop positions piled up in a Hi-C map of a different cell type give 1.5 and 1.3.
+
+(a) Compute both APA scores. (b) What do you conclude about these loops in the second cell type? (c) Why use the lower-left corner rather than the whole pileup as background?
+
+**B6. CTCF orientation.** At ten loops, the strongest CTCF motif at the left and right anchor lies on these strands:
+
+```
++ −    + −    + +    + −    − −    + −    − +    + −    + −    + −
+```
+
+(a) What fraction is convergent, tandem and divergent? What fractions would you expect if orientations were random? (b) Which model explains the excess of convergent pairs, and why are divergent pairs nearly absent at loop anchors although divergent CTCF pairs are common at domain boundaries?
+
+**B7. Judge the claims.**
+
+(a) "Knockout cells have 30% fewer loops than wild type (6 900 vs 9 800, HiCCUPS)." The knockout map has 400 M contacts, the wild type 1.2 B, one replicate each.
+
+(b) "TADs are unchanged after the treatment: 95% of boundaries overlap between conditions." The calls were made at 40-kb resolution with a single-scale caller.
+
+(c) "This enhancer forms a loop with gene X (HiChIP for H3K27ac), so it regulates X."
+
+**B8. Resolution.** A Hi-C experiment gives 300 million contacts genome-wide (about 60% within chromosomes). Which features can you analyse: compartments, domains, loops? At what bin size? (Rule of thumb from Rao et al. 2014: the resolution is the smallest bin size at which 80% of bins have at least 1 000 contacts.)
+
+## On the command line
+
+`cooltools` also has a command-line interface. These steps write tables you can inspect with `awk` and `bedtools`.
+
+### C1 — Expected and insulation
+
+```bash
+M=$D/gm12878_hic_chr19_chr21.mcool
+cooltools expected-cis -p 4 -o expected_10kb.tsv $M::resolutions/10000
+head -4 expected_10kb.tsv | cut -f1-8
+cooltools insulation --threshold Li -o insulation_10kb.tsv $M::resolutions/10000 100000 200000 500000
+head -2 insulation_10kb.tsv
+for w in 100000 200000 500000; do
+  awk -F'\t' -v c="is_boundary_$w" 'NR == 1 { for (i = 1; i <= NF; i++) if ($i == c) k = i; next } $k == "True"' \
+    insulation_10kb.tsv | wc -l
+done
+```
+
+(a) What do the columns of `expected_10kb.tsv` mean (the command shows the first eight)? Why is the expected value missing (NaN) for distances 0 and 1?
+
+(b) How many boundaries are there for each window size?
+
+### C2 — Boundaries and CTCF peaks
+
+```bash
+awk -F'\t' -v OFS='\t' 'NR == 1 { for (i = 1; i <= NF; i++) if ($i == "is_boundary_200000") k = i; next }
+  $k == "True" { print $1, $2, $3 }' insulation_10kb.tsv > boundaries_200kb.bed
+zcat $D/gm12878_ctcf_peaks.bed.gz | awk -v OFS='\t' '$1 == "chr19" || $1 == "chr21" { s = $2 + $10; print $1, s, s + 1 }' \
+  | sort -k1,1 -k2,2n > ctcf_summits.bed
+wc -l < boundaries_200kb.bed
+bedtools window -w 10000 -u -a boundaries_200kb.bed -b ctcf_summits.bed | wc -l
+awk -F'\t' -v OFS='\t' 'NR > 1 && $5 == "False" { print $1, $2, $3 }' insulation_10kb.tsv \
+  | awk 'BEGIN { srand(1) } { print rand() "\t" $0 }' | sort -k1,1g | head -160 | cut -f2- | sort -k1,1 -k2,2n \
+  | bedtools window -w 10000 -u -a - -b ctcf_summits.bed | wc -l
+```
+
+(a) What fraction of boundaries lies within 10 kb of a CTCF summit, and what fraction of 160 random valid bins? (b) Why must the random bins be drawn from chr19 and chr21 and not from the whole genome?
+
+### C3 — Our boundaries and ENCODE's domains
+
+```bash
+zcat $D/gm12878_hic_domains_arrowhead.bedpe.gz | awk -v OFS='\t' '$1 == "chr19" || $1 == "chr21" { print $1, $2, $2 + 1; print $1, $3 - 1, $3 }' \
+  | sort -k1,1 -k2,2n -u > arrowhead_edges.bed
+wc -l < arrowhead_edges.bed
+bedtools window -w 20000 -u -a boundaries_200kb.bed -b arrowhead_edges.bed | wc -l
+bedtools window -w 20000 -u -a arrowhead_edges.bed -b boundaries_200kb.bed | wc -l
+```
+
+What fraction of our boundaries is near an Arrowhead domain edge, and what fraction of Arrowhead edges is near one of our boundaries? Why are the two numbers so different?
+
+## In R
+
+### R1 — CTCF motif orientation at loop anchors
+
+As in *Gene regulation*, scan 100 bp around each CTCF peak summit with the JASPAR CTCF matrix, keep the strand of the best match, and give each loop anchor the motif of its strongest CTCF peak:
+
+```r
+suppressPackageStartupMessages({
+  library(GenomicRanges); library(rtracklayer); library(Rsamtools); library(Biostrings)
+  library(JASPAR2024); library(TFBSTools); library(RSQLite); library(motifmatchr)
+})
+D <- "/path/to/course/data"
+lp <- read.table(file.path(D, "gm12878_hic_loops_hiccups.bedpe.gz"), sep = "\t", comment.char = "#")[, 1:6]
+names(lp) <- c("chrom1", "start1", "end1", "chrom2", "start2", "end2")
+a1 <- GRanges(lp$chrom1, IRanges(lp$start1 + 1, lp$end1))
+a2 <- GRanges(lp$chrom2, IRanges(lp$start2 + 1, lp$end2))
+ctcf <- import(file.path(D, "gm12878_ctcf_peaks.bed.gz"), format = "narrowPeak")
+ctcf <- ctcf[overlapsAny(ctcf, c(a1, a2))]          # only peaks in loop anchors
+win <- resize(GRanges(seqnames(ctcf), IRanges(start(ctcf) + ctcf$peak, width = 1)), 100, fix = "center")
+ctcf_m <- getMatrixByID(dbConnect(SQLite(), db(JASPAR2024())), "MA0139.2")
+pos <- matchMotifs(ctcf_m, getSeq(FaFile(file.path(D, "hg38.fa.bgz")), win), p.cutoff = 1e-4, bg = "even",
+                   out = "positions")[[1]]
+ctcf$motif <- vapply(pos, function(x) if (length(x) == 0) NA_character_ else
+                     as.character(mcols(x)$strand)[which.max(mcols(x)$score)], "")
+c(peaks = length(ctcf), with_motif = sum(!is.na(ctcf$motif)))
+anchor_motif <- function(a) {
+  h <- findOverlaps(a, ctcf)
+  d <- data.frame(q = queryHits(h), s = subjectHits(h), sig = ctcf$signalValue[subjectHits(h)])
+  d <- d[!is.na(ctcf$motif[d$s]), ]
+  d <- d[order(d$q, -d$sig), ]; d <- d[!duplicated(d$q), ]
+  out <- rep(NA_character_, length(a)); out[d$q] <- ctcf$motif[d$s]; out
+}
+lp$motif1 <- anchor_motif(a1); lp$motif2 <- anchor_motif(a2)
+write.table(lp, "loop_ctcf_orientation.tsv", sep = "\t", quote = FALSE, row.names = FALSE)
+```
+
+(a) How many CTCF peaks lie in loop anchors, and how many of them have a motif match?
+
+(b) Why take the strongest peak per anchor? What could go wrong with an anchor 25 kb wide?
+
+### R2 — Convergent, tandem, divergent
+
+```r
+both <- lp[!is.na(lp$motif1) & !is.na(lp$motif2), ]
+cls <- c("+-" = "convergent", "-+" = "divergent", "++" = "tandem", "--" = "tandem")[paste0(both$motif1, both$motif2)]
+nrow(lp); nrow(both)
+round(100 * prop.table(table(cls)), 1)
+mean(!is.na(lp$motif1) | !is.na(lp$motif2))
+```
+
+(a) What fraction of loops has a motif at both anchors? At least one?
+
+(b) What fractions are convergent, tandem and divergent? Compare with B6 and with Rao et al. 2014 (over 90% convergent for anchors with a single motif).
+
+## In Python
+
+```python
+import numpy as np, pandas as pd, matplotlib.pyplot as plt
+import cooler, cooltools, bioframe, pyBigWig, subprocess
+D = "/path/to/course/data"
+MC = f"{D}/gm12878_hic_chr19_chr21.mcool::resolutions/"
+CHROMS = ["chr19", "chr21"]
+def view_of(clr):
+    return pd.DataFrame({"chrom": CHROMS, "start": 0, "end": [clr.chromsizes[c] for c in CHROMS], "name": CHROMS})
+def bw_mean(path, df):
+    b = pyBigWig.open(path)
+    v = [b.stats(r.chrom, int(r.start), int(min(r.end, b.chroms(r.chrom))), type="mean")[0] for r in df.itertuples()]
+    return np.array([np.nan if x is None else x for x in v], dtype=float)
+```
+
+### P1 — Compartments
+
+```python
+c100 = cooler.Cooler(MC + "100000")
+view = view_of(c100)
+subprocess.run(f"samtools faidx {D}/hg38.fa.bgz chr19 chr21 > chr19_chr21.fa", shell=True, check=True)
+bins = c100.bins()[:][["chrom", "start", "end"]]
+gc = bioframe.frac_gc(bins, bioframe.load_fasta("chr19_chr21.fa"))
+eigvals, eigs = cooltools.eigs_cis(c100, view_df=view, phasing_track=gc, n_eigs=3)
+print(eigvals)
+eigs["GC"] = gc["GC"].values
+eigs["H3K27ac"] = bw_mean(f"{D}/gm12878_h3k27ac_fc.bigWig", eigs)
+eigs["H3K9me3"] = bw_mean(f"{D}/gm12878_h3k9me3_fc.bigWig", eigs)
+eigs["ENCODE"] = bw_mean(f"{D}/gm12878_hic_eigenvector_10kb.bigWig", eigs)
+for ch in CHROMS:
+    e = eigs[(eigs.chrom == ch) & eigs.E1.notna()]
+    print(ch, len(e), "bins,", round((e.E1 > 0).mean() * 100), "% A;",
+          {k: round(e.E1.corr(e[k], method="spearman"), 2) for k in ["GC", "H3K27ac", "H3K9me3", "ENCODE"]},
+          "E2 vs GC:", round(e.E2.corr(e.GC, method="spearman"), 2))
+e = eigs[eigs.chrom == "chr19"]
+plt.figure(figsize=(10, 2.5))
+plt.fill_between(e.start / 1e6, 0, e.E1, step="post")
+plt.xlabel("chr19 (Mb)"); plt.ylabel("E1"); plt.savefig("p1_e1_chr19.png", dpi=120)
+```
+
+(a) What fraction of each chromosome is A? How strongly does E1 correlate with GC, H3K27ac, H3K9me3 and ENCODE's eigenvector?
+
+(b) Does E2 also correlate with GC? How would you notice if A/B had ended up in E2?
+
+(c) Run `eigs_cis` again without `phasing_track` and compare the sign of E1 on the two chromosomes.
+
+### P2 — Saddle plot
+
+```python
+exp100 = cooltools.expected_cis(c100, view_df=view, nproc=2)
+S, N = cooltools.saddle(c100, exp100, eigs[["chrom", "start", "end", "E1"]], "cis",
+                        n_bins=5, qrange=(0.0, 1.0), view_df=view)
+s5 = (S / N)[1:-1, 1:-1]                 # drop the two outlier rows/columns
+print(np.round(s5, 2))
+print("strength:", round((s5[0, 0] + s5[4, 4]) / (s5[0, 4] + s5[4, 0]), 2))
+```
+
+(a) Which corner is strongest? Compute the strength. (b) Why does the middle group (3) show values near 1 with everything?
+
+### P3 — Insulation and boundaries
+
+```python
+c10 = cooler.Cooler(MC + "10000")
+v10 = view_of(c10)
+ins = cooltools.insulation(c10, [100_000, 200_000, 500_000], view_df=v10, verbose=False)
+for w in [100_000, 200_000, 500_000]:
+    print(w // 1000, "kb window:", ins[f"is_boundary_{w}"].sum(), "boundaries")
+ctcf = pd.read_csv(f"{D}/gm12878_ctcf_peaks.bed.gz", sep="\t", header=None)
+ctcf = ctcf[ctcf[0].isin(CHROMS)]
+summits = pd.DataFrame({"chrom": ctcf[0], "start": ctcf[1] + ctcf[9], "end": ctcf[1] + ctcf[9] + 1})
+near = lambda df: bioframe.overlap(df, bioframe.expand(summits, pad=10_000), how="left", return_index=True) \
+    .groupby("index")["index_"].apply(lambda x: x.notna().any()).mean()
+b200 = ins[ins["is_boundary_200000"]][["chrom", "start", "end"]]
+valid = ins[~ins.is_bad_bin][["chrom", "start", "end"]]
+print("boundaries near CTCF:", round(near(b200), 2), " random bins:", round(near(valid.sample(len(b200), random_state=1)), 2))
+win = ins[(ins.chrom == "chr21") & (ins.start >= 37_000_000) & (ins.end <= 42_000_000)]
+plt.figure(figsize=(10, 3))
+for w in [100_000, 200_000, 500_000]:
+    plt.plot(win.start / 1e6, win[f"log2_insulation_score_{w}"], label=f"{w // 1000} kb")
+plt.legend(); plt.xlabel("chr21 (Mb)"); plt.savefig("p3_insulation.png", dpi=120)
+```
+
+(a) How many boundaries for each window? Do the numbers match C1?
+
+(b) Compare the CTCF fractions with C2. (Random bins differ, so small differences are expected.)
+
+(c) In the plot, which dips appear at every window size?
+
+### P4 — Dots
+
+```python
+exp10 = cooltools.expected_cis(c10, view_df=v10, nproc=4)
+dots = cooltools.dots(c10, expected=exp10, view_df=v10, max_loci_separation=2_000_000, nproc=4)
+print(len(dots), "dots;", dots.groupby("chrom1").size().to_dict())
+hic = pd.read_csv(f"{D}/gm12878_hic_loops_hiccups.bedpe.gz", sep="\t", comment="#", header=None).iloc[:, :6]
+hic.columns = ["chrom1", "start1", "end1", "chrom2", "start2", "end2"]
+hic = hic[hic.chrom1.isin(CHROMS)]
+def frac_matched(a, b, tol=20_000):
+    hits = 0
+    for r in a.itertuples():
+        x = b[b.chrom1 == r.chrom1]
+        d1 = np.abs((x.start1 + x.end1) / 2 - (r.start1 + r.end1) / 2)
+        d2 = np.abs((x.start2 + x.end2) / 2 - (r.start2 + r.end2) / 2)
+        hits += np.any((d1 <= tol) & (d2 <= tol))
+    return hits / len(a)
+hic2 = hic[hic.start2 - hic.start1 <= 2_000_000]
+print("ours in HiCCUPS:", round(frac_matched(dots, hic), 2), " HiCCUPS (<= 2 Mb) in ours:", round(frac_matched(hic2, dots), 2))
+```
+
+(a) How many dots does cooltools find, and how many HiCCUPS loops are on the two chromosomes?
+
+(b) What fraction of our dots is confirmed, and what fraction of HiCCUPS loops do we recover? Give three reasons for the difference.
+
+### P5 — APA by CTCF orientation
+
+This uses the table written in R1.
+
+```python
+lo = pd.read_csv("loop_ctcf_orientation.tsv", sep="\t")
+lo = lo[lo.chrom1.isin(CHROMS)]
+lo["cls"] = lo.motif1.fillna("0") + lo.motif2.fillna("0")
+def to_feat(t):
+    m1, m2 = (t.start1 + t.end1) // 2, (t.start2 + t.end2) // 2
+    f = pd.DataFrame({"chrom1": t.chrom1, "start1": m1 - 5000, "end1": m1 + 5000,
+                      "chrom2": t.chrom2, "start2": m2 - 5000, "end2": m2 + 5000})
+    return f[(f.start2 - f.start1) >= 150_000]
+sets = {"convergent": to_feat(lo[lo.cls == "+-"]), "other": to_feat(lo[lo.cls != "+-"])}
+shifted = to_feat(lo).copy()
+for k in ["start1", "end1", "start2", "end2"]:
+    shifted[k] += 500_000
+sets["shifted 500 kb"] = shifted[shifted.end2 < shifted.chrom2.map(c10.chromsizes)]
+fig, axs = plt.subplots(1, 3, figsize=(12, 4))
+for ax, (name, f) in zip(axs, sets.items()):
+    st = cooltools.pileup(c10, f, view_df=v10, expected_df=exp10, flank=100_000)
+    P = np.nanmean(st, axis=0)
+    apa = P[10, 10] / np.nanmean(P[-6:, :6])
+    print(name, len(f), "loops: centre", round(P[10, 10], 2), "APA", round(apa, 2))
+    ax.imshow(np.log2(P), cmap="coolwarm", vmin=-1.2, vmax=1.2); ax.set_title(f"{name}: APA {apa:.1f}")
+plt.savefig("p5_apa.png", dpi=120)
+```
+
+(a) What are the APA scores of the three sets? (b) What does the shifted control show? (c) Why pile up O/E rather than balanced counts?
+
+## Hints
+
+::: {.callout-tip collapse="true" title="Hint 1 — compartments and saddles (B1, B3, P1, P2)"}
+$E(s)$ is the mean of one diagonal. Bins in the same compartment have O/E > 1 with each other at every distance. Check the sign of E1 against a track: here, bins with higher GC must get E1 > 0. Strength = (AA + BB) / (AB + BA) from the corners of the saddle. Papers: [Lieberman-Aiden et al. 2009](https://doi.org/10.1126/science.1181369); tools: [`cooltools.eigs_cis`](https://cooltools.readthedocs.io/en/latest/cooltools.api.html#cooltools.api.eigdecomp.eigs_cis), [`cooltools.saddle`](https://cooltools.readthedocs.io/en/latest/cooltools.api.html#cooltools.api.saddle.saddle), [`bioframe.frac_gc`](https://bioframe.readthedocs.io/en/latest/api-resources.html), and the [compartments tutorial](https://cooltools.readthedocs.io/en/latest/notebooks/compartments_and_saddles.html).
+:::
+
+::: {.callout-tip collapse="true" title="Hint 2 — insulation (B2, C1–C3, P3)"}
+Write out the four pixels of each window, look them up, add. $\log_2(x) = \ln x / \ln 2$. The original insulation score: [Crane et al. 2015](https://doi.org/10.1038/nature14450); [`cooltools.insulation`](https://cooltools.readthedocs.io/en/latest/cooltools.api.html#cooltools.api.insulation.insulation) and its [tutorial](https://cooltools.readthedocs.io/en/latest/notebooks/insulation_and_boundaries.html); the [cooltools CLI](https://cooltools.readthedocs.io/en/latest/cooltools.html); [`bedtools window`](https://bedtools.readthedocs.io/en/latest/content/tools/window.html) reports features within a distance. Caller comparisons: [Forcato et al. 2017](https://doi.org/10.1038/nmeth.4325).
+:::
+
+::: {.callout-tip collapse="true" title="Hint 3 — dots and APA (B4, B5, P4, P5)"}
+Local expected = $E \times$ (observed in kernel / expected in kernel). For a Poisson mean $\lambda$, the standard deviation is $\sqrt{\lambda}$. APA score = centre / lower-left mean. HiCCUPS and APA: [Rao et al. 2014](https://doi.org/10.1016/j.cell.2014.11.021); [`cooltools.dots`](https://cooltools.readthedocs.io/en/latest/cooltools.api.html#cooltools.api.dotfinder.dots) and its [tutorial](https://cooltools.readthedocs.io/en/latest/notebooks/dots.html); [`cooltools.pileup`](https://cooltools.readthedocs.io/en/latest/cooltools.api.html#cooltools.api.snipping.pileup) and the [pileup tutorial](https://cooltools.readthedocs.io/en/latest/notebooks/pileup_CTCF.html).
+:::
+
+::: {.callout-tip collapse="true" title="Hint 4 — CTCF orientation (B6, R1, R2)"}
+"+−" means the left anchor's motif is on the + strand and the right anchor's on the − strand: they point towards each other. With random strands each of +−, −+, ++, −− has probability 1/4. The R tools are those of *Gene regulation*: [`motifmatchr::matchMotifs`](https://bioconductor.org/packages/motifmatchr) with `out = "positions"` (a list per sequence with `start`, `strand` and `score`), [`JASPAR2024`](https://bioconductor.org/packages/JASPAR2024), [`GenomicRanges::findOverlaps`](https://bioconductor.org/packages/GenomicRanges). Loop extrusion: [Fudenberg et al. 2016](https://doi.org/10.1016/j.celrep.2016.04.085).
+:::
+
+::: {.callout-tip collapse="true" title="Hint 5 — judging claims (B7, B8)"}
+Ask: equal depth? replicates? which caller, which resolution? is the statistic continuous (insulation, APA) or a binary call? does the assay itself enrich for the feature (HiChIP)? does the claim need a perturbation? For B8, count bins: the genome is 3.1 Gb; each contact adds to the row sums of two bins. Review: [Lajoie et al. 2015](https://doi.org/10.1016/j.ymeth.2014.10.031).
+:::
+
+## Solutions
+
+::: {.callout-note collapse="true" title="Solutions — by hand"}
+**B1.** (a) Distance 1: (10 + 10 + 30 + 10 + 30) / 5 = **18**. Distance 2: (15 + 5 + 5 + 5) / 4 = **7.5**. Distance 3: (9 + 10 + 3) / 3 = **7.33**. (b) (1, 3) = 15 / 7.5 = **2.0**; (2, 4) = 5 / 7.5 = **0.67**; (1, 4) = 9 / 7.33 = **1.23**; (2, 5) = 10 / 7.33 = **1.36**; (3, 6) = 3 / 7.33 = **0.41**. Bins 1, 3, 4 attract each other, and 2, 5, 6 attract each other. (c) {1, 3, 4} and {2, 5, 6}: also (3, 4) = 30 and (5, 6) = 30 are high against 18, while (1, 2), (2, 3), (4, 5) are low. (d) GC is high in bins 1, 3, 4 (0.47–0.50), where E1 is negative: flip the sign. **A = bins 1, 3, 4**, B = 2, 5, 6. Without the check, chromosomes would be labelled at random: about half of them would have A and B swapped, and genome-wide statistics (e.g. "A is gene-rich") would be diluted or reversed.
+
+**B2.** (a) After bin 2: (1, 3) 22 + (1, 4) 15 + (2, 3) 40 + (2, 4) 22 = **99**. After 3: (2, 4) 22 + (2, 5) 4 + (3, 4) 40 + (3, 5) 5 = **71**. After 4: (3, 5) 5 + (3, 6) 4 + (4, 5) 8 + (4, 6) 5 = **22**. After 5: (4, 6) 5 + (4, 7) 4 + (5, 6) 40 + (5, 7) 22 = **71**. After 6: (5, 7) 22 + (5, 8) 15 + (6, 7) 40 + (6, 8) 22 = **99**. (b) Mean = 362 / 5 = 72.4. Scores: log2(99/72.4) = **+0.45**, log2(71/72.4) = **−0.03**, log2(22/72.4) = **−1.72**, −0.03, +0.45. The boundary is between bins 4 and 5, a dip of about 1.7 below its neighbours (2.2 in log2 units against the flanks at +0.45). (c) $w = 1$ uses one pixel per position: noisy, and it finds sub-domain boundaries; $w = 4$ (as large as the domains) smooths over small domains and only shows the main boundaries; with nested domains each window size gives a different, valid set (the lecture's 261 / 160 / 98 boundaries).
+
+**B3.** (a) Control: (2.0 + 1.5) / (0.4 + 0.4) = **4.4**. Cohesin depleted: (2.4 + 1.9) / (0.3 + 0.3) = **7.2**. (b) Yes: without cohesin, loop extrusion no longer mixes neighbouring A and B segments, so compartmentalisation strengthens (Rao et al. 2017; Schwarzer et al. 2017). (c) The same resolution and E1 groups (ideally E1 from one condition or from both pooled), similar depth, the same distance range (excluding the diagonal), and the same expected-value normalisation for each condition.
+
+**B4.** (a) X: 120 / 40 = **3.0**; Y: 70 / 40 = **1.75**. (b) X: local expected = 40 × 400/320 = **50**; O/E = 120/50 = **2.4**. Y: local expected = 40 × 1 120/700 = **64**; O/E = 70/64 = **1.09**. X is a loop candidate; Y is not. (c) Y sits in a region (a domain) where every pixel is enriched, so it is above the distance-expected value but not above its neighbours: a domain corner without a dot. (d) Very: 120 is (120 − 50)/7 ≈ 10 standard deviations above the mean; the Poisson p-value is far below any threshold, even after correcting for millions of tests.
+
+**B5.** (a) 3.2 / 1.4 = **2.3** in the first cell type; 1.5 / 1.3 = **1.15** in the second. (b) The loops are much weaker or absent in the second cell type on average (or the second map has lower quality or resolution: check its APA at its own loops before concluding). Some may persist: an average hides heterogeneity, so look at subsets or at individual strong loops. (c) The whole pileup includes the stripes and domain signal around the loop; the lower-left corner (towards the diagonal) is the strongest background, so the score is conservative: a high score means a point-like enrichment, not just a domain.
+
+**B6.** (a) Convergent (+−): 7 of 10 = **70%**; tandem (++, −−): 2 = **20%**; divergent (−+): 1 = **10%**. Random expectation: 25% convergent, 50% tandem, 25% divergent. (b) Loop extrusion: cohesin stops at CTCF bound with its N-terminus facing the loop, i.e. motifs pointing into the loop; so loops form between convergent sites. Divergent sites (← →) point away from each other: each stops cohesin coming from outside, so a divergent pair separates two domains (a strong boundary) rather than anchoring a loop between them.
+
+**B7.** (a) Not comparable: the knockout map has a third of the depth, and loop calls depend strongly on depth; one replicate gives no variance. Downsample the wild type to 400 M and call again, use replicates, and compare loop strength at a common loop set (APA, or counts at fixed loop positions) rather than numbers of calls. (b) At 40 kb with one scale, boundary positions are coarse and the call is binary: insulation strength can drop by half while the boundary is still "called". Compare insulation scores or boundary strengths quantitatively at higher resolution, with replicates, and check several window sizes. (c) H3K27ac HiChIP enriches contacts at acetylated anchors, so active elements look connected partly because they are acetylated; and a contact is not regulation. Test with a perturbation: CRISPRi or deletion of the enhancer and measure X (and other genes).
+
+**B8.** About 180 M cis contacts. Compartments at 100 kb–1 Mb: easily (3.1 Gb / 100 kb = 31 000 bins, about 10 000 contacts per bin). Domains at 25–50 kb: possible (62 000–124 000 bins, a few thousand contacts each). Loops at 5–10 kb need ~1 000+ contacts in 80% of bins: at 10 kb there are 310 000 bins and 600 M row-sum entries (2 × 300 M), about 1 900 per bin on average, so 10 kb is borderline and 5 kb out of reach; Rao et al. needed billions of contacts for 1–5 kb. Use APA at known loops rather than calling loops de novo.
+:::
+
+::: {.callout-note collapse="true" title="Solutions — command line"}
+**C1.** (a) `region1 region2 dist dist_bp contact_frequency n_total n_valid count.sum balanced.sum count.avg balanced.avg`: for each chromosome and distance (in bins and bp), the number of pixels and of valid (not masked) pixels, the sums of raw and balanced counts, and their means; `contact_frequency` is the same as `balanced.avg`, i.e. $E(s)$. Distances 0 and 1 are ignored (`ignore_diags=2` by default, the same as balancing) because they are dominated by short-range artefacts and the polymer itself. (b) **261** / **160** / **98** boundaries for 100, 200 and 500 kb.
+
+**C2.** (a) **106** of **160** boundaries (**66%**) are within 10 kb of a CTCF summit, against **63** of 160 random valid bins (**39%**). (b) chr19 is very gene- and CTCF-rich, chr21 less so; random bins elsewhere in the genome would have a different CTCF density and are not covered by our matrix, so the comparison would be biased.
+
+**C3.** **843** distinct Arrowhead edges; **129** of our **160** boundaries (**81%**) lie within 20 kb of an edge, but only **267** of the edges (**32%**) near one of ours. Arrowhead calls nested domains of many sizes, so it has many more edges; most of our single-scale (200-kb window) boundaries are among them, but most of its edges are sub-domain or nested-domain edges that a 200-kb window does not resolve.
+:::
+
+::: {.callout-note collapse="true" title="Solutions — R"}
+**R1.** (a) **15 172** CTCF peaks lie in loop anchors; **12 761** (84%) of them have a motif match at $p < 10^{-4}$ within 50 bp of the summit. (b) An anchor of 5–25 kb can contain several CTCF peaks, sometimes in opposite orientations; the strongest peak is the most likely to be the one stopping cohesin, but not always. Peaks without a match, or matches in both orientations, add noise; the true fraction of convergent loops is therefore higher than what we measure.
+
+**R2.** (a) **5 716** of **14 599** loops (**39%**) have a motif at both anchors; **76%** at least one. (b) **83.9%** convergent, **14.9%** tandem, **1.2%** divergent: far from the 25 / 50 / 25 of random orientations, close to the lecture figure. Rao et al. report over 90% convergent when restricting to anchors with exactly one motif.
+:::
+
+::: {.callout-note collapse="true" title="Solutions — Python"}
+**P1.** (a) chr19: **57%** A; chr21: **46%**. Spearman ρ of E1 with GC **0.78** / **0.64**, H3K27ac **0.68** / **0.84**, H3K9me3 **−0.71** / **−0.31**, ENCODE's eigenvector **0.97** / **0.90** (chr19 / chr21). (b) E2 vs GC: **0.15** / **0.11**: E2 does not carry the A/B pattern here. If A/B had ended up in E2, E2 (not E1) would correlate with GC and the marks, and the E1 track would follow something else, e.g. a step at the centromere (one arm against the other). (c) Without phasing the sign is whatever the solver returns; in our run chr19 came out with the right sign (ρ with GC = +0.78) but chr21 flipped (ρ = −0.64): exactly the bug described in B1(d).
+
+**P2.** (a) B–B (top left) **2.46**, A–A **1.56**, A–B **0.31**: strength (2.46 + 1.56) / (0.31 + 0.31) = **6.6**. (b) Group 3 holds bins with E1 near 0: bins at A/B transitions, bins that are A in some cells and B in others, or mixed bins at 100 kb; their contacts are close to the expectation with everything.
+
+**P3.** (a) **261**, **160** and **98** boundaries; the same as the CLI (both call `cooltools.insulation` with the same defaults). (b) **66%** of the 200-kb boundaries are near a CTCF summit, against **45%** of random valid bins in this draw (39% in C2: a sample of 160 random bins varies by several percentage points). (c) The dips at about 39.5 and 41.1 Mb appear at every window size: strong boundaries.
+
+**P4.** (a) **178** dots (**118** on chr19, **60** on chr21); HiCCUPS has **533** loops on the two chromosomes, **486** of them spanning ≤ 2 Mb. (b) **96%** of our dots match a HiCCUPS loop; we recover **35%** of HiCCUPS loops. Reasons: HiCCUPS merged calls from 5, 10 and 25 kb, we used only 10 kb; different thresholds (cooltools' default FDR and clustering are conservative); HiCCUPS also calls dots up to 8 Mb; and nearby loops can be merged differently. Neither set is "the" loops of GM12878.
+
+**P5.** (a) Convergent (102 loops longer than 150 kb): centre O/E 3.89, APA **2.8**; other (223): centre 3.71, APA **2.8**; shifted (324): centre 1.07, APA **1.0**. The two loop classes are equally strong on average: every called loop passed the same threshold, and "other" contains many CTCF loops whose motif we missed. (b) The shifted control has no dot (APA ≈ 1): the enrichment belongs to the anchor positions, not to the distance or the domain. (c) Loops differ in length; balanced counts fall with distance, so averaging them mixes very different scales and is dominated by the shortest loops. O/E puts every loop on the same scale (1 = expected).
+:::
+
+## Where this leads
+
+- *Linking regulatory elements to genes* uses contact frequencies (and the activity-by-contact model) to assign enhancers to target genes.
+- *Epigenomics and genetic variation* asks whether disease variants fall in loop anchors and domain boundaries.
+- For a new Hi-C or Micro-C data set, the same steps run genome-wide with the open2c *distiller* pipeline, or `nf-core/hic`, followed by `cooltools`.
+
+## Key papers (optional further reading)
+
+*Not required reading and not examined.*
+
+- Rao et al. 2014, *Cell*. [A 3D map of the human genome at kilobase resolution reveals principles of chromatin looping](https://doi.org/10.1016/j.cell.2014.11.021).
+- Crane et al. 2015, *Nature*. [Condensin-driven remodelling of X chromosome topology during dosage compensation](https://doi.org/10.1038/nature14450).
+- Open2C et al. 2024, *PLoS Comput Biol*. [Cooltools: enabling high-resolution Hi-C analysis in Python](https://doi.org/10.1371/journal.pcbi.1012067).
+- Forcato et al. 2017, *Nat Methods*. [Comparison of computational methods for Hi-C data analysis](https://doi.org/10.1038/nmeth.4325).
+- Hsieh et al. 2015, *Cell*. [Mapping nucleosome resolution chromosome folding in yeast by Micro-C](https://doi.org/10.1016/j.cell.2015.05.048).
+- Mumbach et al. 2016, *Nat Methods*. [HiChIP: efficient and sensitive analysis of protein-directed genome architecture](https://doi.org/10.1038/nmeth.3999).

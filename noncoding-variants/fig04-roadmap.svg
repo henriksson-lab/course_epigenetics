@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 250" width="1120" height="250" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="aink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker></defs>
+<rect width="1120" height="250" fill="#ffffff"/>
+<rect x="10" y="40" width="110" height="96" rx="8" fill="#c0392b"/>
+<text x="65" y="82" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="middle">GWAS</text><text x="65" y="104" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="middle">locus</text>
+<path d="M124,88 L146,88" stroke="#1b2a3a" stroke-width="2" marker-end="url(#aink)"/>
+<rect x="150" y="40" width="166" height="96" rx="8" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="233.0" y="93" font-size="16" font-weight="bold" fill="#1b2a3a" text-anchor="middle">Which variant?</text>
+<text x="233.0" y="166" font-size="15" fill="#5b6b7a" text-anchor="middle">fine-mapping:</text>
+<text x="233.0" y="186" font-size="15" fill="#5b6b7a" text-anchor="middle">LD, posterior</text>
+<text x="233.0" y="206" font-size="15" fill="#5b6b7a" text-anchor="middle">probabilities</text>
+<path d="M318,88 L340,88" stroke="#1b2a3a" stroke-width="2" marker-end="url(#aink)"/>
+<rect x="344" y="40" width="166" height="96" rx="8" fill="#e8f3ec" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="427.0" y="93" font-size="16" font-weight="bold" fill="#1b2a3a" text-anchor="middle">Which cell type?</text>
+<text x="427.0" y="166" font-size="15" fill="#5b6b7a" text-anchor="middle">enrichment of</text>
+<text x="427.0" y="186" font-size="15" fill="#5b6b7a" text-anchor="middle">loci in cell-type</text>
+<text x="427.0" y="206" font-size="15" fill="#5b6b7a" text-anchor="middle">annotations</text>
+<path d="M512,88 L534,88" stroke="#1b2a3a" stroke-width="2" marker-end="url(#aink)"/>
+<rect x="538" y="40" width="166" height="96" rx="8" fill="#e8f3ec" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="621.0" y="93" font-size="16" font-weight="bold" fill="#1b2a3a" text-anchor="middle">Which element?</text>
+<text x="621.0" y="166" font-size="15" fill="#5b6b7a" text-anchor="middle">overlap with</text>
+<text x="621.0" y="186" font-size="15" fill="#5b6b7a" text-anchor="middle">ATAC / H3K27ac</text>
+<text x="621.0" y="206" font-size="15" fill="#5b6b7a" text-anchor="middle">peaks</text>
+<path d="M706,88 L728,88" stroke="#1b2a3a" stroke-width="2" marker-end="url(#aink)"/>
+<rect x="732" y="40" width="166" height="96" rx="8" fill="#e8f3ec" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="815.0" y="93" font-size="16" font-weight="bold" fill="#1b2a3a" text-anchor="middle">How?</text>
+<text x="815.0" y="166" font-size="15" fill="#5b6b7a" text-anchor="middle">motif change,</text>
+<text x="815.0" y="186" font-size="15" fill="#5b6b7a" text-anchor="middle">caQTL, allelic</text>
+<text x="815.0" y="206" font-size="15" fill="#5b6b7a" text-anchor="middle">imbalance</text>
+<path d="M900,88 L922,88" stroke="#1b2a3a" stroke-width="2" marker-end="url(#aink)"/>
+<rect x="926" y="40" width="166" height="96" rx="8" fill="#e8f3ec" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="1009.0" y="93" font-size="16" font-weight="bold" fill="#1b2a3a" text-anchor="middle">Which gene?</text>
+<text x="1009.0" y="166" font-size="15" fill="#5b6b7a" text-anchor="middle">ABC, contacts,</text>
+<text x="1009.0" y="186" font-size="15" fill="#5b6b7a" text-anchor="middle">eQTL and</text>
+<text x="1009.0" y="206" font-size="15" fill="#5b6b7a" text-anchor="middle">colocalisation</text>
+<text x="344" y="28" font-size="15" fill="#2e8b57" font-weight="bold">green: where epigenomic data enter</text>
+<text x="10" y="238" font-size="15" fill="#1b2a3a">Each step narrows the candidates; only an experiment (base editing, CRISPRi, a reporter assay) tests the final model.</text>
+</svg>

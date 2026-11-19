@@ -1,0 +1,95 @@
+---
+title: "Quiz: ChIP-seq: the assay"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+Short questions on the ChIP-seq protocol and on what its signal means. Try each on paper first, then open the answer.
+
+---
+
+**Q1.** Put the steps of a crosslinked ChIP-seq in order, and say for each which artefact it can introduce: immunoprecipitation, library PCR, sonication, formaldehyde fixation, reversal of crosslinks.
+
+::: {.callout-note collapse="true" title="Answer"}
+Fixation (too short: transient binders lost; too long: masked epitopes, poor shearing, indirect contacts) → sonication (breaks open chromatin more easily: promoters over-represented) → immunoprecipitation (cross-reactivity, sticky background, lot variation) → reversal of crosslinks and DNA purification (very little DNA) → library PCR (duplicates when few molecules went in).
+:::
+
+---
+
+**Q2.** What is an input control, and which three biases does it capture?
+
+::: {.callout-note collapse="true" title="Answer"}
+A sample of the same crosslinked, fragmented chromatin, taken through every step except the immunoprecipitation and sequenced. It shows the background the ChIP would have without enrichment: fragmentation bias towards open chromatin, copy number (amplified regions give more reads), and mappability/repeat artefacts (collapsed repeats, unmappable gaps). It must come from the same chromatin preparation as the ChIP.
+:::
+
+---
+
+**Q3.** A ChIP is made from $2 \times 10^6$ human cells and returns 2 ng of DNA. What fraction of the chromatin DNA is that (6.6 pg per cell)?
+
+::: {.callout-note collapse="true" title="Answer"}
+Chromatin DNA: $2 \times 10^6 \times 6.6$ pg $= 13.2$ µg. $2 / 13\,200 = 0.015\%$.
+:::
+
+---
+
+**Q4.** In ChIP-qPCR, 1% of the chromatin was kept as input. The input Ct is 24.0; the ChIP Ct at a bound site is 26.0. What is the percent of input?
+
+::: {.callout-tip collapse="true" title="Hint"}
+Adjust the input Ct by $\log_2 100 = 6.64$.
+:::
+
+::: {.callout-note collapse="true" title="Answer"}
+$Ct_\text{input,adj} = 24.0 - 6.64 = 17.36$; $100 \times 2^{17.36 - 26.0} = 100 \times 2^{-8.64} = 0.25\%$.
+:::
+
+---
+
+**Q5.** Sketch the expected ChIP-seq track over an actively transcribed 40-kb gene for (a) H3K4me3, (b) H3K36me3, (c) a TF bound at the promoter and at one intronic enhancer.
+
+::: {.callout-note collapse="true" title="Answer"}
+(a) A 1–3 kb peak around the TSS, with a dip at the TSS itself (nucleosome-free region) and most signal on the first nucleosomes downstream. (b) A low, wide enrichment over the gene body, starting about 1 kb after the TSS and increasing towards the 3' end, ending near the end of the gene. (c) Two narrow peaks a few hundred bp wide, one at the promoter and one at the enhancer.
+:::
+
+---
+
+**Q6.** Single-end reads around CTCF sites: + strand 5' ends peak 48 bp left of the summits, − strand 5' ends 50 bp right. What is the fragment length? Why does the same calculation fail for H3K27me3?
+
+::: {.callout-note collapse="true" title="Answer"}
+About 98 bp. H3K27me3 forms broad domains: + and − strand reads both cover the whole domain, so there are no separated strand peaks and the cross-correlation is flat.
+:::
+
+---
+
+**Q7.** Why can native ChIP (no crosslinking, MNase) map histone marks but not most transcription factors?
+
+::: {.callout-note collapse="true" title="Answer"}
+Nucleosomes are stable on DNA during MNase digestion and the washes, so histones and their marks are retained without fixation. Most TFs bind for seconds to minutes and are not covalently held, so they dissociate or slide during digestion and washes, and their sites are lost or blurred.
+:::
+
+---
+
+**Q8.** CTCF site A has twice as many reads as site B in the same ChIP. Give two reasons, other than occupancy, that could explain it.
+
+::: {.callout-note collapse="true" title="Answer"}
+Any two of: better crosslinking or epitope access at A; longer residence time; open chromatin at A shears more easily (more fragments); A is amplified (copy number); part of B lies in a less mappable region; duplicate removal compressing B or A differently. Compare the same site between samples instead.
+:::
+
+---
+
+**Q9.** An antibody against a TF gives peaks mainly at the promoters of the most highly expressed genes, without its motif. An IgG ChIP shows weaker peaks at the same places. What is going on, and what control would settle it?
+
+::: {.callout-note collapse="true" title="Answer"}
+"Hyper-ChIPable" regions: highly expressed genes and active promoters give signal with almost any antibody. ChIP in cells lacking the TF (knockout/degron) or with a tagged TF and a tag-only control: real binding disappears in the knockout, the artefact does not.
+:::
+
+---
+
+**Q10.** What does ChIP-exo add to ChIP-seq, and how?
+
+::: {.callout-note collapse="true" title="Answer"}
+Near base-pair resolution: a 5'→3' exonuclease trims each crosslinked fragment up to the protein, so read starts mark the borders of the protein–DNA contact (a footprint) instead of random sonication breaks.
+:::

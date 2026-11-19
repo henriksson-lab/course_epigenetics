@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 450" width="1120" height="450" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker><marker id="ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker><marker id="ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker><marker id="ahgr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker><marker id="ahb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a6f97"/></marker><marker id="aho" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e67e22"/></marker><marker id="ahp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b4fa0"/></marker></defs>
+<rect width="1120" height="450" fill="#ffffff"/>
+<text x="20.0" y="30.0" font-size="17" fill="#1b2a3a" text-anchor="start" font-weight="bold">How much DNA each model reads (log scale)</text>
+<text x="20.0" y="75.0" font-size="16" fill="#5b6b7a" text-anchor="start" font-weight="bold">our CNN</text>
+<text x="150.0" y="75.0" font-size="14" fill="#5b6b7a" text-anchor="start">2026</text>
+<rect x="250.0" y="59.0" width="56.6" height="22.0" rx="3" fill="#5b6b7a" stroke="none" stroke-width="0" fill-opacity="0.8"/>
+<text x="316.6" y="75.0" font-size="14" fill="#1b2a3a" text-anchor="start">1 label: bound or not</text>
+<text x="20.0" y="115.0" font-size="16" fill="#e67e22" text-anchor="start" font-weight="bold">Basset</text>
+<text x="150.0" y="115.0" font-size="14" fill="#5b6b7a" text-anchor="start">2016</text>
+<rect x="250.0" y="99.0" width="146.4" height="22.0" rx="3" fill="#e67e22" stroke="none" stroke-width="0" fill-opacity="0.8"/>
+<text x="406.4" y="115.0" font-size="14" fill="#1b2a3a" text-anchor="start">accessibility in 164 cell types</text>
+<text x="20.0" y="155.0" font-size="16" fill="#2e8b57" text-anchor="start" font-weight="bold">DeepSEA</text>
+<text x="150.0" y="155.0" font-size="14" fill="#5b6b7a" text-anchor="start">2015</text>
+<rect x="250.0" y="139.0" width="188.1" height="22.0" rx="3" fill="#2e8b57" stroke="none" stroke-width="0" fill-opacity="0.8"/>
+<text x="448.1" y="155.0" font-size="14" fill="#1b2a3a" text-anchor="start">919 chromatin profiles</text>
+<text x="20.0" y="195.0" font-size="16" fill="#6b4fa0" text-anchor="start" font-weight="bold">BPNet</text>
+<text x="150.0" y="195.0" font-size="14" fill="#5b6b7a" text-anchor="start">2021</text>
+<rect x="250.0" y="179.0" width="188.1" height="22.0" rx="3" fill="#6b4fa0" stroke="none" stroke-width="0" fill-opacity="0.8"/>
+<text x="448.1" y="195.0" font-size="14" fill="#1b2a3a" text-anchor="start">base-resolution TF binding profiles</text>
+<text x="20.0" y="235.0" font-size="16" fill="#2a6f97" text-anchor="start" font-weight="bold">Enformer</text>
+<text x="150.0" y="235.0" font-size="14" fill="#5b6b7a" text-anchor="start">2021</text>
+<rect x="250.0" y="219.0" width="619.5" height="22.0" rx="3" fill="#2a6f97" stroke="none" stroke-width="0" fill-opacity="0.8"/>
+<text x="859.5" y="235.0" font-size="14" fill="#ffffff" text-anchor="end" font-weight="bold">5 313 tracks in 128-bp bins</text>
+<text x="20.0" y="275.0" font-size="16" fill="#a8324a" text-anchor="start" font-weight="bold">Borzoi</text>
+<text x="150.0" y="275.0" font-size="14" fill="#5b6b7a" text-anchor="start">2025</text>
+<rect x="250.0" y="259.0" width="699.6" height="22.0" rx="3" fill="#a8324a" stroke="none" stroke-width="0" fill-opacity="0.8"/>
+<text x="939.6" y="275.0" font-size="14" fill="#ffffff" text-anchor="end" font-weight="bold">RNA-seq coverage in 32-bp bins</text>
+<text x="20.0" y="315.0" font-size="16" fill="#c0392b" text-anchor="start" font-weight="bold">AlphaGenome</text>
+<text x="150.0" y="315.0" font-size="14" fill="#5b6b7a" text-anchor="start">2026</text>
+<rect x="250.0" y="299.0" width="752.4" height="22.0" rx="3" fill="#c0392b" stroke="none" stroke-width="0" fill-opacity="0.8"/>
+<text x="992.4" y="315.0" font-size="14" fill="#ffffff" text-anchor="end" font-weight="bold">many modalities, up to 1-bp resolution</text>
+<line x1="250.0" y1="345.0" x2="1040.0" y2="345.0" stroke="#1b2a3a" stroke-width="1.5"/>
+<line x1="250.0" y1="345.0" x2="250.0" y2="351.0" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="250.0" y="369.0" font-size="14" fill="#1b2a3a" text-anchor="middle">100 bp</text>
+<line x1="438.1" y1="345.0" x2="438.1" y2="351.0" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="438.1" y="369.0" font-size="14" fill="#1b2a3a" text-anchor="middle">1 kb</text>
+<line x1="626.2" y1="345.0" x2="626.2" y2="351.0" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="626.2" y="369.0" font-size="14" fill="#1b2a3a" text-anchor="middle">10 kb</text>
+<line x1="814.3" y1="345.0" x2="814.3" y2="351.0" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="814.3" y="369.0" font-size="14" fill="#1b2a3a" text-anchor="middle">100 kb</text>
+<line x1="1002.4" y1="345.0" x2="1002.4" y2="351.0" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="1002.4" y="369.0" font-size="14" fill="#1b2a3a" text-anchor="middle">1 Mb</text>
+<text x="20.0" y="405.0" font-size="15" fill="#1b2a3a" text-anchor="start">Enhancers act up to ~1 Mb away (Gene regulation). Only the long models can see them; they combine convolutions</text>
+<text x="20.0" y="427.0" font-size="15" fill="#1b2a3a" text-anchor="start">(motifs) with attention layers (transformers) that let distant positions interact.</text>
+</svg>

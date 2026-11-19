@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 420" width="1120" height="420" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker>
+  </defs>
+  <rect width="1120" height="420" fill="#ffffff"/>
+  <g font-size="15" fill="#1b2a3a">
+  <!-- row titles -->
+  <text x="20" y="28" font-size="17" font-weight="bold">True replicates</text>
+  <text x="20" y="168" font-size="17" font-weight="bold">Pooled pseudoreplicates</text>
+  <text x="20" y="298" font-size="17" font-weight="bold">Self-pseudoreplicates</text>
+  <!-- row 1 -->
+  <rect x="20" y="44" width="170" height="64" rx="8" fill="#f3e9e4" stroke="#8c564b"/><text x="32" y="70">rep 1</text><text x="32" y="94" fill="#5b6b7a">197 587 reads</text>
+  <rect x="220" y="44" width="170" height="64" rx="8" fill="#f3e9e4" stroke="#8c564b"/><text x="232" y="70">rep 2</text><text x="232" y="94" fill="#5b6b7a">120 076 reads</text>
+  <rect x="450" y="44" width="240" height="64" rx="8" fill="#f4f6f8" stroke="#cfd8e0"/><text x="462" y="70">MACS3 -p 0.01 on each:</text><text x="462" y="94" fill="#5b6b7a">763 and 570 lenient peaks</text>
+  <rect x="740" y="44" width="160" height="64" rx="8" fill="#e6f2ec" stroke="#2e8b57"/><text x="752" y="70">IDR &lt; 0.05</text><text x="752" y="96" font-size="20" font-weight="bold" fill="#2e8b57">N<tspan dy="5" font-size="13">t</tspan><tspan dy="-5"> = 291</tspan></text>
+  <!-- row 2 -->
+  <rect x="20" y="184" width="370" height="64" rx="8" fill="#f3e9e4" stroke="#8c564b"/><text x="32" y="210">pool rep 1 + rep 2, shuffle, split in halves</text><text x="32" y="234" fill="#5b6b7a">158 696 + 158 967 reads</text>
+  <rect x="450" y="184" width="240" height="64" rx="8" fill="#f4f6f8" stroke="#cfd8e0"/><text x="462" y="210">MACS3 -p 0.01 on each half</text>
+  <rect x="740" y="184" width="160" height="64" rx="8" fill="#e6f2ec" stroke="#2e8b57"/><text x="752" y="210">IDR &lt; 0.05</text><text x="752" y="236" font-size="20" font-weight="bold" fill="#2e8b57">N<tspan dy="5" font-size="13">p</tspan><tspan dy="-5"> = 333</tspan></text>
+  <!-- row 3 -->
+  <rect x="20" y="314" width="370" height="64" rx="8" fill="#f3e9e4" stroke="#8c564b"/><text x="32" y="340">split each replicate in halves</text><text x="32" y="364" fill="#5b6b7a">rep 1 → N<tspan dy="4" font-size="11">1</tspan><tspan dy="-4">; rep 2 → N</tspan><tspan dy="4" font-size="11">2</tspan></text>
+  <rect x="450" y="314" width="240" height="64" rx="8" fill="#f4f6f8" stroke="#cfd8e0"/><text x="462" y="340">MACS3 -p 0.01, IDR</text>
+  <rect x="740" y="314" width="160" height="64" rx="8" fill="#e6f2ec" stroke="#2e8b57"/><text x="752" y="340">N<tspan dy="4" font-size="11">1</tspan><tspan dy="-4"> = 409</tspan></text><text x="752" y="366">N<tspan dy="4" font-size="11">2</tspan><tspan dy="-4"> = 223</tspan></text>
+  </g>
+  <g stroke="#5b6b7a" stroke-width="2" marker-end="url(#ar)">
+    <line x1="390" y1="76" x2="448" y2="76"/><line x1="690" y1="76" x2="738" y2="76"/>
+    <line x1="390" y1="216" x2="448" y2="216"/><line x1="690" y1="216" x2="738" y2="216"/>
+    <line x1="390" y1="346" x2="448" y2="346"/><line x1="690" y1="346" x2="738" y2="346"/>
+  </g>
+  <!-- ratios -->
+  <rect x="930" y="44" width="180" height="334" rx="8" fill="#eaf1f7" stroke="#cfd8e0"/>
+  <g font-size="15" fill="#1b2a3a">
+    <text x="944" y="72" font-weight="bold">Rescue ratio</text>
+    <text x="944" y="96">max(N<tspan dy="4" font-size="11">t</tspan><tspan dy="-4">, N</tspan><tspan dy="4" font-size="11">p</tspan><tspan dy="-4">) /</tspan></text>
+    <text x="944" y="116">min(N<tspan dy="4" font-size="11">t</tspan><tspan dy="-4">, N</tspan><tspan dy="4" font-size="11">p</tspan><tspan dy="-4">)</tspan></text>
+    <text x="944" y="140" font-weight="bold" fill="#2e8b57">= 333/291 = 1.14</text>
+    <text x="944" y="186" font-weight="bold">Self-consistency</text>
+    <text x="944" y="210">max(N<tspan dy="4" font-size="11">1</tspan><tspan dy="-4">, N</tspan><tspan dy="4" font-size="11">2</tspan><tspan dy="-4">) /</tspan></text>
+    <text x="944" y="230">min(N<tspan dy="4" font-size="11">1</tspan><tspan dy="-4">, N</tspan><tspan dy="4" font-size="11">2</tspan><tspan dy="-4">)</tspan></text>
+    <text x="944" y="254" font-weight="bold" fill="#2e8b57">= 409/223 = 1.83</text>
+    <text x="944" y="296">both &lt; 2: pass</text>
+    <text x="944" y="326" fill="#5b6b7a">conservative set:</text>
+    <text x="944" y="346" fill="#5b6b7a">the N<tspan dy="4" font-size="11">t</tspan><tspan dy="-4"> peaks;</tspan></text>
+    <text x="944" y="366" fill="#5b6b7a">optimal: the larger</text>
+  </g>
+  <text x="20" y="408" font-size="15" fill="#5b6b7a">ENCODE TF pipeline logic, run on our chr21 CTCF data (exercise). All calls against the same input; peaks ranked by p-value.</text>
+</svg>

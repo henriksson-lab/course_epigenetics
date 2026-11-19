@@ -1,0 +1,99 @@
+---
+title: "Quiz: DNA methylation biology"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+Short questions on the enzymes, reprogramming, the methylation landscape, imprinting, X inactivation and plants. Try each on paper first, then open the answer.
+
+---
+
+**Q1.** Which enzyme copies a methylation pattern after DNA replication, which protein brings it to the right place, and what does that protein recognise?
+
+::: {.callout-tip collapse="true" title="Hint"}
+After replication the new strand is unmethylated.
+:::
+
+::: {.callout-note collapse="true" title="Answer"}
+**DNMT1**, brought by **UHRF1**. UHRF1 recognises a **hemimethylated CpG** (5mC on the old strand, C on the new strand) with its SRA domain, and H3K9me2/3 with its TTD domain; it ubiquitylates histone H3, which recruits and activates DNMT1. DNMT3A and DNMT3B methylate *de novo*.
+:::
+
+---
+
+**Q2.** A study of mouse cerebellum uses whole-genome bisulfite sequencing and reports that a set of neuronal genes is "highly methylated in their gene bodies". What is the problem, and how would you address it?
+
+::: {.callout-note collapse="true" title="Answer"}
+Bisulfite cannot distinguish **5mC from 5hmC**: both read as C. Neurons have a lot of 5hmC, especially in the bodies of active genes, so part of the "methylation" is probably 5hmC. Use a method that separates them: oxidative bisulfite (oxBS: 5hmC then reads as T, so BS − oxBS = 5hmC), TAB-seq, or long-read sequencing that calls 5mC and 5hmC separately.
+:::
+
+---
+
+**Q3.** A cell population is 80% methylated at a set of CpGs. Maintenance stops completely. What is the level after 3 divisions? What if DNMT1 still copies with efficiency 0.9?
+
+::: {.callout-tip collapse="true" title="Hint"}
+Each division multiplies the level by $(1+e)/2$.
+:::
+
+::: {.callout-note collapse="true" title="Answer"}
+Without maintenance: $0.8 \times 0.5^3 = 0.10$. With $e = 0.9$: $0.8 \times 0.95^3 = 0.8 \times 0.857 = 0.69$.
+:::
+
+---
+
+**Q4.** Most of the genome is demethylated in the mouse blastocyst. Name two kinds of sequence that stay methylated, and for one of them the mechanism.
+
+::: {.callout-note collapse="true" title="Answer"}
+**Imprinting control regions** (germline DMRs): ZFP57 (ZNF445 in human) binds the methylated allele and recruits KAP1, SETDB1 (H3K9me3) and DNMT1/UHRF1, protecting it. Some **young retrotransposons** (e.g. mouse IAP elements) also partly resist, through KRAB zinc-finger proteins and KAP1/SETDB1. (Both are erased in primordial germ cells.)
+:::
+
+---
+
+**Q5.** A 300-bp sequence has 80 C, 84 G and 20 CpG. Is it a CpG island by the classic criteria?
+
+::: {.callout-note collapse="true" title="Answer"}
+GC $= 164/300 = 54.7\%$ (> 50%). CpG o/e $= 20 \times 300 / (80 \times 84) = 6000/6720 = 0.89$ (> 0.6). Length ≥ 200 bp. **Yes.**
+:::
+
+---
+
+**Q6.** Across genes in a cell type, is DNA methylation positively or negatively correlated with expression? Answer separately for CpG-island promoters and for gene bodies, and give a mechanism for each.
+
+::: {.callout-note collapse="true" title="Answer"}
+**Promoters: negative.** Active CGI promoters carry H3K4me3, which blocks the ADD domain of DNMT3A/B, and are bound by CXXC proteins and TFs; a methylated CGI promoter is stably silent (methylation blocks methyl-sensitive TFs and recruits MBD proteins). **Gene bodies: positive.** Transcription leaves H3K36me3 (SETD2), which recruits DNMT3B through its PWWP domain. In the GM12878 chr21 data, body methylation is 0.82–0.84 in expressed genes and 0.46 in silent ones.
+:::
+
+---
+
+**Q7.** What are partially methylated domains (PMDs)? In which of these samples do you expect the deepest PMDs: sperm, a blood sample, a long-term cultured cancer cell line? Why?
+
+::: {.callout-note collapse="true" title="Answer"}
+Large (100 kb to Mb) late-replicating, lamina-associated, gene-poor domains where CpGs are partially and variably methylated, because maintenance is less efficient there and methylation is lost a little with every division. Deepest in the **cancer cell line**, which has gone through the most divisions (K562: many chr21 domains below 0.1). Sperm has essentially no PMDs; blood has shallow ones.
+:::
+
+---
+
+**Q8.** At the *H19/IGF2* locus, a child inherits a maternal allele whose imprinting control region is methylated. Predict the expression of both genes from both alleles and the phenotype.
+
+::: {.callout-note collapse="true" title="Answer"}
+The methylated maternal ICR cannot bind CTCF, so it behaves like the paternal allele: the enhancers reach *IGF2*, and *H19* is silenced. Both alleles express *IGF2* and neither expresses *H19*: double *IGF2* dosage, **overgrowth** (Beckwith–Wiedemann syndrome).
+:::
+
+---
+
+**Q9.** In *Arabidopsis*, why does CHH methylation disappear quickly when the RdDM pathway and CMT2 are lost, while CG methylation stays?
+
+::: {.callout-note collapse="true" title="Answer"}
+CHH is **asymmetric**: the other strand has no cytosine at the mirrored position, so replication leaves no methylated template to copy. CHH must be re-established after every replication by targeted enzymes (DRM2 guided by 24-nt siRNAs, or CMT2 guided by H3K9me2). CG is symmetric and copied by MET1 from the old strand, like DNMT1 in mammals.
+:::
+
+---
+
+**Q10.** What methylation level do you expect at the CpG-island promoter of an X-linked gene that is subject to X inactivation, in female cells and in male cells? And for a gene that escapes X inactivation?
+
+::: {.callout-note collapse="true" title="Answer"}
+Female: about **0.5**, because the island is methylated on the inactive X and unmethylated on the active X. Male (one active X): about **0**. An escape gene is unmethylated on both X chromosomes: about 0 in both sexes. This difference is why X-linked CpG islands separate males from females in methylation data.
+:::

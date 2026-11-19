@@ -1,0 +1,22 @@
+# id	url	description	used_by
+k562_cuttag_h3k27me3_R1.fastq.gz	prepare-cuttag.sh	K562 CUT&Tag H3K27me3 (Kaya-Okur 2020, GSE145187, SRR12246717), PE 2x25, pairs aligned to chr21/chrM or E. coli	cutrun-cuttag
+k562_cuttag_h3k27me3_R2.fastq.gz	prepare-cuttag.sh	K562 CUT&Tag H3K27me3 R2	cutrun-cuttag
+k562_cuttag_h3k4me3_R1.fastq.gz	prepare-cuttag.sh	K562 CUT&Tag H3K4me3 (SRR11074254), PE 2x25, pairs aligned to chr21/chrM or E. coli	cutrun-cuttag
+k562_cuttag_h3k4me3_R2.fastq.gz	prepare-cuttag.sh	K562 CUT&Tag H3K4me3 R2	cutrun-cuttag
+k562_cuttag_igg_R1.fastq.gz	prepare-cuttag.sh	K562 CUT&Tag IgG control (SRR11923224), PE 2x25, pairs aligned to chr21/chrM or E. coli	cutrun-cuttag
+k562_cuttag_igg_R2.fastq.gz	prepare-cuttag.sh	K562 CUT&Tag IgG R2	cutrun-cuttag
+ecoli_U00096.3.fa	https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=U00096.3&rettype=fasta&retmode=text	E. coli K-12 MG1655 genome (NCBI U00096.3), spike-in reference	cutrun-cuttag
+k562_h3k27me3_chip_chr21.bam	prepare-cuttag.sh	K562 H3K27me3 ChIP-seq ENCSR000AKQ rep1 filtered alignments ENCFF392ZKG, chr21 (+ .bai)	cutrun-cuttag
+k562_h3k4me3_chip_chr21.bam	prepare-cuttag.sh	K562 H3K4me3 ChIP-seq ENCSR000AKU rep1 filtered alignments ENCFF564SVK, chr21 (+ .bai)	cutrun-cuttag
+k562_input_chr21.bam	prepare-cuttag.sh	K562 input ENCSR000AKY rep1 ENCFF226FKB, chr21 (+ .bai)	cutrun-cuttag
+k562_h3k27me3_chip_peaks.bed.gz	https://www.encodeproject.org/files/ENCFF881ONN/@@download/ENCFF881ONN.bed.gz	K562 H3K27me3 pseudoreplicated peaks (ENCSR000AKQ)	cutrun-cuttag
+k562_h3k4me3_chip_peaks.bed.gz	https://www.encodeproject.org/files/ENCFF689QIJ/@@download/ENCFF689QIJ.bed.gz	K562 H3K4me3 pseudoreplicated peaks (ENCSR000AKU)	cutrun-cuttag
+gm12878_h3k4me3_chip_chr21.bam	prepare-cuttag.sh	GM12878 H3K4me3 ChIP ENCSR000AKA reps 1+2 (ENCFF843BWY, ENCFF126HII) merged, chr21 (+ .bai)	chromatin-states
+gm12878_h3k27ac_chip_chr21.bam	prepare-cuttag.sh	GM12878 H3K27ac ChIP ENCSR000AKC reps 1+2 (ENCFF269GKF, ENCFF201OHW), chr21 (+ .bai)	chromatin-states
+gm12878_h3k4me1_chip_chr21.bam	prepare-cuttag.sh	GM12878 H3K4me1 ChIP ENCSR000AKF reps 1+2 (ENCFF047NLO, ENCFF385FLM), chr21 (+ .bai)	chromatin-states
+gm12878_h3k36me3_chip_chr21.bam	prepare-cuttag.sh	GM12878 H3K36me3 ChIP ENCSR000AKE reps 1+2 (ENCFF353YPB, ENCFF677MAG), chr21 (+ .bai)	chromatin-states
+gm12878_h3k27me3_chip_chr21.bam	prepare-cuttag.sh	GM12878 H3K27me3 ChIP ENCSR000AKD reps 1+2 (ENCFF633BHN, ENCFF565DCK), chr21 (+ .bai)	chromatin-states
+gm12878_h3k9me3_chip_chr21.bam	prepare-cuttag.sh	GM12878 H3K9me3 ChIP ENCSR000AOX reps 1+2 (ENCFF306ENK, ENCFF889UPU), chr21 (+ .bai)	chromatin-states
+gm12878_input_chr21.bam	prepare-cuttag.sh	GM12878 input ENCSR000AKJ reps 1+2 (ENCFF708SHO, ENCFF834GHC), chr21 (+ .bai)	chromatin-states
+roadmap_E116_18state_hg38.bed.gz	https://egg2.wustl.edu/roadmap/data/byFileType/chromhmmSegmentations/ChmmModels/core_K27ac/jointModel/final/E116_18_core_K27ac_hg38lift_mnemonics.bed.gz	Roadmap 18-state ChromHMM segmentation of GM12878 (E116), lifted to hg38	chromatin-states
+roadmap_18state_emissions.txt	https://egg2.wustl.edu/roadmap/data/byFileType/chromhmmSegmentations/ChmmModels/core_K27ac/jointModel/final/emissions_18_core_K27ac.txt	Roadmap 18-state model emission probabilities	chromatin-states

@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 360" width="1120" height="360" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker><marker id="ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker><marker id="ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker><marker id="ahgr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker><marker id="ahb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a6f97"/></marker><marker id="aho" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e67e22"/></marker><marker id="ahp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b4fa0"/></marker></defs>
+<rect width="1120" height="360" fill="#ffffff"/>
+<text x="20.0" y="30.0" font-size="17" fill="#1b2a3a" text-anchor="start" font-weight="bold">DeepLIFT / SHAP: explain the difference from a reference</text>
+<text x="40.0" y="80.0" font-size="19" fill="#c0392b" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">T</text>
+<text x="64.0" y="80.0" font-size="19" fill="#c0392b" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">T</text>
+<text x="88.0" y="80.0" font-size="19" fill="#d48a00" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">G</text>
+<text x="112.0" y="80.0" font-size="19" fill="#2a6f97" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">C</text>
+<text x="136.0" y="80.0" font-size="19" fill="#2a6f97" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">C</text>
+<text x="160.0" y="80.0" font-size="19" fill="#2e8b57" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">A</text>
+<text x="184.0" y="80.0" font-size="19" fill="#2a6f97" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">C</text>
+<text x="208.0" y="80.0" font-size="19" fill="#2a6f97" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">C</text>
+<text x="232.0" y="80.0" font-size="19" fill="#2e8b57" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">A</text>
+<text x="256.0" y="80.0" font-size="19" fill="#d48a00" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">G</text>
+<text x="280.0" y="80.0" font-size="19" fill="#d48a00" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">G</text>
+<text x="304.0" y="80.0" font-size="19" fill="#d48a00" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">G</text>
+<text x="328.0" y="80.0" font-size="19" fill="#d48a00" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">G</text>
+<text x="352.0" y="80.0" font-size="19" fill="#d48a00" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">G</text>
+<text x="376.0" y="80.0" font-size="19" fill="#2a6f97" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">C</text>
+<text x="400.0" y="80.0" font-size="19" fill="#d48a00" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">G</text>
+<text x="424.0" y="80.0" font-size="19" fill="#2a6f97" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">C</text>
+<text x="448.0" y="80.0" font-size="19" fill="#c0392b" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">T</text>
+<text x="472.0" y="80.0" font-size="19" fill="#2e8b57" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">A</text>
+<text x="520.0" y="80.0" font-size="16" fill="#1b2a3a" text-anchor="start" font-weight="bold">z = 6.2</text>
+<text x="40.0" y="118.0" font-size="14" fill="#5b6b7a" text-anchor="start">references: the same bases in random order (shuffled), many times</text>
+<text x="40.0" y="150.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">C</text>
+<text x="64.0" y="150.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">A</text>
+<text x="88.0" y="150.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">C</text>
+<text x="112.0" y="150.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">G</text>
+<text x="136.0" y="150.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">G</text>
+<text x="160.0" y="150.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">G</text>
+<text x="184.0" y="150.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">T</text>
+<text x="208.0" y="150.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">C</text>
+<text x="232.0" y="150.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">A</text>
+<text x="256.0" y="150.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">C</text>
+<text x="280.0" y="150.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">T</text>
+<text x="304.0" y="150.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">G</text>
+<text x="328.0" y="150.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">T</text>
+<text x="352.0" y="150.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">G</text>
+<text x="376.0" y="150.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">A</text>
+<text x="400.0" y="150.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">G</text>
+<text x="424.0" y="150.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">C</text>
+<text x="448.0" y="150.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">G</text>
+<text x="472.0" y="150.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">C</text>
+<text x="520.0" y="150.0" font-size="15" fill="#5b6b7a" text-anchor="start">z = −3.0</text>
+<text x="40.0" y="180.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">C</text>
+<text x="64.0" y="180.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">A</text>
+<text x="88.0" y="180.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">C</text>
+<text x="112.0" y="180.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">G</text>
+<text x="136.0" y="180.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">C</text>
+<text x="160.0" y="180.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">G</text>
+<text x="184.0" y="180.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">G</text>
+<text x="208.0" y="180.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">A</text>
+<text x="232.0" y="180.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">C</text>
+<text x="256.0" y="180.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">C</text>
+<text x="280.0" y="180.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">G</text>
+<text x="304.0" y="180.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">G</text>
+<text x="328.0" y="180.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">T</text>
+<text x="352.0" y="180.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">T</text>
+<text x="376.0" y="180.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">G</text>
+<text x="400.0" y="180.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">C</text>
+<text x="424.0" y="180.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">T</text>
+<text x="448.0" y="180.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">A</text>
+<text x="472.0" y="180.0" font-size="19" fill="#5b6b7a" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">G</text>
+<text x="520.0" y="180.0" font-size="15" fill="#5b6b7a" text-anchor="start">z = −2.6</text>
+<text x="40.0" y="214.0" font-size="18" fill="#5b6b7a" text-anchor="start">…</text>
+<text x="520.0" y="214.0" font-size="15" fill="#5b6b7a" text-anchor="start">mean −2.9</text>
+<text x="40.0" y="262.0" font-size="15" fill="#1b2a3a" text-anchor="start" font-weight="bold">contributions per base: they add up to 6.2 − (−2.9) = 9.1</text>
+<rect x="32.0" y="328.0" width="16.0" height="2.0" rx="2" fill="#6b4fa0" stroke="none" stroke-width="0" fill-opacity="0.75"/>
+<rect x="56.0" y="328.0" width="16.0" height="2.0" rx="2" fill="#6b4fa0" stroke="none" stroke-width="0" fill-opacity="0.75"/>
+<rect x="80.0" y="326.0" width="16.0" height="4.0" rx="2" fill="#6b4fa0" stroke="none" stroke-width="0" fill-opacity="0.75"/>
+<rect x="104.0" y="314.0" width="16.0" height="16.0" rx="2" fill="#6b4fa0" stroke="none" stroke-width="0" fill-opacity="0.75"/>
+<rect x="128.0" y="290.0" width="16.0" height="40.0" rx="2" fill="#6b4fa0" stroke="none" stroke-width="0" fill-opacity="0.75"/>
+<rect x="152.0" y="306.0" width="16.0" height="24.0" rx="2" fill="#6b4fa0" stroke="none" stroke-width="0" fill-opacity="0.75"/>
+<rect x="176.0" y="310.0" width="16.0" height="20.0" rx="2" fill="#6b4fa0" stroke="none" stroke-width="0" fill-opacity="0.75"/>
+<rect x="200.0" y="278.0" width="16.0" height="52.0" rx="2" fill="#6b4fa0" stroke="none" stroke-width="0" fill-opacity="0.75"/>
+<rect x="224.0" y="294.0" width="16.0" height="36.0" rx="2" fill="#6b4fa0" stroke="none" stroke-width="0" fill-opacity="0.75"/>
+<rect x="248.0" y="314.0" width="16.0" height="16.0" rx="2" fill="#6b4fa0" stroke="none" stroke-width="0" fill-opacity="0.75"/>
+<rect x="272.0" y="290.0" width="16.0" height="40.0" rx="2" fill="#6b4fa0" stroke="none" stroke-width="0" fill-opacity="0.75"/>
+<rect x="296.0" y="298.0" width="16.0" height="32.0" rx="2" fill="#6b4fa0" stroke="none" stroke-width="0" fill-opacity="0.75"/>
+<rect x="320.0" y="310.0" width="16.0" height="20.0" rx="2" fill="#6b4fa0" stroke="none" stroke-width="0" fill-opacity="0.75"/>
+<rect x="344.0" y="294.0" width="16.0" height="36.0" rx="2" fill="#6b4fa0" stroke="none" stroke-width="0" fill-opacity="0.75"/>
+<rect x="368.0" y="302.0" width="16.0" height="28.0" rx="2" fill="#6b4fa0" stroke="none" stroke-width="0" fill-opacity="0.75"/>
+<rect x="392.0" y="322.0" width="16.0" height="8.0" rx="2" fill="#6b4fa0" stroke="none" stroke-width="0" fill-opacity="0.75"/>
+<rect x="416.0" y="326.0" width="16.0" height="4.0" rx="2" fill="#6b4fa0" stroke="none" stroke-width="0" fill-opacity="0.75"/>
+<rect x="440.0" y="330.0" width="16.0" height="0.0" rx="2" fill="#6b4fa0" stroke="none" stroke-width="0" fill-opacity="0.75"/>
+<rect x="464.0" y="330.0" width="16.0" height="0.0" rx="2" fill="#6b4fa0" stroke="none" stroke-width="0" fill-opacity="0.75"/>
+<line x1="28.0" y1="330.0" x2="484.0" y2="330.0" stroke="#5b6b7a" stroke-width="1"/>
+<text x="640.0" y="80.0" font-size="15" fill="#1b2a3a" text-anchor="start">• ISM: what happens if I change one base?</text>
+<text x="640.0" y="104.0" font-size="15" fill="#1b2a3a" text-anchor="start">• Gradient: which direction is uphill, right here?</text>
+<text x="640.0" y="128.0" font-size="15" fill="#1b2a3a" text-anchor="start">• DeepLIFT / SHAP: how much did each base contribute</text>
+<text x="640.0" y="150.0" font-size="15" fill="#1b2a3a" text-anchor="start">  to the difference from a neutral reference?</text>
+<text x="640.0" y="190.0" font-size="15" fill="#5b6b7a" text-anchor="start">Because contributions are measured against a</text>
+<text x="640.0" y="212.0" font-size="15" fill="#5b6b7a" text-anchor="start">reference without the motifs, two redundant copies</text>
+<text x="640.0" y="234.0" font-size="15" fill="#5b6b7a" text-anchor="start">share the credit instead of both getting zero.</text>
+<text x="640.0" y="274.0" font-size="15" fill="#5b6b7a" text-anchor="start">DeepSHAP averages DeepLIFT over many references;</text>
+<text x="640.0" y="296.0" font-size="15" fill="#5b6b7a" text-anchor="start">BPNet and chromBPNet use it, and their contribution</text>
+<text x="640.0" y="318.0" font-size="15" fill="#5b6b7a" text-anchor="start">scores feed TF-MoDISco (next slide).</text>
+</svg>

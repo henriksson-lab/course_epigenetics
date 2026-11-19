@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 380" width="1120" height="380" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker></defs>
+<rect width="1120" height="380" fill="#ffffff"/>
+<!-- panel 1 -->
+<text x="200" y="34" text-anchor="middle" font-size="18" font-weight="bold" fill="#1b2a3a">1. Examples with known answers</text>
+<text x="40" y="70" font-size="15" fill="#5b6b7a">500-bp window</text>
+<text x="300" y="70" font-size="15" fill="#5b6b7a" text-anchor="middle">label</text>
+<g font-family="Courier New, monospace" font-size="15" fill="#1b2a3a">
+<text x="40" y="104">GCGCCCTCTAGTGGCG…</text>
+<text x="40" y="144">ATTTAAGTATAAATTA…</text>
+<text x="40" y="184">CCGGAAGTGCCCAGGG…</text>
+<text x="40" y="224">TATGATTAACATTTTG…</text>
+<text x="40" y="264">GAGGAAGTGAAACCGA…</text>
+</g>
+<g font-size="15" font-weight="bold" text-anchor="middle">
+<rect x="262" y="88" width="76" height="24" rx="4" fill="#2e8b57" fill-opacity="0.15" stroke="#2e8b57"/><text x="300" y="105" fill="#2e8b57">open</text>
+<rect x="262" y="128" width="76" height="24" rx="4" fill="#a8324a" fill-opacity="0.12" stroke="#a8324a"/><text x="300" y="145" fill="#a8324a">closed</text>
+<rect x="262" y="168" width="76" height="24" rx="4" fill="#2e8b57" fill-opacity="0.15" stroke="#2e8b57"/><text x="300" y="185" fill="#2e8b57">open</text>
+<rect x="262" y="208" width="76" height="24" rx="4" fill="#a8324a" fill-opacity="0.12" stroke="#a8324a"/><text x="300" y="225" fill="#a8324a">closed</text>
+<rect x="262" y="248" width="76" height="24" rx="4" fill="#2e8b57" fill-opacity="0.15" stroke="#2e8b57"/><text x="300" y="265" fill="#2e8b57">open</text>
+</g>
+<text x="200" y="306" text-anchor="middle" font-size="15" fill="#5b6b7a">thousands of these: the training data</text>
+<text x="200" y="330" text-anchor="middle" font-size="15" fill="#5b6b7a">(labels from an ATAC-seq experiment)</text>
+<line x1="362" y1="180" x2="412" y2="180" stroke="#5b6b7a" stroke-width="2.5" marker-end="url(#ah)"/>
+<!-- panel 2 -->
+<text x="580" y="34" text-anchor="middle" font-size="18" font-weight="bold" fill="#1b2a3a">2. Fit a model</text>
+<rect x="425" y="96" width="310" height="150" rx="8" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="447" y="130" font-size="16" fill="#1b2a3a">score = b<tspan dy="4" font-size="11">0</tspan><tspan dy="-4"> + b</tspan><tspan dy="4" font-size="11">1</tspan><tspan dy="-4">·GC + b</tspan><tspan dy="4" font-size="11">2</tspan><tspan dy="-4">·CTCF + …</tspan></text>
+<text x="490" y="166" font-size="16" fill="#1b2a3a">P(open) = 1 / (1 + e<tspan dy="-7" font-size="11">−score</tspan><tspan dy="7">)</tspan></text>
+<text x="580" y="206" text-anchor="middle" font-size="15" fill="#5b6b7a">choose the parameters b that make</text>
+<text x="580" y="228" text-anchor="middle" font-size="15" fill="#5b6b7a">the training labels most likely</text>
+<text x="580" y="290" text-anchor="middle" font-size="15" fill="#5b6b7a">features: GC, CpG o/e, motif counts</text>
+<text x="580" y="314" text-anchor="middle" font-size="15" fill="#5b6b7a">parameters: the numbers b</text>
+<line x1="748" y1="180" x2="798" y2="180" stroke="#5b6b7a" stroke-width="2.5" marker-end="url(#ah)"/>
+<!-- panel 3 -->
+<text x="950" y="34" text-anchor="middle" font-size="18" font-weight="bold" fill="#1b2a3a">3. Predict new windows</text>
+<text x="950" y="104" text-anchor="middle" font-family="Courier New, monospace" font-size="15" fill="#1b2a3a">CGGGAAGTCCGCGCAC…</text>
+<rect x="912" y="120" width="76" height="24" rx="4" fill="#f4f6f8" stroke="#5b6b7a"/><text x="950" y="137" text-anchor="middle" font-size="15" font-weight="bold" fill="#5b6b7a">?</text>
+<line x1="950" y1="152" x2="950" y2="190" stroke="#5b6b7a" stroke-width="2.5" marker-end="url(#ah)"/>
+<text x="950" y="222" text-anchor="middle" font-size="20" font-weight="bold" fill="#2e8b57">P(open) = 0.83</text>
+<text x="950" y="262" text-anchor="middle" font-size="15" fill="#5b6b7a">windows the model never saw:</text>
+<text x="950" y="286" text-anchor="middle" font-size="15" fill="#5b6b7a">a held-out chromosome</text>
+<text x="950" y="330" text-anchor="middle" font-size="15" fill="#c0392b">compare with their true labels</text>
+</svg>

@@ -1,0 +1,13 @@
+# id	url	description	used_by
+gm12878_ctcf_chip_rep2.fastq.gz	prepare-chip.sh	GM12878 CTCF ChIP-seq ENCSR000DZN rep2 (FASTQ ENCFF000VUU, BAM ENCFF340XBU), SE 36 bp, Phred+64, reads ENCODE aligned to chr21/chrM (463 918)	chipseq-peaks
+gm12878_h3k36me3_chip.fastq.gz	prepare-chip.sh	GM12878 H3K36me3 ChIP-seq ENCSR000AKE rep1 (FASTQ ENCFF000ATN, BAM ENCFF378CVF), SE 51 bp, Phred+33, reads ENCODE aligned to chr21/chrM (98 689)	chipseq-intro, chipseq-peaks
+gm12878_h3k36me3_chip_rep2.fastq.gz	prepare-chip.sh	GM12878 H3K36me3 ChIP-seq ENCSR000AKE rep2 (FASTQ ENCFF000ATJ, BAM ENCFF508IAX), SE 51 bp, Phred+33, chr21/chrM reads (133 285)	chipseq-peaks
+gm12878_h3k36me3_input.fastq.gz	prepare-chip.sh	GM12878 input ENCSR000AKJ rep1 (FASTQ ENCFF000ARK, BAM ENCFF383MXY), control of the Broad histone ChIPs, SE 51 bp, Phred+33, chr21/chrM reads (131 839)	chipseq-intro, chipseq-peaks
+h3k27ac_gm12878_rep1.chr21.bam	prepare-chip.sh	GM12878 H3K27ac ENCSR000AKC rep1, ENCODE filtered GRCh38 BAM ENCFF269GKF cut to chr21 (+ .bai)	chipseq-downstream
+h3k27ac_gm12878_rep2.chr21.bam	prepare-chip.sh	GM12878 H3K27ac ENCSR000AKC rep2, ENCFF201OHW cut to chr21 (+ .bai)	chipseq-downstream
+h3k27ac_k562_rep1.chr21.bam	prepare-chip.sh	K562 H3K27ac ENCSR000AKP rep1, ENCFF121RHF cut to chr21 (+ .bai)	chipseq-downstream
+h3k27ac_k562_rep2.chr21.bam	prepare-chip.sh	K562 H3K27ac ENCSR000AKP rep2, ENCFF907MNY cut to chr21 (+ .bai)	chipseq-downstream
+input_gm12878.chr21.bam	prepare-chip.sh	GM12878 input ENCSR000AKJ rep1, ENCFF346JZP cut to chr21 (+ .bai)	chipseq-downstream
+input_k562.chr21.bam	prepare-chip.sh	K562 input ENCSR000AKY rep1, ENCFF226FKB cut to chr21 (+ .bai)	chipseq-downstream
+h3k27ac_idxstats.tsv	prepare-chip.sh	samtools idxstats of the six whole filtered BAMs above (reads per chromosome; copy number from inputs)	chipseq-downstream
+k562_h3k27ac_peaks.bed.gz	https://www.encodeproject.org/files/ENCFF439SDV/@@download/ENCFF439SDV.bed.gz	K562 H3K27ac replicated peaks, narrowPeak (ENCSR000AKP, pipeline 1.5.1)	chipseq-downstream

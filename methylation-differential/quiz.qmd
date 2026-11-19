@@ -1,0 +1,87 @@
+---
+title: "Quiz: differential methylation"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+Short questions on count models, smoothing, DMLs and DMRs, and design. Try each on paper first, then open the answer.
+
+---
+
+**Q1.** Why does a differential methylation analysis not need size factors, unlike RNA-seq?
+
+::: {.callout-note collapse="true" title="Answer"}
+Each CpG carries its own denominator: methylated reads out of all reads covering it. Sequencing deeper increases both M and N but does not change the expected proportion. (Global biological or technical shifts in methylation still matter, but they are not fixed by normalisation.)
+:::
+
+---
+
+**Q2.** A CpG has 20 reads and a true level of 0.3. Compute the variance of the number of methylated reads under a binomial model and under a beta-binomial with φ = 0.1. What is the standard deviation of β in each case?
+
+::: {.callout-tip collapse="true" title="Hint"}
+Var = N p (1 − p) [1 + (N − 1) φ].
+:::
+
+::: {.callout-note collapse="true" title="Answer"}
+Binomial: $20 \times 0.3 \times 0.7 = 4.2$, SD 2.05 reads, SD of β $= 2.05/20 = 0.10$. Beta-binomial: $4.2 \times (1 + 19 \times 0.1) = 4.2 \times 2.9 = 12.2$, SD 3.49 reads, SD of β 0.17.
+:::
+
+---
+
+**Q3.** With φ = 0.1, what happens to the SD of β when coverage increases from 20 to 2000 reads? What does that mean for study design?
+
+::: {.callout-note collapse="true" title="Answer"}
+SD of β $= \sqrt{p(1-p)[1 + (N-1)\varphi]/N}$. For N = 2000: $\sqrt{0.21 \times 200.9 / 2000} = \sqrt{0.0211} = 0.145$, hardly better than 0.17 at N = 20. As N grows the SD approaches $\sqrt{p(1-p)\varphi} = 0.145$: biological variation does not shrink with depth. More replicates, not more reads, are needed.
+:::
+
+---
+
+**Q4.** GM12878 replicate 1 has 9 of 10 reads methylated at a CpG and replicate 2 has 18 of 20; K562 replicate 1 has 1 of 10 and replicate 2 has 3 of 20. A colleague pools the reads and runs Fisher's exact test. What is wrong with that, and what is the Δβ?
+
+::: {.callout-note collapse="true" title="Answer"}
+Pooling treats every read as an independent replicate and ignores the variation between samples, so p-values are too small (on chr21 the same test calls 20 902 CpGs "different" between the two GM12878 replicates). Use a model with a dispersion parameter (beta-binomial, as in DSS) and the samples as replicates. Pooled levels: GM $27/30 = 0.90$, K562 $4/30 = 0.13$; Δβ (K562 − GM) $= -0.77$.
+:::
+
+---
+
+**Q5.** What does smoothing (BSmooth, DSS) assume, what does it gain, and when should you switch it off?
+
+::: {.callout-note collapse="true" title="Answer"}
+It assumes that neighbouring CpGs (within a few hundred bp) share the same methylation level. It gains precision: many low-coverage CpGs together estimate the regional level well, so low-coverage WGBS becomes usable. Switch it off when the question concerns single CpGs (a TF motif, a probe on an array, a mutation-like change) or when CpGs are sparse (RRBS, arrays), where neighbours are far apart.
+:::
+
+---
+
+**Q6.** Significant CpGs (p < threshold) lie at positions 1000, 1040, 1090, 1300, 1330, 1360, 1385 and 2000. Apply DSS's default rules (merge if < 100 bp apart; at least 3 CpGs and 50 bp; ignore the fraction-significant rule here). Which DMRs result?
+
+::: {.callout-note collapse="true" title="Answer"}
+Groups: {1000, 1040, 1090} (gaps 40, 50); {1300, 1330, 1360, 1385} (gap from 1090 to 1300 is 210, so a new group); {2000} alone. The first: 3 CpGs, 1000–1090 = 91 bp: a DMR. The second: 4 CpGs, 86 bp: a DMR. The third: 1 CpG: rejected.
+:::
+
+---
+
+**Q7.** On chr21, 95% of DMRs between GM12878 and K562 are hypomethylated in K562, and 68% of them lie in large domains with very low methylation in K562. Give one biological explanation and one caution about counting "5 061 DMRs".
+
+::: {.callout-note collapse="true" title="Answer"}
+Biology: K562, a long-term cultured cancer line, has lost methylation in late-replicating partially methylated domains through many cell divisions (the hypomethylation typical of cancer). Caution: one megabase domain is cut into many DMRs by the merging rules, so the number of DMRs overstates the number of independent events; report total length or call large blocks separately.
+:::
+
+---
+
+**Q8.** A WGBS study compares blood from 3 patients with 3 healthy controls and reports 2 000 DMRs at "FDR < 5%". Name three things you would check before believing the DMRs are about the disease.
+
+::: {.callout-note collapse="true" title="Answer"}
+Any three of: blood cell-type composition (neutrophils vs lymphocytes; estimate and adjust); age and sex (chrX, age-related CpGs), and smoking; genotype (CpG-SNPs, meQTLs; filter known SNPs); batch, conversion rate and coverage differences between groups; how the region-level FDR was obtained (a CpG-level FDR does not control false regions; 3 vs 3 gives few permutations); effect sizes (Δβ) and replication in an independent cohort.
+:::
+
+---
+
+**Q9.** A CpG-island promoter is unmethylated in GM12878 and 0.8 methylated in K562, and the gene is expressed only in GM12878. Can you conclude that methylation silenced the gene in K562?
+
+::: {.callout-note collapse="true" title="Answer"}
+No. The association fits silencing by methylation, but methylation often follows silencing by other means (loss of a transcription factor, Polycomb), and the two cell lines differ in lineage, transformation and karyotype. Tests: demethylate the promoter in K562 (decitabine, dCas9-TET1) and see whether expression returns; or methylate it in GM12878 (dCas9-DNMT3A) and see whether the gene goes off.
+:::

@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 345" width="1120" height="345" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/>
+    </marker>
+    <marker id="arrg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/>
+    </marker>
+    <marker id="arrr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/>
+    </marker>
+    <marker id="arrs" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="3.6" markerHeight="3.6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/>
+    </marker>
+  </defs>
+  <rect width="1120" height="345" fill="#ffffff"/>
+  <text x="20" y="28" font-size="17" fill="#1b2a3a" font-weight="bold">A. Where do trait-associated variants fall?</text>
+  <text x="241.0" y="60" font-size="14" fill="#1b2a3a" text-anchor="middle" font-weight="bold">B cells</text>
+  <text x="323.0" y="60" font-size="14" fill="#1b2a3a" text-anchor="middle" font-weight="bold">T cells</text>
+  <text x="405.0" y="60" font-size="14" fill="#1b2a3a" text-anchor="middle" font-weight="bold">liver</text>
+  <text x="487.0" y="60" font-size="14" fill="#1b2a3a" text-anchor="middle" font-weight="bold">brain</text>
+  <text x="190" y="101.0" font-size="14" fill="#1b2a3a" text-anchor="end">autoimmune disease</text>
+  <rect x="202" y="72" width="78" height="48" rx="3" fill="#c0392b"/>
+  <rect x="284" y="72" width="78" height="48" rx="3" fill="#c0392b"/>
+  <rect x="366" y="72" width="78" height="48" rx="3" fill="#f4f6f8"/>
+  <rect x="448" y="72" width="78" height="48" rx="3" fill="#f4f6f8"/>
+  <text x="190" y="153.0" font-size="14" fill="#1b2a3a" text-anchor="end">LDL cholesterol</text>
+  <rect x="202" y="124" width="78" height="48" rx="3" fill="#f4f6f8"/>
+  <rect x="284" y="124" width="78" height="48" rx="3" fill="#f4f6f8"/>
+  <rect x="366" y="124" width="78" height="48" rx="3" fill="#c0392b"/>
+  <rect x="448" y="124" width="78" height="48" rx="3" fill="#f4f6f8"/>
+  <text x="190" y="205.0" font-size="14" fill="#1b2a3a" text-anchor="end">schizophrenia</text>
+  <rect x="202" y="176" width="78" height="48" rx="3" fill="#f4f6f8"/>
+  <rect x="284" y="176" width="78" height="48" rx="3" fill="#f4f6f8"/>
+  <rect x="366" y="176" width="78" height="48" rx="3" fill="#f4f6f8"/>
+  <rect x="448" y="176" width="78" height="48" rx="3" fill="#c0392b"/>
+  <text x="364" y="252" font-size="14" fill="#5b6b7a" text-anchor="middle">enrichment of GWAS variants in each</text>
+  <text x="364" y="270" font-size="14" fill="#5b6b7a" text-anchor="middle">cell type's enhancer states (schematic)</text>
+  <text x="364" y="298" font-size="14" fill="#1b2a3a" text-anchor="middle">→ points to the cell type where the variant acts</text>
+  <line x1="575" y1="45" x2="575" y2="330" stroke="#d0d7de" stroke-width="1.5"/>
+  <text x="600" y="28" font-size="17" fill="#1b2a3a" font-weight="bold">B. Annotate one variant, compare cell types</text>
+  <text x="680" y="105" font-size="14" fill="#1b2a3a" text-anchor="end" font-weight="bold">GM12878</text>
+  <rect x="690" y="90" width="81" height="22" rx="0" fill="#f4f6f8" stroke="#9aa5b1" stroke-width="0.8"/>
+  <text x="730.5" y="106" font-size="12" fill="#1b2a3a" text-anchor="middle">Quies</text>
+  <rect x="771" y="90" width="27" height="22" rx="0" fill="#f3e08a" stroke="#9aa5b1" stroke-width="0.8"/>
+  <rect x="798" y="90" width="81" height="22" rx="0" fill="#f0a948" stroke="#9aa5b1" stroke-width="0.8"/>
+  <text x="838.5" y="106" font-size="12" fill="#1b2a3a" text-anchor="middle">EnhA</text>
+  <rect x="879" y="90" width="54" height="22" rx="0" fill="#d9534f" stroke="#9aa5b1" stroke-width="0.8"/>
+  <text x="906.0" y="106" font-size="12" fill="#1b2a3a" text-anchor="middle">TssA</text>
+  <rect x="933" y="90" width="162" height="22" rx="0" fill="#4f9a5f" stroke="#9aa5b1" stroke-width="0.8"/>
+  <text x="1014.0" y="106" font-size="12" fill="#1b2a3a" text-anchor="middle">Tx</text>
+  <text x="680" y="165" font-size="14" fill="#1b2a3a" text-anchor="end" font-weight="bold">K562</text>
+  <rect x="690" y="150" width="189" height="22" rx="0" fill="#f4f6f8" stroke="#9aa5b1" stroke-width="0.8"/>
+  <text x="784.5" y="166" font-size="12" fill="#1b2a3a" text-anchor="middle">Quies</text>
+  <rect x="879" y="150" width="54" height="22" rx="0" fill="#d9534f" stroke="#9aa5b1" stroke-width="0.8"/>
+  <text x="906.0" y="166" font-size="12" fill="#1b2a3a" text-anchor="middle">TssA</text>
+  <rect x="933" y="150" width="162" height="22" rx="0" fill="#4f9a5f" stroke="#9aa5b1" stroke-width="0.8"/>
+  <text x="1014.0" y="166" font-size="12" fill="#1b2a3a" text-anchor="middle">Tx</text>
+  <text x="680" y="225" font-size="14" fill="#1b2a3a" text-anchor="end" font-weight="bold">liver</text>
+  <rect x="690" y="210" width="162" height="22" rx="0" fill="#7aa6c2" stroke="#9aa5b1" stroke-width="0.8"/>
+  <text x="771.0" y="226" font-size="12" fill="#1b2a3a" text-anchor="middle">ReprPC</text>
+  <rect x="852" y="210" width="27" height="22" rx="0" fill="#f4f6f8" stroke="#9aa5b1" stroke-width="0.8"/>
+  <rect x="879" y="210" width="54" height="22" rx="0" fill="#7aa6c2" stroke="#9aa5b1" stroke-width="0.8"/>
+  <text x="906.0" y="226" font-size="12" fill="#1b2a3a" text-anchor="middle">ReprPC</text>
+  <rect x="933" y="210" width="162" height="22" rx="0" fill="#f4f6f8" stroke="#9aa5b1" stroke-width="0.8"/>
+  <text x="1014.0" y="226" font-size="12" fill="#1b2a3a" text-anchor="middle">Quies</text>
+  <line x1="808.8" y1="70" x2="808.8" y2="270" stroke="#c0392b" stroke-width="2" stroke-dasharray="5 4"/>
+  <text x="808.8" y="62" font-size="14" fill="#c0392b" text-anchor="middle">variant rs…</text>
+  <text x="860" y="300" font-size="14" fill="#1b2a3a" text-anchor="middle">active enhancer in B cells (GM12878), not marked in</text>
+  <text x="860" y="320" font-size="14" fill="#1b2a3a" text-anchor="middle">K562; Polycomb-repressed in liver: a B-cell candidate</text>
+</svg>

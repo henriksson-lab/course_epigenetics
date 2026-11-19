@@ -1,0 +1,403 @@
+---
+title: "Exercise: What did the model learn? Variant effects"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+## Goal
+
+After this exercise you will be able to:
+
+- Compute **in-silico mutagenesis** (ISM) effects and position importances by hand for a small model, and recognise when ISM fails (**redundant motifs**).
+- Explain what **gradient × input** and **DeepLIFT/SHAP** compute, and why they can differ from ISM.
+- Work with **variant effects** on the logit scale: Δ = z(alt) − z(ref), odds ratios and probabilities.
+- Run ISM and gradient × input on the CTCF network from *How a CNN reads DNA*, and compare what it uses with the JASPAR motif, at the core and in the flanks.
+- Score **real SNPs** with allele-specific CTCF binding (ADASTRA) with the network and with the PWM, and judge how often the predicted direction is right compared with a trivial baseline.
+
+## Background
+
+**ISM.** For a sequence $s$ with prediction $z(s)$ (the logit, log-odds of "bound"), change each position $i$ to each other base $b$ and record $\Delta_{i,b} = z(s_{i \to b}) - z(s)$. The importance of position $i$ is $-\frac{1}{3}\sum_b \Delta_{i,b}$: positive if the reference base is better than the alternatives on average.
+
+**Gradients.** $\partial z / \partial x_{b,i}$ is the slope of the output with respect to input base $b$ at position $i$, for all positions at once (one backward pass). **Gradient × input** keeps the slope at the reference base. It is a linear approximation of ISM and can miss effects when the model is non-linear (a ReLU switching, a different window winning the max pooling, saturation).
+
+**Reference-based attribution.** DeepLIFT and SHAP explain $z(s) - z(\text{reference})$, with a reference such as shuffled sequence; contributions sum to that difference, so redundant motifs share credit.
+
+**Variant effect.** $\Delta = z(\text{alt}) - z(\text{ref})$, with the variant in the same sequence context. It is a log odds ratio: the odds of binding are multiplied by $e^{\Delta}$. To convert to probabilities use $p = 1/(1 + e^{-z})$.
+
+**Allele-specific binding (ASB).** In a heterozygous individual, ChIP-seq reads over a SNP come from both alleles; a significant imbalance (after controlling for copy number and mapping bias) means one allele is bound more. ADASTRA (Abramov et al. 2021) has called ASB SNPs for hundreds of TFs from public ChIP-seq data. *Epigenomics and genetic variation* covers allele-specific signals and QTLs in detail.
+
+## Data
+
+The trained model and the data set from *How a CNN reads DNA* (files `ctcf_cnn.pt` and `ctcf_dataset.rds` in `~/epi/ml-cnn`), the hg38 genome (`hg38.fa.bgz`) and a table of CTCF allele-specific binding SNPs from ADASTRA (release Mabel v6.1, FDR < 0.05, all cell types; hg38, 1-based positions):
+
+```bash
+data/download.sh ml-interpretation-variants
+cd ~/epi/ml-cnn                 # the folder of the previous exercise
+```
+
+If you did not save the model, the course data contain the same files, made with the same code and seed: `ml_ctcf_dataset.rds` and `ml_ctcf_cnn.pt` (see the comment in R0).
+
+You need, in R: `torch`, `Rsamtools`, `GenomicRanges`, `Biostrings`, `JASPAR2024`, `TFBSTools`, `motifmatchr`, `ggplot2` and the CRAN package `ggseqlogo` (`install.packages("ggseqlogo")`). The R part takes about two minutes.
+
+*Simplifications.* A one-layer model on 200 bp; ISM and gradient × input only (DeepLIFT/SHAP and TF-MoDISco need Python tooling and are described, not run); ASB SNPs from many cell types scored with a model of one cell line; only SNPs, no indels; the SNP is placed at the centre of a 200-bp window.
+
+## By hand
+
+The toy model of the lecture: one filter of width 4 with weights (rows A, C, G, T; columns 1–4)
+
+```
+      1    2    3    4
+A    -1   -1   +2    0
+C    +2   +2   -1   -1
+G    -1   -2   +1   +2
+T    +1   -1   -2   -1
+```
+
+bias −4, ReLU, global max pooling, and output $z = -2 + 1 \times (\text{max activation})$.
+
+**B1. In-silico mutagenesis.** The sequence is `TCCGGA`.
+
+(a) Score the three windows, apply the bias and ReLU, and compute $z$ and $p$.
+
+(b) Compute Δ for every mutation at positions 2, 3, 4 and 5 (12 mutations). Then the importance of each of the six positions.
+
+(c) One mutation *increases* $z$. Which, and why?
+
+(d) Mutating C to A at position 3 gives Δ = 0, although position 3 lies in the best window. Why? (Look at all windows of the mutant.)
+
+**B2. Redundancy.** The sequence is `CCAGTTCCAG`.
+
+(a) Compute $z$.
+
+(b) What is Δ for every single-base mutation? What does ISM say about which bases matter?
+
+(c) Mutate the A in both copies to T. What is Δ now? What does this tell you about the motifs?
+
+(d) An enhancer has two binding sites for the same TF. Deleting either one in mice has no phenotype; deleting both does. Relate this to (b) and (c).
+
+**B3. Gradient × input.** For the toy model with `TCCGGA` the gradient of $z$ with respect to the input is non-zero only in the winning window, where it equals the filter weights (because the ReLU is active there and max pooling passes the gradient only to the winning window).
+
+(a) Write gradient × input for the six positions.
+
+(b) Compare with your ISM importances from B1. Where do they agree, and where not?
+
+(c) The gradient predicts Δ for C→A at position 3 as $w_{A,2} - w_{C,2}$ (the weight change in the filter's second column). What is that prediction, and what did ISM give? Why do they differ?
+
+**B4. Variant effects on the logit scale.**
+
+(a) A model gives $z = 3.0$ for the reference allele and $z = 0.5$ for the alternative. Compute Δ, both probabilities, and the factor by which the odds of binding change.
+
+(b) At another site, $z$ goes from 9 to 7. Compute Δ and the two probabilities. Which variant has the larger effect: (a) or (b)? On which scale does the answer look different, and why?
+
+(c) A paper reports predicted probabilities 0.60 (ref) and 0.40 (alt). What is Δ on the logit scale?
+
+**B5. Allele-specific binding.**
+
+(a) A heterozygous SNP (G/T) is covered by 60 CTCF ChIP-seq reads: 42 G and 18 T. In the input DNA, 31 G and 29 T. A binomial test of 42 of 60 against 0.5 gives $p = 0.003$. Which allele is preferred, and why do you look at the input?
+
+(b) Our model predicts Δ = −2.5 for G>T. Is that concordant with the ChIP-seq?
+
+(c) A model is tested on 200 ASB SNPs, 120 of which prefer the reference allele. It predicts the right direction for 118. Is it better than a model that always says "the reference binds better"? For the 40 SNPs where it predicts |Δ| > 2, it is right for 37. What do you conclude?
+
+**B6. Judge the claims.**
+
+(a) "ISM shows that position 120 of this enhancer has zero importance, so mutating it in the genome will not change binding."
+
+(b) "Our model predicts expression across genes with ρ = 0.6. We therefore used it to predict which patients carry expression-lowering variants."
+
+(c) "The variant has a predicted effect of Δ = −4 on CTCF binding in GM12878, so it causes the disease associated with this locus."
+
+(d) "Gradient × input and ISM agree with r = 0.93, so the attribution is correct."
+
+## In R
+
+### R0 — The model and the data from *How a CNN reads DNA*
+
+```r
+library(Rsamtools); library(GenomicRanges); library(Biostrings)
+library(JASPAR2024); library(TFBSTools); library(RSQLite); library(motifmatchr)
+library(torch); library(ggplot2); library(ggseqlogo)
+D <- "/path/to/course/data"
+ds    <- readRDS("ctcf_dataset.rds")       # from How a CNN reads DNA, R1
+model <- torch_load("ctcf_cnn.pt")         # from How a CNN reads DNA, R5
+# no files? use the prepared copies (same code, same seed):
+# ds <- readRDS(file.path(D, "ml_ctcf_dataset.rds")); model <- torch_load(file.path(D, "ml_ctcf_cnn.pt"))
+model$eval()
+one_hot <- function(s) {
+  m <- do.call(rbind, strsplit(s, ""))
+  x <- array(0, c(length(s), 4, ncol(m)))
+  for (k in 1:4) x[, k, ] <- m == c("A", "C", "G", "T")[k]
+  x
+}
+logit <- function(seqs) with_no_grad(as.numeric(model(torch_tensor(one_hot(seqs), dtype = torch_float()))))
+test <- ds[ds$split == "test", ]
+test$cnn <- logit(test$seq)
+jaspar <- dbConnect(SQLite(), db(JASPAR2024()))
+ctcf_m <- getMatrixByID(jaspar, "MA0139.2")
+pwm_score <- function(seqs)          # best log-odds score of the CTCF PWM in each sequence
+  motifScores(matchMotifs(ctcf_m, DNAStringSet(seqs), out = "scores", bg = "even", p.cutoff = 1))[, 1]
+summary(test$cnn[test$label == 1]); summary(test$cnn[test$label == 0])
+```
+
+What are the median logits of test peaks and background windows? What probabilities are they?
+
+### R1 — In-silico mutagenesis of one peak
+
+```r
+ism <- function(s) {                 # in-silico mutagenesis: every position, every other base
+  b   <- strsplit(s, "")[[1]]
+  mut <- expand.grid(alt = c("A", "C", "G", "T"), pos = seq_along(b), stringsAsFactors = FALSE)
+  mut <- mut[mut$alt != b[mut$pos], ]                       # 3 alternatives per position
+  mutants <- vapply(seq_len(nrow(mut)), function(i) {
+    x <- b; x[mut$pos[i]] <- mut$alt[i]; paste(x, collapse = "") }, "")
+  mut$ref   <- b[mut$pos]
+  mut$delta <- logit(mutants) - logit(s)                    # change in log-odds of "bound"
+  mut
+}
+pos_test <- test[test$label == 1, ]
+ex <- pos_test[which.min(abs(pos_test$cnn - median(pos_test$cnn))), ]   # a typical peak
+ex[, c("chr", "start", "cnn")]
+r <- ism(ex$seq)
+nrow(r)
+head(r[order(r$delta), ], 10)
+ggplot(r, aes(pos, alt, fill = delta)) + geom_tile() +
+  scale_fill_gradient2(low = "#2a6f97", mid = "white", high = "#c0392b") +
+  labs(x = "position in the 200-bp window", y = "mutated to", fill = "delta logit")
+imp <- -tapply(r$delta, r$pos, mean)         # importance of the reference base at each position
+imp_mat <- one_hot(ex$seq)[1, , ] * rep(imp, each = 4)
+rownames(imp_mat) <- c("A", "C", "G", "T")
+ggseqlogo(imp_mat[, 60:140], method = "custom", seq_type = "dna") + labs(y = "importance (-mean delta logit)")
+```
+
+(a) How many mutants does ISM need for a 200-bp sequence, and how many predictions in total?
+
+(b) Which mutations have the largest effects, and where are they relative to the summit (position 100)? Read the motif in the logo: which strand is it on? (Compare with the JASPAR consensus `GCCACCAGGGGGCGC`.)
+
+(c) Find a base with negative importance. What would happen to the prediction if you mutated it?
+
+### R2 — Gradient × input
+
+```r
+x <- torch_tensor(one_hot(ex$seq), dtype = torch_float(), requires_grad = TRUE)
+z <- model(x)
+z$backward()                                         # gradient of the logit w.r.t. every input
+grad <- as.array(x$grad)[1, , ]                      # 4 x 200
+gxi  <- colSums(grad * one_hot(ex$seq)[1, , ])       # gradient x input: one value per position
+cor(gxi, imp)
+plot(imp, gxi, xlab = "ISM importance", ylab = "gradient x input", pch = 19, col = "#2a6f97")
+```
+
+(a) How well do the two attributions agree? How many forward/backward passes did each need?
+
+(b) Look at the points furthest from the diagonal. Using B3, suggest why they differ.
+
+### R3 — What the model uses around the motif
+
+```r
+set.seed(2)
+peaks <- pos_test[pwm_score(pos_test$seq) > 12, ]           # peaks with a good CTCF match
+peaks <- peaks[sample(nrow(peaks), 200), ]
+hits  <- matchMotifs(ctcf_m, DNAStringSet(peaks$seq), out = "positions", bg = "even", p.cutoff = 1e-4)[[1]]
+best  <- t(sapply(hits, function(h) { h <- h[which.max(mcols(h)$score)]
+                                       c(start = start(h), minus = mcols(h)$strand == "-") }))
+prof <- t(sapply(seq_len(nrow(peaks)), function(i) {
+  r   <- ism(peaks$seq[i])
+  imp <- -tapply(r$delta, r$pos, mean)                       # importance per position
+  idx <- best[i, "start"] + (-20):34                         # 20 bp flank, 15-bp motif, 20 bp flank
+  if (best[i, "minus"]) idx <- rev(idx)                      # read minus-strand sites backwards
+  imp[pmin(pmax(idx, 1), 200)] * (idx >= 1 & idx <= 200)
+}))
+mean_imp <- colMeans(prof)
+p   <- (Matrix(ctcf_m) + 0.25) / colSums(Matrix(ctcf_m) + 0.25)
+ic  <- 2 + colSums(p * log2(p))                              # information content per column
+plot(-20:34, mean_imp, type = "h", lwd = 4, col = "#8c564b",
+     xlab = "position relative to the start of the CTCF motif", ylab = "mean ISM importance")
+round(cor(mean_imp[21:35], ic), 2)
+```
+
+(a) Why do we align the peaks on their best PWM match, and why reverse minus-strand sites?
+
+(b) Which motif positions does the model rely on most? Compare with the information content of the JASPAR columns (`round(ic, 2)`) and with the CTCF logo of *Gene regulation*.
+
+(c) The 200 peaks were chosen because they have a good PWM match. How does that choice bias the comparison?
+
+### R4 — Core versus flanks
+
+```r
+core <- 21:35
+data.frame(where = c("motif, high-information positions (IC > 1 bit)", "motif, other positions",
+                     "flanks 1-10 bp", "flanks 11-20 bp"),
+           mean_importance = round(c(mean(mean_imp[core][ic > 1]), mean(mean_imp[core][ic <= 1]),
+                                     mean(mean_imp[c(11:20, 36:45)]), mean(mean_imp[c(1:10, 46:55)])), 3))
+```
+
+How much does mutating a core position cost on average, compared with a flanking base? Express the core effect as a factor on the odds of binding.
+
+### R5 — Real SNPs with allele-specific CTCF binding
+
+```r
+asb <- read.delim(file.path(D, "ctcf_asb_adastra.tsv"))
+names(asb) <- c("chr", "pos", "ref", "alt", "rsid", "tfs", "cell_types",
+                "fdr_ref", "fdr_alt", "es_ref", "es_alt")              # FDRs are -log10
+asb <- asb[asb$chr %in% c("chr8", "chr9"), ]                           # test chromosomes only
+sig_ref <- !is.na(asb$fdr_ref) & asb$fdr_ref > -log10(0.05)
+sig_alt <- !is.na(asb$fdr_alt) & asb$fdr_alt > -log10(0.05)
+keep <- xor(sig_ref, sig_alt)                                          # exactly one preferred allele
+asb <- asb[keep, ]
+asb$preferred <- ifelse(sig_ref[keep], "ref", "alt")
+table(asb$preferred)
+
+genome <- FaFile(file.path(D, "hg38.fa.bgz"))
+ref_seq <- as.character(getSeq(genome, GRanges(asb$chr, IRanges(asb$pos - 99, width = 200))))
+stopifnot(substr(ref_seq, 100, 100) == asb$ref)                        # the SNP is base 100
+alt_seq <- ref_seq; substr(alt_seq, 100, 100) <- asb$alt
+asb$d_cnn <- logit(alt_seq) - logit(ref_seq)                           # variant effect, log-odds
+asb$d_pwm <- pwm_score(alt_seq) - pwm_score(ref_seq)
+observed <- ifelse(asb$preferred == "alt", 1, -1)                      # +1: alt allele bound more
+concordance <- function(d, min_abs) {
+  k <- abs(d) > min_abs
+  c(n = sum(k), concordant = round(mean(sign(d[k]) == observed[k]), 3))
+}
+rbind(cnn_all = concordance(asb$d_cnn, 0),   cnn_0.5 = concordance(asb$d_cnn, 0.5),
+      cnn_1   = concordance(asb$d_cnn, 1),   cnn_2   = concordance(asb$d_cnn, 2),
+      pwm_all = concordance(asb$d_pwm, 0),   pwm_1   = concordance(asb$d_pwm, 1),
+      pwm_2   = concordance(asb$d_pwm, 2),   always_ref = c(nrow(asb), mean(observed == -1)))
+cor(asb$d_cnn, asb$d_pwm)
+sum(asb$d_cnn == 0); sum(asb$d_pwm == 0)
+```
+
+(a) How many ASB SNPs are on the test chromosomes, and how many prefer each allele? Why use only chr8 and chr9?
+
+(b) How often does the CNN predict the right direction overall, and compared with "always the reference"? And when it predicts a large effect?
+
+(c) For how many SNPs is the predicted effect exactly 0, for the CNN and for the PWM? Explain both numbers.
+
+(d) Give three reasons why most ASB SNPs are not predicted well (see the lecture).
+
+### R6 — One SNP up close
+
+```r
+big <- asb[order(-abs(asb$d_cnn)), c("rsid", "chr", "pos", "ref", "alt", "preferred", "d_cnn", "d_pwm")]
+head(big, 8)
+i <- which(asb$rsid == big$rsid[1])
+show_ism <- function(s, title) {
+  r <- ism(s); imp <- -tapply(r$delta, r$pos, mean)
+  m <- one_hot(s)[1, , ] * rep(imp, each = 4); rownames(m) <- c("A", "C", "G", "T")
+  ggseqlogo(m[, 75:125], method = "custom", seq_type = "dna") + ggtitle(title)
+}
+show_ism(ref_seq[i], paste(asb$rsid[i], "reference allele", asb$ref[i]))
+show_ism(alt_seq[i], paste(asb$rsid[i], "alternative allele", asb$alt[i]))
+```
+
+(a) Which SNP has the largest predicted effect? Do the model, the PWM and ADASTRA agree on its direction?
+
+(b) In the logos, find the SNP (column 26 of the plot, base 100 of the window). Which motif position does it hit?
+
+(c) Look the SNP up in the [ADASTRA](https://adastra.autosome.org/) web interface (search by rs ID). In which cell types was the imbalance seen?
+
+## Hints
+
+::: {.callout-tip collapse="true" title="Hint 1 — ISM and redundancy by hand (B1, B2)"}
+For each mutant, rescore *all* windows: a mutation can destroy the best window but also create a new one. Activation = max(0, score − 4); $z = -2 + \max$. Δ is mutant minus reference. Importance is minus the mean of the three Δ at a position. With two identical best windows, max pooling returns the same value as long as one survives. [Alipanahi et al. 2015](https://doi.org/10.1038/nbt.3300) introduced mutation maps for CNNs; [Novakovsky et al. 2022](https://doi.org/10.1038/s41576-022-00532-2) reviews ISM and its pitfalls.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 2 — gradients (B3, R2)"}
+The gradient is the local slope: it predicts the change for small changes of the input as if the model were linear. A one-hot base change is not small; whenever a ReLU switches, or another window wins the max pooling, the linear prediction is wrong. In torch, set `requires_grad = TRUE` on the input tensor and call `$backward()` on the output ([autograd](https://torch.mlverse.org/docs/articles/getting-started/autograd.html)). Integrated gradients ([Sundararajan et al. 2017](https://arxiv.org/abs/1703.01365)) and DeepLIFT ([Shrikumar et al. 2017](https://arxiv.org/abs/1704.02685)) integrate over a path from a reference instead.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 3 — logits, probabilities and odds (B4)"}
+$p = 1/(1 + e^{-z})$ and $z = \ln(p/(1-p))$. Useful values: $e^{-2.5} = 0.082$, $e^{-3} = 0.050$, $e^{0.5} = 1.65$, $\ln(1.5) = 0.405$. A difference of logits is the log of an odds ratio.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 4 — allele-specific binding (B5, R5)"}
+In ADASTRA tables `fdr_ref` and `fdr_alt` are −log10 FDRs for preferential binding of the reference and of the alternative allele ([readme of the release](https://zenodo.org/records/14174114)); [Abramov et al. 2021](https://doi.org/10.1038/s41467-021-23007-0) describes how copy number and mapping bias are handled. A concordance is only meaningful next to the trivial baseline: the fraction of SNPs in the majority class.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 5 — R functions (R0–R6)"}
+[`ggseqlogo`](https://omarwagih.github.io/ggseqlogo/) draws logos from a matrix with `method = "custom"` (letter heights = matrix values, negative values below the axis). [`motifmatchr::matchMotifs`](https://bioconductor.org/packages/motifmatchr) with `out = "positions"` gives the start, strand and score of every match; with `out = "scores"` and `p.cutoff = 1` the best score of every sequence. [`Rsamtools::FaFile`](https://bioconductor.org/packages/Rsamtools) and `getSeq` read the windows around the SNPs; `substr<-` replaces one base. `xor()` is TRUE when exactly one of two conditions holds.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 6 — judging claims (B6)"}
+Ask: what does the model predict (which readout, which cell type)? How was it evaluated (across genes or across individuals; on variants at all)? Is a large predicted molecular effect evidence for a phenotype? Does agreement between two attribution methods show that either is right about biology? See the last slides of the lecture, [Huang et al. 2023](https://doi.org/10.1038/s41588-023-01574-w) and [Sasse et al. 2023](https://doi.org/10.1038/s41588-023-01524-6).
+:::
+
+## Solutions
+
+::: {.callout-note collapse="true" title="Solutions — by hand"}
+
+**B1.** (a) Windows: TCCG = 1 + 2 − 1 + 2 = **4**, CCGG = 2 + 2 + 1 + 2 = **7**, CGGA = 2 − 2 + 1 + 0 = **1**. After bias and ReLU: 0, 3, 0. Max 3, $z = -2 + 3 = 1.0$, $p = 0.73$.
+
+(b) Δ (rows: mutated to):
+
+```
+position    2: C    3: C    4: G    5: G
+→ A          -3      0      +1      -2
+→ C          ref    ref     -2      -3
+→ G          -3     -1      ref     ref
+→ T          -1     -3      -3      -3
+```
+
+Positions 1 and 6 lie outside every window that can win, so all their Δ are 0. Importances (−mean Δ): position 1: **0**, 2: **2.33**, 3: **1.33**, 4: **1.33**, 5: **2.67**, 6: **0**.
+
+(c) G→A at position 4 gives `TCCAGA`: CCAG scores 8, activation 4, $z = 2$, Δ = **+1**. The reference has G at the filter's third column (+1), while A is the preferred base (+2): the reference site is not optimal, so its importance at that position is reduced.
+
+(d) The mutant `TCAGGA` loses CCGG but gains a new window **TCAG** = 1 + 2 + 2 + 2 = 7, as good as the old best window. Max pooling takes the new one and $z$ is unchanged. ISM measures the model's output, whatever window produces it.
+
+**B2.** (a) Windows CCAG (8), CAGT, AGTT, GTTC, TTCC, TCCA, CCAG (8): two activations of 4, max 4, $z = 2$.
+
+(b) Every single mutation leaves at least one intact CCAG, so the max stays 4 and **every Δ is 0**: ISM says no base matters.
+
+(c) `CCTGTTCCTG`: both copies broken (CCTG = 2 + 2 − 2 + 2 = 4, activation 0); no other window passes. $z = -2$, Δ = **−4**. The motifs matter, but they are **redundant**: each can replace the other.
+
+(d) The same logic in vivo: redundant (shadow) enhancers or binding sites buffer each other, so single deletions show no effect. Testing pairs (or a reference without any copy, as in DeepLIFT/SHAP) reveals the effect.
+
+**B3.** (a) The winning window is CCGG at positions 2–5, so the gradient at the reference base is the filter weight for that base: position 2 (C, column 1) +2, position 3 (C, column 2) +2, position 4 (G, column 3) +1, position 5 (G, column 4) +2; positions 1 and 6: 0. Gradient × input: **0, 2, 2, 1, 2, 0**.
+
+(b) Both give 0 outside the window and rank positions 2 and 5 high. They disagree at position 3 (gradient 2, ISM 1.33) and somewhat elsewhere, because ISM averages real effects that include ReLU clipping (Δ cannot go below −3 here: the activation cannot drop below 0) and new windows.
+
+(c) Linear prediction: $w_{A,2} - w_{C,2} = -1 - 2 = $ **−3**. ISM: **0**, because a new window (TCAG) takes over (B1d). The gradient sees only the current winning window and assumes everything else stays the same.
+
+**B4.** (a) Δ = 0.5 − 3.0 = **−2.5**. $p_{ref} = 1/(1 + e^{-3}) = 0.953$, $p_{alt} = 1/(1 + e^{-0.5}) = 0.622$. The odds are multiplied by $e^{-2.5} = 0.082$ (about 12 times lower). (b) Δ = **−2**; $p$ goes from 0.99988 to 0.99909. On the logit scale (a) is the larger effect (−2.5 vs −2), and both are substantial; on the probability scale (b) looks negligible (0.0008) because the sigmoid is saturated near 1. Log-odds compare sites of different strength fairly. (c) $\text{logit}(0.4) - \text{logit}(0.6) = \ln(0.4/0.6) - \ln(0.6/0.4) = -0.405 - 0.405 = $ **−0.81**.
+
+**B5.** (a) **G** (the allele with 70% of the reads). The input shows that the two alleles are equally represented in the DNA (31/29): no copy-number difference or mapping bias that could produce the imbalance by itself. (b) Δ = −2.5 means the model predicts G>T reduces binding, i.e. G is bound more: **concordant**. (c) 118/200 = 59% vs 120/200 = 60% for "always reference": **no better** than the baseline overall. For large predicted effects 37/40 = 92.5%: the model is informative when it predicts a strong effect (typically a SNP in a motif), not otherwise. This is the pattern of our real data in R5.
+
+**B6.** (a) Zero ISM importance can mean redundancy (another site compensates, B2), saturation of the output, or simply that this model, with its 200-bp view and its training data, ignores that base. It does not show that the base is irrelevant in the genome, in another cell type, or for another readout. (b) Predicting which genes are high or low (across genes) is a different task from predicting differences between people (across individuals); current models do poorly at the second (Huang et al. 2023; Sasse et al. 2023). The model must be validated across individuals before such use. (c) A predicted change in CTCF binding in one cell line is a molecular hypothesis. Causality for the disease needs genetic evidence (fine-mapping: is this variant, and not one in LD, responsible?), evidence that CTCF binding matters at this locus in the relevant cell type, and experiments (allele-specific binding, editing). (d) Agreement between two attribution methods shows they describe the *model* consistently. Whether the model is right about *biology* needs independent data: motif databases, mutagenesis experiments, allele-specific binding.
+:::
+
+::: {.callout-note collapse="true" title="Solutions — R"}
+
+**R0.** Median logit of test peaks **4.26** ($p = 0.986$) and of background windows **−3.43** ($p = 0.031$).
+
+**R1.** (a) 3 × 200 = **600** mutants, plus the reference: 601 predictions. (b) The example is chr8:65 143 411–65 143 610 ($z = 4.26$). The largest effects are at positions 103–114: C→T at 105 (Δ = **−5.77**), C→A and C→G at 105, G→C at 114, G→A at 113 and 114, G→C at 110 (all below −3.5). They lie 3–14 bp to the right of the summit, in the best CTCF match: `ACCCCTCCTGGTGGC` at positions 101–115 on the plus strand, whose reverse complement `GCCACCAGGAGGGGT` is close to the JASPAR consensus `GCCACCAGGGGGCGC`. The motif is on the **minus strand**, and the logo shows it as the reverse complement. 48 of the 600 mutations change $z$ by more than 1. (c) Bases drawn below the axis (for example around positions 99–104) have negative importance: mutating them would, on average, increase the predicted binding, because the reference base is worse than the alternatives at a motif position.
+
+**R2.** (a) Correlation **0.955**. ISM: 601 forward passes; gradient: 1 forward and 1 backward pass. (b) The outlying points are positions where a mutation changes which window wins the max pooling of a filter, or pushes a filter's activation below its ReLU threshold: non-linear effects that the local gradient cannot see (B3c). Over 200 peaks the median correlation is 0.93 (lecture).
+
+**R3.** (a) Each peak has its motif at a different position and on either strand; aligning on the best match puts the same motif position in the same column, and reversing minus-strand sites makes column 1 always the first base of the motif as written in JASPAR. (b) Correlation with information content **0.94**. The largest importances (about 4.5) are at motif positions 3, 8 and 11 (0-based 2, 7, 10 on the plot), the C, G and G with about 1.9 bits in JASPAR; the low-information positions 1, 6 and 15 have the lowest importance. The importance profile has the shape of the logo. (c) Peaks were selected *because* their sequence matches the PWM well (score > 12; 2236 of 3778 test peaks), and aligned with the PWM. This favours agreement with the PWM; peaks bound through weaker or different sites are excluded, so the analysis says nothing about them.
+
+**R4.** High-information motif positions **3.17**, other motif positions **1.31**, flanks 1–10 bp **0.074**, 11–20 bp **0.013**. A core mutation costs about 3.2 logit units on average: the odds of binding fall by a factor $e^{3.2} \approx 25$. Flanking bases matter about 40 times less, and almost not at all beyond 10 bp.
+
+**R5.** (a) 2611 ASB SNPs on chr8 and chr9; for 2 both alleles are significant and they are dropped, leaving **2609**: **1526** prefer the reference allele, **1083** the alternative. Only the test chromosomes, so that no SNP lies in a sequence the model was trained on. (b) Overall the CNN is right for **58.2%** of the 2462 SNPs with a non-zero prediction, the same as always guessing the reference (**58.5%**). With |Δ| > 0.5: 73.6% (531 SNPs); > 1: **82.1%** (280); > 2: **94.8%** (115). The PWM: 74.0% (385 SNPs), 79.8% (262) for |Δ| > 1 and 81.6% (206) for |Δ| > 2. The predicted effects of the two methods correlate with r = 0.70. (c) **147** SNPs have Δ = 0 exactly for the CNN: the SNP does not touch the best-scoring window of any filter, so no max-pooled value changes. **2224** for the PWM: it changes only if the SNP is inside the best-scoring 15-bp window (or creates a better one). (d) The SNP is not the causal variant (another variant on the same haplotype); the effect works outside the 200-bp window or through other factors or DNA methylation; the imbalance is small and the predicted Δ is within the model's noise; the model was trained on one cell line, without any variants; and ASB calls carry mapping-bias, copy-number and cell-type differences.
+
+**R6.** (a) **rs12237222** (chr9:83 219 828, G>T): Δ = **−6.23** for the CNN ($z$ from 6.35 to 0.12) and −8.14 for the PWM; ADASTRA reports the reference G as preferred. All three agree. (b) The best CTCF match in the reference window is `CCCACTGGGGGGCAG` at positions 93–107 on the plus strand; the SNP (position 100) is **motif position 8**, the G with about 1.9 bits in JASPAR, one of the three most informative positions. In the reference logo it is one of the tallest letters; in the alternative logo the T is drawn below the axis and the importance of the neighbouring core bases drops. (c) ADASTRA lists the imbalance in many cell types and tissues (for example adrenal gland, liver, hepatocytes, glioblastoma cells, LNCaP, MCF-7, HUVEC and a lymphoblastoid line): a strong, cell-type-independent CTCF site whose motif is broken by the T allele.
+:::
+
+## Where this leads
+
+- *Epigenomics and genetic variation* shows how allele-specific signals, chromatin QTLs and methylation QTLs are measured, the data that variant-effect models are tested against.
+- *The 3D genome* units show what a CTCF site does: loop anchors, whose loss can rewire contacts between enhancers and promoters.
+- The models of the last slides (Enformer, Borzoi, chromBPNet, AlphaGenome) are used through their authors' software or web services; the ideas here (Δ on the logit scale, attribution, validation against allelic data and across individuals) are what to look for in their results.
+
+## Key papers (optional further reading)
+
+*Not required reading and not examined.*
+
+- Novakovsky et al. 2022, *Nat Rev Genet*. [Obtaining genetics insights from deep learning via explainable artificial intelligence](https://doi.org/10.1038/s41576-022-00532-2). Attribution methods for genomics.
+- Avsec et al. 2021, *Nat Methods*. [Effective gene expression prediction from sequence by integrating long-range interactions](https://doi.org/10.1038/s41592-021-01252-x). Enformer.
+- Avsec et al. 2026, *Nature*. [Advancing regulatory variant effect prediction with AlphaGenome](https://doi.org/10.1038/s41586-025-10014-0). AlphaGenome.
+- Abramov et al. 2021, *Nat Commun*. [Landscape of allele-specific transcription factor binding in the human genome](https://doi.org/10.1038/s41467-021-23007-0). ADASTRA.
+- Huang et al. 2023, *Nat Genet*. [Personal transcriptome variation is poorly explained by current genomic deep learning models](https://doi.org/10.1038/s41588-023-01574-w).
+- Sasse et al. 2023, *Nat Genet*. [Benchmarking of deep neural networks for predicting personal gene expression from DNA sequence highlights shortcomings](https://doi.org/10.1038/s41588-023-01524-6).

@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 330" width="1120" height="330" font-family="Helvetica, Arial, sans-serif">
+<defs>
+<marker id="aink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker>
+<marker id="agrey" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker>
+</defs>
+<rect width="1120" height="330" fill="#ffffff"/>
+<!-- ruler -->
+<line x1="60" y1="300" x2="1060" y2="300" stroke="#5b6b7a" stroke-width="1.5"/>
+<g stroke="#5b6b7a" stroke-width="1.5">
+<line x1="60" y1="294" x2="60" y2="306"/><line x1="310" y1="294" x2="310" y2="306"/><line x1="560" y1="294" x2="560" y2="306"/><line x1="810" y1="294" x2="810" y2="306"/><line x1="1060" y1="294" x2="1060" y2="306"/>
+</g>
+<g font-size="13" fill="#5b6b7a" text-anchor="middle">
+<text x="60" y="322">0</text><text x="310" y="322">250 kb</text><text x="560" y="322">500 kb</text><text x="810" y="322">750 kb</text><text x="1060" y="322">1 Mb</text>
+</g>
+<!-- accessibility track -->
+<text x="60" y="152" font-size="15" fill="#5b6b7a">ATAC</text>
+<line x1="110" y1="170" x2="1060" y2="170" stroke="#5b6b7a" stroke-width="1"/>
+<g fill="#2e8b57">
+<path d="M150,170 L156,150 L162,170 z"/>
+<path d="M232,170 L237,158 L242,170 z"/>
+<path d="M398,170 L404,146 L410,170 z"/>
+<path d="M470,170 L475,160 L480,170 z"/>
+<path d="M690,170 L696,152 L702,170 z"/>
+<path d="M760,170 L765,161 L770,170 z"/>
+<path d="M902,170 L908,148 L914,170 z"/>
+<path d="M990,170 L995,159 L1000,170 z"/>
+</g>
+<path d="M548,170 L560,112 L572,170 z" fill="#c0392b"/>
+<text x="560" y="196" font-size="15" fill="#c0392b" text-anchor="middle" font-weight="bold">enhancer E</text>
+<!-- genes -->
+<line x1="150" y1="240" x2="290" y2="240" stroke="#1b2a3a" stroke-width="2"/>
+<rect x="150" y="232" width="16" height="16" fill="#1b2a3a"/><rect x="210" y="232" width="10" height="16" fill="#1b2a3a"/><rect x="278" y="232" width="12" height="16" fill="#1b2a3a"/>
+<path d="M150,232 L150,216 L166,216" stroke="#1b2a3a" stroke-width="2" fill="none" marker-end="url(#aink)"/>
+<text x="220" y="270" font-size="15" fill="#1b2a3a" text-anchor="middle" font-style="italic">gene A</text>
+<line x1="330" y1="240" x2="410" y2="240" stroke="#1b2a3a" stroke-width="2"/>
+<rect x="330" y="232" width="10" height="16" fill="#1b2a3a"/><rect x="396" y="232" width="14" height="16" fill="#1b2a3a"/>
+<path d="M410,232 L410,216 L394,216" stroke="#1b2a3a" stroke-width="2" fill="none" marker-end="url(#aink)"/>
+<text x="370" y="270" font-size="15" fill="#1b2a3a" text-anchor="middle" font-style="italic">gene B</text>
+<line x1="600" y1="240" x2="700" y2="240" stroke="#1b2a3a" stroke-width="2"/>
+<rect x="600" y="232" width="10" height="16" fill="#1b2a3a"/><rect x="686" y="232" width="14" height="16" fill="#1b2a3a"/>
+<path d="M700,232 L700,216 L684,216" stroke="#1b2a3a" stroke-width="2" fill="none" marker-end="url(#aink)"/>
+<text x="650" y="270" font-size="15" fill="#1b2a3a" text-anchor="middle" font-style="italic">gene C</text>
+<line x1="902" y1="240" x2="1040" y2="240" stroke="#1b2a3a" stroke-width="2"/>
+<rect x="902" y="232" width="16" height="16" fill="#1b2a3a"/><rect x="970" y="232" width="10" height="16" fill="#1b2a3a"/><rect x="1028" y="232" width="12" height="16" fill="#1b2a3a"/>
+<path d="M902,232 L902,216 L918,216" stroke="#1b2a3a" stroke-width="2" fill="none" marker-end="url(#aink)"/>
+<text x="970" y="270" font-size="15" fill="#1b2a3a" text-anchor="middle" font-style="italic">gene D</text>
+<!-- question arcs from E to TSSs -->
+<path d="M548,120 C450,30 230,30 152,212" stroke="#5b6b7a" stroke-width="2" fill="none" stroke-dasharray="6,5" marker-end="url(#agrey)"/>
+<path d="M550,132 C500,90 440,110 412,212" stroke="#5b6b7a" stroke-width="2" fill="none" stroke-dasharray="6,5" marker-end="url(#agrey)"/>
+<path d="M572,132 C620,100 680,140 698,212" stroke="#5b6b7a" stroke-width="2" fill="none" stroke-dasharray="6,5" marker-end="url(#agrey)"/>
+<path d="M572,120 C680,30 860,30 900,212" stroke="#5b6b7a" stroke-width="2" fill="none" stroke-dasharray="6,5" marker-end="url(#agrey)"/>
+<g font-size="22" font-weight="bold" fill="#5b6b7a" text-anchor="middle">
+<text x="330" y="44">?</text><text x="450" y="92">?</text><text x="660" y="112">?</text><text x="790" y="44">?</text>
+</g>
+<text x="1060" y="22" font-size="15" fill="#1b2a3a" text-anchor="end">nearest TSS: gene C (140 kb)</text>
+<text x="1060" y="44" font-size="15" fill="#1b2a3a" text-anchor="end">next: gene B (150 kb)</text>
+</svg>

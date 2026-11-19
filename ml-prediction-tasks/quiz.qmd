@@ -1,0 +1,91 @@
+---
+title: "Quiz: what people try to predict, and how to tell if it works"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+Short questions on prediction tasks in epigenomics and on judging an evaluation. Try each on paper first, then open the answer.
+
+---
+
+**Q1.** For each task, name the input, where the labels come from, and what the test set should contain: (a) predicting DNase accessibility in 100 cell types from 1 kb of sequence; (b) predicting a person's age from blood methylation; (c) predicting which enhancer regulates which gene.
+
+::: {.callout-note collapse="true" title="Answer"}
+(a) Reference sequence windows; DNase-seq peaks in each cell type; held-out chromosomes (and, if the claim is about new cell types, cell types not used in training). (b) CpG methylation (β values from arrays) of a blood sample; the donor's chronological age; people from independent cohorts, ideally other labs. (c) Features of (enhancer, gene) pairs such as activity, contact and distance; CRISPRi screens (or eQTLs, loops); pairs whose genes and enhancers are not in the training set, e.g. held-out chromosomes.
+:::
+
+---
+
+**Q2.** How is the effect of a non-coding variant predicted with a sequence model? A model predicts P(bound) = 0.72 for the reference and 0.69 for the alternative allele, and 0.80 vs 0.15 for a second variant. Which variant would you test first, and why?
+
+::: {.callout-note collapse="true" title="Answer"}
+Predict the reference and the alternative sequence with the same trained model and take the difference. Effects: −0.03 and −0.65. Test the second: the predicted effect is large, typical of a variant that destroys a strong motif. A difference of 0.03 is within what the model cannot resolve.
+:::
+
+---
+
+**Q3.** A group makes 10 shifted copies of each peak window (shifts of 0–90 bp) to enlarge its training set, then splits all windows at random into 80% training and 20% test. Its CNN reaches AUC 0.97. Why is this number not trustworthy, and how should the split be done?
+
+::: {.callout-note collapse="true" title="Answer"}
+Shifted copies overlap almost completely, so nearly every test window has near-copies in the training set: a flexible model can recognise them without learning anything general (leakage). Split first, by peak or better by chromosome, and make shifted copies only within the training set.
+:::
+
+---
+
+**Q4.** In the lecture, a 1-nearest-neighbour classifier reached 96% accuracy with a random split of windows and 65% with whole regions held out, while a GC-only logistic regression changed little. Why does leakage inflate the nearest-neighbour model so much more?
+
+::: {.callout-note collapse="true" title="Answer"}
+The nearest-neighbour model memorises: it copies the label of the most similar training example, and with a random split that example is usually a shifted copy of the test window itself (87% of the time here). The GC model has two parameters and cannot memorise individual windows; it can only learn the general GC trend, which is the same whatever the split.
+:::
+
+---
+
+**Q5.** Why is holding out whole chromosomes the standard in genomics? Name one kind of leakage it does not prevent.
+
+::: {.callout-note collapse="true" title="Answer"}
+Neighbouring and overlapping windows, multiple summits of one peak, and regions in the same domain are related; putting a whole chromosome in the test set keeps all of them on one side. It does not prevent leakage through similar sequences on different chromosomes: repeat families, segmental duplications, paralogous genes.
+:::
+
+---
+
+**Q6.** A model distinguishes CTCF peaks from random genomic windows with ROC AUC 0.85. A logistic regression on GC content alone reaches 0.71 on the same data. With GC-matched negatives, the GC model drops to 0.49. What does this tell you about the first number, and which negatives would you use to claim that the model learned CTCF's binding rules?
+
+::: {.callout-note collapse="true" title="Answer"}
+Part of the 0.85 comes from GC content, which separates peaks from random genome but says nothing about CTCF specifically. With GC-matched negatives GC is useless (0.49 = chance), so whatever the model achieves there comes from other sequence features. To claim it learned CTCF's rules, use GC-matched negatives, or accessible-but-unbound negatives, and compare with a single CTCF PWM as a baseline.
+:::
+
+---
+
+**Q7.** TargetFinder predicted enhancer–promoter interactions with F1 ≈ 0.83 using random cross-validation over pairs, and 0.13 when pairs were split by chromosome (the random-guess F1 was about 0.09). Explain what happened.
+
+::: {.callout-note collapse="true" title="Answer"}
+Most pairs shared their promoter (and overlapping "window" features) with other pairs. With a random split, pairs of the same promoter were in both training and test sets, so the model learned which promoters have many interactions and applied that to the test pairs. Split by chromosome, the promoters in the test set were new, and the model was barely better than guessing.
+:::
+
+---
+
+**Q8.** Expression models such as Enformer correlate well with measured expression across genes (r ≈ 0.55–0.6), but poorly across individuals for the same gene. Why are these different questions, and which one matters for interpreting a patient's genome?
+
+::: {.callout-note collapse="true" title="Answer"}
+Across genes, the model must tell highly from lowly expressed genes, which depends on large differences in promoters and regulatory landscape. Across individuals, it must predict the small effect of each person's own variants on one gene. Training on the reference genome across genes teaches the first, not the second; predicted effects often have the wrong sign (Sasse et al. 2023; Huang et al. 2023). The second question is the one that matters for a patient.
+:::
+
+---
+
+**Q9.** A model of open chromatin is trained in GM12878 (a B-cell line) and tested in K562 (an erythroleukaemia line). Which regions do you expect it to predict well, and which badly?
+
+::: {.callout-note collapse="true" title="Answer"}
+Well: regions open in both cell types, such as CpG-island promoters and many CTCF sites, whose sequence features (GC, CpG, CTCF motifs) are shared. Badly: regions open only in K562, which depend on erythroid TFs (GATA1, TAL1) whose motifs the B-cell model has no reason to favour. Regions open only in GM12878 would be predicted as open even in K562: false positives.
+:::
+
+---
+
+**Q10.** A paper reports: "Our deep model achieves 94% accuracy in predicting TF binding sites genome-wide." List three things you would want to know before believing that it is a good model.
+
+::: {.callout-note collapse="true" title="Answer"}
+Any three of: the class balance of the test set (binding sites are rare, so 94% may be below "always unbound"); a threshold-free metric with prevalence (PR AUC); how the data were split (chromosomes, no overlapping windows); what the negatives were (random genome or matched); the baselines (GC, k-mers, the known motif); whether the test set was used to choose the model; whether it was tested in another cell type or data set.
+:::

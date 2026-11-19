@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 382" width="1120" height="382" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker><marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker></defs>
+<rect width="1120" height="382" fill="white"/>
+<text x="30" y="28" font-size="17" font-weight="bold" fill="#1b2a3a">Make the guide: 24-nt siRNAs from transposons</text>
+<rect x="30" y="45" width="240" height="62" rx="12" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="150" y="71" font-size="17" text-anchor="middle" font-weight="bold" fill="#1b2a3a">Pol IV</text>
+<text x="150" y="94" font-size="15" text-anchor="middle" fill="#1b2a3a">transcribes the TE</text>
+<rect x="300" y="45" width="240" height="62" rx="12" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="420" y="71" font-size="17" text-anchor="middle" font-weight="bold" fill="#1b2a3a">RDR2</text>
+<text x="420" y="94" font-size="15" text-anchor="middle" fill="#1b2a3a">makes double-stranded RNA</text>
+<rect x="570" y="45" width="240" height="62" rx="12" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="690" y="71" font-size="17" text-anchor="middle" font-weight="bold" fill="#1b2a3a">DCL3</text>
+<text x="690" y="94" font-size="15" text-anchor="middle" fill="#1b2a3a">cuts 24-nt siRNAs</text>
+<rect x="840" y="45" width="240" height="62" rx="12" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="960" y="71" font-size="17" text-anchor="middle" font-weight="bold" fill="#1b2a3a">AGO4</text>
+<text x="960" y="94" font-size="15" text-anchor="middle" fill="#1b2a3a">holds one siRNA strand</text>
+<line x1="272" y1="76" x2="297" y2="76" stroke="#1b2a3a" stroke-width="2.5" marker-end="url(#ah)"/>
+<line x1="542" y1="76" x2="567" y2="76" stroke="#1b2a3a" stroke-width="2.5" marker-end="url(#ah)"/>
+<line x1="812" y1="76" x2="837" y2="76" stroke="#1b2a3a" stroke-width="2.5" marker-end="url(#ah)"/>
+<text x="250" y="160" font-size="17" font-weight="bold" fill="#1b2a3a">Use the guide: methylate the matching DNA</text>
+<line x1="300" y1="320" x2="1090" y2="320" stroke="#1b2a3a" stroke-width="3"/>
+<rect x="420" y="294" width="90" height="40" rx="12" fill="#2a9d8f" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="465" y="320" font-size="16" text-anchor="middle" font-weight="bold" fill="white">Pol V</text>
+<path d="M510,300 q15,-14 30,-6 t30,-8 t30,-8 t30,-8 t30,-8 t30,-8" fill="none" stroke="#c0392b" stroke-width="3"/>
+<text x="525" y="270" font-size="15" fill="#c0392b">scaffold RNA</text>
+<rect x="660" y="200" width="90" height="40" rx="12" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="705" y="226" font-size="16" text-anchor="middle" font-weight="bold" fill="#1b2a3a">AGO4</text>
+<line x1="680" y1="240" x2="672" y2="256" stroke="#1b2a3a" stroke-width="2"/>
+<text x="648" y="216" font-size="15" text-anchor="end" fill="#1b2a3a">siRNA pairs with</text>
+<text x="648" y="235" font-size="15" text-anchor="end" fill="#1b2a3a">the scaffold</text>
+<path d="M960,108 C960,150 760,150 720,198" fill="none" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<rect x="880" y="245" width="90" height="40" rx="12" fill="#2a6f97" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="925" y="271" font-size="16" text-anchor="middle" font-weight="bold" fill="white">DRM2</text>
+<path d="M750,228 C800,230 840,250 876,262" fill="none" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<line x1="880" y1="320" x2="880" y2="308" stroke="#1b2a3a" stroke-width="2"/><circle cx="880" cy="302" r="5" fill="#1b2a3a"/>
+<line x1="910" y1="320" x2="910" y2="308" stroke="#1b2a3a" stroke-width="2"/><circle cx="910" cy="302" r="5" fill="#1b2a3a"/>
+<line x1="940" y1="320" x2="940" y2="308" stroke="#1b2a3a" stroke-width="2"/><circle cx="940" cy="302" r="5" fill="#1b2a3a"/>
+<line x1="970" y1="320" x2="970" y2="308" stroke="#1b2a3a" stroke-width="2"/><circle cx="970" cy="302" r="5" fill="#1b2a3a"/>
+<line x1="1000" y1="320" x2="1000" y2="308" stroke="#1b2a3a" stroke-width="2"/><circle cx="1000" cy="302" r="5" fill="#1b2a3a"/>
+<text x="1090" y="348" font-size="15" text-anchor="end" fill="#1b2a3a">C methylated in all contexts (CG, CHG, CHH)</text>
+<text x="300" y="348" font-size="15" fill="#1b2a3a">target DNA (transposon copy)</text>
+<path d="M300,314 C120,310 110,190 140,112" fill="none" stroke="#5b6b7a" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#ag)"/>
+<text x="30" y="376" font-size="15" fill="#5b6b7a">Feedback: existing methylation and H3K9me2 recruit Pol IV (via SHH1) and Pol V (via SUVH2/9), so silenced copies stay silenced.</text>
+</svg>

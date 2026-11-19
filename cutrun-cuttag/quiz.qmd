@@ -1,0 +1,91 @@
+---
+title: "Quiz: CUT&RUN and CUT&Tag"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+Short questions on in-situ chromatin profiling. Try each on paper first, then open the answer.
+
+---
+
+**Q1.** In one sentence each: what is cut, by what, and where, in ChIP-seq, CUT&RUN and CUT&Tag?
+
+::: {.callout-note collapse="true" title="Answer"}
+ChIP-seq: all chromatin is fragmented (sonication or MNase) everywhere, then the target is enriched by immunoprecipitation. CUT&RUN: protein A–MNase bound to the antibody cuts DNA next to the target in intact nuclei; the fragments diffuse out. CUT&Tag: protein A–Tn5 bound to the antibody cuts next to the target and inserts sequencing adapters in the same step.
+:::
+
+---
+
+**Q2.** Why is the background of CUT&RUN and CUT&Tag so much lower than that of ChIP-seq?
+
+::: {.callout-note collapse="true" title="Answer"}
+DNA that is not near the antibody is never cut, so it never becomes a library fragment; in ChIP-seq every piece of the genome is a fragment, and the unspecific part of the immunoprecipitation (DNA sticking to beads, tubes, antibody) is sequenced along with the target. Unbound enzyme is also washed away before it is activated.
+:::
+
+---
+
+**Q3.** A CUT&RUN library for a transcription factor has most fragments between 50 and 120 bp; the H3K27me3 library from the same lab peaks at 160 bp with a second peak at 330 bp. Explain both.
+
+::: {.callout-note collapse="true" title="Answer"}
+MNase cuts on both sides of the bound factor, close to it, so the protected fragment is short (the factor's footprint plus a little flanking DNA). For a histone mark the enzyme cuts in the linkers around a marked nucleosome, giving mono-nucleosomal fragments (~150–200 bp) and, where a linker was not cut, di-nucleosomes (~330 bp).
+:::
+
+---
+
+**Q4.** In ChIP-seq, duplicates are removed routinely. Why does the Henikoff lab recommend keeping them in CUT&Tag of abundant histone marks, but removing them from the IgG?
+
+::: {.callout-note collapse="true" title="Answer"}
+In CUT&Tag, Tn5 tethered to the same nucleosome cuts the same linker positions in different cells, so fragments with identical coordinates can be independent molecules; removing them compresses the signal at the strongest sites. The IgG library has very few distinct molecules, so its duplicates are mostly PCR copies of the same rare fragments and would exaggerate a few random positions.
+:::
+
+---
+
+**Q5.** Two CUT&Tag reactions for H3K27me3 used the same pA–Tn5 batch and the same number of cells. Control: 2500 E. coli fragments; EZH2 inhibitor: 6250 E. coli fragments; both libraries have 4 million human fragments. Compute the spike-in scale factors (S = 10 000 / E. coli fragments) and the ratio of normalised H3K27me3 signal, inhibitor / control.
+
+::: {.callout-note collapse="true" title="Answer"}
+S = 4 for the control and 1.6 for the inhibitor. The normalised signal is fragments × S: 16 M vs 6.4 M, a ratio of 0.4, i.e. a 60% global loss of H3K27me3, which CPM normalisation would have hidden (both have 4 M fragments).
+:::
+
+---
+
+**Q6.** Under which condition is the E. coli carry-over DNA a valid spike-in? Name one situation in which it would mislead.
+
+::: {.callout-note collapse="true" title="Answer"}
+When every reaction received the same amount of E. coli DNA, i.e. the same amount of enzyme from the same batch, with comparable numbers of cells. It misleads if samples were processed with different enzyme batches or amounts, or with very different cell numbers, or if some E. coli DNA is lost differently between reactions; the scale factors then reflect handling, not biology.
+:::
+
+---
+
+**Q7.** Why is MACS3's Poisson model awkward for CUT&Tag data, and what does SEACR do instead?
+
+::: {.callout-note collapse="true" title="Answer"}
+Most of the genome has no reads, so the background λ (genome-wide or from the sparse IgG) is very small and small piles of reads look highly significant; the control is too sparse to estimate a local λ. SEACR does not model background per position: it cuts the bedGraph into blocks of contiguous non-zero signal, computes each block's total signal (AUC), and picks the AUC threshold at which the blocks above it are most likely to come from the target rather than the IgG (or keeps the top fraction of blocks if there is no IgG).
+:::
+
+---
+
+**Q8.** A CUT&Tag library for H3K27me3 has 300 000 fragments; 210 000 fall in peaks. A ChIP-seq library for the same mark has 9 million reads, 1.6 million in the same peaks. Compute both FRiPs. Which experiment needed more sequencing for the same number of reads in peaks?
+
+::: {.callout-note collapse="true" title="Answer"}
+CUT&Tag FRiP = 210 000 / 300 000 = 0.70; ChIP FRiP = 1.6 / 9 = 0.18. To get 210 000 reads in peaks, ChIP would need 210 000 / 0.18 ≈ 1.2 million reads, four times as many; the rest of the ChIP reads are background.
+:::
+
+---
+
+**Q9.** A study profiles H3K9me3 by CUT&Tag in 500 cells and reports "new H3K9me3 peaks at hundreds of active promoters". What would you check before believing it?
+
+::: {.callout-note collapse="true" title="Answer"}
+Whether the promoter peaks are also in the IgG and in ATAC-seq of the same cells (Tn5's open-chromatin bias: untethered or loosely bound pA–Tn5 inserts into accessible DNA, worst with low input and weak targets); whether high-salt washes were used; whether H3K9me3 ChIP or CUT&RUN of the same cells shows them; replicate agreement; the peak caller and its control.
+:::
+
+---
+
+**Q10.** Give one reason to choose CUT&RUN over CUT&Tag, and one reason to choose ChIP-seq over both.
+
+::: {.callout-note collapse="true" title="Answer"}
+CUT&RUN: transcription factors and other weakly bound proteins, because CUT&Tag's high-salt washes (needed to remove free Tn5) can strip them from DNA; also less open-chromatin bias. ChIP-seq: comparison with the huge body of public ChIP-seq data (ENCODE, Roadmap) processed the same way, fixed or frozen tissue, or targets where in-situ methods have not been validated.
+:::

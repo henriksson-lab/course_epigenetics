@@ -1,0 +1,102 @@
+---
+title: "Quiz: how a CNN reads DNA"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+Short questions on one-hot encoding, convolutional filters, training and evaluation. Try each on paper first, then open the answer.
+
+---
+
+**Q1.** Write the one-hot matrix (rows A, C, G, T) of `TAGC`. How many numbers does a one-hot encoded 200-bp sequence contain?
+
+::: {.callout-note collapse="true" title="Answer"}
+```
+    T  A  G  C
+A   0  1  0  0
+C   0  0  0  1
+G   0  0  1  0
+T   1  0  0  0
+```
+4 × 200 = 800 numbers, of which 200 are 1.
+:::
+
+---
+
+**Q2.** A width-3 filter has weights A: (2, −1, −1), C: (−1, −1, 2), G: (−1, 2, −1), T: (−1, −1, −1) for positions 1–3, and bias −4. What are its activations (after the bias and ReLU) on the windows of `AGCAGT`? What does global max pooling return?
+
+::: {.callout-tip collapse="true" title="Hint"}
+Four windows: AGC, GCA, CAG, AGT. Score = sum of the weights of the bases present, then add −4 and take max(0, ·).
+:::
+
+::: {.callout-note collapse="true" title="Answer"}
+AGC: 2 + 2 + 2 = 6 → 2. GCA: −1 − 1 − 1 = −3 → 0. CAG: −1 − 1 − 1 = −3 → 0. AGT: 2 + 2 − 1 = 3 → 0. Activations 2, 0, 0, 0; global max pool **2**. The filter detects AGC; AGT (one mismatch) falls just below the threshold.
+:::
+
+---
+
+**Q3.** Why is a first-layer convolutional filter often called "a learned PWM"? Name one way in which it differs from a PWM built from aligned sites.
+
+::: {.callout-note collapse="true" title="Answer"}
+Like a PWM, it is a 4 × k matrix of weights, and its score for a window is the sum of the weights of the bases present, computed at every position (a scan). Differences: its weights are fitted by gradient descent to separate labelled sequences, not computed as log-odds from counts; they are on an arbitrary scale; it comes with a learned threshold (the bias); and it can learn motifs that no database contains, or patterns that mark the *negatives*.
+:::
+
+---
+
+**Q4.** After global max pooling, three filters give $x = (2, 0, 1)$. The dense layer has weights $(1.5, 2.0, -1.0)$ and bias $-1$. Compute the logit $z$ and the predicted probability of binding. Which model from earlier in the course is this last step?
+
+::: {.callout-note collapse="true" title="Answer"}
+$z = -1 + 1.5 \times 2 + 2.0 \times 0 - 1.0 \times 1 = 1.0$; $p = 1/(1 + e^{-1}) = 0.73$. This is logistic regression, with the pooled filter outputs as its features.
+:::
+
+---
+
+**Q5.** For the sequence of Q4 the label is $y = 0$ (background). With learning rate 0.1, how does one gradient-descent step change the three dense weights? ($\partial \text{loss}/\partial w_j = (p - y)\,x_j$.)
+
+::: {.callout-note collapse="true" title="Answer"}
+$p - y = 0.73$. Gradients: $0.73 \times 2 = 1.46$, $0$, $0.73 \times 1 = 0.73$. New weights: $1.5 - 0.146 = 1.354$; $2.0$ (filter 2 did not fire, so it is not changed); $-1.0 - 0.073 = -1.073$. Both active filters move towards predicting "background" for this sequence.
+:::
+
+---
+
+**Q6.** A network has 16 filters of width 21 on one-hot DNA and a dense layer from 16 inputs to 1 output. How many parameters does it have? Is 2 000 training sequences enough?
+
+::: {.callout-note collapse="true" title="Answer"}
+Filters: 16 × 4 × 21 + 16 = 1360. Dense: 16 + 1 = 17. Total **1377**. 2000 sequences is little (fewer than two per parameter): expect overfitting, so watch the validation loss and stop early, or use fewer filters or regularisation. In the exercise, the 2497-parameter network trained on 500 sequences reached a test AUC of 0.919, against 0.972 with 76 000.
+:::
+
+---
+
+**Q7.** Learning curves: the training loss falls from 0.6 to 0.05 over 50 epochs; the validation loss falls to 0.30 at epoch 12 and then rises to 0.45. What is happening, which model do you keep, and on which data do you report its performance?
+
+::: {.callout-note collapse="true" title="Answer"}
+Overfitting after epoch 12: the network memorises the training sequences, and its predictions on new sequences get worse. Keep the model of epoch 12 (early stopping on the validation loss). Report its performance once on the test set (held-out chromosomes), which was not used for any choice.
+:::
+
+---
+
+**Q8.** Why do we hold out whole chromosomes for validation and test, rather than a random 20% of the windows?
+
+::: {.callout-note collapse="true" title="Answer"}
+Windows near each other share sequence (overlapping or shifted windows of the same peak, nearby repeats, segmental duplications), so a random split puts near-copies of test windows into the training set and the test AUC rewards memorisation (leakage). Whole chromosomes keep every test sequence far from all training sequences, which is closer to applying the model to new DNA.
+:::
+
+---
+
+**Q9.** A network trained on CTCF peaks against GC-matched background has a filter whose logo reads `GCGCCCCCTGGTGGC`, and another whose logo reads `GCCACCAGGGGGCGC`. Explain.
+
+::: {.callout-note collapse="true" title="Answer"}
+They are the same motif (CTCF, JASPAR consensus `GCCACCAGGGGGCGC`) on the two strands: the first is the reverse complement of the second. A filter scans one strand, and CTCF sites occur in both orientations, so the network learns one filter per orientation (and often several shifted copies).
+:::
+
+---
+
+**Q10.** On the same test chromosomes, GC content alone gives AUC 0.51, the CTCF PWM 0.93 and the CNN 0.97. A second group reports AUC 0.99 for their CNN, using random genomic windows as negatives. Can you conclude their model is better?
+
+::: {.callout-note collapse="true" title="Answer"}
+No. With random genomic negatives the task is easier: CTCF peaks are GC-rich (51%) and random DNA is not (about 41%), so GC content alone separates them well. The AUCs are on different tasks. Compare models on the same positives, negatives and test chromosomes, and always report simple baselines (GC, PWM) on that same data.
+:::

@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 400" width="1120" height="400" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="13" markerHeight="13" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker>
+  </defs>
+  <rect width="1120" height="400" fill="#ffffff"/>
+  <!-- boxes -->
+  <g stroke-width="1.5">
+    <rect x="10" y="20" width="200" height="190" rx="8" fill="#f4f6f8" stroke="#cfd8e0"/>
+    <rect x="232" y="20" width="200" height="190" rx="8" fill="#f4f6f8" stroke="#cfd8e0"/>
+    <rect x="454" y="20" width="200" height="190" rx="8" fill="#f4f6f8" stroke="#cfd8e0"/>
+    <rect x="676" y="20" width="200" height="190" rx="8" fill="#f4f6f8" stroke="#cfd8e0"/>
+    <rect x="898" y="20" width="212" height="190" rx="8" fill="#f4f6f8" stroke="#cfd8e0"/>
+  </g>
+  <g stroke="#5b6b7a" stroke-width="2" marker-end="url(#ar)">
+    <line x1="210" y1="115" x2="230" y2="115"/><line x1="432" y1="115" x2="452" y2="115"/>
+    <line x1="654" y1="115" x2="674" y2="115"/><line x1="876" y1="115" x2="896" y2="115"/>
+  </g>
+  <g font-size="17" font-weight="bold" fill="#1b2a3a">
+    <text x="24" y="46">Chromatin</text><text x="246" y="46">Antibody + beads</text>
+    <text x="468" y="46">Wash, elute</text><text x="690" y="46">Purify DNA</text><text x="912" y="46">Library</text>
+  </g>
+  <g font-size="15" fill="#1b2a3a">
+    <text x="24" y="76">10<tspan dy="-6" font-size="11">6</tspan><tspan dy="6">–10</tspan><tspan dy="-6" font-size="11">7</tspan><tspan dy="6"> cells</tspan></text>
+    <text x="24" y="98">× 6.6 pg DNA per cell</text>
+    <text x="24" y="130" font-size="22" font-weight="bold" fill="#2a6f97">7–70 µg</text>
+    <text x="24" y="160">sheared; 1–10% kept</text>
+    <text x="24" y="180">aside as the <tspan font-weight="bold">input</tspan></text>
+
+    <text x="246" y="76">1–10 µg antibody,</text>
+    <text x="246" y="98">overnight at 4 °C;</text>
+    <text x="246" y="120">protein A/G on</text>
+    <text x="246" y="142">magnetic beads</text>
+    <text x="246" y="164">binds the antibody</text>
+
+    <text x="468" y="76">salt and detergent</text>
+    <text x="468" y="98">washes remove</text>
+    <text x="468" y="120">loosely stuck</text>
+    <text x="468" y="142">chromatin; never</text>
+    <text x="468" y="164">all of it</text>
+
+    <text x="690" y="76">65 °C, RNase,</text>
+    <text x="690" y="98">proteinase K</text>
+    <text x="690" y="130" font-size="22" font-weight="bold" fill="#c0392b">1–10 ng</text>
+    <text x="690" y="160">0.001–0.1% of the</text>
+    <text x="690" y="180">chromatin DNA</text>
+
+    <text x="912" y="76">end repair, A-tail,</text>
+    <text x="912" y="98">adapters, 10–15</text>
+    <text x="912" y="120">PCR cycles</text>
+    <text x="912" y="150">few molecules in,</text>
+    <text x="912" y="170">many copies out:</text>
+    <text x="912" y="190" fill="#c0392b">PCR duplicates</text>
+  </g>
+
+  <!-- enrichment bar: what is in the eluate -->
+  <text x="10" y="248" font-size="17" font-weight="bold" fill="#1b2a3a">What the eluate contains (a good TF ChIP)</text>
+  <rect x="10" y="262" width="1100" height="34" fill="#cfd8e0"/>
+  <rect x="10" y="262" width="220" height="34" fill="#8c564b"/>
+  <text x="120" y="284" font-size="15" fill="#ffffff" text-anchor="middle">from bound sites, ~20%</text>
+  <text x="670" y="284" font-size="15" fill="#1b2a3a" text-anchor="middle">background: chromatin that stuck to beads, tubes and antibody, from all over the genome, ~80%</text>
+  <text x="10" y="324" font-size="15" fill="#1b2a3a">Even an excellent ChIP is mostly background. That is why the reads are compared with an input, and why FRiP (fraction of reads in peaks)</text>
+  <text x="10" y="344" font-size="15" fill="#1b2a3a">is a quality measure: 22% for the CTCF ChIP used in this course, 1–5% for many good TF ChIPs (<tspan font-style="italic">Experimental design and QC</tspan>).</text>
+  <text x="10" y="376" font-size="15" fill="#5b6b7a">ChIP-qPCR measures the same thing at one locus: "% of input" recovered = 2<tspan dy="-6" font-size="11">(Ct input, adjusted − Ct ChIP)</tspan><tspan dy="6"> × 100.</tspan></text>
+</svg>

@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 440" width="1120" height="440" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="dim" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker>
+  </defs>
+  <rect width="1120" height="440" fill="#ffffff"/>
+  <!-- LEFT: TF -->
+  <text x="20" y="28" font-size="18" font-weight="bold" fill="#1b2a3a">Transcription factor</text>
+  <text x="20" y="50" font-size="15" fill="#5b6b7a">5' ends of reads, per strand, around one site</text>
+  <rect x="268" y="62" width="24" height="134" fill="#8c564b" fill-opacity="0.12"/>
+  <path d="M40,130 L150,130 C170,130 180,76 205,76 C230,76 240,130 260,130 L520,130" fill="#2a6f97" fill-opacity="0.35" stroke="#2a6f97" stroke-width="2.2"/>
+  <path d="M40,190 L300,190 C320,190 330,136 355,136 C380,136 390,190 410,190 L520,190" fill="#e67e22" fill-opacity="0.35" stroke="#e67e22" stroke-width="2.2"/>
+  <text x="44" y="122" font-size="15" fill="#2a6f97">+ strand</text>
+  <text x="440" y="182" font-size="15" fill="#e67e22">− strand</text>
+  <line x1="205" y1="208" x2="355" y2="208" stroke="#1b2a3a" stroke-width="1.5" marker-start="url(#dim)" marker-end="url(#dim)"/>
+  <text x="280" y="228" font-size="15" fill="#1b2a3a" text-anchor="middle">d ≈ fragment length</text>
+  <text x="20" y="256" font-size="15" fill="#1b2a3a">Shift the + strand right by <tspan font-style="italic">k</tspan> and correlate with the − strand:</text>
+  <text x="20" y="276" font-size="15" fill="#1b2a3a">the match is best at <tspan font-style="italic">k</tspan> = d.</text>
+  <!-- CC curve -->
+  <line x1="60" y1="410" x2="500" y2="410" stroke="#1b2a3a" stroke-width="1.5" marker-end="url(#ar)"/>
+  <line x1="60" y1="410" x2="60" y2="296" stroke="#1b2a3a" stroke-width="1.5" marker-end="url(#ar)"/>
+  <path d="M60,388 C80,386 92,372 100,366 C106,362 110,372 118,368 C140,350 160,312 190,310 C220,310 250,360 300,382 C360,396 420,398 490,400" fill="none" stroke="#8c564b" stroke-width="2.6"/>
+  <text x="190" y="304" font-size="14" fill="#8c564b" text-anchor="middle">peak at d</text>
+  <text x="104" y="350" font-size="13" fill="#5b6b7a" text-anchor="middle">read length</text>
+  <text x="500" y="430" font-size="14" fill="#1b2a3a" text-anchor="end">shift k (bp)</text>
+  <text x="50" y="352" font-size="14" fill="#1b2a3a" text-anchor="end" transform="rotate(-90 50 352)">correlation</text>
+
+  <line x1="560" y1="16" x2="560" y2="430" stroke="#cfd8e0" stroke-width="1.5"/>
+
+  <!-- RIGHT: broad -->
+  <text x="590" y="28" font-size="18" font-weight="bold" fill="#1b2a3a">Broad histone domain</text>
+  <text x="590" y="50" font-size="15" fill="#5b6b7a">5' ends of reads, per strand, over a 20-kb domain</text>
+  <path d="M610,130 L650,130 C660,130 662,94 672,94 L700,98 L730,90 L760,96 L790,88 L820,94 L850,90 L880,96 L910,92 L940,98 L970,92 L1000,96 C1010,96 1012,130 1024,130 L1100,130" fill="#2a6f97" fill-opacity="0.35" stroke="#2a6f97" stroke-width="2.2"/>
+  <path d="M610,190 L654,190 C664,190 666,154 676,154 L704,158 L734,150 L764,156 L794,148 L824,154 L854,150 L884,156 L914,152 L944,158 L974,152 L1004,156 C1014,156 1016,190 1028,190 L1100,190" fill="#e67e22" fill-opacity="0.35" stroke="#e67e22" stroke-width="2.2"/>
+  <text x="1040" y="122" font-size="15" fill="#2a6f97">+</text>
+  <text x="1040" y="182" font-size="15" fill="#e67e22">−</text>
+    <text x="590" y="256" font-size="15" fill="#1b2a3a">Both strands cover the same 20 kb; a shift of</text>
+  <text x="590" y="276" font-size="15" fill="#1b2a3a">100–300 bp barely changes the overlap.</text>
+  <line x1="630" y1="410" x2="1070" y2="410" stroke="#1b2a3a" stroke-width="1.5" marker-end="url(#ar)"/>
+  <line x1="630" y1="410" x2="630" y2="296" stroke="#1b2a3a" stroke-width="1.5" marker-end="url(#ar)"/>
+  <path d="M630,372 C650,370 662,354 670,350 C676,348 680,358 688,358 C720,360 760,362 820,366 C900,370 980,374 1060,376" fill="none" stroke="#2e8b57" stroke-width="2.6"/>
+  <text x="678" y="342" font-size="13" fill="#5b6b7a" text-anchor="middle">read length</text>
+  <text x="860" y="352" font-size="14" fill="#2e8b57">flat: no clear fragment peak</text>
+  <text x="1070" y="430" font-size="14" fill="#1b2a3a" text-anchor="end">shift k (bp)</text>
+  <text x="620" y="352" font-size="14" fill="#1b2a3a" text-anchor="end" transform="rotate(-90 620 352)">correlation</text>
+</svg>

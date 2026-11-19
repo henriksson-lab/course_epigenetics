@@ -1,0 +1,424 @@
+---
+title: "Exercise: CUT&RUN and CUT&Tag"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+## Goal
+
+After this exercise you will be able to:
+
+- Explain, from the chemistry, why CUT&RUN and CUT&Tag need fewer cells and reads than ChIP-seq, and what their fragment-length distributions look like.
+- Process paired-end CUT&Tag reads with [Bowtie2](https://bowtie-bio.sourceforge.net/bowtie2/manual.shtml), [samtools](https://www.htslib.org/doc/samtools.html) and [bedtools](https://bedtools.readthedocs.io/), measure duplicates, and count the E. coli spike-in.
+- Call peaks with [SEACR](https://github.com/FredHutch/SEACR) and [MACS3](https://macs3-project.github.io/MACS/), and compare them with ENCODE ChIP-seq peaks.
+- Compute a spike-in scale factor and judge when it is valid.
+- Compare signal-to-noise (FRiP, fingerprint) and the number of reads needed between CUT&Tag and ChIP-seq of the same marks, in R.
+- Use the IgG control to see the open-chromatin background of Tn5, and judge claims built on small CUT&Tag peaks.
+
+## Background
+
+**The assays.** In CUT&RUN, protein A–MNase bound to an antibody cuts DNA next to the target in permeabilised nuclei (activated by Ca<sup>2+</sup>); the fragments diffuse out and are made into a library. In CUT&Tag, protein A–Tn5 loaded with sequencing adapters is bound instead and, activated by Mg<sup>2+</sup>, cuts and inserts the adapters in one step; the library is made by PCR. DNA far from the antibody is not cut, so the background is low.
+
+**Fragments.** Paired-end reads give one fragment per pair, from the leftmost to the rightmost base. A histone-mark library is a nucleosome ladder (≈ 150–200 bp, ≈ 350 bp, …); TF CUT&RUN libraries are dominated by fragments < 120 bp.
+
+**Spike-in.** pA–Tn5 and pA–MNase are made in *E. coli* and carry a little bacterial DNA, which is tagmented too. If every reaction received the same amount of enzyme, the number of E. coli fragments is a ruler: scale factor $S = C / n_\text{E. coli}$ (here $C = 10\,000$), and normalised signal = fragment coverage × $S$.
+
+**SEACR** (Meers, Tenenbaum & Henikoff 2019) splits a bedGraph into **blocks** of contiguous non-zero signal and gives each block its total signal (area under the curve, AUC). With an IgG control, the threshold $t$ is the AUC at which the fraction of blocks above $t$ that come from the target (rather than the IgG) is highest ("stringent"); target blocks above $t$ are merged and those overlapping IgG blocks above $t$ are removed. Without a control, SEACR keeps the top fraction of blocks by AUC (e.g. 0.01).
+
+**FRiP**: the fraction of reads (fragments) that fall in peaks.
+
+## Data
+
+K562 CUT&Tag from Kaya-Okur et al. 2020 (GEO [GSE145187](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE145187)), the replicate-1 samples of the Henikoff-lab [CUT&Tag tutorial](https://yezhengstat.github.io/CUTTag_tutorial/): H3K27me3 ([SRR12246717](https://www.ebi.ac.uk/ena/browser/view/SRR12246717)), H3K4me3 ([SRR11074254](https://www.ebi.ac.uk/ena/browser/view/SRR11074254)) and IgG ([SRR11923224](https://www.ebi.ac.uk/ena/browser/view/SRR11923224)), paired-end 2 × 25 bp. We kept only the read pairs that align to **chr21 or chrM**, or to **E. coli** (the spike-in); the reads are the original records. For comparison: ENCODE ChIP-seq of the same marks in K562 (Bernstein lab, single-end 36 bp; filtered alignments of replicate 1, cut to chr21) and ENCODE's peaks for them.
+
+| file | content |
+|---|---|
+| `k562_cuttag_{h3k27me3,h3k4me3,igg}_R{1,2}.fastq.gz` | CUT&Tag reads (59 k, 25 k and 294 k pairs) |
+| `ecoli_U00096.3.fa` | *E. coli* K-12 MG1655 genome (spike-in reference) |
+| `k562_{h3k27me3,h3k4me3}_chip_chr21.bam`, `k562_input_chr21.bam` | ENCODE ChIP-seq and input, chr21 ([ENCFF392ZKG](https://www.encodeproject.org/files/ENCFF392ZKG/), [ENCFF564SVK](https://www.encodeproject.org/files/ENCFF564SVK/), [ENCFF226FKB](https://www.encodeproject.org/files/ENCFF226FKB/)) |
+| `k562_{h3k27me3,h3k4me3}_chip_peaks.bed.gz` | ENCODE pseudoreplicated peaks ([ENCFF881ONN](https://www.encodeproject.org/files/ENCFF881ONN/), [ENCFF689QIJ](https://www.encodeproject.org/files/ENCFF689QIJ/)) |
+| `hg38_chr21_chrM.fa`, `bowtie2/hg38_chr21_chrM.*`, `hg38.chrom.sizes`, `gencode.v46.basic.annotation.gtf.gz` | from earlier units |
+
+```bash
+data/download.sh cutrun-cuttag      # peaks, GTF; the reads and BAMs come from data/prepare-cuttag.sh
+mkdir -p ~/epi/cuttag && cd ~/epi/cuttag
+D=/path/to/course/data
+T=8
+git clone https://github.com/FredHutch/SEACR.git      # SEACR is a bash + R script
+SEACR=$PWD/SEACR/SEACR_1.3.sh
+```
+
+You need `bowtie2`, `samtools` (1.16 or later), `bedtools`, `macs3`, R, and SEACR. The whole command-line part runs in about a minute on 8 threads, because the files are small.
+
+*Honest simplifications:* we use one replicate per mark and only chr21; the reads were selected because they aligned to chr21 (or E. coli) in the full genome, so mis-alignments from other chromosomes cannot happen here; the ChIP comparison uses ENCODE's alignments rather than our own processing. *Experimental design and QC for epigenomic assays* explains why two biological replicates are the minimum for real work.
+
+## By hand
+
+Do these on paper.
+
+**B1. Why fewer reads?** A ChIP-seq library for H3K27me3 has 20 million reads with a FRiP of 0.08. A CUT&Tag library for the same mark has 3 million fragments with a FRiP of 0.6.
+
+(a) How many reads (fragments) fall in peaks in each library?
+
+(b) Where are the other reads in each library, and what does that say about why ChIP needs an input control?
+
+(c) Give two reasons from the chemistry why the CUT&Tag background is so low.
+
+**B2. Fragment lengths.** Sketch the fragment-length distribution you expect for (i) CUT&RUN of a transcription factor, (ii) CUT&Tag of H3K27me3, (iii) a CUT&Tag IgG control. Mark the approximate positions of the peaks. Why can't you draw this plot for the ENCODE ChIP-seq data used in this exercise?
+
+**B3. Duplicates.** After filtering, a CUT&Tag H3K4me3 library has 1 200 000 fragments, of which 84 000 are duplicates (same start and end); the IgG from the same experiment has 180 000 fragments, of which 150 000 are duplicates.
+
+(a) Compute both duplication rates.
+
+(b) For which library would you remove duplicates, and why? What would happen to the H3K4me3 signal at the strongest promoters if you removed them there?
+
+(c) The H3K4me3 library is sequenced ten times deeper and the duplication rate rises to 60%. Is the library worse? What did the extra sequencing buy?
+
+**B4. Spike-in.** Three CUT&Tag reactions for H3K27me3 used the same pA–Tn5 batch and 50 000 cells each:
+
+| sample | human fragments | E. coli fragments |
+|---|---|---|
+| control 1 | 4 000 000 | 800 |
+| control 2 | 2 500 000 | 500 |
+| EZH2 inhibitor | 3 000 000 | 2 000 |
+
+(a) Compute the scale factor $S = 10\,000 / n_\text{E. coli}$ and the spike-in-normalised total signal (human fragments × $S$) for each sample.
+
+(b) By how much does the inhibitor reduce H3K27me3? What would CPM normalisation have shown?
+
+(c) The inhibitor sample was later found to have been processed with a new batch of pA–Tn5. What does that do to your conclusion?
+
+**B5. A SEACR threshold by hand.** The AUCs of the signal blocks of a small CUT&RUN target track and its IgG are:
+
+target: 120, 95, 60, 44, 30, 22, 15, 9, 6, 4, 3, 2 — IgG: 14, 8, 5, 4, 3, 2, 2, 1
+
+(a) For thresholds $t$ = 2, 5, 8 and 10, count the target blocks and the IgG blocks with AUC > $t$, and compute the fraction of target blocks among them.
+
+(b) SEACR's stringent threshold is the $t$ with the highest fraction, among thresholds where some IgG block still passes. Which $t$ is it, how many target blocks pass, and what is the empirical FDR (1 − fraction)?
+
+(c) The IgG block with AUC 14 overlaps one of the target blocks. What happens to that block?
+
+**B6. Why not MACS?** A CUT&Tag sample has 300 000 fragments on a 40-Mb chromosome. Compute $\lambda_\text{BG}$ for a 200-bp window (fragments × window / chromosome length). How surprising are 8 fragments in a window, $P(X \ge 8 \mid \lambda)$? (Use $P(X \ge 8 \mid 1.5) \approx 1.9 \times 10^{-4}$.) Why does this make MACS3 call small piles of untethered cutting as peaks, and how does SEACR avoid it?
+
+**B7. Judge the claim.** A paper uses CUT&Tag of H3K27me3 on 1000 sorted cells and reports that "H3K27me3 is present at 40% of active promoters, revealing a new layer of Polycomb regulation". No IgG was sequenced; the peaks were called with MACS3 without a control. List what is missing and what you would check first.
+
+**B8. Choose the assay.** Which of ChIP-seq, CUT&RUN and CUT&Tag would you choose, and why: (a) H3K4me3 in 5000 sorted haematopoietic stem cells; (b) a transcription factor with a fast off-rate in a cell line; (c) H3K27ac in 40 frozen tumour biopsies, to be compared with published ENCODE/Roadmap data; (d) H3K27me3 in single cells.
+
+## On the command line
+
+### C1 — Align to the genome and to E. coli
+
+```bash
+bowtie2-build --threads $T $D/ecoli_U00096.3.fa ecoli > /dev/null
+for s in h3k27me3 h3k4me3 igg; do
+  bowtie2 -p $T --end-to-end --very-sensitive --no-mixed --no-discordant --phred33 -I 10 -X 700 \
+    -x $D/bowtie2/hg38_chr21_chrM -1 $D/k562_cuttag_${s}_R1.fastq.gz -2 $D/k562_cuttag_${s}_R2.fastq.gz \
+    2> $s.bowtie2.log \
+  | samtools fixmate -m -u - - | samtools sort -@ 4 -o $s.raw.bam
+  samtools index $s.raw.bam
+  bowtie2 -p $T --end-to-end --very-sensitive --no-overlap --no-dovetail --no-mixed --no-discordant \
+    --phred33 -I 10 -X 700 -x ecoli -1 $D/k562_cuttag_${s}_R1.fastq.gz -2 $D/k562_cuttag_${s}_R2.fastq.gz \
+    2> $s.ecoli.log > /dev/null
+done
+for s in h3k27me3 h3k4me3 igg; do echo $s; cat $s.bowtie2.log; samtools idxstats $s.raw.bam | head -2; done
+```
+
+(a) What do `-I 10 -X 700`, `--no-mixed` and `--no-discordant` do? Why are reads not adapter-trimmed?
+
+(b) What fraction of each sample's pairs aligned to chr21 + chrM? The IgG has many pairs that did not align: where are they from? (Check `igg.ecoli.log`.)
+
+(c) How many reads of each sample are on chrM? Compare with the size of the whole library (H3K27me3 2 984 630, H3K4me3 1 581 710, IgG 2 127 635 read pairs). Why is the IgG so different?
+
+### C2 — Filter and mark duplicates
+
+```bash
+for s in h3k27me3 h3k4me3 igg; do
+  samtools view -u -q 30 -f 2 -F 1804 $s.raw.bam chr21 \
+    | samtools collate -u -O - | samtools fixmate -m -u - - | samtools view -u -f 2 - \
+    | samtools sort -u - | samtools markdup -s - $s.bam 2> $s.markdup.txt
+  samtools index $s.bam
+  echo $s $(samtools view -c -f 64 $s.bam) fragments $(samtools view -c -f 64 -f 1024 $s.bam) duplicates
+done
+```
+
+(a) The filters are those of *From reads to coverage for enrichment assays*: what does each do? Note that `markdup` runs **without** `-r`: duplicates are marked, not removed.
+
+(b) Give the number of fragments and the duplication rate of each library. Do they fit the expectation that CUT&Tag libraries have many duplicates?
+
+### C3 — Fragments, bedGraphs and fragment lengths
+
+```bash
+grep -w chr21 $D/hg38.chrom.sizes > chrom.sizes
+for s in h3k27me3 h3k4me3 igg; do
+  F=0; [ $s = igg ] && F=1024        # duplicates removed from the IgG only
+  samtools view -u -F $F $s.bam | samtools sort -n -u - | bedtools bamtobed -bedpe -i - 2> /dev/null \
+    | awk -v OFS='\t' '$1 == $4 { s = ($2 < $5 ? $2 : $5); e = ($3 > $6 ? $3 : $6); print $1, s, e }' \
+    | sort -k1,1 -k2,2n > $s.frag.bed
+  bedtools genomecov -bg -i $s.frag.bed -g chrom.sizes > $s.bedgraph
+  echo $s $(wc -l < $s.frag.bed) fragments, median length \
+    $(awk '{ print $3 - $2 }' $s.frag.bed | sort -n | awk '{ a[NR] = $1 } END { print a[int(NR / 2)] }')
+done
+```
+
+(a) Explain the `awk` line: which columns of the BEDPE output are used, and why is that the fragment?
+
+(b) What are the median fragment lengths? Why is the IgG different?
+
+### C4 — Peaks with SEACR and MACS3
+
+```bash
+mkdir -p peaks
+for s in h3k27me3 h3k4me3; do
+  bash $SEACR $s.bedgraph igg.bedgraph norm stringent peaks/${s}_seacr_igg > /dev/null
+  bash $SEACR $s.bedgraph 0.01 non stringent peaks/${s}_seacr_top1 > /dev/null
+done
+macs3 callpeak -t h3k4me3.bam -c igg.bam -f BAMPE -g 4.0e7 --keep-dup all -q 0.01 -n h3k4me3_macs --outdir peaks 2> peaks/h3k4me3_macs.log
+macs3 callpeak -t h3k27me3.bam -c igg.bam -f BAMPE -g 4.0e7 --keep-dup all --broad --broad-cutoff 0.1 -n h3k27me3_macs --outdir peaks 2> peaks/h3k27me3_macs.log
+wc -l peaks/*stringent.bed peaks/*Peak
+head -3 peaks/h3k4me3_seacr_igg.stringent.bed
+```
+
+(a) What are the six columns of a SEACR output line?
+
+(b) How many peaks does each call give? Why does "top 1%" give so few?
+
+(c) Why `--keep-dup all`, and why `--broad` for H3K27me3?
+
+### C5 — FRiP and comparison with ENCODE ChIP-seq
+
+```bash
+for m in h3k4me3 h3k27me3; do
+  zcat $D/k562_${m}_chip_peaks.bed.gz | awk '$1 == "chr21"' | sort -k1,1 -k2,2n | bedtools merge > enc_$m.bed
+  echo $m ENCODE peaks: $(wc -l < enc_$m.bed)
+  n=$(wc -l < $m.frag.bed); k=$(bedtools intersect -u -a $m.frag.bed -b enc_$m.bed | wc -l)
+  echo "  CUT&Tag FRiP in ENCODE peaks: $k / $n"
+  n=$(samtools view -c $D/k562_${m}_chip_chr21.bam)
+  k=$(bedtools intersect -u -abam $D/k562_${m}_chip_chr21.bam -b enc_$m.bed | samtools view -c -)
+  echo "  ChIP    FRiP in ENCODE peaks: $k / $n"
+  for p in peaks/${m}_seacr_igg.stringent.bed peaks/${m}_seacr_top1.stringent.bed peaks/${m}_macs_peaks.[nb]*Peak; do
+    echo "  $p: $(wc -l < $p) peaks, $(bedtools intersect -u -a $p -b enc_$m.bed | wc -l) in ENCODE," \
+         "$(bedtools intersect -u -a enc_$m.bed -b $p | wc -l) ENCODE peaks found," \
+         "FRiP $(bedtools intersect -u -a $m.frag.bed -b $p | wc -l) / $(wc -l < $m.frag.bed)"
+  done
+done
+```
+
+(a) Compute FRiP in the **same** (ENCODE) peaks for CUT&Tag and ChIP of each mark. How many reads did each library have on chr21?
+
+(b) For each peak call: what fraction of the peaks are in ENCODE's set, and what fraction of ENCODE's peaks are found? Which caller would you pick for each mark?
+
+(c) Why is "FRiP in our own peaks" not a fair way to compare two assays?
+
+### C6 — The E. coli spike-in
+
+```bash
+for s in h3k27me3 h3k4me3 igg; do
+  e=$(grep -E "concordantly (exactly 1 time|>1 times)" $s.ecoli.log | awk '{ n += $1 } END { print n }')
+  echo $s E. coli pairs: $e scale factor: $(echo "10000 / $e" | bc -l)
+done
+# a spike-in-scaled bedGraph, e.g. for H3K27me3:
+e=$(grep -E "concordantly (exactly 1 time|>1 times)" h3k27me3.ecoli.log | awk '{ n += $1 } END { print n }')
+bedtools genomecov -bg -i h3k27me3.frag.bed -g chrom.sizes -scale $(echo "10000 / $e" | bc -l) > h3k27me3.spikein.bedgraph
+```
+
+(a) What percentage of each whole library (sizes in C1c) is E. coli? Why does the IgG have so much more?
+
+(b) Our files contain all E. coli pairs of the libraries but only the chr21 human pairs. Does that matter for the scale factors?
+
+(c) Would you use these factors to compare H3K27me3 with H3K4me3? Between two H3K27me3 samples, what would you check first?
+
+## In R
+
+You need `GenomicRanges`, `rtracklayer`, `GenomicAlignments` and `ggplot2`. Work in the same folder:
+
+```r
+library(GenomicRanges); library(rtracklayer); library(GenomicAlignments); library(ggplot2)
+D <- "/path/to/course/data"
+setwd("~/epi/cuttag")
+L21 <- 46709983
+fr <- lapply(c(h3k4me3 = "h3k4me3", h3k27me3 = "h3k27me3", igg = "igg"), function(s) import(paste0(s, ".frag.bed")))
+rd <- function(f) granges(readGAlignments(file.path(D, paste0(f, "_chr21.bam"))))
+chip <- list(h3k4me3 = rd("k562_h3k4me3_chip"), h3k27me3 = rd("k562_h3k27me3_chip"), input = rd("k562_input"))
+mid <- function(g) resize(g, 1, fix = "center")      # count each fragment / read once, at its centre
+enc <- lapply(c(h3k4me3 = "h3k4me3", h3k27me3 = "h3k27me3"), function(m) {
+  x <- import(file.path(D, sprintf("k562_%s_chip_peaks.bed.gz", m)), format = "narrowPeak")
+  reduce(x[seqnames(x) == "chr21"])
+})
+sapply(fr, length); sapply(chip, length)
+```
+
+### R1 — Fragment lengths
+
+```r
+fl <- do.call(rbind, lapply(names(fr), function(s) data.frame(sample = s, len = width(fr[[s]]))))
+ggplot(fl[fl$len < 700, ], aes(len, colour = sample)) + geom_freqpoly(binwidth = 5) +
+  labs(x = "fragment length (bp)", y = "fragments")
+sapply(split(fl$len, fl$sample), function(v) c(median = median(v), lt120 = mean(v < 120), mono = mean(v >= 120 & v < 300)))
+h <- tabulate(width(fr$h3k27me3), 1000)
+plot(140:300, h[140:300], type = "l", xlab = "fragment length (bp)", ylab = "fragments")   # zoom
+```
+
+(a) Where are the nucleosome peaks? What fraction of fragments is shorter than 120 bp?
+
+(b) In the zoom on H3K27me3, how far apart are the small ripples? Where do they come from?
+
+### R2 — Signal-to-noise: FRiP and the fingerprint
+
+```r
+S6 <- list(ct_k4 = fr$h3k4me3, chip_k4 = chip$h3k4me3, ct_k27 = fr$h3k27me3,
+           chip_k27 = chip$h3k27me3, igg = fr$igg, input = chip$input)
+peaks_for <- c(ct_k4 = "h3k4me3", chip_k4 = "h3k4me3", ct_k27 = "h3k27me3", chip_k27 = "h3k27me3",
+               igg = "h3k4me3", input = "h3k4me3")
+frip <- sapply(names(S6), function(n) mean(overlapsAny(mid(S6[[n]]), enc[[peaks_for[n]]])))
+round(frip, 3)
+bins <- tile(GRanges("chr21", IRanges(1, L21)), width = 5000)[[1]]
+fp <- do.call(rbind, lapply(names(S6), function(n) {
+  cnt <- sort(countOverlaps(bins, mid(S6[[n]])))
+  data.frame(sample = n, x = seq_along(cnt) / length(cnt), y = cumsum(cnt) / sum(cnt))
+}))
+ggplot(fp, aes(x, y, colour = sample)) + geom_line() + geom_abline(linetype = 2) +
+  labs(x = "fraction of 5-kb bins", y = "cumulative fraction of reads")
+sapply(S6, function(g) { cnt <- sort(countOverlaps(bins, mid(g)), decreasing = TRUE)
+  sum(cnt[1:ceiling(0.01 * length(cnt))]) / sum(cnt) })
+```
+
+(a) Give FRiP in the ENCODE peaks for the four mark libraries and the two controls. The ENCODE peaks cover 1.2% of chr21: what FRiP would a library with no enrichment at all have?
+
+(b) What fraction of reads is in the top 1% of 5-kb bins for each library? How do the fingerprint curves of CUT&Tag and ChIP differ?
+
+### R3 — How many reads do you need?
+
+```r
+detect <- function(g, p, n, seed) {
+  set.seed(seed); g <- mid(g[sample(length(g), n)])            # subsample n reads
+  k <- countOverlaps(p, g)                                     # reads in each ENCODE peak
+  bg <- sum(!overlapsAny(g, p)) / (L21 - sum(width(p)))        # background reads per bp
+  mean(ppois(k - 1, bg * width(p), lower.tail = FALSE) < 1e-3) # fraction of peaks detected
+}
+for (m in c("h3k4me3", "h3k27me3")) for (n in c(2000, 5000, 10000, 17000, 45000)) {
+  ct <- if (n <= length(fr[[m]])) mean(sapply(1:5, function(s) detect(fr[[m]], enc[[m]], n, s))) else NA
+  ch <- mean(sapply(1:5, function(s) detect(chip[[m]], enc[[m]], n, s)))
+  cat(m, n, "CUT&Tag", round(ct, 2), "ChIP", round(ch, 2), "\n")
+}
+q <- import(file.path(D, "k562_h3k4me3_chip_peaks.bed.gz"), format = "narrowPeak"); q <- q[seqnames(q) == "chr21"]
+q$ct <- countOverlaps(q, mid(fr$h3k4me3))
+q$quartile <- cut(rank(-q$signalValue, ties.method = "first"), 4, labels = c("strongest", "2nd", "3rd", "weakest"))
+tapply(q$ct >= 3, q$quartile, mean)
+```
+
+(a) Explain `detect()`: what is the background model, and what makes a peak "detected"?
+
+(b) For H3K27me3, how many ChIP reads are needed to detect as many ENCODE peaks as CUT&Tag does with 45 000 fragments? (Extend the ChIP series to 90 000 and 140 000 reads.)
+
+(c) For H3K4me3, CUT&Tag levels off at about a third of the ENCODE peaks. Which ENCODE peaks does it find, and which not? Give two possible explanations.
+
+### R4 — The IgG and the open-chromatin background
+
+```r
+gtf <- import(file.path(D, "gencode.v46.basic.annotation.gtf.gz"))
+tx <- gtf[gtf$type == "transcript" & gtf$transcript_type == "protein_coding" & seqnames(gtf) == "chr21"]
+tss <- unique(resize(tx, 1, fix = "start"))
+act <- tss[overlapsAny(tss, enc$h3k4me3, maxgap = 500) & !overlapsAny(tss, enc$h3k27me3, maxgap = 2000)]
+rep <- tss[overlapsAny(tss, enc$h3k27me3, maxgap = 500)]
+c(length(tss), length(act), length(rep))
+enr <- function(g, t) { r <- reduce(resize(t, 1000, fix = "center"))
+  mean(overlapsAny(mid(g), r)) / (sum(width(r)) / L21) }
+round(sapply(S6, function(g) c(active = enr(g, act), repressed = enr(g, rep))), 2)
+```
+
+(a) What does `enr()` compute? What value would a uniformly distributed library give?
+
+(b) How enriched is the IgG at active promoters, compared with the ChIP input? What does that tell you about where untethered pA–Tn5 cuts?
+
+(c) Is H3K27me3 CUT&Tag enriched at active promoters in these data? Compare with ChIP. Does this rule out an open-chromatin bias in CUT&Tag in general?
+
+## Hints
+
+::: {.callout-tip collapse="true" title="Hint 1 — FRiP, reads in peaks, depth (B1, C5, R2)"}
+Reads in peaks = FRiP × reads. A library with no enrichment has a FRiP equal to the fraction of the genome covered by the peaks. Count each fragment once with [`bedtools intersect -u`](https://bedtools.readthedocs.io/en/latest/content/tools/intersect.html). FRiP for ChIP is described in the [ENCODE ChIP-seq standards](https://www.encodeproject.org/chip-seq/histone/) and in *Experimental design and QC for epigenomic assays*.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 2 — fragment lengths and duplicates (B2, B3, C2, C3, R1)"}
+Nucleosomal DNA is 147 bp plus linker; Tn5 adds a 9-bp duplication. [`samtools markdup`](https://www.htslib.org/doc/samtools-markdup.html) marks pairs with the same two ends; `-s` prints statistics, `-r` would remove them. See the duplicate section of the [CUT&Tag tutorial](https://yezhengstat.github.io/CUTTag_tutorial/) (Zheng, Ahmad & Henikoff) and Kaya-Okur et al. 2019. [`bedtools bamtobed -bedpe`](https://bedtools.readthedocs.io/en/latest/content/tools/bamtobed.html) writes one line per pair: chromosome, start, end of mate 1, then of mate 2.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 3 — spike-in (B4, C6)"}
+$S = C / n_\text{E. coli}$; normalised signal = fragments × $S$. CPM normalisation divides by each library's total and so assumes the total amount of the mark is the same in all samples. Meers et al. 2019 (*eLife*) introduced E. coli carry-over DNA as a spike-in for CUT&RUN; the [CUT&Tag tutorial](https://yezhengstat.github.io/CUTTag_tutorial/) (section on spike-in calibration) applies it to CUT&Tag. Normalisation under global changes is treated fully in *Annotation and differential binding*.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 4 — SEACR and MACS3 (B5, B6, C4)"}
+The [SEACR README](https://github.com/FredHutch/SEACR) describes the arguments (target bedGraph, control bedGraph or a fraction, `norm`/`non`, `stringent`/`relaxed`, prefix) and the output columns. The threshold rule is in Meers, Tenenbaum & Henikoff 2019. For MACS3, see the [callpeak documentation](https://macs3-project.github.io/MACS/docs/callpeak.html) (`-f BAMPE`, `--broad`, `--keep-dup`) and *Peak calling*. $\lambda_\text{BG}$ = reads × window / genome size.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 5 — R (R2–R4)"}
+[`tile()`](https://rdrr.io/bioc/GenomicRanges/man/tile-methods.html) cuts a range into bins; [`countOverlaps()` / `overlapsAny()`](https://rdrr.io/bioc/GenomicRanges/man/findOverlaps-methods.html) count reads per bin or peak; [`resize(x, 1, fix = "center")`](https://rdrr.io/bioc/GenomicRanges/man/intra-range-methods.html) turns each read into its centre, so a read is counted once. `ppois(k - 1, lambda, lower.tail = FALSE)` is $P(X \ge k)$. The fingerprint plot is the one of [deepTools plotFingerprint](https://deeptools.readthedocs.io/en/latest/content/tools/plotFingerprint.html).
+:::
+
+## Solutions
+
+::: {.callout-note collapse="true" title="Solutions — by hand"}
+**B1.** (a) ChIP: 0.08 × 20 M = 1.6 M reads in peaks; CUT&Tag: 0.6 × 3 M = 1.8 M. Similar numbers of useful reads from seven times fewer reads. (b) In ChIP, 18.4 M reads (92%) are spread over the genome: DNA that was sheared everywhere and carried along nonspecifically; its local density follows copy number, mappability and sonication bias, which is why ChIP needs an input to estimate the local background. In CUT&Tag, 1.2 M reads are outside peaks: untethered cutting (open chromatin), weak sites, E. coli. (c) Only DNA next to the tethered enzyme is cut, so the rest of the genome never becomes library molecules; unbound enzyme is washed away before activation (for CUT&Tag with 300 mM NaCl); no immunoprecipitation of solubilised chromatin, so nothing sticks to beads.
+
+**B2.** (i) TF CUT&RUN: a main peak at ~50–120 bp (the factor's footprint plus flanks), plus a smaller mono-nucleosome peak at ~150–200 bp. (ii) H3K27me3 CUT&Tag: a ladder with peaks near 150–200 bp, ~350 bp and ~550 bp, with a ~10-bp ripple. (iii) IgG: few, mostly random fragments of all sizes, with nucleosomal and long fragments (untethered Tn5 cuts linkers in open chromatin). The ENCODE ChIP-seq data are single-end, so the fragment length of each molecule is unknown (only an average can be estimated from strand cross-correlation, *Peak calling*).
+
+**B3.** (a) H3K4me3: 84 000 / 1 200 000 = 7%; IgG: 150 000 / 180 000 = 83%. (b) Remove them in the IgG: it has very few distinct molecules, so the duplicates are PCR copies that would turn a handful of random fragments into apparent peaks. Keep them for H3K4me3: identical fragments there are partly independent cuts at the same linkers in different cells; removing them would cap the signal at the strongest promoters (each position can contribute only one fragment) and compress the dynamic range. (c) The library is not worse; it has been sequenced close to saturation. The extra sequencing mostly re-read molecules already seen; it added few new fragments. Preseq-style saturation curves tell you when to stop.
+
+**B4.** (a) $S$ = 12.5, 20 and 5; normalised totals: 4.0 M × 12.5 = 50 M, 2.5 M × 20 = 50 M, 3.0 M × 5 = 15 M. (b) The two controls agree (50 M each, which supports the spike-in); the inhibitor has 15/50 = 30% of the control level, a 70% loss. CPM would set all three totals to 10<sup>6</sup> and hide the global loss; only local redistribution would remain visible. (c) The scale factor now depends on how much E. coli DNA the new batch carries; the 70% may be partly or entirely a batch effect. Repeat with one batch, or use an added spike-in of known amount (e.g. *Drosophila* chromatin or barcoded nucleosomes).
+
+**B5.** (a) t = 2: target 11, IgG 5 → 11/16 = 0.69; t = 5: 9 and 2 → 0.82; t = 8: 8 and 1 → 0.89; t = 10: 7 and 1 → 0.875. (b) t = 8: 8 target blocks pass (120, 95, 60, 44, 30, 22, 15, 9); empirical FDR = 1 − 0.89 = 0.11. (Above t = 14 no IgG block passes and the fraction is trivially 1; SEACR excludes that case.) (c) It is removed: target blocks that overlap an IgG block above the threshold are discarded as likely artefacts.
+
+**B6.** $\lambda_\text{BG} = 300\,000 \times 200 / 4 \times 10^7 = 1.5$. $P(X \ge 8) \approx 2 \times 10^{-4}$: 8 fragments look significant, although a dozen fragments from untethered cutting at an open promoter are expected in CUT&Tag. The local λ windows of MACS are mostly empty in sparse data, and the IgG is too sparse to give a reliable local λ. SEACR does not test positions against a Poisson background; it compares whole blocks of target and IgG signal by their total, so a small pile has to beat the IgG's blocks, not an almost-zero λ.
+
+**B7.** Missing: an IgG (or no-antibody) control, a comparison with ATAC-seq or with H3K27me3 ChIP/CUT&RUN in the same cells, replicates, the salt conditions of the washes, and a peak caller that takes the control into account. With 1000 cells, a few fragments per promoter are expected from untethered pA–Tn5 in open chromatin. Check first whether the same promoters have IgG signal and ATAC-seq peaks, and whether the "H3K27me3" signal there scales with accessibility rather than with known Polycomb targets.
+
+**B8.** (a) CUT&Tag (or CUT&RUN): few cells, an abundant, well-validated mark. (b) CUT&RUN (gentle washes, short footprint fragments) or ChIP with crosslinking; CUT&Tag's high-salt washes would strip a weakly bound factor. (c) ChIP-seq, or CUT&RUN/Tag with a validation set: frozen tissue is harder for in-situ methods, and comparability with ENCODE/Roadmap ChIP data is part of the question. (d) Single-cell CUT&Tag (or a droplet-based variant); be aware of the open-chromatin bias, which matters most with the few fragments per cell.
+:::
+
+::: {.callout-note collapse="true" title="Solutions — command line"}
+Numbers from our run (Bowtie2 2.4.4, samtools 1.21, bedtools 2.30.0, MACS3 3.1.0, SEACR 1.3; 8 threads). The whole command-line part takes about 35 s.
+
+**C1.** (a) `-I 10 -X 700`: a pair is concordant only if the fragment is 10–700 bp; `--no-mixed` drops pairs where only one mate aligns, `--no-discordant` drops pairs that align but not as a proper pair. The reads are 25 bp, so a read only runs into the adapter if the fragment is shorter than 25 bp, which hardly happens; with 2 × 150-bp reads you must trim, as for ATAC-seq. (b) H3K27me3: 58 803 pairs, 99.6% aligned (75.7% concordantly once, 24.0% more than once); H3K4me3: 25 102 pairs, 98.6%; IgG: 293 653 pairs, only 74.3%. The 75 504 IgG pairs that did not align are the E. coli carry-over: `igg.ecoli.log` reports 75 492 pairs aligned concordantly to E. coli. (c) chrM: 1 994 reads (997 pairs) for H3K27me3, 8 328 (4 164 pairs) for H3K4me3, 391 904 (195 952 pairs) for the IgG, i.e. 0.03%, 0.26% and 9.2% of the whole libraries. Mitochondrial DNA has no nucleosomes and many copies; without a tethered target, the IgG reaction shows mostly untethered Tn5 activity, which, like ATAC-seq, goes to accessible DNA.
+
+**C2.** (a) `-q 30` unique alignments; `-f 2` proper pairs; `-F 1804` removes unmapped, mate-unmapped, secondary, QC-fail and already-marked duplicates; region `chr21` drops chrM; `collate`/`fixmate`/`view -f 2` remove pairs that lost a mate in the first filter. (b) H3K27me3: 45 130 fragments, 2 356 duplicates (5.2%); H3K4me3: 17 380 fragments, 1 225 (7.0%); IgG: 16 941 fragments, 14 397 (85%). The marks have few duplicates: these libraries were sequenced far from saturation (about 3 and 1.6 million pairs), so the "duplicates are expected" argument matters less here than for deeply sequenced libraries. The IgG, with very few distinct molecules, is almost all duplicates.
+
+**C3.** (a) `bamtobed -bedpe` writes chromosome, start and end of one mate (columns 1–3) and of the other (4–6). The fragment runs from the smaller of the two starts to the larger of the two ends, exactly as in *ATAC-seq processing and peak calling* (but without the Tn5 shift: here we want the fragment, not the insertion sites). `$1 == $4` keeps pairs on one chromosome. (b) Median length 229 bp (H3K27me3), 252 bp (H3K4me3), 330 bp (IgG, 2 544 fragments after removing duplicates). Marked nucleosomes are cut out in their linkers, mostly as mono-nucleosomes; untethered cutting in the IgG is spread over longer, more random fragments.
+
+**C4.** (a) Chromosome, start, end, total signal in the region (AUC), maximum signal, and the region where the maximum is reached. (b) SEACR with IgG: 1 115 (H3K27me3) and 135 (H3K4me3) regions; SEACR top 1%: 62 and 8; MACS3: 444 broad and 128 narrow peaks. "Top 1%" is 1% of the **blocks**, and these sparse bedGraphs have few blocks (980 for H3K4me3, 7 305 for H3K27me3), so it keeps only the 8 and 62 strongest; the 0.01 default was chosen for genome-wide data. (c) Duplicates were deliberately kept (marked) in the BAMs of the marks; MACS3's default would keep one fragment per position. H3K27me3 forms broad domains, which narrow-peak calling splits into many fragments; `--broad` links weaker neighbouring regions into domains (*Peak calling*). MACS3 reports a mean fragment size of 294 bp for H3K4me3 (from the pairs).
+
+**C5.** (a) ENCODE chr21: 492 H3K4me3 and 1 451 H3K27me3 regions. H3K4me3: CUT&Tag 15 790 / 17 380 = **0.91**, ChIP 31 021 / 94 538 = **0.33**. H3K27me3: CUT&Tag 15 294 / 45 130 = **0.34**, ChIP 12 545 / 141 487 = **0.089**. CUT&Tag reaches 3–4 times the FRiP with 3–5 times fewer reads. (b) H3K4me3: SEACR-IgG 135 peaks, 118 (87%) in ENCODE, 157 of 492 ENCODE peaks (32%) found, FRiP 0.94; top 1%: 8, 100%, 13 (3%), 0.26; MACS3: 128, 112 (88%), 144 (29%), 0.93. H3K27me3: SEACR-IgG 1 115, 495 (44%), 1 111 of 1 451 (77%), FRiP 0.80; top 1%: 62, 100%, 359 (25%), 0.33; MACS3 broad: 444, 269 (61%), 735 (51%), 0.59. For H3K4me3 SEACR with IgG and MACS3 agree; for H3K27me3 SEACR-IgG is the most sensitive but less precise (the deduplicated IgG is so sparse that the threshold is low), MACS3 is in between. There is no single right answer; check in a browser. (c) Each assay would be scored against peaks called from its own data, so a lenient caller or wide peaks inflate FRiP. To compare assays, count both in the same reference regions.
+
+**C6.** (a) E. coli pairs: 231 (H3K27me3), 355 (H3K4me3), 75 492 (IgG): 0.008%, 0.022% and 3.55% of the libraries; scale factors 43.3, 28.2 and 0.13. The amount of E. coli DNA per reaction is roughly constant, but the IgG produces very few human fragments, so E. coli makes up a large fraction of its library. (b) No: the factor uses only the E. coli count, and all E. coli pairs of each library are in our files. (Applied to chr21 coverage it gives the same relative scaling as genome-wide.) (c) No: different antibodies have different efficiencies, so spike-in-scaled signals of two marks are not comparable. Between two samples of the same mark, check that they were made with the same enzyme batch and amount and similar cell numbers, and that replicates agree in their spike-in-normalised totals (as in B4).
+:::
+
+::: {.callout-note collapse="true" title="Solutions — R"}
+The R part runs in about a minute.
+
+**R1.** (a) Median lengths 229 (H3K27me3), 252 (H3K4me3) and 330 bp (IgG). The mono-nucleosome peak is at ~200 bp and the di-nucleosome peak at ~390 bp for H3K27me3 (both include the 9-bp Tn5 duplication and some linker); 6% (H3K27me3), 12% (H3K4me3) and 10% (IgG) of fragments are shorter than 120 bp. (b) About 10 bp apart (the figure script estimates 10.3 bp for H3K27me3): Tn5 inserts where the DNA backbone faces outwards on the nucleosome surface, once per helical turn, so fragment ends inside a nucleosome are spaced by ~10 bp.
+
+**R2.** (a) FRiP, counting each read at its centre: CUT&Tag H3K4me3 0.88, ChIP H3K4me3 0.33; CUT&Tag H3K27me3 0.23, ChIP 0.084; IgG 0.033 and input 0.032 in the H3K4me3 peaks. With no enrichment, FRiP ≈ the fraction of chr21 covered by the peaks, 0.012. (The C5 numbers are a little higher because there a fragment counts if any base overlaps a peak.) Note that both controls are 2.7 times above the uniform expectation in H3K4me3 peaks: open promoters are over-represented in both (R4). (b) Top 1% of 5-kb bins: CUT&Tag H3K4me3 0.90, ChIP 0.23; CUT&Tag H3K27me3 0.30, ChIP 0.058; IgG 0.13; input 0.031. The CUT&Tag curves stay at zero for most of the bins and rise steeply at the end (most bins are empty, a few hold most reads); the ChIP curves are close to the input's, bending only gently.
+
+**R3.** (a) Background = reads outside all ENCODE peaks per bp, assumed uniform; a peak is detected if its read count is improbable under a Poisson with that rate times its width (p < 0.001). Simple, and the same rule for both assays. (b) CUT&Tag detects 54% of the H3K27me3 peaks with 45 000 fragments; ChIP detects 23% at 45 000 reads, 47% at 90 000 and 65% at 140 000 (figure script, 5 subsamples each), so it needs about 110 000 reads, roughly 2.5 times more. (c) It finds 91% of the strongest quarter of ENCODE's H3K4me3 peaks (78% of which are at protein-coding TSSs) and almost none (2–3%) of the two weakest quarters, which have a median of 9–14 ChIP reads and are mostly distal. Either those weak ChIP peaks are weak real H3K4me3 sites (e.g. at enhancers) that this shallow CUT&Tag library cannot reach, or part of them are ChIP background; the K562 lines of the two labs may also differ. More CUT&Tag sequencing would help only if the library has enough distinct molecules.
+
+**R4.** (a) The fraction of read centres falling within ± 500 bp of the TSSs, divided by the fraction of chr21 those windows cover: 1 means no enrichment. 602 protein-coding TSS positions; 290 active (in an H3K4me3 peak, no H3K27me3 within 2 kb); 47 in H3K27me3 peaks. (b) IgG: 8.1-fold enriched at active promoters; input: 1.06. The untethered pA–Tn5 in the IgG reaction cuts where DNA is accessible, like ATAC-seq; this is the open-chromatin background of CUT&Tag. (c) No: H3K27me3 CUT&Tag is depleted at active promoters (0.25, ChIP 0.29) and 20.5-fold enriched at H3K27me3 promoters (ChIP 2.1). In this abundant-mark, high-salt dataset the open-chromatin background is swamped by the true signal. That does not rule out the bias for weak targets, low cell numbers or single cells, where the few tethered fragments compete with the same untethered background (Wang & Zhang 2021).
+:::
+
+## Where this leads
+
+- *Annotation and differential binding* treats spike-in normalisation for global changes, and differential analysis of peaks, for ChIP-seq and CUT&RUN/Tag alike.
+- *Combining marks into chromatin states* combines several histone marks into one annotation; CUT&Tag data of several marks can be used the same way.
+- Single-cell and multi-target versions (single-cell CUT&Tag, multi-CUT&Tag, nano-CT) apply the same chemistry with cell barcodes; the open-chromatin bias and the sparsity discussed here matter even more there.
+
+## Key papers (optional further reading)
+
+*Not required reading and not examined.*
+
+- Skene & Henikoff 2017, *eLife*. [An efficient targeted nuclease strategy for high-resolution mapping of DNA binding sites](https://doi.org/10.7554/eLife.21856).
+- Kaya-Okur et al. 2019, *Nat Commun*. [CUT&Tag for efficient epigenomic profiling of small samples and single cells](https://doi.org/10.1038/s41467-019-09982-5).
+- Meers, Bryson, Henikoff & Henikoff 2019, *eLife*. [Improved CUT&RUN chromatin profiling tools](https://doi.org/10.7554/eLife.46314).
+- Meers, Tenenbaum & Henikoff 2019, *Epigenetics Chromatin*. [Peak calling by Sparse Enrichment Analysis for CUT&RUN chromatin profiling](https://doi.org/10.1186/s13072-019-0287-4).
+- Kaya-Okur et al. 2020, *Nat Protoc*. [Efficient low-cost chromatin profiling with CUT&Tag](https://doi.org/10.1038/s41596-020-0373-x).
+- Wang & Zhang 2021, *bioRxiv* (preprint). [Tn5 transposase-based epigenomic profiling methods are prone to open chromatin bias](https://doi.org/10.1101/2021.07.09.451758).

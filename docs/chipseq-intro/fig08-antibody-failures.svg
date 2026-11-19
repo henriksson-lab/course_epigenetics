@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1120 410" width="1120" height="410" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <g id="ab" stroke="#c0392b" stroke-width="3" stroke-linecap="round" fill="none">
+      <line x1="0" y1="0" x2="0" y2="-14"/><line x1="0" y1="-14" x2="-8" y2="-25"/><line x1="0" y1="-14" x2="8" y2="-25"/>
+    </g>
+  </defs>
+  <rect width="1120" height="410" fill="#ffffff"/>
+  <g fill="#f4f6f8" stroke="#cfd8e0" stroke-width="1.2">
+    <rect x="10" y="10" width="265" height="390" rx="8"/><rect x="287" y="10" width="265" height="390" rx="8"/>
+    <rect x="564" y="10" width="265" height="390" rx="8"/><rect x="841" y="10" width="269" height="390" rx="8"/>
+  </g>
+  <g font-size="17" font-weight="bold" fill="#1b2a3a">
+    <text x="24" y="38">Cross-reactivity</text><text x="301" y="38">Epitope masking</text>
+    <text x="578" y="38">Weak or sticky</text><text x="855" y="38">Lot-to-lot variation</text>
+  </g>
+
+  <!-- 1 cross-reactivity: antibody binds two similar epitopes -->
+  <rect x="40" y="110" width="80" height="26" rx="6" fill="#2a9d8f" stroke="#1b2a3a"/>
+  <text x="80" y="128" font-size="14" fill="#ffffff" text-anchor="middle">K4me3</text>
+  <rect x="160" y="110" width="80" height="26" rx="6" fill="#2a9d8f" stroke="#1b2a3a"/>
+  <text x="200" y="128" font-size="14" fill="#ffffff" text-anchor="middle">K4me2</text>
+  <g stroke="#c0392b" stroke-width="3" stroke-linecap="round"><line x1="72" y1="108" x2="80" y2="97"/><line x1="88" y1="108" x2="80" y2="97"/><line x1="80" y1="97" x2="80" y2="80"/></g>
+  <g stroke="#c0392b" stroke-width="3" stroke-linecap="round"><line x1="192" y1="108" x2="200" y2="97"/><line x1="208" y1="108" x2="200" y2="97"/><line x1="200" y1="97" x2="200" y2="80"/></g>
+  <text x="80" y="158" font-size="14" fill="#2e8b57" text-anchor="middle">target</text>
+  <text x="200" y="158" font-size="14" fill="#a8324a" text-anchor="middle">also bound</text>
+  <text x="24" y="196" font-size="15" fill="#1b2a3a">The antibody also binds a</text>
+  <text x="24" y="215" font-size="15" fill="#1b2a3a">similar epitope: another</text>
+  <text x="24" y="234" font-size="15" fill="#1b2a3a">methylation state, or a</text>
+  <text x="24" y="253" font-size="15" fill="#1b2a3a">paralogous TF.</text>
+  <text x="24" y="290" font-size="15" font-weight="bold" fill="#a8324a">In the data:</text>
+  <text x="24" y="309" font-size="15" fill="#1b2a3a">extra peaks that belong to</text>
+  <text x="24" y="328" font-size="15" fill="#1b2a3a">something else; wrong motif;</text>
+  <text x="24" y="347" font-size="15" fill="#1b2a3a">signal stays after knockout</text>
+  <text x="24" y="366" font-size="15" fill="#1b2a3a">of the target.</text>
+
+  <!-- 2 masking -->
+  <rect x="330" y="110" width="80" height="26" rx="6" fill="#2a9d8f" stroke="#1b2a3a"/>
+  <text x="370" y="128" font-size="14" fill="#ffffff" text-anchor="middle">K9me3</text>
+  <circle cx="420" cy="104" r="11" fill="#e9c46a" stroke="#1b2a3a"/>
+  <text x="420" y="109" font-size="12" fill="#1b2a3a" text-anchor="middle">P</text>
+  <rect x="440" y="96" width="50" height="40" rx="8" fill="#8c564b" fill-opacity="0.85" stroke="#1b2a3a"/>
+  <text x="465" y="121" font-size="13" fill="#ffffff" text-anchor="middle">partner</text>
+  <g stroke="#c0392b" stroke-width="3" stroke-linecap="round"><line x1="370" y1="54" x2="370" y2="68"/><line x1="370" y1="68" x2="362" y2="79"/><line x1="370" y1="68" x2="378" y2="79"/></g>
+  <line x1="356" y1="86" x2="384" y2="100" stroke="#a8324a" stroke-width="2.5"/><line x1="384" y1="86" x2="356" y2="100" stroke="#a8324a" stroke-width="2.5"/>
+  <text x="301" y="160" font-size="14" fill="#5b6b7a">a neighbouring mark (P = S10ph),</text>
+  <text x="301" y="177" font-size="14" fill="#5b6b7a">a partner or a crosslink hides it</text>
+  <text x="301" y="215" font-size="15" fill="#1b2a3a">The target is there, but the</text>
+  <text x="301" y="234" font-size="15" fill="#1b2a3a">antibody cannot reach it in</text>
+  <text x="301" y="253" font-size="15" fill="#1b2a3a">some places or cell states.</text>
+  <text x="301" y="290" font-size="15" font-weight="bold" fill="#a8324a">In the data:</text>
+  <text x="301" y="309" font-size="15" fill="#1b2a3a">missing peaks; a "loss" of</text>
+  <text x="301" y="328" font-size="15" fill="#1b2a3a">binding in mitosis or after a</text>
+  <text x="301" y="347" font-size="15" fill="#1b2a3a">treatment that is really a</text>
+  <text x="301" y="366" font-size="15" fill="#1b2a3a">change next door.</text>
+
+  <!-- 3 weak / sticky: enrichment bars -->
+  <line x1="590" y1="150" x2="800" y2="150" stroke="#1b2a3a" stroke-width="1.5"/>
+  <g fill="#cfd8e0"><rect x="596" y="128" width="14" height="22"/><rect x="616" y="132" width="14" height="18"/><rect x="636" y="126" width="14" height="24"/><rect x="676" y="130" width="14" height="20"/><rect x="696" y="127" width="14" height="23"/><rect x="716" y="131" width="14" height="19"/><rect x="756" y="128" width="14" height="22"/><rect x="776" y="132" width="14" height="18"/></g>
+  <rect x="656" y="110" width="14" height="40" fill="#8c564b"/><rect x="736" y="116" width="14" height="34" fill="#8c564b"/>
+  <text x="578" y="80" font-size="14" fill="#5b6b7a">peaks barely above</text>
+  <text x="578" y="97" font-size="14" fill="#5b6b7a">the background</text>
+  <text x="578" y="196" font-size="15" fill="#1b2a3a">Low affinity, or an antibody</text>
+  <text x="578" y="215" font-size="15" fill="#1b2a3a">that sticks to chromatin in</text>
+  <text x="578" y="234" font-size="15" fill="#1b2a3a">general: the IP returns</text>
+  <text x="578" y="253" font-size="15" fill="#1b2a3a">mostly background.</text>
+  <text x="578" y="290" font-size="15" font-weight="bold" fill="#a8324a">In the data:</text>
+  <text x="578" y="309" font-size="15" fill="#1b2a3a">low FRiP, a fingerprint like</text>
+  <text x="578" y="328" font-size="15" fill="#1b2a3a">the input, few peaks, mostly</text>
+  <text x="578" y="347" font-size="15" fill="#1b2a3a">at open promoters; high</text>
+  <text x="578" y="366" font-size="15" fill="#1b2a3a">duplication (little DNA).</text>
+
+  <!-- 4 lot variation -->
+  <g font-size="14" fill="#1b2a3a">
+    <text x="860" y="78">lot A</text><text x="860" y="118">lot B</text>
+  </g>
+  <path d="M910,82 L940,82 C950,82 952,58 960,58 C968,58 970,82 980,82 L1010,82 C1018,82 1020,64 1028,64 C1036,64 1038,82 1046,82 L1090,82" fill="#8c564b" fill-opacity="0.35" stroke="#8c564b" stroke-width="2"/>
+  <path d="M910,122 L940,122 C950,122 952,108 960,108 C968,108 970,122 980,122 L1090,122" fill="#8c564b" fill-opacity="0.35" stroke="#8c564b" stroke-width="2"/>
+  <text x="855" y="160" font-size="14" fill="#5b6b7a">same catalogue number,</text>
+  <text x="855" y="177" font-size="14" fill="#5b6b7a">another rabbit</text>
+  <text x="855" y="215" font-size="15" fill="#1b2a3a">Polyclonal antisera differ</text>
+  <text x="855" y="234" font-size="15" fill="#1b2a3a">between batches; even a</text>
+  <text x="855" y="253" font-size="15" fill="#1b2a3a">validated lot can run out.</text>
+  <text x="855" y="290" font-size="15" font-weight="bold" fill="#a8324a">In the data:</text>
+  <text x="855" y="309" font-size="15" fill="#1b2a3a">"replicates" that disagree;</text>
+  <text x="855" y="328" font-size="15" fill="#1b2a3a">a batch effect that lines up</text>
+  <text x="855" y="347" font-size="15" fill="#1b2a3a">with the lot. Record lots;</text>
+  <text x="855" y="366" font-size="15" fill="#1b2a3a">prefer recombinant antibodies.</text>
+</svg>

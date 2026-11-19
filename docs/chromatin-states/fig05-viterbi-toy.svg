@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 400" width="1120" height="400" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/>
+    </marker>
+    <marker id="arrg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/>
+    </marker>
+    <marker id="arrr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/>
+    </marker>
+    <marker id="arrs" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="3.6" markerHeight="3.6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/>
+    </marker>
+  </defs>
+  <rect width="1120" height="400" fill="#ffffff"/>
+  <rect x="14" y="40" width="252" height="300" rx="8" fill="#f4f6f8" stroke="#d0d7de" stroke-width="1"/>
+  <text x="28" y="70" font-size="16" fill="#1b2a3a" font-weight="bold">Toy model, one mark</text>
+  <text x="28" y="100" font-size="14" fill="#1b2a3a">states: A (active), Q (quiet)</text>
+  <text x="28" y="128" font-size="14" fill="#1b2a3a">P(mark | A) = 0.8</text>
+  <text x="28" y="150" font-size="14" fill="#1b2a3a">P(mark | Q) = 0.1</text>
+  <text x="28" y="178" font-size="14" fill="#1b2a3a">stay in state: 0.9</text>
+  <text x="28" y="200" font-size="14" fill="#1b2a3a">switch: 0.1</text>
+  <text x="28" y="228" font-size="14" fill="#1b2a3a">start: 0.5 / 0.5</text>
+  <text x="28" y="262" font-size="14" fill="#5b6b7a">δ = probability of the</text>
+  <text x="28" y="280" font-size="14" fill="#5b6b7a">best path ending here</text>
+  <text x="28" y="312" font-size="13" fill="#5b6b7a">δ(s) = max over r [δ(r) × P(r→s)]</text>
+  <text x="60" y="330" font-size="13" fill="#5b6b7a">× P(observation | s)</text>
+  <text x="334" y="70" font-size="14" fill="#5b6b7a" text-anchor="end">observed</text>
+  <rect x="345" y="52" width="30" height="26" rx="3" fill="#d4a017" stroke="#1b2a3a" stroke-width="1.2"/>
+  <text x="360" y="71" font-size="15" fill="#ffffff" text-anchor="middle" font-weight="bold">1</text>
+  <text x="360" y="105" font-size="13" fill="#5b6b7a" text-anchor="middle">bin 1</text>
+  <rect x="475" y="52" width="30" height="26" rx="3" fill="#d4a017" stroke="#1b2a3a" stroke-width="1.2"/>
+  <text x="490" y="71" font-size="15" fill="#ffffff" text-anchor="middle" font-weight="bold">1</text>
+  <text x="490" y="105" font-size="13" fill="#5b6b7a" text-anchor="middle">bin 2</text>
+  <rect x="605" y="52" width="30" height="26" rx="3" fill="#ffffff" stroke="#1b2a3a" stroke-width="1.2"/>
+  <text x="620" y="71" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">0</text>
+  <text x="620" y="105" font-size="13" fill="#5b6b7a" text-anchor="middle">bin 3</text>
+  <rect x="735" y="52" width="30" height="26" rx="3" fill="#d4a017" stroke="#1b2a3a" stroke-width="1.2"/>
+  <text x="750" y="71" font-size="15" fill="#ffffff" text-anchor="middle" font-weight="bold">1</text>
+  <text x="750" y="105" font-size="13" fill="#5b6b7a" text-anchor="middle">bin 4</text>
+  <rect x="865" y="52" width="30" height="26" rx="3" fill="#ffffff" stroke="#1b2a3a" stroke-width="1.2"/>
+  <text x="880" y="71" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">0</text>
+  <text x="880" y="105" font-size="13" fill="#5b6b7a" text-anchor="middle">bin 5</text>
+  <rect x="995" y="52" width="30" height="26" rx="3" fill="#ffffff" stroke="#1b2a3a" stroke-width="1.2"/>
+  <text x="1010" y="71" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">0</text>
+  <text x="1010" y="105" font-size="13" fill="#5b6b7a" text-anchor="middle">bin 6</text>
+  <line x1="400.0" y1="150.0" x2="448.0" y2="150.0" stroke="#c0392b" stroke-width="3.5" marker-end="url(#arrs)"/>
+  <line x1="387.2" y1="260.7" x2="461.4" y2="180.8" stroke="#e3e8ee" stroke-width="1.2"/>
+  <line x1="387.2" y1="179.3" x2="461.4" y2="259.2" stroke="#e3e8ee" stroke-width="1.2"/>
+  <line x1="400.0" y1="290.0" x2="448.0" y2="290.0" stroke="#9aa5b1" stroke-width="1.8"/>
+  <line x1="530.0" y1="150.0" x2="578.0" y2="150.0" stroke="#c0392b" stroke-width="3.5" marker-end="url(#arrs)"/>
+  <line x1="517.2" y1="260.7" x2="591.4" y2="180.8" stroke="#e3e8ee" stroke-width="1.2"/>
+  <line x1="517.2" y1="179.3" x2="591.4" y2="259.2" stroke="#9aa5b1" stroke-width="1.8"/>
+  <line x1="530.0" y1="290.0" x2="578.0" y2="290.0" stroke="#e3e8ee" stroke-width="1.2"/>
+  <line x1="660.0" y1="150.0" x2="708.0" y2="150.0" stroke="#c0392b" stroke-width="3.5" marker-end="url(#arrs)"/>
+  <line x1="647.2" y1="260.7" x2="721.4" y2="180.8" stroke="#e3e8ee" stroke-width="1.2"/>
+  <line x1="647.2" y1="179.3" x2="721.4" y2="259.2" stroke="#e3e8ee" stroke-width="1.2"/>
+  <line x1="660.0" y1="290.0" x2="708.0" y2="290.0" stroke="#9aa5b1" stroke-width="1.8"/>
+  <line x1="790.0" y1="150.0" x2="838.0" y2="150.0" stroke="#9aa5b1" stroke-width="1.8"/>
+  <line x1="777.2" y1="260.7" x2="851.4" y2="180.8" stroke="#e3e8ee" stroke-width="1.2"/>
+  <line x1="777.2" y1="179.3" x2="851.4" y2="259.2" stroke="#c0392b" stroke-width="3.5" marker-end="url(#arrs)"/>
+  <line x1="790.0" y1="290.0" x2="838.0" y2="290.0" stroke="#e3e8ee" stroke-width="1.2"/>
+  <line x1="920.0" y1="150.0" x2="968.0" y2="150.0" stroke="#9aa5b1" stroke-width="1.8"/>
+  <line x1="907.2" y1="260.7" x2="981.4" y2="180.8" stroke="#e3e8ee" stroke-width="1.2"/>
+  <line x1="907.2" y1="179.3" x2="981.4" y2="259.2" stroke="#e3e8ee" stroke-width="1.2"/>
+  <line x1="920.0" y1="290.0" x2="968.0" y2="290.0" stroke="#c0392b" stroke-width="3.5" marker-end="url(#arrs)"/>
+  <circle cx="360" cy="150" r="38" fill="#fbe3e0" stroke="#c0392b" stroke-width="2.5"/>
+  <text x="360" y="144" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">A</text>
+  <text x="360" y="164" font-size="13" fill="#1b2a3a" text-anchor="middle">0.4</text>
+  <circle cx="360" cy="290" r="38" fill="#ffffff" stroke="#1b2a3a" stroke-width="1.5"/>
+  <text x="360" y="284" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">Q</text>
+  <text x="360" y="304" font-size="13" fill="#1b2a3a" text-anchor="middle">0.05</text>
+  <circle cx="490" cy="150" r="38" fill="#fbe3e0" stroke="#c0392b" stroke-width="2.5"/>
+  <text x="490" y="144" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">A</text>
+  <text x="490" y="164" font-size="13" fill="#1b2a3a" text-anchor="middle">0.288</text>
+  <circle cx="490" cy="290" r="38" fill="#ffffff" stroke="#1b2a3a" stroke-width="1.5"/>
+  <text x="490" y="284" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">Q</text>
+  <text x="490" y="304" font-size="13" fill="#1b2a3a" text-anchor="middle">0.0045</text>
+  <circle cx="620" cy="150" r="38" fill="#fbe3e0" stroke="#c0392b" stroke-width="2.5"/>
+  <text x="620" y="144" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">A</text>
+  <text x="620" y="164" font-size="13" fill="#1b2a3a" text-anchor="middle">0.0518</text>
+  <circle cx="620" cy="290" r="38" fill="#ffffff" stroke="#1b2a3a" stroke-width="1.5"/>
+  <text x="620" y="284" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">Q</text>
+  <text x="620" y="304" font-size="13" fill="#1b2a3a" text-anchor="middle">0.0259</text>
+  <circle cx="750" cy="150" r="38" fill="#fbe3e0" stroke="#c0392b" stroke-width="2.5"/>
+  <text x="750" y="144" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">A</text>
+  <text x="750" y="164" font-size="13" fill="#1b2a3a" text-anchor="middle">0.0373</text>
+  <circle cx="750" cy="290" r="38" fill="#ffffff" stroke="#1b2a3a" stroke-width="1.5"/>
+  <text x="750" y="284" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">Q</text>
+  <text x="750" y="304" font-size="13" fill="#1b2a3a" text-anchor="middle">0.00233</text>
+  <circle cx="880" cy="150" r="38" fill="#ffffff" stroke="#1b2a3a" stroke-width="1.5"/>
+  <text x="880" y="144" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">A</text>
+  <text x="880" y="164" font-size="13" fill="#1b2a3a" text-anchor="middle">0.00672</text>
+  <circle cx="880" cy="290" r="38" fill="#fbe3e0" stroke="#c0392b" stroke-width="2.5"/>
+  <text x="880" y="284" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">Q</text>
+  <text x="880" y="304" font-size="13" fill="#1b2a3a" text-anchor="middle">0.00336</text>
+  <circle cx="1010" cy="150" r="38" fill="#ffffff" stroke="#1b2a3a" stroke-width="1.5"/>
+  <text x="1010" y="144" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">A</text>
+  <text x="1010" y="164" font-size="13" fill="#1b2a3a" text-anchor="middle">0.00121</text>
+  <circle cx="1010" cy="290" r="38" fill="#fbe3e0" stroke="#c0392b" stroke-width="2.5"/>
+  <text x="1010" y="284" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">Q</text>
+  <text x="1010" y="304" font-size="13" fill="#1b2a3a" text-anchor="middle">0.00272</text>
+  <text x="310" y="155" font-size="16" fill="#1b2a3a" text-anchor="end" font-weight="bold">A</text>
+  <text x="310" y="295" font-size="16" fill="#1b2a3a" text-anchor="end" font-weight="bold">Q</text>
+  <text x="685.0" y="372" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">Viterbi path (red): A A A A Q Q  — the single 0 in bin 3 stays A</text>
+</svg>

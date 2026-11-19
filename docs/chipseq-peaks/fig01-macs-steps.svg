@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 380" width="1120" height="380" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker>
+    <marker id="aB" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a6f97"/></marker>
+    <marker id="aO" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e67e22"/></marker>
+  </defs>
+  <rect width="1120" height="380" fill="#ffffff"/>
+  <g fill="#f4f6f8" stroke="#cfd8e0" stroke-width="1.2">
+    <rect x="10" y="10" width="210" height="270" rx="8"/><rect x="232" y="10" width="210" height="270" rx="8"/>
+    <rect x="454" y="10" width="210" height="270" rx="8"/><rect x="676" y="10" width="210" height="270" rx="8"/>
+    <rect x="898" y="10" width="212" height="270" rx="8"/>
+  </g>
+  <g font-size="17" font-weight="bold" fill="#1b2a3a">
+    <text x="22" y="36">1 Fragment length d</text><text x="244" y="36">2 Pile up fragments</text>
+    <text x="466" y="36">3 Local background</text><text x="688" y="36">4 Test every base</text>
+    <text x="910" y="36">5 Peaks and summits</text>
+  </g>
+  <g stroke="#5b6b7a" stroke-width="2" marker-end="url(#ar)">
+    <line x1="210" y1="150" x2="230" y2="150"/><line x1="432" y1="150" x2="452" y2="150"/>
+    <line x1="654" y1="150" x2="674" y2="150"/><line x1="876" y1="150" x2="896" y2="150"/>
+  </g>
+  <!-- 1 -->
+  <path d="M24,120 L60,120 C72,120 76,76 90,76 C104,76 108,120 120,120 L206,120" fill="#2a6f97" fill-opacity="0.3" stroke="#2a6f97" stroke-width="2"/>
+  <path d="M24,120 L100,120 C112,120 116,86 130,86 C144,86 148,120 160,120 L206,120" fill="#e67e22" fill-opacity="0.3" stroke="#e67e22" stroke-width="2"/>
+  <line x1="90" y1="136" x2="130" y2="136" stroke="#1b2a3a" stroke-width="1.5"/>
+  <line x1="90" y1="130" x2="90" y2="142" stroke="#1b2a3a" stroke-width="1.5"/><line x1="130" y1="130" x2="130" y2="142" stroke="#1b2a3a" stroke-width="1.5"/>
+  <text x="110" y="158" font-size="15" fill="#1b2a3a" text-anchor="middle">d</text>
+  <text x="22" y="200" font-size="15" fill="#1b2a3a">pair + and − strand</text>
+  <text x="22" y="219" font-size="15" fill="#1b2a3a">read peaks at strong</text>
+  <text x="22" y="238" font-size="15" fill="#1b2a3a">sites; d = their distance</text>
+  <text x="22" y="262" font-size="13" fill="#5b6b7a">(paired-end: measured)</text>
+  <!-- 2 -->
+  <g stroke-width="3.5">
+    <line x1="260" y1="66" x2="340" y2="66" stroke="#2a6f97"/><line x1="280" y1="76" x2="360" y2="76" stroke="#2a6f97"/><line x1="300" y1="86" x2="380" y2="86" stroke="#e67e22"/>
+    <line x1="310" y1="96" x2="390" y2="96" stroke="#e67e22"/><line x1="290" y1="106" x2="370" y2="106" stroke="#2a6f97"/>
+  </g>
+  <path d="M246,170 L260,170 L260,162 L280,162 L280,154 L290,154 L290,146 L300,146 L300,138 L310,138 L310,130 L340,130 L340,138 L360,138 L360,146 L370,146 L370,154 L380,154 L380,162 L390,162 L390,170 L428,170" fill="#8c564b" fill-opacity="0.35" stroke="#8c564b" stroke-width="2"/>
+  <text x="244" y="200" font-size="15" fill="#1b2a3a">extend each read to d</text>
+  <text x="244" y="219" font-size="15" fill="#1b2a3a">in its own direction;</text>
+  <text x="244" y="238" font-size="15" fill="#1b2a3a">count fragments over</text>
+  <text x="244" y="257" font-size="15" fill="#1b2a3a">each base: pileup k</text>
+  <!-- 3 -->
+  <rect x="540" y="56" width="38" height="18" fill="#5b6b7a" fill-opacity="0.35"/>
+  <rect x="510" y="80" width="98" height="18" fill="#5b6b7a" fill-opacity="0.25"/>
+  <rect x="470" y="104" width="178" height="18" fill="#5b6b7a" fill-opacity="0.15"/>
+  <g font-size="13" fill="#1b2a3a">
+    <text x="584" y="70">d</text><text x="614" y="94">1 kb</text><text x="604" y="138">10 kb</text>
+  </g>
+  <line x1="559" y1="50" x2="559" y2="128" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="466" y="166" font-size="15" fill="#1b2a3a">count <tspan font-weight="bold">control</tspan> reads in</text>
+  <text x="466" y="185" font-size="15" fill="#1b2a3a">windows around the</text>
+  <text x="466" y="204" font-size="15" fill="#1b2a3a">base, scale each to d:</text>
+  <text x="466" y="230" font-size="15" fill="#1b2a3a">λ<tspan dy="4" font-size="11">local</tspan><tspan dy="-4"> = max(λ</tspan><tspan dy="4" font-size="11">BG</tspan><tspan dy="-4">, λ</tspan><tspan dy="4" font-size="11">d</tspan><tspan dy="-4">,</tspan></text>
+  <text x="520" y="252" font-size="15" fill="#1b2a3a">λ<tspan dy="4" font-size="11">1k</tspan><tspan dy="-4">, λ</tspan><tspan dy="4" font-size="11">10k</tspan><tspan dy="-4">)</tspan></text>
+  <!-- 4 -->
+  <text x="688" y="76" font-size="16" fill="#1b2a3a">p = P(X ≥ k),</text>
+  <text x="688" y="100" font-size="16" fill="#1b2a3a">X ~ Poisson(λ<tspan dy="4" font-size="12">local</tspan><tspan dy="-4">)</tspan></text>
+  <text x="688" y="140" font-size="15" fill="#1b2a3a">then p → q</text>
+  <text x="688" y="159" font-size="15" fill="#1b2a3a">(Benjamini–Hochberg)</text>
+  <text x="688" y="200" font-size="15" fill="#1b2a3a">a score at every base,</text>
+  <text x="688" y="219" font-size="15" fill="#1b2a3a">not one test per peak</text>
+  <!-- 5 -->
+  <path d="M912,140 L940,140 C955,140 960,70 980,70 C1000,70 1006,140 1020,140 L1096,140" fill="#8c564b" fill-opacity="0.35" stroke="#8c564b" stroke-width="2"/>
+  <line x1="912" y1="104" x2="1096" y2="104" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="1096" y="98" font-size="13" fill="#c0392b" text-anchor="end">q cutoff</text>
+  <rect x="951" y="146" width="58" height="10" fill="#2e8b57"/>
+  <line x1="980" y1="62" x2="980" y2="70" stroke="#1b2a3a" stroke-width="2"/>
+  <text x="980" y="58" font-size="13" fill="#1b2a3a" text-anchor="middle">summit</text>
+  <text x="910" y="190" font-size="15" fill="#1b2a3a">runs of bases below</text>
+  <text x="910" y="209" font-size="15" fill="#1b2a3a">the cutoff, gaps up to</text>
+  <text x="910" y="228" font-size="15" fill="#1b2a3a">a read length joined,</text>
+  <text x="910" y="247" font-size="15" fill="#1b2a3a">at least d long</text>
+  <!-- bottom -->
+  <rect x="10" y="296" width="1100" height="74" rx="8" fill="#eaf1f7" stroke="#cfd8e0"/>
+  <text x="26" y="322" font-size="15" fill="#1b2a3a"><tspan font-weight="bold">Broad marks</tspan> (--broad): a second, lenient cutoff links nearby narrow regions into domains. <tspan font-weight="bold">Without a control</tspan>, λ comes</text>
+  <text x="26" y="344" font-size="15" fill="#1b2a3a">from the ChIP itself (λ<tspan dy="4" font-size="11">BG</tspan><tspan dy="-4"> and the 10-kb window only). </tspan><tspan font-weight="bold">Replicates</tspan>: call each leniently, then keep the peaks that rank consistently (IDR).</text>
+  <text x="26" y="364" font-size="13" fill="#5b6b7a">MACS: Zhang et al. 2008; this is MACS2/MACS3 as run today.</text>
+</svg>

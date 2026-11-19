@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 400" width="1120" height="400" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker></defs>
+<rect width="1120" height="400" fill="#ffffff"/>
+<text x="40" y="30" font-size="18" font-weight="bold" fill="#1b2a3a">Which enhancer regulates which gene?</text>
+<line x1="60" y1="200" x2="1060" y2="200" stroke="#1b2a3a" stroke-width="2"/>
+<rect x="250" y="188" width="90" height="24" fill="#1b2a3a"/>
+<text x="295" y="238" text-anchor="middle" font-size="15" font-weight="bold" fill="#1b2a3a">gene A</text>
+<rect x="820" y="188" width="90" height="24" fill="#1b2a3a"/>
+<text x="865" y="238" text-anchor="middle" font-size="15" font-weight="bold" fill="#1b2a3a">gene B</text>
+<rect x="92" y="191" width="36" height="18" rx="4" fill="#e67e22"/>
+<text x="110" y="238" text-anchor="middle" font-size="15" fill="#e67e22" font-weight="bold">E1</text>
+<rect x="462" y="191" width="36" height="18" rx="4" fill="#e67e22"/>
+<text x="480" y="238" text-anchor="middle" font-size="15" fill="#e67e22" font-weight="bold">E2</text>
+<rect x="572" y="191" width="36" height="18" rx="4" fill="#e67e22"/>
+<text x="590" y="238" text-anchor="middle" font-size="15" fill="#e67e22" font-weight="bold">E3</text>
+<rect x="962" y="191" width="36" height="18" rx="4" fill="#e67e22"/>
+<text x="980" y="238" text-anchor="middle" font-size="15" fill="#e67e22" font-weight="bold">E4</text>
+<path d="M480,188 Q387.5,98 295,188" fill="none" stroke="#2e8b57" stroke-width="2.5"/>
+<path d="M590,188 Q727.5,68 865,188" fill="none" stroke="#2e8b57" stroke-width="2.5"/>
+<path d="M480,188 Q672.5,38 865,188" fill="none" stroke="#a8324a" stroke-width="2.5" stroke-dasharray="6,4"/>
+<path d="M110,188 Q202.5,98 295,188" fill="none" stroke="#a8324a" stroke-width="2.5" stroke-dasharray="6,4"/>
+<text x="380" y="110" text-anchor="middle" font-size="14" fill="#2e8b57">real link</text>
+<text x="690" y="80" text-anchor="middle" font-size="14" fill="#2e8b57">real link</text>
+<text x="680" y="50" text-anchor="middle" font-size="14" fill="#a8324a">candidate, no effect</text>
+<text x="190" y="118" text-anchor="middle" font-size="14" fill="#a8324a">no effect</text>
+<text x="60" y="280" font-size="16" font-weight="bold" fill="#1b2a3a">One example = one (enhancer, gene) pair. Features:</text>
+<text x="60" y="306" font-size="15" fill="#1b2a3a">enhancer activity (ATAC, H3K27ac), promoter activity, distance, Hi-C contact, signal in the window between them</text>
+<text x="60" y="340" font-size="16" font-weight="bold" fill="#1b2a3a">Labels:</text>
+<text x="128" y="340" font-size="15" fill="#1b2a3a">CRISPRi screens that silence each enhancer and measure each gene (the gold standard), or Hi-C loops, or eQTLs</text>
+<text x="60" y="372" font-size="15" fill="#5b6b7a">Nearest gene is right for only part of enhancers. The ABC model (activity × contact) is a simple, strong baseline.</text>
+</svg>

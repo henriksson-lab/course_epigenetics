@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 400" width="1120" height="400" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker><marker id="ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker><marker id="ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker><marker id="ahgr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker><marker id="ahb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a6f97"/></marker><marker id="aho" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e67e22"/></marker><marker id="ahp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b4fa0"/></marker></defs>
+<rect width="1120" height="400" fill="#ffffff"/>
+<text x="30.0" y="70.0" font-size="16" fill="#1b2a3a" text-anchor="start" font-weight="bold">sequence</text>
+<text x="250.0" y="70.0" font-size="28" fill="#2e8b57" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">A</text>
+<text x="324.0" y="70.0" font-size="28" fill="#2a6f97" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">C</text>
+<text x="398.0" y="70.0" font-size="28" fill="#2a6f97" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">C</text>
+<text x="472.0" y="70.0" font-size="28" fill="#2e8b57" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">A</text>
+<text x="546.0" y="70.0" font-size="28" fill="#d48a00" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">G</text>
+<text x="620.0" y="70.0" font-size="28" fill="#c0392b" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">T</text>
+<text x="694.0" y="70.0" font-size="28" fill="#2a6f97" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">C</text>
+<text x="768.0" y="70.0" font-size="28" fill="#2a6f97" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">C</text>
+<text x="842.0" y="70.0" font-size="28" fill="#c0392b" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">T</text>
+<text x="916.0" y="70.0" font-size="28" fill="#d48a00" text-anchor="middle" font-weight="bold" font-family="Courier New, monospace">G</text>
+<text x="250.0" y="96.0" font-size="13" fill="#5b6b7a" text-anchor="middle">1</text>
+<text x="324.0" y="96.0" font-size="13" fill="#5b6b7a" text-anchor="middle">2</text>
+<text x="398.0" y="96.0" font-size="13" fill="#5b6b7a" text-anchor="middle">3</text>
+<text x="472.0" y="96.0" font-size="13" fill="#5b6b7a" text-anchor="middle">4</text>
+<text x="546.0" y="96.0" font-size="13" fill="#5b6b7a" text-anchor="middle">5</text>
+<text x="620.0" y="96.0" font-size="13" fill="#5b6b7a" text-anchor="middle">6</text>
+<text x="694.0" y="96.0" font-size="13" fill="#5b6b7a" text-anchor="middle">7</text>
+<text x="768.0" y="96.0" font-size="13" fill="#5b6b7a" text-anchor="middle">8</text>
+<text x="842.0" y="96.0" font-size="13" fill="#5b6b7a" text-anchor="middle">9</text>
+<text x="916.0" y="96.0" font-size="13" fill="#5b6b7a" text-anchor="middle">10</text>
+<rect x="300.0" y="42.0" width="270.0" height="40.0" rx="6" fill="none" stroke="#c0392b" stroke-width="2.6"/>
+<text x="435.0" y="30.0" font-size="15" fill="#c0392b" text-anchor="middle" font-weight="bold">window 2: CCAG → 8</text>
+<rect x="670.0" y="42.0" width="270.0" height="40.0" rx="6" fill="none" stroke="#6b4fa0" stroke-width="2.6"/>
+<text x="805.0" y="30.0" font-size="15" fill="#6b4fa0" text-anchor="middle" font-weight="bold">window 7: CCTG → 5 (one mismatch)</text>
+<line x1="264.8" y1="118.0" x2="368.4" y2="118.0" stroke="#5b6b7a" stroke-width="2" marker-end="url(#ahg)"/>
+<text x="383.2" y="123.0" font-size="14" fill="#5b6b7a" text-anchor="start">slide one position at a time (stride 1)</text>
+<text x="30.0" y="200.0" font-size="16" fill="#1b2a3a" text-anchor="start" font-weight="bold">filter score</text>
+<text x="30.0" y="220.0" font-size="15" fill="#5b6b7a" text-anchor="start">at each window</text>
+<line x1="220.0" y1="270.0" x2="946.0" y2="270.0" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="210.0" y="275.0" font-size="14" fill="#5b6b7a" text-anchor="end">0</text>
+<rect x="345.0" y="270.0" width="32.0" height="14.0" rx="0" fill="#5b6b7a" stroke="none" stroke-width="0" fill-opacity="0.8"/>
+<text x="361.0" y="304.0" font-size="16" fill="#5b6b7a" text-anchor="middle" font-weight="bold">-1</text>
+<text x="361.0" y="362.0" font-size="13" fill="#5b6b7a" text-anchor="middle">w1</text>
+<rect x="419.0" y="158.0" width="32.0" height="112.0" rx="0" fill="#c0392b" stroke="none" stroke-width="0" fill-opacity="0.8"/>
+<text x="435.0" y="150.0" font-size="16" fill="#c0392b" text-anchor="middle" font-weight="bold">8</text>
+<text x="435.0" y="362.0" font-size="13" fill="#5b6b7a" text-anchor="middle">w2</text>
+<rect x="493.0" y="270.0" width="32.0" height="14.0" rx="0" fill="#5b6b7a" stroke="none" stroke-width="0" fill-opacity="0.8"/>
+<text x="509.0" y="304.0" font-size="16" fill="#5b6b7a" text-anchor="middle" font-weight="bold">-1</text>
+<text x="509.0" y="362.0" font-size="13" fill="#5b6b7a" text-anchor="middle">w3</text>
+<rect x="567.0" y="270.0" width="32.0" height="56.0" rx="0" fill="#5b6b7a" stroke="none" stroke-width="0" fill-opacity="0.8"/>
+<text x="583.0" y="346.0" font-size="16" fill="#5b6b7a" text-anchor="middle" font-weight="bold">-4</text>
+<text x="583.0" y="362.0" font-size="13" fill="#5b6b7a" text-anchor="middle">w4</text>
+<rect x="641.0" y="270.0" width="32.0" height="56.0" rx="0" fill="#5b6b7a" stroke="none" stroke-width="0" fill-opacity="0.8"/>
+<text x="657.0" y="346.0" font-size="16" fill="#5b6b7a" text-anchor="middle" font-weight="bold">-4</text>
+<text x="657.0" y="362.0" font-size="13" fill="#5b6b7a" text-anchor="middle">w5</text>
+<rect x="715.0" y="270.0" width="32.0" height="14.0" rx="0" fill="#5b6b7a" stroke="none" stroke-width="0" fill-opacity="0.8"/>
+<text x="731.0" y="304.0" font-size="16" fill="#5b6b7a" text-anchor="middle" font-weight="bold">-1</text>
+<text x="731.0" y="362.0" font-size="13" fill="#5b6b7a" text-anchor="middle">w6</text>
+<rect x="789.0" y="200.0" width="32.0" height="70.0" rx="0" fill="#6b4fa0" stroke="none" stroke-width="0" fill-opacity="0.8"/>
+<text x="805.0" y="192.0" font-size="16" fill="#6b4fa0" text-anchor="middle" font-weight="bold">5</text>
+<text x="805.0" y="362.0" font-size="13" fill="#5b6b7a" text-anchor="middle">w7</text>
+<text x="600.0" y="390.0" font-size="15" fill="#1b2a3a" text-anchor="middle">L − k + 1 = 10 − 4 + 1 = 7 scores: the filter's activation track along the sequence</text>
+</svg>

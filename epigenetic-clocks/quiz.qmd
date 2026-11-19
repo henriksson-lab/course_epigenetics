@@ -1,0 +1,95 @@
+---
+title: "Quiz: epigenetic clocks and biomarkers"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+Short questions on penalised regression, clock evaluation, age acceleration and cell-free DNA. Try each on paper first, then open the answer.
+
+---
+
+**Q1.** Why can ordinary least squares not be used to fit a clock on 450 000 CpGs from 500 people, and what does the elastic net penalty change?
+
+::: {.callout-tip collapse="true" title="Hint"}
+Count unknowns and equations.
+:::
+
+::: {.callout-note collapse="true" title="Answer"}
+With more coefficients than samples there are infinitely many exact fits to the training data; the solution is not unique and predicts new samples badly (overfitting). The elastic net adds a penalty on the size of the coefficients (L1 + L2): the L1 part sets most coefficients to exactly zero (selecting a few hundred CpGs), the L2 part keeps correlated CpGs together and stabilises the fit. The strength λ is chosen by cross-validation.
+:::
+
+---
+
+**Q2.** A clock has intercept 25 and two CpGs with coefficients 50 and −20. A person has β = 0.6 and 0.5. What is the predicted age? If an array batch adds 0.03 to every β, how does the prediction change?
+
+::: {.callout-note collapse="true" title="Answer"}
+25 + 50·0.6 − 20·0.5 = 25 + 30 − 10 = **45**. A shift of 0.03 adds 0.03 × (50 − 20) = **0.9 years**.
+:::
+
+---
+
+**Q3.** A clock's median absolute error is 1.2 years on its training data and 3.7 years on held-out samples. Which number would you report, and why are they different?
+
+::: {.callout-note collapse="true" title="Answer"}
+The held-out (test) error, 3.7 years: it estimates performance on new people. The training error is optimistic because the model partly fitted the noise of the training samples (overfitting).
+:::
+
+---
+
+**Q4.** A paper selects the 500 CpGs most correlated with age in its 400 samples, then reports a 5-fold cross-validated error of an elastic net using those CpGs. What is wrong, and how should it be done?
+
+::: {.callout-note collapse="true" title="Answer"}
+The CpG selection used all samples, including those later used for testing in each fold: **leakage**. The error is too optimistic (with pure noise features this procedure can still produce apparently good predictions). The selection must be repeated inside each training fold (or done on data that is never used for testing), and the final test set should be untouched until the end.
+:::
+
+---
+
+**Q5.** Horvath's clock applied to the Hannum data gives r = 0.92. Why is this not evidence that Horvath's clock generalises?
+
+::: {.callout-note collapse="true" title="Answer"}
+The Hannum data (GSE40279) were part of Horvath's training data. Performance on training data is in-sample and optimistic. Generalisation must be tested on data the model has never seen (e.g. GSE42861, one of his test sets).
+:::
+
+---
+
+**Q6.** In a cohort, DNAm age = 8 + 0.9 × age. A 40-year-old has DNAm age 47. Compute the raw difference and the age acceleration.
+
+::: {.callout-note collapse="true" title="Answer"}
+Raw difference: 47 − 40 = +7. Fitted: 8 + 36 = 44; acceleration = 47 − 44 = **+3 years**.
+:::
+
+---
+
+**Q7.** What is the difference between what Horvath's clock, GrimAge and DunedinPACE were trained to predict?
+
+::: {.callout-note collapse="true" title="Answer"}
+Horvath: chronological age (transformed), across many tissues. GrimAge: time to death, via methylation surrogates of seven plasma proteins and smoking pack-years (plus age and sex). DunedinPACE: the rate of decline in 19 biomarkers of organ function over 20 years in one birth cohort (years of ageing per calendar year). The target determines what the score means; the later two predict morbidity and mortality better.
+:::
+
+---
+
+**Q8.** Give three non-biological reasons why two groups could differ in mean DNAm age acceleration.
+
+::: {.callout-note collapse="true" title="Answer"}
+Any three: the groups were measured in different array batches or with different normalisation; they differ in blood cell composition (e.g. inflammation, infection, steroids); they differ in age and the raw difference (not the residual) was used; technical noise with small groups and many clocks tested (multiple testing); different populations (genetic effects on clock CpGs); sample handling (storage, DNA quality).
+:::
+
+---
+
+**Q9.** Two CpGs: neutrophils β = 0.8 and 0.2; liver β = 0.1 and 0.9. A cfDNA sample (only these two sources) has β = 0.73 at CpG 1. What fraction comes from liver? Check with CpG 2 if it reads 0.27.
+
+::: {.callout-note collapse="true" title="Answer"}
+0.8(1 − f) + 0.1f = 0.73 → 0.8 − 0.7f = 0.73 → **f = 0.1**. CpG 2: 0.2·0.9 + 0.9·0.1 = 0.18 + 0.09 = 0.27 ✓.
+:::
+
+---
+
+**Q10.** A cancer screening test has 50% sensitivity and 99% specificity; 1% of the screened people have cancer. Of 10 000 people tested, how many positives are true, and what is the positive predictive value?
+
+::: {.callout-note collapse="true" title="Answer"}
+100 have cancer: 50 true positives. 9 900 do not: 1% = 99 false positives. PPV = 50/149 = **34%**. Most positives are false, even with 99% specificity, because the disease is rare.
+:::

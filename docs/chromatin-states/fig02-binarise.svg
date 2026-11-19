@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 420" width="1120" height="420" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/>
+    </marker>
+    <marker id="arrg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/>
+    </marker>
+    <marker id="arrr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/>
+    </marker>
+  </defs>
+  <rect width="1120" height="420" fill="#ffffff"/>
+  <text x="20" y="26" font-size="17" fill="#1b2a3a" font-weight="bold">One mark (H3K4me1) in ten 200-bp bins</text>
+  <line x1="190" y1="40" x2="190" y2="340" stroke="#d0d7de" stroke-width="1"/>
+  <line x1="278" y1="40" x2="278" y2="340" stroke="#d0d7de" stroke-width="1"/>
+  <line x1="366" y1="40" x2="366" y2="340" stroke="#d0d7de" stroke-width="1"/>
+  <line x1="454" y1="40" x2="454" y2="340" stroke="#d0d7de" stroke-width="1"/>
+  <line x1="542" y1="40" x2="542" y2="340" stroke="#d0d7de" stroke-width="1"/>
+  <line x1="630" y1="40" x2="630" y2="340" stroke="#d0d7de" stroke-width="1"/>
+  <line x1="718" y1="40" x2="718" y2="340" stroke="#d0d7de" stroke-width="1"/>
+  <line x1="806" y1="40" x2="806" y2="340" stroke="#d0d7de" stroke-width="1"/>
+  <line x1="894" y1="40" x2="894" y2="340" stroke="#d0d7de" stroke-width="1"/>
+  <line x1="982" y1="40" x2="982" y2="340" stroke="#d0d7de" stroke-width="1"/>
+  <line x1="1070" y1="40" x2="1070" y2="340" stroke="#d0d7de" stroke-width="1"/>
+  <text x="20" y="130" font-size="15" fill="#1b2a3a">reads per bin</text>
+  <text x="20" y="148" font-size="13" fill="#5b6b7a">(5' end shifted 100 bp)</text>
+  <rect x="204" y="170" width="60" height="0" rx="0" fill="#d4a017"/>
+  <text x="234.0" y="190" font-size="16" fill="#1b2a3a" text-anchor="middle" font-weight="bold">0</text>
+  <rect x="292" y="156" width="60" height="14" rx="0" fill="#d4a017"/>
+  <text x="322.0" y="190" font-size="16" fill="#1b2a3a" text-anchor="middle" font-weight="bold">2</text>
+  <rect x="380" y="114" width="60" height="56" rx="0" fill="#d4a017"/>
+  <text x="410.0" y="190" font-size="16" fill="#1b2a3a" text-anchor="middle" font-weight="bold">8</text>
+  <rect x="468" y="65" width="60" height="105" rx="0" fill="#d4a017"/>
+  <text x="498.0" y="190" font-size="16" fill="#1b2a3a" text-anchor="middle" font-weight="bold">15</text>
+  <rect x="556" y="86" width="60" height="84" rx="0" fill="#d4a017"/>
+  <text x="586.0" y="190" font-size="16" fill="#1b2a3a" text-anchor="middle" font-weight="bold">12</text>
+  <rect x="644" y="128" width="60" height="42" rx="0" fill="#d4a017"/>
+  <text x="674.0" y="190" font-size="16" fill="#1b2a3a" text-anchor="middle" font-weight="bold">6</text>
+  <rect x="732" y="107" width="60" height="63" rx="0" fill="#d4a017"/>
+  <text x="762.0" y="190" font-size="16" fill="#1b2a3a" text-anchor="middle" font-weight="bold">9</text>
+  <rect x="820" y="93" width="60" height="77" rx="0" fill="#d4a017"/>
+  <text x="850.0" y="190" font-size="16" fill="#1b2a3a" text-anchor="middle" font-weight="bold">11</text>
+  <rect x="908" y="149" width="60" height="21" rx="0" fill="#d4a017"/>
+  <text x="938.0" y="190" font-size="16" fill="#1b2a3a" text-anchor="middle" font-weight="bold">3</text>
+  <rect x="996" y="163" width="60" height="7" rx="0" fill="#d4a017"/>
+  <text x="1026.0" y="190" font-size="16" fill="#1b2a3a" text-anchor="middle" font-weight="bold">1</text>
+  <line x1="190" y1="170" x2="1070" y2="170" stroke="#1b2a3a" stroke-width="1.5"/>
+  <text x="20" y="230" font-size="15" fill="#1b2a3a">expected λ</text>
+  <text x="234.0" y="230" font-size="15" fill="#1b2a3a" text-anchor="middle">1</text>
+  <text x="322.0" y="230" font-size="15" fill="#1b2a3a" text-anchor="middle">1</text>
+  <text x="410.0" y="230" font-size="15" fill="#1b2a3a" text-anchor="middle">1</text>
+  <text x="498.0" y="230" font-size="15" fill="#1b2a3a" text-anchor="middle">1</text>
+  <text x="586.0" y="230" font-size="15" fill="#1b2a3a" text-anchor="middle">1</text>
+  <text x="674.0" y="230" font-size="15" fill="#1b2a3a" text-anchor="middle">1</text>
+  <text x="762.0" y="230" font-size="15" fill="#c0392b" text-anchor="middle">2</text>
+  <text x="850.0" y="230" font-size="15" fill="#c0392b" text-anchor="middle">2</text>
+  <text x="938.0" y="230" font-size="15" fill="#c0392b" text-anchor="middle">2</text>
+  <text x="1026.0" y="230" font-size="15" fill="#1b2a3a" text-anchor="middle">1</text>
+  <text x="20" y="270" font-size="15" fill="#1b2a3a">threshold k*</text>
+  <text x="234.0" y="270" font-size="15" fill="#1b2a3a" text-anchor="middle">7</text>
+  <text x="322.0" y="270" font-size="15" fill="#1b2a3a" text-anchor="middle">7</text>
+  <text x="410.0" y="270" font-size="15" fill="#1b2a3a" text-anchor="middle">7</text>
+  <text x="498.0" y="270" font-size="15" fill="#1b2a3a" text-anchor="middle">7</text>
+  <text x="586.0" y="270" font-size="15" fill="#1b2a3a" text-anchor="middle">7</text>
+  <text x="674.0" y="270" font-size="15" fill="#1b2a3a" text-anchor="middle">7</text>
+  <text x="762.0" y="270" font-size="15" fill="#1b2a3a" text-anchor="middle">10</text>
+  <text x="850.0" y="270" font-size="15" fill="#1b2a3a" text-anchor="middle">10</text>
+  <text x="938.0" y="270" font-size="15" fill="#1b2a3a" text-anchor="middle">10</text>
+  <text x="1026.0" y="270" font-size="15" fill="#1b2a3a" text-anchor="middle">7</text>
+  <text x="20" y="320" font-size="15" fill="#1b2a3a">binary call</text>
+  <rect x="198" y="297" width="72" height="34" rx="4" fill="#ffffff" stroke="#1b2a3a" stroke-width="1.2"/>
+  <text x="234.0" y="320" font-size="16" fill="#1b2a3a" text-anchor="middle" font-weight="bold">0</text>
+  <rect x="286" y="297" width="72" height="34" rx="4" fill="#ffffff" stroke="#1b2a3a" stroke-width="1.2"/>
+  <text x="322.0" y="320" font-size="16" fill="#1b2a3a" text-anchor="middle" font-weight="bold">0</text>
+  <rect x="374" y="297" width="72" height="34" rx="4" fill="#d4a017" stroke="#1b2a3a" stroke-width="1.2"/>
+  <text x="410.0" y="320" font-size="16" fill="#ffffff" text-anchor="middle" font-weight="bold">1</text>
+  <rect x="462" y="297" width="72" height="34" rx="4" fill="#d4a017" stroke="#1b2a3a" stroke-width="1.2"/>
+  <text x="498.0" y="320" font-size="16" fill="#ffffff" text-anchor="middle" font-weight="bold">1</text>
+  <rect x="550" y="297" width="72" height="34" rx="4" fill="#d4a017" stroke="#1b2a3a" stroke-width="1.2"/>
+  <text x="586.0" y="320" font-size="16" fill="#ffffff" text-anchor="middle" font-weight="bold">1</text>
+  <rect x="638" y="297" width="72" height="34" rx="4" fill="#ffffff" stroke="#1b2a3a" stroke-width="1.2"/>
+  <text x="674.0" y="320" font-size="16" fill="#1b2a3a" text-anchor="middle" font-weight="bold">0</text>
+  <rect x="726" y="297" width="72" height="34" rx="4" fill="#ffffff" stroke="#1b2a3a" stroke-width="1.2"/>
+  <text x="762.0" y="320" font-size="16" fill="#1b2a3a" text-anchor="middle" font-weight="bold">0</text>
+  <rect x="814" y="297" width="72" height="34" rx="4" fill="#d4a017" stroke="#1b2a3a" stroke-width="1.2"/>
+  <text x="850.0" y="320" font-size="16" fill="#ffffff" text-anchor="middle" font-weight="bold">1</text>
+  <rect x="902" y="297" width="72" height="34" rx="4" fill="#ffffff" stroke="#1b2a3a" stroke-width="1.2"/>
+  <text x="938.0" y="320" font-size="16" fill="#1b2a3a" text-anchor="middle" font-weight="bold">0</text>
+  <rect x="990" y="297" width="72" height="34" rx="4" fill="#ffffff" stroke="#1b2a3a" stroke-width="1.2"/>
+  <text x="1026.0" y="320" font-size="16" fill="#1b2a3a" text-anchor="middle" font-weight="bold">0</text>
+  <text x="20" y="372" font-size="14" fill="#5b6b7a">k* = smallest count with P(X ≥ k | λ) &lt; 10<tspan dy="-6" font-size="10">−4</tspan><tspan dy="6">;  λ = mark's mean per bin × local control enrichment</tspan></text>
+  <text x="20" y="396" font-size="14" fill="#5b6b7a">bin 7: 9 reads would be a 1 against λ = 1, but the control is twice as high here</text>
+</svg>

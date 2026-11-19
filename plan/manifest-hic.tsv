@@ -1,0 +1,9 @@
+# id	url	description	used_by
+gm12878_hic_chr19_chr21.mcool	prepare-hic.sh	GM12878 in situ Hi-C (Rao 2014), ENCODE ENCSR410MDC file ENCFF555ISR (MAPQ>=30, GRCh38): chr19+chr21 cis contacts, 5-500 kb, ICE-balanced per chromosome; read remotely with hic-straw (~50 MB)	genome-3d-intro, hic-processing, hic-features
+gm12878_hic_genome_1mb.cool	prepare-hic.sh	same experiment, chr1-22+X, cis and trans, 1 Mb bins, ICE-balanced (~8 MB)	genome-3d-intro
+gm12878_hic_R1.fastq.gz	prepare-hic.sh	GM12878 in situ Hi-C run SRR1658570 (HIC001, MboI, 2x101): read 1 of the pairs among the first 30 M whose sides map to chr21 (or one side unplaced)	hic-processing
+gm12878_hic_R2.fastq.gz	prepare-hic.sh	read 2 of the same pairs	hic-processing
+gm12878_hic_fullgenome_stats.txt	prepare-hic.sh	pairtools dedup stats of the first 30 M read pairs of SRR1658570 aligned to the whole genome (bwa mem -SP5M, pairtools parse --min-mapq 30 --walks-policy 5unique)	hic-processing
+gm12878_hic_loops_hiccups.bedpe.gz	https://www.encodeproject.org/files/ENCFF781ASD/@@download/ENCFF781ASD.bedpe.gz	GM12878 Hi-C loops (HiCCUPS, ENCODE, GRCh38, from ENCFF555ISR), BEDPE	genome-3d-intro, hic-features
+gm12878_hic_domains_arrowhead.bedpe.gz	https://www.encodeproject.org/files/ENCFF203AKP/@@download/ENCFF203AKP.bedpe.gz	GM12878 Hi-C contact domains (Arrowhead, ENCODE, GRCh38), BEDPE	genome-3d-intro, hic-features
+gm12878_hic_eigenvector_10kb.bigWig	https://www.encodeproject.org/files/ENCFF044ZGY/@@download/ENCFF044ZGY.bigWig	GM12878 Hi-C compartment eigenvector (Juicer, 10 kb, ENCODE, GRCh38)	hic-features

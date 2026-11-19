@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 400" width="1120" height="400" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker>
+  </defs>
+  <rect width="1120" height="400" fill="#ffffff"/>
+  <!-- left: regions to matrix -->
+  <text x="20" y="28" font-size="17" font-weight="bold" fill="#1b2a3a">1 Regions × bins: computeMatrix</text>
+  <g stroke="#1b2a3a" stroke-width="1.5">
+    <line x1="40" y1="70" x2="330" y2="70"/><line x1="40" y1="110" x2="330" y2="110"/><line x1="40" y1="150" x2="330" y2="150"/>
+  </g>
+  <g fill="#c0392b"><rect x="170" y="58" width="16" height="12"/><rect x="230" y="98" width="16" height="12"/><rect x="90" y="138" width="16" height="12"/></g>
+  <g stroke="#c0392b" stroke-width="1.2" stroke-dasharray="3 3"><line x1="178" y1="50" x2="178" y2="80"/><line x1="238" y1="90" x2="238" y2="120"/><line x1="98" y1="130" x2="98" y2="160"/></g>
+  <text x="40" y="186" font-size="14" fill="#5b6b7a">each region cut out ± 3 kb around its</text>
+  <text x="40" y="204" font-size="14" fill="#5b6b7a">reference point, on its own strand</text>
+  <line x1="340" y1="110" x2="390" y2="110" stroke="#5b6b7a" stroke-width="2" marker-end="url(#ar)"/>
+  <!-- matrix -->
+  <g stroke="#ffffff" stroke-width="1">
+    <rect x="400" y="50" width="20" height="20" fill="#f3d3c9"/><rect x="420" y="50" width="20" height="20" fill="#e8a593"/><rect x="440" y="50" width="20" height="20" fill="#c0392b"/><rect x="460" y="50" width="20" height="20" fill="#e8a593"/><rect x="480" y="50" width="20" height="20" fill="#f3d3c9"/>
+    <rect x="400" y="70" width="20" height="20" fill="#f3d3c9"/><rect x="420" y="70" width="20" height="20" fill="#e8a593"/><rect x="440" y="70" width="20" height="20" fill="#d06650"/><rect x="460" y="70" width="20" height="20" fill="#e8a593"/><rect x="480" y="70" width="20" height="20" fill="#f9ece8"/>
+    <rect x="400" y="90" width="20" height="20" fill="#f9ece8"/><rect x="420" y="90" width="20" height="20" fill="#f3d3c9"/><rect x="440" y="90" width="20" height="20" fill="#e8a593"/><rect x="460" y="90" width="20" height="20" fill="#f3d3c9"/><rect x="480" y="90" width="20" height="20" fill="#f9ece8"/>
+    <rect x="400" y="110" width="20" height="20" fill="#f9ece8"/><rect x="420" y="110" width="20" height="20" fill="#f9ece8"/><rect x="440" y="110" width="20" height="20" fill="#f3d3c9"/><rect x="460" y="110" width="20" height="20" fill="#f9ece8"/><rect x="480" y="110" width="20" height="20" fill="#f9ece8"/>
+    <rect x="400" y="130" width="20" height="20" fill="#f9ece8"/><rect x="420" y="130" width="20" height="20" fill="#f9ece8"/><rect x="440" y="130" width="20" height="20" fill="#f9ece8"/><rect x="460" y="130" width="20" height="20" fill="#f9ece8"/><rect x="480" y="130" width="20" height="20" fill="#f9ece8"/>
+  </g>
+  <text x="510" y="65" font-size="14" fill="#1b2a3a">one row per region</text>
+  <text x="510" y="85" font-size="14" fill="#1b2a3a">one column per bin</text>
+  <text x="510" y="105" font-size="14" fill="#1b2a3a">value = mean signal</text>
+  <text x="510" y="125" font-size="14" fill="#1b2a3a">of a bigWig</text>
+  <text x="400" y="176" font-size="14" fill="#5b6b7a">rows sorted by signal</text>
+  <line x1="660" y1="16" x2="660" y2="230" stroke="#cfd8e0" stroke-width="1.5"/>
+  <!-- right: plotHeatmap -->
+  <text x="680" y="28" font-size="17" font-weight="bold" fill="#1b2a3a">2 Profile + heatmap: plotHeatmap</text>
+  <path d="M690,140 L730,138 C760,134 770,70 790,70 C810,70 820,134 850,138 L890,140" fill="none" stroke="#c0392b" stroke-width="2.4"/>
+  <line x1="690" y1="140" x2="890" y2="140" stroke="#1b2a3a" stroke-width="1.2"/>
+  <text x="790" y="160" font-size="14" fill="#1b2a3a" text-anchor="middle">profile = column means</text>
+  <rect x="920" y="50" width="16" height="110" fill="#c0392b"/>
+  <rect x="936" y="50" width="16" height="110" fill="#e8a593"/>
+  <rect x="952" y="50" width="16" height="110" fill="#f9ece8" stroke="#cfd8e0"/>
+  <text x="976" y="70" font-size="14" fill="#1b2a3a">heatmap rows</text>
+  <text x="976" y="90" font-size="14" fill="#1b2a3a">= the regions,</text>
+  <text x="976" y="110" font-size="14" fill="#1b2a3a">each one visible</text>
+  <!-- modes -->
+  <rect x="20" y="246" width="1080" height="140" rx="8" fill="#f4f6f8" stroke="#cfd8e0"/>
+  <text x="36" y="274" font-size="16" font-weight="bold" fill="#1b2a3a">Two modes</text>
+  <text x="36" y="300" font-size="15" fill="#1b2a3a"><tspan font-weight="bold">reference-point</tspan>: align on one position (TSS, peak summit or centre) and take a fixed window around it.</text>
+  <text x="36" y="324" font-size="15" fill="#1b2a3a"><tspan font-weight="bold">scale-regions</tspan>: stretch every region (e.g. gene body TSS→TES) to the same number of bins, plus fixed flanks.</text>
+  <text x="36" y="354" font-size="15" fill="#5b6b7a">An average profile can hide everything: one strong subgroup or a mixture of shapes give the same curve.</text>
+  <text x="36" y="376" font-size="15" fill="#5b6b7a">The heatmap shows whether all regions behave alike; group the regions (e.g. by peak set) to compare them.</text>
+</svg>

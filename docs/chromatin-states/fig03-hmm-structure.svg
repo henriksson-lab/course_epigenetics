@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 420" width="1120" height="420" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/>
+    </marker>
+    <marker id="arrg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/>
+    </marker>
+    <marker id="arrr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/>
+    </marker>
+  </defs>
+  <rect width="1120" height="420" fill="#ffffff"/>
+  <text x="20" y="100" font-size="15" fill="#1b2a3a" font-weight="bold">hidden</text>
+  <text x="20" y="119" font-size="15" fill="#1b2a3a" font-weight="bold">state</text>
+  <text x="20" y="202" font-size="15" fill="#1b2a3a" font-weight="bold">observed marks</text>
+  <text x="132" y="250" font-size="13" fill="#c0392b" text-anchor="end">H3K4me3</text>
+  <text x="132" y="272" font-size="13" fill="#e67e22" text-anchor="end">H3K27ac</text>
+  <text x="132" y="294" font-size="13" fill="#d4a017" text-anchor="end">H3K4me1</text>
+  <text x="132" y="316" font-size="13" fill="#2e8b57" text-anchor="end">H3K36me3</text>
+  <text x="132" y="338" font-size="13" fill="#2a6f97" text-anchor="end">H3K27me3</text>
+  <text x="132" y="360" font-size="13" fill="#6b4fa0" text-anchor="end">H3K9me3</text>
+  <circle cx="180" cy="95" r="34" fill="#f4f6f8" stroke="#1b2a3a" stroke-width="1.5"/>
+  <text x="180" y="100" font-size="14" fill="#1b2a3a" text-anchor="middle" font-weight="bold">Quies</text>
+  <line x1="216" y1="95" x2="266" y2="95" stroke="#1b2a3a" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="180" y1="131" x2="180" y2="218" stroke="#5b6b7a" stroke-width="1.8" marker-end="url(#arrg)"/>
+  <rect x="171" y="232" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <rect x="171" y="254" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <rect x="171" y="276" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <rect x="171" y="298" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <rect x="171" y="320" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <rect x="171" y="342" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <circle cx="304" cy="95" r="34" fill="#f3e08a" stroke="#1b2a3a" stroke-width="1.5"/>
+  <text x="304" y="100" font-size="14" fill="#1b2a3a" text-anchor="middle" font-weight="bold">EnhWk</text>
+  <line x1="340" y1="95" x2="390" y2="95" stroke="#1b2a3a" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="304" y1="131" x2="304" y2="218" stroke="#5b6b7a" stroke-width="1.8" marker-end="url(#arrg)"/>
+  <rect x="295" y="232" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <rect x="295" y="254" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <rect x="295" y="276" width="18" height="18" rx="2" fill="#d4a017" stroke="#d4a017" stroke-width="1.2"/>
+  <rect x="295" y="298" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <rect x="295" y="320" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <rect x="295" y="342" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <circle cx="428" cy="95" r="34" fill="#f0a948" stroke="#1b2a3a" stroke-width="1.5"/>
+  <text x="428" y="100" font-size="14" fill="#1b2a3a" text-anchor="middle" font-weight="bold">EnhA</text>
+  <line x1="464" y1="95" x2="514" y2="95" stroke="#1b2a3a" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="428" y1="131" x2="428" y2="218" stroke="#5b6b7a" stroke-width="1.8" marker-end="url(#arrg)"/>
+  <rect x="419" y="232" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <rect x="419" y="254" width="18" height="18" rx="2" fill="#e67e22" stroke="#e67e22" stroke-width="1.2"/>
+  <rect x="419" y="276" width="18" height="18" rx="2" fill="#d4a017" stroke="#d4a017" stroke-width="1.2"/>
+  <rect x="419" y="298" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <rect x="419" y="320" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <rect x="419" y="342" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <circle cx="552" cy="95" r="34" fill="#f4f6f8" stroke="#1b2a3a" stroke-width="1.5"/>
+  <text x="552" y="100" font-size="14" fill="#1b2a3a" text-anchor="middle" font-weight="bold">Quies</text>
+  <line x1="588" y1="95" x2="638" y2="95" stroke="#1b2a3a" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="552" y1="131" x2="552" y2="218" stroke="#5b6b7a" stroke-width="1.8" marker-end="url(#arrg)"/>
+  <rect x="543" y="232" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <rect x="543" y="254" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <rect x="543" y="276" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <rect x="543" y="298" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <rect x="543" y="320" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <rect x="543" y="342" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <circle cx="676" cy="95" r="34" fill="#d9534f" stroke="#1b2a3a" stroke-width="1.5"/>
+  <text x="676" y="100" font-size="14" fill="#1b2a3a" text-anchor="middle" font-weight="bold">TssA</text>
+  <line x1="712" y1="95" x2="762" y2="95" stroke="#1b2a3a" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="676" y1="131" x2="676" y2="218" stroke="#5b6b7a" stroke-width="1.8" marker-end="url(#arrg)"/>
+  <rect x="667" y="232" width="18" height="18" rx="2" fill="#c0392b" stroke="#c0392b" stroke-width="1.2"/>
+  <rect x="667" y="254" width="18" height="18" rx="2" fill="#e67e22" stroke="#e67e22" stroke-width="1.2"/>
+  <rect x="667" y="276" width="18" height="18" rx="2" fill="#d4a017" stroke="#d4a017" stroke-width="1.2"/>
+  <rect x="667" y="298" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <rect x="667" y="320" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <rect x="667" y="342" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <circle cx="800" cy="95" r="34" fill="#d9534f" stroke="#1b2a3a" stroke-width="1.5"/>
+  <text x="800" y="100" font-size="14" fill="#1b2a3a" text-anchor="middle" font-weight="bold">TssA</text>
+  <line x1="836" y1="95" x2="886" y2="95" stroke="#1b2a3a" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="800" y1="131" x2="800" y2="218" stroke="#5b6b7a" stroke-width="1.8" marker-end="url(#arrg)"/>
+  <rect x="791" y="232" width="18" height="18" rx="2" fill="#c0392b" stroke="#c0392b" stroke-width="1.2"/>
+  <rect x="791" y="254" width="18" height="18" rx="2" fill="#e67e22" stroke="#e67e22" stroke-width="1.2"/>
+  <rect x="791" y="276" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <rect x="791" y="298" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <rect x="791" y="320" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <rect x="791" y="342" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <circle cx="924" cy="95" r="34" fill="#4f9a5f" stroke="#1b2a3a" stroke-width="1.5"/>
+  <text x="924" y="100" font-size="14" fill="#1b2a3a" text-anchor="middle" font-weight="bold">Tx</text>
+  <line x1="960" y1="95" x2="1010" y2="95" stroke="#1b2a3a" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="924" y1="131" x2="924" y2="218" stroke="#5b6b7a" stroke-width="1.8" marker-end="url(#arrg)"/>
+  <rect x="915" y="232" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <rect x="915" y="254" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <rect x="915" y="276" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <rect x="915" y="298" width="18" height="18" rx="2" fill="#2e8b57" stroke="#2e8b57" stroke-width="1.2"/>
+  <rect x="915" y="320" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <rect x="915" y="342" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <circle cx="1048" cy="95" r="34" fill="#4f9a5f" stroke="#1b2a3a" stroke-width="1.5"/>
+  <text x="1048" y="100" font-size="14" fill="#1b2a3a" text-anchor="middle" font-weight="bold">Tx</text>
+  <line x1="1048" y1="131" x2="1048" y2="218" stroke="#5b6b7a" stroke-width="1.8" marker-end="url(#arrg)"/>
+  <rect x="1039" y="232" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <rect x="1039" y="254" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <rect x="1039" y="276" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <rect x="1039" y="298" width="18" height="18" rx="2" fill="#2e8b57" stroke="#2e8b57" stroke-width="1.2"/>
+  <rect x="1039" y="320" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <rect x="1039" y="342" width="18" height="18" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2"/>
+  <text x="242.0" y="45" font-size="14" fill="#1b2a3a" text-anchor="middle">transition: P(next state | this state)</text>
+  <text x="242.0" y="173" font-size="14" fill="#5b6b7a" text-anchor="middle">emission:</text>
+  <text x="242.0" y="191" font-size="14" fill="#5b6b7a" text-anchor="middle">P(marks | state)</text>
+  <line x1="118.0" y1="378" x2="1110.0" y2="378" stroke="#1b2a3a" stroke-width="1.5"/>
+  <line x1="118.0" y1="373" x2="118.0" y2="383" stroke="#1b2a3a" stroke-width="1.5"/>
+  <line x1="242.0" y1="373" x2="242.0" y2="383" stroke="#1b2a3a" stroke-width="1.5"/>
+  <line x1="366.0" y1="373" x2="366.0" y2="383" stroke="#1b2a3a" stroke-width="1.5"/>
+  <line x1="490.0" y1="373" x2="490.0" y2="383" stroke="#1b2a3a" stroke-width="1.5"/>
+  <line x1="614.0" y1="373" x2="614.0" y2="383" stroke="#1b2a3a" stroke-width="1.5"/>
+  <line x1="738.0" y1="373" x2="738.0" y2="383" stroke="#1b2a3a" stroke-width="1.5"/>
+  <line x1="862.0" y1="373" x2="862.0" y2="383" stroke="#1b2a3a" stroke-width="1.5"/>
+  <line x1="986.0" y1="373" x2="986.0" y2="383" stroke="#1b2a3a" stroke-width="1.5"/>
+  <line x1="1110.0" y1="373" x2="1110.0" y2="383" stroke="#1b2a3a" stroke-width="1.5"/>
+  <text x="614.0" y="404" font-size="14" fill="#5b6b7a" text-anchor="middle">consecutive 200-bp bins along the chromosome</text>
+</svg>

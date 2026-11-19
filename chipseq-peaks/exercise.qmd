@@ -1,0 +1,441 @@
+---
+title: "Exercise: Peak calling"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+## Goal
+
+After this exercise you will be able to:
+
+- Compute MACS's local background $\lambda_\text{local}$ from input counts, a Poisson p-value and a fold enrichment on paper, including the depth scaling between ChIP and input.
+- Call CTCF peaks with [MACS3](https://macs3-project.github.io/MACS/docs/callpeak.html) with and without an input, at several thresholds, and check them against ENCODE and against the CTCF motif.
+- Call a broad mark (H3K36me3) with a narrow caller, `macs3 --broad` and [epic2](https://github.com/biocore-ntnu/epic2), and judge the results against transcribed genes.
+- Run [IDR](https://github.com/nboley/idr) on two CTCF replicates and on pseudoreplicates, and compute ENCODE's rescue and self-consistency ratios.
+
+## Background
+
+**MACS with an input.** Single-end reads are extended to the fragment length $d$ and piled up. The larger library is scaled down to the size of the smaller one. At each base the pileup $k$ is compared with
+$$\lambda_\text{local} = \max(\lambda_\text{BG},\ \lambda_d,\ \lambda_\text{1k},\ \lambda_\text{10k}),$$
+where $\lambda_\text{BG} = N_\text{input} \times d / G$ ($G$ the effective genome size) and $\lambda_w$ = (input reads in a window of width $w$ centred on the base) $\times\, d / w$. The p-value is $P(X \ge k)$ for $X \sim \text{Poisson}(\lambda_\text{local})$; MACS converts p-scores of all bases to q-values (Benjamini–Hochberg), joins bases below the cutoff into peaks and reports the summit, the fold enrichment $(k + 1)/(\lambda + 1)$, $-\log_{10} p$ and $-\log_{10} q$. Without an input, MACS uses $\lambda_\text{BG}$ and the 10-kb window of the ChIP itself.
+
+**Broad marks.** SICER/epic2 divide the genome into bins (200 bp), keep bins above a lenient threshold, join them across small gaps into islands and test each island against the input. `macs3 --broad` links strong regions through weaker ones (`--broad-cutoff`).
+
+**IDR.** Two replicates are called leniently; matched peaks are ranked in each; a mixture model separates a reproducible component (correlated ranks) from an irreproducible one (independent ranks). The IDR of the top $n$ peaks is the expected fraction of irreproducible peaks among them. ENCODE compares $N_t$ (IDR peaks from true replicates) with $N_p$ (from pooled pseudoreplicates) and $N_1$, $N_2$ (each replicate's self-pseudoreplicates): rescue ratio $\max(N_t, N_p)/\min(N_t, N_p)$ and self-consistency ratio $\max(N_1, N_2)/\min(N_1, N_2)$ should both be below 2.
+
+## Data
+
+Continue in the folder of *ChIP-seq: the assay*, which has `ctcf.final.bam`, `ctcf_input.final.bam`, `h3k36me3.final.bam` and `h3k36me3_input.final.bam`. New here: the second replicates, `gm12878_ctcf_chip_rep2.fastq.gz` (ENCSR000DZN replicate 2, 36 bp, Phred+64, 463 918 reads) and `gm12878_h3k36me3_chip_rep2.fastq.gz` (ENCSR000AKE replicate 2, 51 bp, Phred+33, 133 285 reads), prepared by `data/prepare-chip.sh`. For comparison: ENCODE's conservative IDR peaks for CTCF (`gm12878_ctcf_peaks.bed.gz`, 405 on chr21) and the H3K4me3 fold change (active promoters).
+
+```bash
+cd ~/epi/chip
+D=/path/to/course/data
+T=8
+```
+
+You need `macs3`, `idr` (`conda install -c bioconda idr`), `epic2` (`conda install -c bioconda epic2` or `pip install epic2`) and the R packages `JASPAR2024`, `TFBSTools` and `motifmatchr` (from *Motifs, motif enrichment and TF footprinting*). The command line takes about 2 minutes.
+
+::: {.callout-warning title="Simplifications"}
+Everything is on chr21 (`-g 40088619`), so the peak numbers are about 1–2% of genome-wide numbers, and IDR has few peaks to work with. ENCODE runs IDR on up to 300 000 lenient peaks per replicate from the whole genome.
+:::
+
+## By hand
+
+**B1. Depth scaling and λ.** A ChIP has 30 M reads and its input 15 M; $d = 200$ bp; effective genome size $2.7 \times 10^9$. At a candidate summit the raw ChIP pileup is 36 fragments. In the input, windows centred on the summit contain: 2 reads in 200 bp, 16 reads in 1 kb and 45 reads in 10 kb.
+
+(a) Which library is scaled, and by what factor? What is the pileup $k$ after scaling?
+
+(b) Compute $\lambda_\text{BG}$ (with the input's depth), $\lambda_d$, $\lambda_\text{1k}$, $\lambda_\text{10k}$ and $\lambda_\text{local}$.
+
+(c) Using the table, what is the p-value? What would it be against $\lambda_\text{BG}$ alone?
+
+| $P(X \ge k)$ | λ = 0.25 | 0.9 | 1 | 3.2 | 6 |
+|---|---|---|---|---|---|
+| $k$ = 10 | 2.1e-13 | 4.3e-08 | 1.1e-07 | 1.8e-03 | 8.4e-02 |
+| $k$ = 14 | 3.4e-20 | 1.1e-12 | 4.5e-12 | 7.0e-06 | 3.6e-03 |
+| $k$ = 18 | 1.8e-27 | 1.0e-17 | 6.1e-17 | 9.5e-09 | 5.7e-05 |
+
+(d) What is the fold enrichment MACS reports at this summit?
+
+**B2. A shallow input.** The same experiment with an input of only 1.5 M reads (one tenth). In expectation, how many input reads fall in the 200-bp, 1-kb and 10-kb windows of B1? What happens to $\lambda_d$ when a single input read happens to fall in the 200-bp window? Why does that argue for sequencing the input at least as deep as the ChIP?
+
+**B3. With and without an input.** In the course data, MACS3 finds 521 CTCF peaks with the input and 816 without. Of the 299 peaks found only without the input, 36% have a CTCF motif within 50 bp of the summit and 9% are in ENCODE's peak set; of the 521 called with the input, 72% and 72%.
+
+(a) Which λ does MACS use without an input, and why not a 1-kb window of the ChIP?
+
+(b) Interpret the numbers. Are the extra peaks all false?
+
+(c) For which kinds of samples would leaving out the input do the most damage?
+
+**B4. Which caller?** Choose narrow (MACS3 default) or broad (MACS3 `--broad`, SICER/epic2) calling, and give a reason: (a) CTCF; (b) H3K4me3; (c) H3K27me3 in embryonic stem cells; (d) H3K36me3; (e) RNA polymerase II over gene bodies; (f) H3K9me3 over repeat-rich heterochromatin. What extra problem does (f) have?
+
+**B5. Read the figure** (lecture: *Real data: how many peaks are real?*). The fraction of peaks with a CTCF motif falls from about 90% in the top 50 peaks to about 50% around rank 500–600; in random DNA it is 4%.
+
+(a) Estimate how many of the 573 peaks at q < 0.1 are "real CTCF sites" if motif-less real sites are rare. What does that assume?
+
+(b) Why is there no obvious cutoff in the curve? How does ENCODE choose the number of peaks instead?
+
+**B6. IDR.** (a) Why must IDR be run on lenient peak calls (p < 0.01) and not on peaks already filtered at q < 0.01? (b) Why does IDR use ranks, not the p-values themselves? (c) Replicate 2 has half the reads of replicate 1. How does that show up in the IDR analysis and in the self-consistency ratio?
+
+**B7. ENCODE's ratios.** Three experiments:
+
+| | $N_t$ | $N_p$ | $N_1$ | $N_2$ |
+|---|---:|---:|---:|---:|
+| X | 30 000 | 34 000 | 28 000 | 25 000 |
+| Y | 8 000 | 31 000 | 26 000 | 20 000 |
+| Z | 15 000 | 17 000 | 32 000 | 9 000 |
+
+Compute the rescue and self-consistency ratios. Which experiments pass? What is wrong with the others?
+
+**B8. Judge the methods.** A paper calls H3K27me3 peaks with MACS2 default settings (narrow) and reports "2 100 H3K27me3 peaks, median width 650 bp, mostly at CpG-island promoters". It then compares a knockout with the wild type by the number of peaks (2 100 vs 1 300) and concludes that H3K27me3 is lost at 800 sites. Name three problems.
+
+## On the command line
+
+### C1 — Process the second replicates
+
+The `chain` function of *ChIP-seq: the assay*; define it again if you are in a new shell:
+
+```bash
+chain() {   # usage: chain <name> <reads.fastq.gz> <33 or 64>
+  local s=$1
+  if [ "$3" = 64 ]; then zcat $2 | perl -pe 'tr/@-~/!-_/ if $. % 4 == 0' | gzip > $s.fastq.gz
+  else cp $2 $s.fastq.gz; fi
+  fastp -w $T -i $s.fastq.gz -o $s.trim.fastq.gz -j $s.fastp.json -h $s.fastp.html 2> $s.fastp.log
+  bowtie2 -p $T -x $D/bowtie2/hg38_chr21_chrM -U $s.trim.fastq.gz 2> $s.bowtie2.log \
+    | samtools sort -@ 4 -o $s.sorted.bam -
+  samtools index $s.sorted.bam
+  samtools view -b -q 30 -F 1804 -o $s.q30.bam $s.sorted.bam
+  samtools markdup -s $s.q30.bam $s.markdup.bam 2> $s.markdup.txt
+  samtools index $s.markdup.bam
+  samtools view -b -F 1024 -o $s.dedup.bam $s.markdup.bam chr21
+  bedtools intersect -v -abam $s.dedup.bam -b blacklist.bed > $s.final.bam
+  samtools index $s.final.bam
+}
+chain ctcf_rep2     $D/gm12878_ctcf_chip_rep2.fastq.gz      64
+chain h3k36me3_rep2 $D/gm12878_h3k36me3_chip_rep2.fastq.gz  33
+for s in ctcf ctcf_rep2 h3k36me3 h3k36me3_rep2; do
+  echo $s $(samtools view -c $s.final.bam) $(grep "^READ:" $s.markdup.txt | cut -d' ' -f2) \
+    $(grep "DUPLICATE SINGLE:" $s.markdup.txt | cut -d' ' -f3)
+done
+```
+
+How many filtered reads does each replicate have, and what fraction of the MAPQ-filtered reads were duplicates? Which replicate is the weaker library?
+
+### C2 — Fragment length per replicate
+
+```bash
+for s in ctcf ctcf_rep2 h3k36me3 h3k36me3_rep2; do
+  echo $s $(macs3 predictd -i $s.final.bam -f BAM -g 40088619 2>&1 | grep "predicted fragment" | grep -o "[0-9]* bps")
+done
+```
+
+Do the two CTCF replicates agree? The two H3K36me3 replicates?
+
+### C3 — Call CTCF peaks with the input, and keep the background tracks
+
+```bash
+mkdir -p macs
+macs3 callpeak -t ctcf.final.bam -c ctcf_input.final.bam -f BAM -g 40088619 -q 0.01 --bdg \
+  -n ctcf --outdir macs 2> macs/ctcf.log
+grep -E "^# (d|total tags|Range|Larger)" macs/ctcf_peaks.xls
+grep "Pileup will" macs/ctcf.log
+wc -l macs/ctcf_peaks.narrowPeak
+sort -k8,8gr macs/ctcf_peaks.narrowPeak | head -3
+ls macs
+```
+
+(a) Which library was scaled, and by what factor? (Compute it from the two totals.)
+
+(b) What do columns 7, 8, 9 and 10 of the strongest peak mean?
+
+(c) What do the files `ctcf_treat_pileup.bdg` and `ctcf_control_lambda.bdg` contain? (You use them in R1.)
+
+### C4 — Without an input, and at other thresholds
+
+```bash
+macs3 callpeak -t ctcf.final.bam -f BAM -g 40088619 -q 0.01 -n ctcf_noinput --outdir macs 2> macs/ctcf_noinput.log
+grep "Range" macs/ctcf_noinput_peaks.xls
+zcat $D/gm12878_ctcf_peaks.bed.gz | awk '$1 == "chr21"' | sort -k1,1 -k2,2n > encode_ctcf.bed
+for p in ctcf ctcf_noinput; do
+  f=macs/${p}_peaks.narrowPeak
+  echo $p $(wc -l < $f) $(bedtools intersect -u -a $f -b encode_ctcf.bed | wc -l) $(bedtools intersect -u -a encode_ctcf.bed -b $f | wc -l)
+done
+for q in 0.1 1e-5 1e-10 1e-20; do
+  macs3 callpeak -t ctcf.final.bam -c ctcf_input.final.bam -f BAM -g 40088619 -q $q -n ctcf_q$q --outdir macs 2> /dev/null
+  f=macs/ctcf_q${q}_peaks.narrowPeak
+  echo q=$q $(wc -l < $f) $(bedtools intersect -u -a $f -b encode_ctcf.bed | wc -l)
+done
+```
+
+(a) How many peaks with and without the input? What fraction of each set is in ENCODE's set, and what fraction of ENCODE's 405 peaks does each recover?
+
+(b) How does the number of peaks change with the q-value cutoff? Is there a natural cutoff?
+
+### C5 — A broad mark: three ways
+
+```bash
+K="-t h3k36me3.final.bam h3k36me3_rep2.final.bam -c h3k36me3_input.final.bam -f BAM -g 40088619 --nomodel --extsize 200"
+macs3 callpeak $K -q 0.01 -n k36_narrow --outdir macs 2> macs/k36_narrow.log
+macs3 callpeak $K --broad --broad-cutoff 0.1 -q 0.01 -n k36_broad --outdir macs 2> macs/k36_broad.log
+grep -w -e chr21 $D/hg38.chrom.sizes > chr21.sizes
+epic2 -t h3k36me3.final.bam h3k36me3_rep2.final.bam -c h3k36me3_input.final.bam \
+  --chromsizes chr21.sizes --effective-genome-fraction 0.858 --fragment-size 200 \
+  --bin-size 200 --gaps-allowed 3 --false-discovery-rate-cutoff 0.05 > k36_epic2.bed 2> k36_epic2.log
+for f in macs/k36_narrow_peaks.narrowPeak macs/k36_broad_peaks.broadPeak k36_epic2.bed; do
+  grep -v "^#" $f | awk -v f=$f '{ n++; w += $3 - $2; if ($3 - $2 > m) m = $3 - $2 } END { printf "%s %d regions, %.0f kb, mean %.0f bp, max %d bp\n", f, n, w / 1000, w / n, m }'
+done
+```
+
+(a) Why `--nomodel --extsize 200`? Why give both replicates as `-t`? What is `--effective-genome-fraction 0.858`?
+
+(b) Compare the three results: number of regions, total length, widths. Load them in IGV with the H3K36me3 bigWigs of *ChIP-seq: the assay* at `chr21:33,220,000-33,600,000`.
+
+### C6 — IDR on two CTCF replicates
+
+```bash
+samtools merge -f ctcf_pool.final.bam ctcf.final.bam ctcf_rep2.final.bam
+for s in ctcf ctcf_rep2 ctcf_pool; do
+  macs3 callpeak -t $s.final.bam -c ctcf_input.final.bam -f BAM -g 40088619 -p 0.01 \
+    -n ${s}_p01 --outdir macs 2> macs/${s}_p01.log
+  sort -k8,8gr macs/${s}_p01_peaks.narrowPeak > ${s}_p01.narrowPeak
+done
+wc -l ctcf_p01.narrowPeak ctcf_rep2_p01.narrowPeak ctcf_pool_p01.narrowPeak
+idr --samples ctcf_p01.narrowPeak ctcf_rep2_p01.narrowPeak --peak-list ctcf_pool_p01.narrowPeak \
+  --input-file-type narrowPeak --rank p.value --soft-idr-threshold 0.05 --use-best-multisummit-IDR \
+  --output-file ctcf_idr.txt --plot --log-output-file ctcf_idr.log
+grep -E "Final parameter|passing" ctcf_idr.log
+awk '$12 >= -log(0.05) / log(10)' ctcf_idr.txt | cut -f1-10 | sort -k1,1 -k2,2n > ctcf_idr05.narrowPeak
+wc -l < ctcf_idr05.narrowPeak
+echo $(bedtools intersect -u -a ctcf_idr05.narrowPeak -b encode_ctcf.bed | wc -l) $(bedtools intersect -u -a encode_ctcf.bed -b ctcf_idr05.narrowPeak | wc -l)
+```
+
+(a) Why `-p 0.01` and not `-q 0.01`? Why sort by column 8?
+
+(b) How many peaks pass IDR < 0.05? What are the four fitted parameters (the order is μ, σ, ρ, π)? Open `ctcf_idr.txt.png`.
+
+(c) How do your IDR peaks compare with ENCODE's?
+
+### C7 — Pseudoreplicates and ENCODE's ratios
+
+```bash
+idr_pair() {   # usage: idr_pair <a.bam> <b.bam> <pooled peaks> <name>; prints the number of peaks with IDR < 0.05
+  for x in $1 $2; do
+    macs3 callpeak -t $x -c ctcf_input.final.bam -f BAM -g 40088619 -p 0.01 -n tmp --outdir macs 2> /dev/null
+    sort -k8,8gr macs/tmp_peaks.narrowPeak > $x.p01.narrowPeak
+  done
+  idr --samples $1.p01.narrowPeak $2.p01.narrowPeak --peak-list $3 --input-file-type narrowPeak \
+    --rank p.value --soft-idr-threshold 0.05 --use-best-multisummit-IDR --output-file $4.txt 2> /dev/null
+  echo $4 $(awk '$12 >= -log(0.05) / log(10)' $4.txt | wc -l)
+}
+for s in ctcf ctcf_rep2 ctcf_pool; do
+  samtools view -b -s 7.5 -U $s.pr2.bam -o $s.pr1.bam $s.final.bam
+done
+idr_pair ctcf.pr1.bam      ctcf.pr2.bam      ctcf_p01.narrowPeak      N1
+idr_pair ctcf_rep2.pr1.bam ctcf_rep2.pr2.bam ctcf_rep2_p01.narrowPeak N2
+idr_pair ctcf_pool.pr1.bam ctcf_pool.pr2.bam ctcf_pool_p01.narrowPeak Np
+```
+
+(a) What does `samtools view -s 7.5 -U ...` do? Count the reads in `ctcf_pool.pr1.bam` and `ctcf_pool.pr2.bam`.
+
+(b) Compute the rescue and self-consistency ratios with $N_t$ from C6. Does the experiment pass ENCODE's criteria? Which replicate limits it?
+
+## In R
+
+```r
+suppressPackageStartupMessages({ library(GenomicAlignments); library(rtracklayer); library(Rsamtools) })
+D <- "/path/to/course/data"
+setwd("~/epi/chip")
+np <- function(f) import(f, format = "narrowPeak")
+```
+
+### R1 — The local λ, recomputed
+
+```r
+pk <- np("macs/ctcf_peaks.narrowPeak")
+summit <- GRanges("chr21", IRanges(start(pk) + pk$peak, width = 1))
+trt <- import("macs/ctcf_treat_pileup.bdg", format = "bedGraph")
+lam <- import("macs/ctcf_control_lambda.bdg", format = "bedGraph")
+summit$k <- trt$score[findOverlaps(summit, trt, select = "first")]
+summit$lambda <- lam$score[findOverlaps(summit, lam, select = "first")]
+inp <- resize(granges(readGAlignments("ctcf_input.final.bam")), 1, fix = "start")   # input 5' ends
+d <- 100; G <- 40088619
+lam_w <- function(w) countOverlaps(resize(summit, w, fix = "center"), inp, ignore.strand = TRUE) * d / w
+L <- cbind(BG = length(inp) * d / G, d = lam_w(d), k1 = lam_w(1000), k10 = lam_w(10000))
+head(cbind(L, max = apply(L, 1, max), macs = summit$lambda))
+cor(apply(L, 1, max), summit$lambda)
+table(colnames(L)[apply(L, 1, which.max)])
+p <- -ppois(ceiling(summit$k) - 1, summit$lambda, lower.tail = FALSE, log.p = TRUE) / log(10)
+summary(p - pk$pValue)
+i <- which.max(summit$lambda); c(start(summit)[i], k = summit$k[i], L[i, ], macs_p = pk$pValue[i])
+```
+
+(a) Does your $\lambda_\text{local}$ agree with MACS's? Which window sets it at most summits, and why (how many input reads per kb are there)?
+
+(b) Why `ceiling(summit$k)`? (Hint: what has been done to the ChIP pileup?) How close are your p-values to MACS's column 8?
+
+(c) Look at the summit with the highest λ: what are $k$ and the four λ values? Why is the input high there?
+
+### R2 — Does the motif support the weak peaks?
+
+```r
+suppressPackageStartupMessages({ library(JASPAR2024); library(TFBSTools); library(motifmatchr) })
+con <- RSQLite::dbConnect(RSQLite::SQLite(), db(JASPAR2024()))
+ctcf <- getMatrixByID(con, "MA0139.2")
+fa <- FaFile(file.path(D, "hg38_chr21_chrM.fa"))
+has_motif <- function(p) {
+  around <- GRanges(seqnames(p), IRanges(start(p) + p$peak - 50, width = 101))
+  as.vector(motifMatches(matchMotifs(ctcf, getSeq(fa, around), p.cutoff = 1e-4)))
+}
+lax <- np("macs/ctcf_q0.1_peaks.narrowPeak")
+lax <- lax[order(-lax$pValue)]
+m <- has_motif(lax)
+round(tapply(m, ceiling(seq_along(m) / 100), mean), 2)
+set.seed(1)
+rnd <- GRanges("chr21", IRanges(sample(15e6:46e6, 2000), width = 1)); rnd$peak <- 0L
+mean(has_motif(rnd))
+```
+
+What fraction of peaks has the motif in each block of 100 peaks (strongest first)? In random DNA?
+
+### R3 — What did the input remove?
+
+```r
+noi <- np("macs/ctcf_noinput_peaks.narrowPeak")
+extra <- noi[!overlapsAny(noi, pk)]
+enc <- np(file.path(D, "gm12878_ctcf_peaks.bed.gz")); enc <- enc[seqnames(enc) == "chr21"]
+inp_ratio <- function(p) median(countOverlaps(resize(GRanges("chr21", IRanges(start(p) + p$peak, width = 1)), 1001, fix = "center"),
+                                            inp, ignore.strand = TRUE) / (length(inp) * 1001 / G))
+sapply(list(with_input = pk, without = noi, only_without = extra), function(p)
+  c(n = length(p), motif = mean(has_motif(p)), in_encode = mean(overlapsAny(p, enc)), input_ratio = inp_ratio(p)))
+```
+
+Compare the three sets. Are the extra peaks in places where the input is unusually high?
+
+### R4 — Broad domains and transcribed genes
+
+```r
+chr21 <- GRanges("chr21", IRanges(1, 46709983))
+gtf <- import(file.path(D, "gencode.v46.basic.annotation.gtf.gz"), which = chr21)
+genes <- gtf[gtf$type == "gene" & gtf$gene_type == "protein_coding" & width(gtf) > 5000]
+k4 <- import(file.path(D, "gm12878_h3k4me3_fc.bigWig"), which = chr21, as = "RleList")
+genes$k4 <- mean(k4[promoters(resize(genes, 1, fix = "start"), 1000, 1001)])
+active <- reduce(genes[genes$k4 > 5], ignore.strand = TRUE); silent <- reduce(genes[genes$k4 < 1], ignore.strand = TRUE)
+ep <- read.delim("k36_epic2.bed")
+calls <- list(narrow = granges(np("macs/k36_narrow_peaks.narrowPeak")),
+              broad = import("macs/k36_broad_peaks.broadPeak", format = "BED", extraCols = c(s = "numeric", p = "numeric", q = "numeric")),
+              epic2 = GRanges(ep$X.Chromosome, IRanges(ep$Start + 1, ep$End)))
+frac <- function(a, b) sum(width(intersect(reduce(a), b, ignore.strand = TRUE))) / sum(width(b))
+sapply(calls, function(g) c(n = length(g), kb = sum(width(reduce(g))) / 1e3, median_width = median(width(g)),
+                            active = frac(g, active), silent = frac(g, silent)))
+```
+
+What fraction of active and of silent gene-body bases does each caller cover? Which result would you use, and how would you report the parameters?
+
+### R5 — The IDR output
+
+```r
+idr <- read.delim("ctcf_idr.txt", header = FALSE)
+nrow(idr); sum(idr$V12 >= -log10(0.05))
+plot(rank(-idr$V15), rank(-idr$V19), col = ifelse(idr$V12 >= -log10(0.05), "darkgreen", "red"), pch = 16, cex = 0.6,
+     xlab = "rank in replicate 1", ylab = "rank in replicate 2")
+cor(idr$V15, idr$V19, method = "spearman")
+pass <- GRanges(idr$V1, IRanges(idr$V2 + 1, idr$V3))[idr$V12 >= -log10(0.05)]
+c(ours_in_encode = sum(overlapsAny(pass, enc)), encode_found = sum(overlapsAny(enc, pass)), encode = length(enc))
+summary(width(pass))
+```
+
+(a) How many matched peaks are there, and how many pass? Where in the rank plot do the failing peaks lie?
+
+(b) What fraction of ENCODE's chr21 peaks do you recover? Why fewer than ENCODE?
+
+## Hints
+
+::: {.callout-tip collapse="true" title="Hint 1 — λ and Poisson (B1, B2, R1)"}
+Scale the larger library down: factor = smaller total / larger total. $\lambda_w = n_w \times d / w$. $\lambda_\text{local}$ is the maximum. Read $P(X \ge k)$ from the table. MACS's fold enrichment is $(k + 1)/(\lambda + 1)$. Everything is described in the [MACS3 callpeak documentation](https://macs3-project.github.io/MACS/docs/callpeak.html) (`--slocal`, `--llocal`, `--scale-to`, `--bdg`) and in [Zhang et al. 2008](https://doi.org/10.1186/gb-2008-9-9-r137). [`ppois(k - 1, lambda, lower.tail = FALSE)`](https://rdrr.io/r/stats/Poisson.html) is $P(X \ge k)$.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 2 — controls and thresholds (B3, B5, C4, R2, R3)"}
+Without a control MACS3 uses only λBG and `--llocal` from the ChIP (see the log line `Range for calculating regional lambda`). Motif scanning: [motifmatchr `matchMotifs`](https://rdrr.io/bioc/motifmatchr/man/matchMotifs.html), the CTCF matrix [MA0139.2](https://jaspar.elixir.no/matrix/MA0139.2/) in [JASPAR2024](https://bioconductor.org/packages/release/data/annotation/html/JASPAR2024.html). [`bedtools intersect -u`](https://bedtools.readthedocs.io/en/latest/content/tools/intersect.html) reports each feature of `-a` once if it overlaps `-b`.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 3 — broad marks (B4, B8, C5, R4)"}
+[epic2](https://github.com/biocore-ntnu/epic2) (SICER algorithm, [Zang et al. 2009](https://doi.org/10.1093/bioinformatics/btp340)): `--bin-size`, `--gaps-allowed`, `--effective-genome-fraction` (effective genome size / chromosome length: 40 088 619 / 46 709 983). MACS3 `--broad` and `--broad-cutoff` in the [callpeak documentation](https://macs3-project.github.io/MACS/docs/callpeak.html). The broadPeak format is BED6+3 ([UCSC](https://genome.ucsc.edu/FAQ/FAQformat.html#format13)). H3K9me3 domains lie largely in repeats: think about MAPQ filtering.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 4 — IDR (B6, B7, C6, C7, R5)"}
+The [IDR README](https://github.com/nboley/idr#output) documents the output columns: 11 local IDR and 12 global IDR (both −log10), 15 and 19 the scores of the two replicates. [Li et al. 2011](https://doi.org/10.1214/11-AOAS466) describe the model; [Landt et al. 2012](https://doi.org/10.1101/gr.136184.111) and the [ENCODE TF ChIP-seq pipeline](https://www.encodeproject.org/chip-seq/transcription_factor/) the pseudoreplicate scheme. [`samtools view -s SEED.FRACTION`](https://www.htslib.org/doc/samtools-view.html) subsamples reads; `-U FILE` writes the reads that were not selected.
+:::
+
+## Solutions
+
+Numbers from running the commands as written (MACS3 3.1.0, IDR 2.0.3, epic2 0.0.54, samtools 1.21, bedtools 2.30, R 4.6, Bioconductor 3.23).
+
+::: {.callout-note collapse="true" title="Solutions — by hand"}
+
+**B1.** (a) The ChIP is larger; it is scaled by $15/30 = 0.5$: $k = 18$. (b) $\lambda_\text{BG} = 15 \times 10^6 \times 200 / 2.7 \times 10^9 = 1.11$; $\lambda_d = 2 \times 200/200 = 2$; $\lambda_\text{1k} = 16 \times 200/1000 = 3.2$; $\lambda_\text{10k} = 45 \times 200/10\,000 = 0.9$. $\lambda_\text{local} = 3.2$. (c) $P(X \ge 18 \mid 3.2) = 9.5 \times 10^{-9}$. Against $\lambda_\text{BG} = 1.11$ (between the 1 and the 0.9 columns) about $10^{-17}$: eight orders of magnitude more significant, because the input shows a local excess within 1 kb. (d) $(18 + 1)/(3.2 + 1) = 4.5$.
+
+**B2.** Expected input reads: $1.5 \times 10^6 \times 200 / 2.7 \times 10^9 = 0.11$ in 200 bp, 0.56 in 1 kb, 5.6 in 10 kb. Most 200-bp windows hold 0 reads, but whenever one input read falls there, $\lambda_d = 1 \times 200/200 = 1$, nine times $\lambda_\text{BG}$ (0.11): the background estimate jumps up and down with single reads, and peaks near a stray input read lose significance while others do not. With too few reads the local windows estimate nothing; the input should be at least as deep as the ChIP (ENCODE requires matching depth).
+
+**B3.** (a) $\lambda_\text{BG}$ and the 10-kb window of the ChIP. A 1-kb (or $d$) window of the ChIP would be dominated by the peak itself and swallow it. (b) The extra peaks are a mixture: 36% have the motif (random DNA 4%), so many are real weaker CTCF sites that the conservative input-based λ (often a single input read in 100 bp) rejected; but 64% have no motif and only 9% are in ENCODE's set, so many are noise. With the input, precision is much higher (72% motif). (c) Cancer cell lines with copy-number gains (amplified regions look enriched), weak antibodies (peaks at open promoters and hyper-ChIPable regions dominate), and broad marks (no local correction at all).
+
+**B4.** (a) Narrow: point sources. (b) Narrow, or both: promoter peaks of 1–3 kb (narrow peaks plus `--call-summits` work well; broad gives wider regions). (c) Broad: Polycomb domains of tens of kb. (d) Broad: gene bodies. (e) Broad for the gene bodies, narrow for the promoter-proximal pausing peak; often both. (f) Broad; and most of the signal is in repeats where reads have low MAPQ, so filtering to unique reads leaves holes; such analyses keep multi-mappers or use repeat-family-level counting.
+
+**B5.** (a) If every real site had the motif and noise peaks had it at the random rate (4%), the real fraction would be (motif fraction − 0.04)/(1 − 0.04). With an average motif fraction of 70% over the 573 peaks that gives $573 \times (0.70 - 0.04)/0.96 \approx 390$ real sites. It is a lower bound: CTCF also binds some sites without a strong motif match, and some real summits are more than 50 bp from the motif. (b) Weak real sites and noise overlap in strength: the p-value distribution is continuous, there is no gap. ENCODE uses replicate consistency (IDR) to decide how far down the list to go.
+
+**B6.** (a) IDR estimates the irreproducible component from the data: it needs noise peaks in the input to see where ranks stop agreeing. A pre-thresholded list contains almost only reproducible peaks; the model then cannot separate the components. (b) Ranks are comparable between replicates with different depths, signal-to-noise and score scales; the copula model only needs the order. (c) Ranks agree only as far as the weaker replicate supports peaks: the IDR curve rises earlier, $N_t$ is limited by replicate 2. The self-pseudoreplicates of the shallow replicate give fewer peaks ($N_2 < N_1$), raising the self-consistency ratio.
+
+**B7.** X: rescue 34/30 = 1.13, self-consistency 28/25 = 1.12: passes. Y: rescue 31/8 = **3.9** (fails), self-consistency 1.3: each replicate is fine on its own, but the two disagree much more than random halves of the pooled data: biological or technical differences between the replicates (different conditions, a failed or mislabelled replicate, a different antibody lot). Z: rescue 17/15 = 1.13, self-consistency 32/9 = **3.6** (fails): one replicate is much weaker (shallow or low enrichment) than the other.
+
+**B8.** Narrow calling of a broad mark (the reported "peaks" are fragments of domains, biased to CpG islands where H3K27me3 is densest); comparing peak counts is not a differential analysis (peak numbers depend on depth, signal-to-noise and thresholds; a site can be weaker without crossing a threshold); no replicates or statistics are mentioned; a global change (a knockout of a Polycomb component may reduce H3K27me3 everywhere) needs spike-in normalisation; and "lost at 800 sites" equates absence of a peak with absence of the mark. (Any three.)
+:::
+
+::: {.callout-note collapse="true" title="Solutions — command line"}
+
+**C1.** CTCF replicate 1: 197 587 filtered reads, 77 450 duplicates of 299 649 MAPQ-filtered reads (26%). Replicate 2: **120 076** reads, 238 193 duplicates of 391 106 (**61%**): a much less complex library, the weaker replicate. H3K36me3: 70 741 (786 duplicates of 72 024, 1%) and 98 982 reads (1 356 duplicates, 1%). The two chains take about a minute.
+
+**C2.** CTCF: 100 and 109 bp: they agree. H3K36me3: 246 and 258 bp, similar by chance, but each comes with a long list of "alternative" lengths (C3 of *ChIP-seq: the assay*): there is no clear fragment-length signal in a broad mark, so set it yourself.
+
+**C3.** (a) The ChIP (197 587 tags) is scaled to the input (116 397): factor 0.589 ("Pileup will be based on sequencing depth in control"). `d = 100`, regional λ windows 1 kb and 10 kb. 521 peaks. (b) Strongest peak (chr21:45 152 346–45 152 622): column 7 fold enrichment 56.8 at the summit, column 8 −log10 p = 184.8, column 9 −log10 q = 177.1, column 10 summit offset 150 bp from the peak start. (c) The ChIP pileup (scaled to the input's depth) and the local λ along chr21, as bedGraph. Calling takes about 2 seconds.
+
+**C4.** (a) With input 521 peaks, 377 (72%) in ENCODE's set, recovering 377 of 405 (93%). Without input 816 peaks, 402 (49%) in ENCODE's set, recovering 403 of 405. The log says `Range for calculating regional lambda is: 10000 bps` only. (b) q < 0.1: 573 peaks (387 in ENCODE); 0.01: 521 (377); 10⁻⁵: 413 (343); 10⁻¹⁰: 319 (293); 10⁻²⁰: 246 (239). The number falls smoothly; the stricter the cutoff, the larger the fraction in ENCODE's set (68% → 97%). No natural cutoff.
+
+**C5.** (a) The fragment length of a broad mark cannot be estimated (C2), so we set it; the two replicates are pooled to get more reads, against the same input; 40 088 619 / 46 709 983 = 0.858 is the mappable (non-N) fraction of chr21, which epic2 uses to compute its background. (b) MACS3 narrow: **11** regions, 3 kb, mean 255 bp. MACS3 `--broad`: **123** regions, 48 kb, mean 392 bp, max 1 493 bp. epic2: **671** domains, **3 769 kb**, mean 5.6 kb, max 83 799 bp. In IGV, only epic2 follows the gene bodies visible in the coverage. Each call takes a few seconds.
+
+**C6.** (a) IDR needs noise in its input (B6a); the files are sorted by −log10 p so that the strongest peaks come first (the order IDR's `--rank p.value` uses and the order ENCODE truncates). 763, 570 and 691 lenient peaks. (b) **291** of 472 matched peaks pass IDR < 0.05; parameters μ = 1.95, σ = 0.56, ρ = 0.79, π = 0.60 (60% of the matched peaks are estimated to be reproducible). (c) 281 of the 291 are in ENCODE's conservative set; 283 of ENCODE's 405 chr21 peaks are recovered. IDR takes a few seconds.
+
+**C7.** (a) `-s 7.5`: keep each read with probability 0.5, decided by a hash of the read name with seed 7, so the split is reproducible; `-U` writes the reads that were not kept to a second file. 158 696 and 158 967 reads. (b) $N_1 = 409$, $N_2 = 223$, $N_p = 333$, $N_t = 291$. Rescue ratio 333/291 = **1.14**; self-consistency 409/223 = **1.83**. Both below 2: passes, but replicate 2 (the low-complexity library) limits the experiment and brings self-consistency close to the limit. The whole block takes about 30 seconds.
+:::
+
+::: {.callout-note collapse="true" title="Solutions — R"}
+
+**R1.** (a) Yes: correlation 0.998 with MACS's λ at the 521 summits (the small differences come from how MACS centres the control windows). λd sets the background at 337 summits, λ1k at 92, λ10k at 49, λBG at 43. The input has 116 397 reads over 40 Mb, about 3 per kb: any single input read within 50 bp of a summit gives λd = 1, more than three times λBG = 0.29. (b) The ChIP pileup has been multiplied by 0.589, so it is not an integer; MACS rounds it up before the Poisson test. With `ceiling`, the p-values agree with column 8 to within 0.0005 (−log10 units). (c) chr21:33 605 968: k = 107.2 (182 fragments × 0.589), λBG 0.29, λd **13**, λ1k 2.2, λ10k 0.43; −log10 p = 59.4. Thirteen input reads in 100 bp: an open CTCF site in an active gene-dense region, which the input of this experiment over-represents (*ChIP-seq: the assay*). The R part takes about a minute.
+
+**R2.** Blocks of 100 peaks, strongest first: 0.91, 0.86, 0.71, 0.59, 0.55, 0.55 (the last block has 73 peaks). Random 101-bp windows: 0.036. Motif support falls with rank but stays far above random.
+
+**R3.** With input: 521 peaks, 72% motif, 72% in ENCODE, median input ratio 2.4 (input reads within 500 bp of the summit / expected). Without input: 816, 60%, 49%, 2.4. Found only without input: 299, **36%**, **9%**, 2.1. The extra peaks are not in places with an unusually high input: they are weaker sites and noise that the input-based local λ rejected (a single input read near a summit is enough). The input acts here more as a stricter, locally varying threshold than as a correction for big artefacts; in a cancer cell line with amplifications the second role would dominate.
+
+**R4.** Narrow: 11 regions, 2.8 kb, median 212 bp, covering 0.04% of active gene-body bases and 0% of silent ones. Broad: 123, 48 kb, median 332 bp, 0.85% and 0.01%. epic2: 671, 3 769 kb, median 1 799 bp, **57.9%** of active and **6.7%** of silent gene-body bases. epic2 is the useful result for this sparse broad mark; report the bin size (200 bp), gaps (3 bins), fragment size (200 bp), FDR (0.05), effective genome fraction, and that both replicates were pooled.
+
+**R5.** (a) 472 matched peaks, 291 pass. The failing ones are at the weak end in both replicates and scattered (ranks unrelated), and some are strong in one replicate only. Spearman correlation of the two replicates' scores 0.84. (b) 283 of 405 (70%). ENCODE used the full genome-wide reads of both replicates (deeper, so weaker sites are supported), and its replicate 2 limits ours: our IDR peaks are a strict subset of the strongest ones. Their median width is 266 bp.
+:::
+
+## Where this leads
+
+- *Annotation and differential binding* takes peaks further: where they are relative to genes, profiles around them, and differences between cell types with replicates.
+- *CUT&RUN and CUT&Tag* has almost no background, and callers such as SEACR that exploit it.
+- *Chromatin states* combines several marks into states, a different answer to "where are the domains?".
+
+## Key papers (optional further reading)
+
+*Not required reading and not examined.*
+
+- Zhang et al. 2008, *Genome Biol*. [Model-based Analysis of ChIP-Seq (MACS)](https://doi.org/10.1186/gb-2008-9-9-r137).
+- Zang et al. 2009, *Bioinformatics*. [A clustering approach for identification of enriched domains from histone modification ChIP-Seq data](https://doi.org/10.1093/bioinformatics/btp340).
+- Stovner & Sætrom 2019, *Bioinformatics*. [epic2 efficiently finds diffuse domains in ChIP-seq data](https://doi.org/10.1093/bioinformatics/btz232).
+- Li, Brown, Huang & Bickel 2011, *Ann Appl Stat*. [Measuring reproducibility of high-throughput experiments](https://doi.org/10.1214/11-AOAS466).
+- Landt et al. 2012, *Genome Res*. [ChIP-seq guidelines and practices of the ENCODE and modENCODE consortia](https://doi.org/10.1101/gr.136184.111).
+- Thomas, Thomas, Holloway & Pollard 2016, *Brief Bioinform*. [Features that define the best ChIP-seq peak calling algorithms](https://doi.org/10.1093/bib/bbw035).

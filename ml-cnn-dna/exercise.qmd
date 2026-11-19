@@ -1,0 +1,516 @@
+---
+title: "Exercise: How a CNN reads DNA"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+## Goal
+
+After this exercise you will be able to:
+
+- **One-hot encode** DNA, and compute by hand what a convolutional filter, a bias, ReLU, max pooling and a dense layer with a sigmoid do to it.
+- Compute a **log loss** and one **gradient-descent** step for a weight, by hand.
+- Build a labelled data set of **GM12878 CTCF peaks** and **GC-matched background**, split by chromosome.
+- Train a small **convolutional neural network** in R with [`torch`](https://torch.mlverse.org/) on a CPU, with a validation chromosome and **early stopping**, and compare its test AUC with a **PWM baseline**.
+- Read **learning curves** and recognise **overfitting**.
+- Turn first-layer **filters into motif logos** and match them to JASPAR.
+
+## Background
+
+**From PWM to filter.** A PWM scores a window as the sum of the weights of its bases (*Gene regulation*). A convolutional filter is a 4 × $k$ weight matrix that does the same at every position of a one-hot encoded sequence; a bias and ReLU, $\max(0, \text{score} + b)$, keep only good matches, and max pooling keeps the best one. With 32 filters this gives 32 numbers per sequence.
+
+**From features to prediction.** A dense layer computes $z = b + \sum_j w_j x_j$ from those 32 numbers and the sigmoid turns $z$ into $p = 1/(1 + e^{-z})$: logistic regression (*Machine learning from scratch*), whose features are learned.
+
+**Training.** The loss of one sequence with label $y$ is $-[y \log p + (1-y) \log(1-p)]$. For the dense layer the gradient is simple: $\partial \text{loss} / \partial z = p - y$, so $\partial \text{loss} / \partial w_j = (p - y)\,x_j$. Gradient descent updates $w_j \leftarrow w_j - \eta \, \partial \text{loss}/\partial w_j$ with learning rate $\eta$. Backpropagation applies the chain rule to get the gradients of all the filter weights as well.
+
+**Evaluation.** Train on 20 chromosomes, choose when to stop on chr7 (validation), report once on chr8 + chr9 (test), as in *Machine learning from scratch* and *What people try to predict, and how to tell if it works*.
+
+## Data
+
+GM12878 CTCF ChIP-seq peaks (ENCODE, IDR conservative, narrowPeak), the ENCODE blacklist and the hg38 genome as a bgzipped, indexed FASTA (`hg38.fa.bgz` with `.fai` and `.gzi`). From the course repository:
+
+```bash
+data/download.sh ml-cnn-dna
+mkdir -p ~/epi/ml-cnn && cd ~/epi/ml-cnn
+```
+
+Work in this folder: the files you save here (`ctcf_dataset.rds`, `ctcf_cnn.pt`) are the starting point of the next exercise, *What did the model learn? Variant effects*.
+
+You need, in R, the Bioconductor packages `GenomicRanges`, `rtracklayer`, `Rsamtools`, `Biostrings`, `JASPAR2024`, `TFBSTools`, `motifmatchr`, `universalmotif`, and the CRAN package `torch`:
+
+```r
+install.packages("torch")
+torch::install_torch()        # downloads libtorch (~200 MB, CPU version is enough)
+```
+
+If `install_torch()` stops with an unsupported CUDA version (a GPU driver on the machine), run `Sys.setenv(CUDA = "cpu")` first. The whole R part takes about 10 minutes on a laptop with four cores; training (R5) takes about 5 of them.
+
+*Simplifications.* One TF, one cell line and one experiment; 200-bp windows; a single convolutional layer; background matched for GC content only. Your numbers may differ from the solutions in the third decimal on another computer (floating-point arithmetic with several threads is not exactly reproducible across machines), but not more.
+
+## By hand
+
+**B1. One-hot encoding.**
+
+(a) Write the one-hot matrix (rows A, C, G, T) of `GATTC`.
+
+(b) Why not encode the bases as one number each, A = 1, C = 2, G = 3, T = 4?
+
+(c) How large is the input array for a batch of 128 sequences of 200 bp?
+
+**B2. A filter scans a sequence.** A filter of width 4 has these weights (rows A, C, G, T; columns positions 1–4) and bias −5:
+
+```
+      1    2    3    4
+A    -1   -1   +2   -1
+C    +2   +2   -1   -1
+G    -1   -1   -1   +2
+T    -1   -1   -1   -1
+```
+
+(a) Which 4-mer gets the highest score, and what is that score?
+
+(b) Slide the filter along `TCCAGACTGGA` and write down the score of each window (how many windows are there?).
+
+(c) Add the bias and apply ReLU. What does global max pooling return?
+
+(d) With a bias of −4 instead, what changes? What does the bias control?
+
+**B3. The other strand.** The sequence in B2 also contains `CTGG` (positions 7–10).
+
+(a) What is the reverse complement of `CCAG`? Does the filter of B2 detect the site on the other strand?
+
+(b) Write the weight matrix of a filter that detects the reverse complement. (Reverse the columns, then swap the rows A↔T and C↔G.) What is its maximum activation (bias −5) on `TCCAGACTGGA`?
+
+(c) CTCF sites occur in both orientations. What do you expect to see among the filters of a network trained on CTCF peaks?
+
+**B4. The dense layer.** A network has the two filters of B2 and B3 (biases −5), global max pooling, and a dense layer with weights $w_1 = 1.2$, $w_2 = 0.8$ and bias $b = -2$.
+
+(a) Compute $z$ and $p$ for `TCCAGACTGGA`.
+
+(b) Compute $z$ and $p$ for a sequence in which only filter 1 fires, with activation 3, and for one in which neither fires.
+
+(c) The sequence of (b) with only filter 1 firing is a background sequence ($y = 0$). What is its log loss? What would it be if it were bound ($y = 1$)?
+
+**B5. One step of gradient descent.** Use the background sequence of B4c ($x_1 = 3$, $x_2 = 0$, $y = 0$).
+
+(a) Compute $\partial \text{loss} / \partial w_1$ and $\partial \text{loss} / \partial w_2$.
+
+(b) Update $w_1$ and $w_2$ with learning rate $\eta = 0.1$. In words: what does the update do, and why does $w_2$ not change?
+
+(c) Repeat (a) and (b) for $y = 1$.
+
+**B6. Count the parameters.**
+
+(a) The exercise model has 32 filters of width 19 on 4 input channels and a dense layer from 32 inputs to 1 output. Count weights and biases.
+
+(b) A larger model has 64 filters of width 15, then a second convolutional layer with 32 filters of width 5 (reading the 64 activation tracks), global max pooling and a dense layer to 1 output. How many parameters?
+
+(c) You have 500 labelled sequences. Which of the two models are you more worried about, and why?
+
+**B7. Read the learning curves.** A network gives these losses:
+
+```
+epoch        1     2     3     4     5     6     7     8     9    10
+training   0.52  0.38  0.30  0.25  0.21  0.17  0.14  0.11  0.09  0.07
+validation 0.55  0.42  0.36  0.34  0.33  0.34  0.36  0.39  0.42  0.45
+```
+
+(a) Which epoch's model would you keep with early stopping, and with a patience of 3 epochs, after which epoch does training stop?
+
+(b) What happens after epoch 5? Give two things you could change to reduce it.
+
+(c) A colleague instead picks the epoch with the best **test** AUC. What is wrong with that?
+
+**B8. Judge the claims.**
+
+(a) "Our CNN classifies CTCF peaks against random genomic windows with AUC 0.99, far better than the PWM." What should you ask before believing that the network learned something about CTCF?
+
+(b) "We split the peaks randomly into 80% training and 20% test. Each peak contributes five overlapping 200-bp windows shifted by 20 bp." What is the problem?
+
+(c) "Filter 7 matches the ZIC4 motif in JASPAR (p = $10^{-4}$), so ZIC4 cooperates with CTCF in B cells." Give two reasons to be sceptical.
+
+(d) "With a test AUC of 0.97, we can use the model to annotate CTCF binding genome-wide." What changes when you scan every 200-bp window of the genome?
+
+**B9. Read a filter.** A first-layer filter's activation logo has the consensus `GCGCCCCCTGGTGGC`. The JASPAR CTCF consensus is `GCCACCAGGGGGCGC`. Is this filter a CTCF filter? On which strand?
+
+## In R
+
+```r
+library(GenomicRanges); library(rtracklayer); library(Rsamtools); library(Biostrings)
+library(JASPAR2024); library(TFBSTools); library(RSQLite); library(motifmatchr); library(universalmotif)
+library(torch)
+D <- "/path/to/course/data"
+```
+
+### R1 — Positives, GC-matched negatives and a chromosome split
+
+```r
+genome <- FaFile(file.path(D, "hg38.fa.bgz"))
+chroms <- paste0("chr", c(1:22, "X"))
+ctcf  <- import(file.path(D, "gm12878_ctcf_peaks.bed.gz"), format = "narrowPeak")
+ctcf  <- ctcf[seqnames(ctcf) %in% chroms]
+black <- import(file.path(D, "hg38_blacklist.bed.gz"))
+avoid <- c(granges(ctcf) + 1000, black)          # background stays >1 kb from any CTCF peak
+gc_content <- function(s) letterFrequency(s, "GC", as.prob = TRUE)[, 1]
+
+set.seed(1)
+one_chrom <- function(chr) {
+  chrseq <- getSeq(genome, GRanges(chr, IRanges(1, seqlengths(genome)[chr])))[[1]]
+  # positives: 200 bp centred on each summit
+  p   <- ctcf[seqnames(ctcf) == chr]
+  pos <- unique(GRanges(chr, IRanges(start(p) + p$peak - 99, width = 200)))
+  pos <- pos[!overlapsAny(pos, black)]
+  ps  <- DNAStringSet(Views(chrseq, ranges(pos)))
+  ok  <- letterFrequency(ps, "N")[, 1] == 0
+  pos <- pos[ok]; ps <- ps[ok]
+  # candidate negatives: 20 random windows per positive, same chromosome
+  cand <- GRanges(chr, IRanges(sample(length(chrseq) - 200, 20 * length(pos)), width = 200))
+  cand <- cand[!overlapsAny(cand, avoid)]
+  cs   <- DNAStringSet(Views(chrseq, ranges(cand)))
+  ok   <- letterFrequency(cs, "N")[, 1] == 0
+  cand <- cand[ok]; cs <- cs[ok]
+  # GC matching: for each 2% GC bin, draw as many candidates as there are positives
+  bins <- seq(0, 1, 0.02)
+  pb <- findInterval(gc_content(ps), bins); cb <- findInterval(gc_content(cs), bins)
+  chosen <- unlist(lapply(sort(unique(pb)), function(b) {
+    have <- which(cb == b); need <- sum(pb == b)
+    have[sample.int(length(have), min(need, length(have)))]
+  }))
+  data.frame(chr = chr, start = c(start(pos), start(cand[chosen])),
+             label = rep(c(1L, 0L), c(length(pos), length(chosen))),
+             seq = c(as.character(ps), as.character(cs[chosen])))
+}
+ds <- do.call(rbind, lapply(chroms, one_chrom))
+ds$gc <- gc_content(DNAStringSet(ds$seq))
+ds$split <- ifelse(ds$chr %in% c("chr8", "chr9"), "test",
+                   ifelse(ds$chr == "chr7", "valid", "train"))
+table(ds$split, ds$label)
+tapply(ds$gc, ds$label, mean)
+saveRDS(ds, "ctcf_dataset.rds")
+```
+
+(a) How many positives and negatives are in each split? Why are there slightly fewer negatives than positives?
+
+(b) Compare the mean GC content of the two classes. What would the mean GC of random genomic windows be, and why does that matter?
+
+(c) Why are the negatives drawn per chromosome rather than from the whole genome? Why stay 1 kb away from any CTCF peak?
+
+### R2 — One-hot encoding and tensors
+
+```r
+one_hot <- function(s) {
+  m <- do.call(rbind, strsplit(s, ""))              # one row per sequence, one column per base
+  x <- array(0, c(length(s), 4, ncol(m)))           # sequences x 4 bases x positions
+  for (k in 1:4) x[, k, ] <- m == c("A", "C", "G", "T")[k]
+  x
+}
+one_hot("GCCACTAGG")[1, , ]
+
+sets <- lapply(split(ds, ds$split), function(d)
+  list(x = torch_tensor(one_hot(d$seq), dtype = torch_float()),
+       y = torch_tensor(d$label, dtype = torch_float())))
+sets$train$x$shape
+```
+
+(a) Check `one_hot("GCCACTAGG")` against the one-hot slide. Which row is G?
+
+(b) What are the three dimensions of `sets$train$x`?
+
+### R3 — Baselines: GC content and the CTCF PWM
+
+```r
+auc <- function(score, y) {                         # area under the ROC curve, from ranks
+  r <- rank(score); n1 <- sum(y == 1); n0 <- sum(y == 0)
+  (sum(r[y == 1]) - n1 * (n1 + 1) / 2) / (n1 * n0)
+}
+test <- ds[ds$split == "test", ]
+jaspar <- dbConnect(SQLite(), db(JASPAR2024()))
+ctcf_m <- getMatrixByID(jaspar, "MA0139.2")
+# best log-odds score of each window; p.cutoff = 1 so that every window gets a score,
+# not only those with a match above the default p-value threshold
+test$pwm <- motifScores(matchMotifs(ctcf_m, DNAStringSet(test$seq), out = "scores", bg = "even", p.cutoff = 1))[, 1]
+c(gc = auc(test$gc, test$label), pwm = auc(test$pwm, test$label))
+```
+
+(a) What test AUC do GC content and the best PWM score reach? Explain the GC result.
+
+(b) `auc()` computes the probability that a random positive scores higher than a random negative (ties count ½). Why is that the area under the ROC curve? (Compare with `auc_roc()` in *Machine learning from scratch*.)
+
+(c) Run the PWM line again without `p.cutoff = 1`. What happens to the AUC, and why? (Look at `mean(test$pwm == 0)`.)
+
+### R4 — The network
+
+```r
+cnn <- nn_module("cnn",
+  initialize = function(n_filters = 32, width = 19) {
+    self$conv  <- nn_conv1d(4, n_filters, kernel_size = width)   # the filters (motif scanners)
+    self$dense <- nn_linear(n_filters, 1)                          # logistic regression on top
+  },
+  forward = function(x) {
+    h <- nnf_relu(self$conv(x))        # sequences x filters x 182 positions
+    h <- torch_amax(h, dim = 3)        # global max pooling: sequences x filters
+    self$dense(h)$squeeze(2)           # one logit (log-odds of "bound") per sequence
+  })
+torch_manual_seed(1)
+model <- cnn()
+model
+sapply(model$parameters, function(p) p$numel())
+x1 <- sets$test$x[1:5, , ]
+torch_sigmoid(model(x1))
+```
+
+(a) Match the four parameter tensors to your count in B6a.
+
+(b) Why is 182 the length of each activation track?
+
+(c) The untrained model predicts about 0.42–0.44 for every sequence. Why close to 0.5, and why all similar?
+
+### R5 — Training with early stopping
+
+This takes about 5 minutes. Watch the losses as they are printed.
+
+```r
+torch_set_num_threads(4)
+set.seed(1); torch_manual_seed(1)
+model   <- cnn()
+opt     <- optim_adam(model$parameters, lr = 1e-3)
+loss_fn <- nn_bce_with_logits_loss()                # sigmoid + binary cross-entropy in one step
+predict_logit <- function(model, x) { model$eval(); with_no_grad(as.numeric(model(x))) }
+bce <- function(z, y) mean(y * log1p(exp(-z)) + (1 - y) * log1p(exp(z)))
+
+history <- data.frame(); best <- Inf; patience <- 0
+n <- length(sets$train$y)
+for (epoch in 1:20) {
+  model$train()
+  for (b in split(sample(n), ceiling(seq_len(n) / 128))) {   # shuffled mini-batches of 128
+    opt$zero_grad()
+    loss <- loss_fn(model(sets$train$x[b, , ]), sets$train$y[b])
+    loss$backward()                                         # gradients by backpropagation
+    opt$step()                                              # one gradient-descent step
+  }
+  ztr <- predict_logit(model, sets$train$x); zva <- predict_logit(model, sets$valid$x)
+  ytr <- as.numeric(sets$train$y);           yva <- as.numeric(sets$valid$y)
+  history <- rbind(history, data.frame(epoch,
+    train_loss = bce(ztr, ytr), valid_loss = bce(zva, yva),
+    train_auc = auc(ztr, ytr),  valid_auc = auc(zva, yva)))
+  print(round(tail(history, 1), 4))
+  if (tail(history$valid_loss, 1) < best) {                 # keep the best model so far
+    best <- tail(history$valid_loss, 1); patience <- 0
+    torch_save(model, "ctcf_cnn.pt")
+  } else {
+    patience <- patience + 1
+    if (patience == 3) break                                # early stopping
+  }
+}
+write.table(history, "ctcf_cnn_history.tsv", sep = "\t", quote = FALSE, row.names = FALSE)
+matplot(history$epoch, history[, c("train_loss", "valid_loss")], type = "b", pch = 19,
+        col = c("grey40", "#2a6f97"), lty = 1, xlab = "epoch", ylab = "loss (binary cross-entropy)")
+legend("topright", c("training", "validation (chr7)"), col = c("grey40", "#2a6f97"), pch = 19)
+```
+
+(a) How many gradient steps are there per epoch? After how many epochs did training stop, and which epoch's model is saved?
+
+(b) What are the training and validation loss and AUC of the saved model? Is the model overfitting?
+
+(c) Point to the lines that do the forward pass, the loss, the backward pass and the update (the four boxes of the training-loop slide).
+
+(d) Why is the model set to `model$eval()` and wrapped in `with_no_grad()` for predictions?
+
+### R6 — Test performance
+
+```r
+model <- torch_load("ctcf_cnn.pt")
+test$cnn <- predict_logit(model, sets$test$x)
+c(gc = auc(test$gc, test$label), pwm = auc(test$pwm, test$label), cnn = auc(test$cnn, test$label))
+roc <- function(score, y) {                         # ties move up and right together
+  o <- order(score, decreasing = TRUE); s <- score[o]; y <- y[o]
+  k <- c(diff(s) != 0, TRUE)                         # last sequence of each tied group
+  data.frame(fpr = c(0, cumsum(y == 0)[k] / sum(y == 0)), tpr = c(0, cumsum(y == 1)[k] / sum(y == 1)))
+}
+plot(NULL, xlim = c(0, 1), ylim = c(0, 1), xlab = "false positive rate", ylab = "true positive rate")
+for (m in c("gc", "pwm", "cnn"))
+  lines(roc(test[[m]], test$label), col = c(gc = "grey60", pwm = "#8c564b", cnn = "#2a6f97")[m], lwd = 2)
+abline(0, 1, lty = 2)
+legend("bottomright", c("GC content", "CTCF PWM (JASPAR)", "CNN"), col = c("grey60", "#8c564b", "#2a6f97"), lwd = 2)
+r <- roc(test$cnn, test$label); r$tpr[which.max(r$fpr >= 0.05)]
+r <- roc(test$pwm, test$label); r$tpr[which.max(r$fpr >= 0.05)]
+```
+
+(a) What is the test AUC of the CNN, compared with the baselines of R3 and with the validation AUC of R5?
+
+(b) What fraction of test peaks does each model find at a 5% false positive rate? Where on the ROC curve does the CNN gain most over the PWM?
+
+### R7 — Too little data: overfitting
+
+The same network, trained on only 500 sequences for 150 epochs (about one minute).
+
+```r
+set.seed(1); torch_manual_seed(1)
+small <- sample(length(sets$train$y), 500)
+xs <- sets$train$x[small, , ]; ys <- sets$train$y[small]
+m_small <- cnn(); opt <- optim_adam(m_small$parameters, lr = 1e-3)
+curve <- data.frame()
+for (epoch in 1:150) {
+  m_small$train()
+  for (b in split(sample(500), ceiling(1:500 / 32))) {
+    opt$zero_grad(); loss_fn(m_small(xs[b, , ]), ys[b])$backward(); opt$step()
+  }
+  if (epoch %% 10 == 0)
+    curve <- rbind(curve, data.frame(epoch,
+      train = bce(predict_logit(m_small, xs), as.numeric(ys)),
+      valid = bce(predict_logit(m_small, sets$valid$x), as.numeric(sets$valid$y))))
+}
+round(curve, 3)
+auc(predict_logit(m_small, sets$test$x), as.numeric(sets$test$y))
+```
+
+(a) Describe the two curves. At which epoch would early stopping have stopped?
+
+(b) What is the test AUC, compared with R6? How many training sequences per parameter are there here, and in R5?
+
+### R8 — What did the filters learn?
+
+```r
+act <- with_no_grad(as.array(nnf_relu(model$conv(sets$test$x))))   # sequences x 32 x 182
+w_out <- as.numeric(model$dense$weight)                             # output weight of each filter
+filter_motif <- function(k) {
+  a  <- act[, k, ]
+  mx <- apply(a, 1, max); at <- apply(a, 1, which.max)
+  keep <- mx > 0.5 * max(mx)                                        # sequences where filter k fires
+  sites <- DNAStringSet(substring(test$seq[keep], at[keep], at[keep] + 18))
+  create_motif(consensusMatrix(sites)[c("A", "C", "G", "T"), ], type = "PCM",
+               name = paste0("filter", k), nsites = sum(keep))
+}
+fm <- lapply(1:32, filter_motif)
+data.frame(filter = 1:32, w_out = round(w_out, 2), sites = sapply(fm, function(m) m@nsites),
+           consensus = sapply(fm, function(m) m@consensus))[order(-w_out), ][1:12, ]
+top <- order(-w_out)[1:4]
+view_motifs(fm[top], use.type = "ICM")
+
+pfms <- getMatrixSet(jaspar, list(collection = "CORE", tax_group = "vertebrates"))
+jas  <- lapply(seq_along(pfms), function(i) {
+  m <- convert_motifs(pfms[[i]], "universalmotif"); m@name <- paste(ID(pfms[[i]]), name(pfms[[i]])); m })
+best_match <- function(k) {
+  r <- as.data.frame(compare_motifs(c(fm[k], jas), compare.to = 1, method = "PCC",
+                                    min.mean.ic = 0, max.p = 1, tryRC = TRUE))
+  data.frame(filter = k, w_out = round(w_out[k], 2), match = r$target[1],
+             PCC = round(r$score[1], 2), p = signif(r$Pval[1], 2))
+}
+do.call(rbind, lapply(order(-w_out), best_match))
+```
+
+(a) Explain in words how `filter_motif()` turns a filter into a motif. Why not draw the weights directly?
+
+(b) Which filters have the largest output weights, and what are their best JASPAR matches? Why are several of them the same motif, some as the reverse complement (compare B3 and B9)?
+
+(c) What do the filters with negative output weights look like, and what are their matches? Do you believe these matches? (B8c)
+
+## Hints
+
+::: {.callout-tip collapse="true" title="Hint 1 — filters, ReLU and pooling (B1–B3)"}
+A window's score is the sum, over its positions, of the weight in the row of the base that is present. A sequence of length $L$ has $L - k + 1$ windows for a filter of width $k$ (no padding). ReLU is $\max(0, x)$. For the reverse complement of a filter, the last column becomes the first and A↔T, C↔G swap rows. The torch functions: [`nn_conv1d`](https://torch.mlverse.org/docs/reference/nn_conv1d.html), [`nnf_relu`](https://torch.mlverse.org/docs/reference/nnf_relu.html), [`torch_amax`](https://torch.mlverse.org/docs/reference/torch_amax.html). For the idea of a filter as a motif detector, see [Alipanahi et al. 2015](https://doi.org/10.1038/nbt.3300) and [Koo & Eddy 2019](https://doi.org/10.1371/journal.pcbi.1007560).
+:::
+
+::: {.callout-tip collapse="true" title="Hint 2 — sigmoid, loss and gradient (B4, B5)"}
+$p = 1/(1 + e^{-z})$; useful values: $e^{-1.6} = 0.202$, $e^{-4} = 0.018$, $e^{2} = 7.39$. Log loss: $-\ln p$ if $y = 1$, $-\ln(1 - p)$ if $y = 0$ ($\ln 0.832 = -0.184$, $\ln 0.168 = -1.784$). Gradient of the loss with respect to a dense weight: $(p - y)\,x_j$; with respect to the bias: $p - y$. torch computes the same with [`loss$backward()`](https://torch.mlverse.org/docs/articles/getting-started/autograd.html) and updates with an [optimizer](https://torch.mlverse.org/docs/reference/optim_adam.html).
+:::
+
+::: {.callout-tip collapse="true" title="Hint 3 — parameters and learning curves (B6, B7)"}
+A convolutional layer with $C_{in}$ input channels, $F$ filters of width $k$ has $F \times C_{in} \times k$ weights and $F$ biases. A dense layer from $n$ inputs to $m$ outputs has $n \times m$ weights and $m$ biases. Early stopping keeps the model with the lowest validation loss; with patience $P$, training stops $P$ epochs after the last improvement. The three data sets and their jobs are on the *Three sets, three jobs* slide of *Machine learning from scratch*.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 4 — judging claims (B8, B9)"}
+Ask what the negatives are (GC content and composition), whether test sequences overlap training sequences (overlapping windows, whole chromosomes), how many comparisons were made (motif matching against hundreds of matrices), and what the class balance is in the intended use (genome-wide, almost every window is unbound). *What people try to predict, and how to tell if it works* has worked examples of each trap. For B9, write the reverse complement of the consensus.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 5 — torch in R (R2–R8)"}
+[torch for R](https://torch.mlverse.org/) mirrors PyTorch. A tensor is created with [`torch_tensor()`](https://torch.mlverse.org/docs/reference/torch_tensor.html); indexing is 1-based like R (`x[b, , ]`); `$shape` gives the dimensions. A model is an [`nn_module`](https://torch.mlverse.org/docs/reference/nn_module.html) with `initialize` (the layers) and `forward` (what happens to an input). [`nn_bce_with_logits_loss`](https://torch.mlverse.org/docs/reference/nn_bce_with_logits_loss.html) takes logits, not probabilities. [`torch_save`](https://torch.mlverse.org/docs/reference/torch_save.html) and `torch_load` store a model in a file. [`torch_manual_seed`](https://torch.mlverse.org/docs/reference/torch_manual_seed.html) fixes the random initial weights; `set.seed` fixes R's shuffling of the mini-batches.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 6 — motifs and JASPAR (R3, R8)"}
+[`motifmatchr::matchMotifs`](https://bioconductor.org/packages/motifmatchr) with `out = "scores"` returns the best score per sequence (`motifScores`). [`universalmotif`](https://bioconductor.org/packages/universalmotif): `create_motif()` builds a motif from a count matrix, `view_motifs()` draws logos, [`compare_motifs()`](https://bioconductor.org/packages/release/bioc/vignettes/universalmotif/inst/doc/MotifComparisonAndPvalues.pdf) compares motifs by Pearson correlation of their columns over all offsets and both strands, like [TOMTOM](https://meme-suite.org/meme/doc/tomtom.html). The CTCF matrix is [MA0139.2](https://jaspar.elixir.no/matrix/MA0139.2/).
+:::
+
+## Solutions
+
+::: {.callout-note collapse="true" title="Solutions — by hand"}
+
+**B1.** (a)
+
+```
+    G  A  T  T  C
+A   0  1  0  0  0
+C   0  0  0  0  1
+G   1  0  0  0  0
+T   0  0  1  1  0
+```
+
+(b) One number per base invents an order and distances (G would be "between" C and T, and "3 times" A); a weight multiplied by it would make G count three times as much as A. One-hot treats the four bases as unrelated categories, like dummy variables for a factor.
+(c) 128 × 4 × 200 = 102 400 numbers.
+
+**B2.** (a) `CCAG`, score 2 + 2 + 2 + 2 = **8**. (b) 11 − 4 + 1 = **8 windows**: TCCA −1, **CCAG 8**, CAGA −1, AGAC −1, GACT −4, ACTG 2, CTGG 2, TGGA −4. (c) After the bias: −6, 3, −6, −6, −9, −3, −3, −9; ReLU: 0, **3**, 0, 0, 0, 0, 0, 0; max pool = **3**. (d) With −4, CCAG gives 4 and nothing else passes (the next best windows score 2). The bias is the threshold: how good a match must be to count. A less negative bias lets imperfect matches through.
+
+**B3.** (a) The reverse complement of `CCAG` is **`CTGG`**. The B2 filter scores `CTGG` only 2 (−1 after the bias, 0 after ReLU): it does not see the site on the other strand. (b) Reverse-complement filter:
+
+```
+      1    2    3    4
+A    -1   -1   -1   -1
+C    +2   -1   -1   -1
+G    -1   -1   +2   +2
+T    -1   +2   -1   -1
+```
+
+Scores on `TCCAGACTGGA`: −4, 2, 2, −4, −4, −1, **8**, −1; after bias −5 and ReLU the maximum is **3** (window 7, `CTGG`). (c) Pairs of filters that are reverse complements of each other: the CTCF motif learned once per orientation (and often several shifted copies).
+
+**B4.** (a) $x_1 = 3$, $x_2 = 3$: $z = -2 + 1.2 \times 3 + 0.8 \times 3 = 4.0$, $p = 1/(1 + e^{-4}) = 0.982$. (b) Only filter 1: $z = -2 + 3.6 = 1.6$, $p = 0.832$. Neither: $z = -2$, $p = 0.119$. (c) $y = 0$: loss $= -\ln(1 - 0.832) = 1.78$. $y = 1$: loss $= -\ln 0.832 = 0.18$. A confident wrong prediction costs ten times more than a moderately confident right one.
+
+**B5.** (a) $p - y = 0.832$; $\partial \text{loss}/\partial w_1 = 0.832 \times 3 = 2.50$; $\partial \text{loss}/\partial w_2 = 0.832 \times 0 = 0$. (b) $w_1 \leftarrow 1.2 - 0.1 \times 2.50 = 0.95$; $w_2$ stays 0.8. The network predicted "bound" for a background sequence because filter 1 fired; the update lowers the weight of filter 1, so that its motif counts a little less. Filter 2 did not fire, so it did not contribute to the error and its weight is not changed. (c) $y = 1$: $p - y = -0.168$, gradient $-0.504$, $w_1 \leftarrow 1.2 + 0.05 = 1.25$: the filter's weight goes up, because it fired in a bound sequence and the prediction was not yet confident enough. Over many sequences these small pushes add up to the filter weights that best separate the classes.
+
+**B6.** (a) Filters: 32 × 4 × 19 = 2432 weights + 32 biases = 2464. Dense: 32 + 1 = 33. Total **2497**. (b) Layer 1: 64 × 4 × 15 + 64 = 3904. Layer 2: 32 × 64 × 5 + 32 = 10 272. Dense: 32 + 1 = 33. Total **14 209**. (c) Both have more parameters than there are training sequences, but the larger one has 28 parameters per sequence and can memorise the training set much more easily. With 500 sequences use a small model, strong regularisation and early stopping, or get more data (R7).
+
+**B7.** (a) Keep epoch **5** (validation loss 0.33, the lowest); with patience 3 training stops after epoch **8** (epochs 6, 7, 8 without improvement). (b) Overfitting: the training loss keeps falling while the validation loss rises: the network memorises the training sequences. Reduce it with more training data, fewer parameters (fewer or narrower filters), dropout or weight decay, or simply by early stopping. (c) The test set then takes part in a choice, so its AUC is no longer an unbiased estimate for new data; with enough such choices the test set is overfitted too. Choose on validation, report test once.
+
+**B8.** (a) Random genomic windows are AT-rich (about 41% GC) and CTCF peaks GC-rich (51%), so a model can reach a high AUC by learning GC content or CpG density. Ask for the AUC of GC content alone on the same data, for GC-matched (or accessible-but-unbound) negatives, and for a PWM baseline. (b) Leakage: shifted windows of the same peak share up to 180 of 200 bp; with a random split, copies of almost every test peak are in the training set, and the network can recognise them. Split by peak at least, better by chromosome. (c) Correlation of 0.8 to some matrix among 879 is expected by chance for a short, GC-rich, low-information pattern (multiple testing); a filter used with a negative weight is evidence *against* binding, so it says nothing about cooperation; and a filter may reflect how the negatives were chosen (GC-rich background) rather than biology. Evidence for cooperation would need ZIC ChIP-seq or a perturbation. (d) The class balance. Genome-wide there are about 15 million 200-bp windows and some 44 000 peaks, so even 1% false positives would be 150 000 false calls, three times the number of true sites: precision collapses although the AUC is unchanged. Use precision–recall, a realistic background, and accessibility.
+
+**B9.** The reverse complement of `GCGCCCCCTGGTGGC` is `GCCACCAGGGGGCGC`, the CTCF consensus. It is a CTCF filter for sites on the **minus strand** (the motif read on the reverse complement), the partner of a plus-strand filter.
+:::
+
+::: {.callout-note collapse="true" title="Solutions — R"}
+
+**R1.** (a) Training 38 270 positives and 37 745 negatives, validation (chr7) 2169 and 2141, test (chr8, chr9) 3778 and 3700: 44 217 positives and 43 586 negatives in total. In a few GC bins (very GC-rich peaks) there are fewer candidate windows than peaks, so fewer negatives are drawn there. (b) Mean GC 0.514 in peaks and 0.510 in background. Random windows would be about 0.41 (the genome average); a model could then separate the classes by GC content alone. (c) Per chromosome so that each split (train, validation, test) has its own balanced positives and negatives, and no negative of a test chromosome comes from a training chromosome. The 1-kb distance keeps background windows out of the flanks of peaks, where weaker binding and shared sequence would blur the labels.
+
+**R2.** (a) It matches the slide; row 3 is G (G at positions 1, 8 and 9). (b) 76 015 sequences × 4 bases × 200 positions: the (batch, channels, length) layout that `nn_conv1d` expects.
+
+**R3.** (a) GC content **0.511** (chance, because the negatives were matched on GC), PWM **0.929**. (b) The ROC curve plots TPR against FPR as the threshold moves; its area equals the fraction of (positive, negative) pairs ranked correctly, which is the Mann–Whitney statistic computed from ranks. `auc_roc()` (trapezoids, ties as diagonal steps) gives the same value. (c) Without `p.cutoff = 1`, `motifScores` reports a score only for windows with a match above the default threshold ($p < 5 \times 10^{-5}$) and 0 for all others: 62.5% of the test windows get 0, all tied, and the AUC drops to **0.838**. A thresholded score throws away the ranking among weak matches; check what a function returns before using it as a score.
+
+**R4.** (a) `conv.weight` 2432 (32 × 4 × 19), `conv.bias` 32, `dense.weight` 32, `dense.bias` 1: 2497. (b) 200 − 19 + 1 = 182 positions without padding. (c) The initial weights are small random numbers, so all logits are close to 0 and $p$ close to 0.5 (0.42–0.44 here, set by the random initial bias). Training starts from "no idea" (loss ≈ 0.69).
+
+**R5.** (a) 76 015 / 128 = **594** steps per epoch (the last batch is smaller). Training ran **16** epochs; the best validation loss was at epoch **13**, whose model is saved (epochs 14–16 did not improve). (b) Epoch 13: training loss 0.189, validation loss 0.197; training AUC 0.978, validation AUC 0.977. The two are very close: no overfitting worth mentioning, because 2497 parameters are few compared with 76 015 sequences. (c) `model(sets$train$x[b, , ])` is the forward pass, `loss_fn(...)` the loss, `loss$backward()` the backward pass, `opt$step()` the update. `opt$zero_grad()` clears the gradients of the previous step. (d) `eval()` switches off training-only behaviour (none in this model, but dropout layers would otherwise stay active), and `with_no_grad()` stops torch from recording operations for backpropagation, which saves memory and time.
+
+**R6.** (a) Test AUC: CNN **0.972**, PWM 0.929, GC 0.511. Close to the validation AUC (0.977): the model generalises to unseen chromosomes. (b) At 5% FPR the CNN finds **87.3%** of the test peaks and the PWM **73.7%**. The CNN curve lies above the PWM curve everywhere, and the gap is largest at low false positive rates, where it matters in practice: among the peaks the PWM ranks below many background windows (weak or partial matches), the CNN still finds evidence from its nine CTCF-like filters (motif variants, both strands) and from the absence of the GC-rich patterns it associates with background.
+
+**R7.** (a) The training loss falls steadily to **0.016** at epoch 150: the network memorises the 500 sequences. The validation loss falls to about **0.355** at epochs 80–100 and then rises slowly (0.372 at epoch 150). Early stopping (on these 10-epoch checkpoints) would keep the model of epoch 80. (b) Test AUC **0.919**, against 0.972 with all the training data. Here there are 500 sequences for 2497 parameters (0.2 per parameter); in R5, 76 015 (30 per parameter). The same architecture overfits or not depending on how much data it is given.
+
+**R8.** (a) For each filter, find the test sequences in which it fires strongly (maximum activation above half of its overall maximum), cut out the 19 bases where it fires, and count the bases at each position: a position count matrix, like building a PWM from aligned sites in *Gene regulation*. The raw weights are on an arbitrary scale (any constant can be shifted into the bias, and negative weights have no frequency interpretation), so a logo of the sequences that activate the filter is easier to compare with a database. (b) The ten filters with the largest output weights (18, 22, 32, 28, 9, 25, 31, 6, 1, 2; weights 1.51 to 0.68) are all CTCF-like; nine have CTCF or CTCFL (MA0139.2, MA1929.2, MA1930.2, MA1102.3) as best match with PCC 0.91–0.99, and filter 28 (`YGCCCHCTRGDGG`, a shifted partial CTCF core) matches SP9 best (0.87). Several filters learn the same motif because nothing forces them to differ: shifted copies, partial motifs, and both orientations (B3, B9): compare the consensus of filter 18 (`CCASYAGRKGGCRS`, plus strand) with filter 22 (`RSYGCCMYCTRSTGG`, its reverse complement). (c) The 20 filters with negative weights (−0.27 to −0.46) are short, GC-rich, low-information patterns; their best matches (PLAGL2, KLF4, ZIC4, SP2, E2F8 …) have PCC 0.75–0.91 and p-values of $10^{-5}$ to $10^{-3}$ before correction for 879 comparisons. Not credible as specific TFs: they describe GC-rich sequence without a CTCF site, which the network uses as evidence for background because the negatives were matched on GC content. Two AT-rich filters (26, 20) have small positive weights.
+:::
+
+## Where this leads
+
+- *What did the model learn? Variant effects* loads `ctcf_cnn.pt`, asks which bases of a sequence drive its prediction (in-silico mutagenesis) and scores real SNPs in CTCF sites.
+- *What people try to predict, and how to tell if it works* shows how the choice of negatives and splits changes what such a model learns.
+- Deeper models (DeepSEA, Basset, BPNet, chromBPNet) use the same building blocks: more layers, longer inputs, more outputs.
+
+## Key papers (optional further reading)
+
+*Not required reading and not examined.*
+
+- Alipanahi et al. 2015, *Nat Biotechnol*. [Predicting the sequence specificities of DNA- and RNA-binding proteins by deep learning](https://doi.org/10.1038/nbt.3300). DeepBind: CNNs as learned motif scanners.
+- Zhou & Troyanskaya 2015, *Nat Methods*. [Predicting effects of noncoding variants with deep learning–based sequence model](https://doi.org/10.1038/nmeth.3547). DeepSEA: one network, 919 chromatin profiles, variant effects.
+- Kelley, Snoek & Rinn 2016, *Genome Res*. [Basset: learning the regulatory code of the accessible genome with deep convolutional neural networks](https://doi.org/10.1101/gr.200535.115). Accessibility in 164 cell types from sequence.
+- Avsec et al. 2021, *Nat Genet*. [Base-resolution models of transcription-factor binding reveal soft motif syntax](https://doi.org/10.1038/s41588-021-00782-6). BPNet.
+- Koo & Eddy 2019, *PLoS Comput Biol*. [Representation learning of genomic sequence motifs with convolutional neural networks](https://doi.org/10.1371/journal.pcbi.1007560). When first-layer filters are interpretable as motifs.
+- Eraslan et al. 2019, *Nat Rev Genet*. [Deep learning: new computational modelling techniques for genomics](https://doi.org/10.1038/s41576-019-0122-6). Review.

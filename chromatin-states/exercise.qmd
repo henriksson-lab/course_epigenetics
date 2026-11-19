@@ -1,0 +1,363 @@
+---
+title: "Exercise: Combining marks into chromatin states"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+## Goal
+
+After this exercise you will be able to:
+
+- Binarise read counts in 200-bp bins with a Poisson threshold, by hand and with [ChromHMM](https://ernstlab.github.io/ChromHMM/).
+- Compute emission probabilities, and run the **forward** and **Viterbi** algorithms by hand on a small hidden Markov model.
+- Learn a chromatin-state model for GM12878 chr21 with ChromHMM, and name its states from the emission matrix and from enrichments at TSSs, genes and CpG islands.
+- Compare your segmentation with the published Roadmap 18-state annotation of the same cell line, in R.
+- Decode a chromatin-state sequence yourself in R with the learned parameters, and judge claims based on chromatin-state annotations.
+
+## Background
+
+**Bins and binarisation.** The genome is cut into 200-bp bins. For each mark, a bin is called **1** if its read count $k$ is improbably high under a Poisson background: $P(X \ge k \mid \lambda) < 10^{-4}$. Without a control, λ is the mark's mean count per bin; with an input control, ChromHMM multiplies it by the local input enrichment (input reads in the bin ± 5 bins, plus a pseudocount, relative to the input's mean).
+
+**The HMM.** Each bin has a hidden state $s_t$. The model has initial probabilities $\pi_s$, transition probabilities $a_{rs} = P(s_{t+1} = s \mid s_t = r)$, and for each state and mark an emission probability $e_{sm} = P(\text{mark } m \text{ present} \mid s)$. Marks are independent given the state:
+
+$$P(o_t \mid s) = \prod_m e_{sm}^{\,o_{tm}} (1 - e_{sm})^{1 - o_{tm}}$$
+
+**Forward** (probability of the data): $\alpha_1(s) = \pi_s P(o_1 \mid s)$; $\alpha_t(s) = \big[\sum_r \alpha_{t-1}(r)\, a_{rs}\big] P(o_t \mid s)$; $P(o_{1..T}) = \sum_s \alpha_T(s)$.
+
+**Viterbi** (best state path): the same with max instead of sum, $\delta_t(s) = \max_r [\delta_{t-1}(r)\, a_{rs}]\, P(o_t \mid s)$; remember the best $r$ and trace back from the best final state.
+
+**Fold enrichment** of state $s$ for an annotation $A$ = (fraction of $A$'s bins that are in $s$) / (fraction of all bins that are in $s$).
+
+## Data
+
+ENCODE ChIP-seq of GM12878 (Bernstein lab, GRCh38, filtered alignments, replicates 1 and 2 merged, cut to chr21) for the six marks of the Roadmap 18-state model, H3K4me3 ([ENCSR000AKA](https://www.encodeproject.org/experiments/ENCSR000AKA/)), H3K27ac ([ENCSR000AKC](https://www.encodeproject.org/experiments/ENCSR000AKC/)), H3K4me1 ([ENCSR000AKF](https://www.encodeproject.org/experiments/ENCSR000AKF/)), H3K36me3 ([ENCSR000AKE](https://www.encodeproject.org/experiments/ENCSR000AKE/)), H3K27me3 ([ENCSR000AKD](https://www.encodeproject.org/experiments/ENCSR000AKD/)), H3K9me3 ([ENCSR000AOX](https://www.encodeproject.org/experiments/ENCSR000AOX/)), and the input ([ENCSR000AKJ](https://www.encodeproject.org/experiments/ENCSR000AKJ/)). These are the experiments behind the fold-change bigWigs of *What is epigenetics?*. For comparison: the Roadmap 18-state segmentation of GM12878 (epigenome E116, lifted to hg38).
+
+| file | content |
+|---|---|
+| `gm12878_{h3k4me3,h3k27ac,h3k4me1,h3k36me3,h3k27me3,h3k9me3}_chip_chr21.bam` | ChIP-seq reads on chr21 (+ `.bai`) |
+| `gm12878_input_chr21.bam` | input control |
+| `roadmap_E116_18state_hg38.bed.gz` | Roadmap 18-state segmentation of GM12878 ([egg2.wustl.edu](https://egg2.wustl.edu/roadmap/web_portal/chr_state_learning.html)) |
+| `gm12878_*_fc.bigWig`, `gencode.v46.basic.annotation.gtf.gz` | from earlier units (optional browser view; TSSs) |
+
+```bash
+data/download.sh chromatin-states       # the BAMs come from data/prepare-cuttag.sh
+mkdir -p ~/epi/states && cd ~/epi/states
+D=/path/to/course/data
+curl -L -o ChromHMM.zip https://ernstlab.github.io/ChromHMM/ChromHMM.zip && unzip -q ChromHMM.zip
+CHMM=$PWD/ChromHMM/ChromHMM.jar         # needs Java 8 or later
+```
+
+ChromHMM is a single Java program; the zip also contains annotation files (`COORDS/hg38`, `ANCHORFILES/hg38`) for the enrichment analyses. The command-line part takes a few minutes in total.
+
+*Honest simplifications:* one chromosome; one cell type (no concatenated model); six marks; and our model is learned from chr21 alone (about 234 000 bins), whereas the Roadmap model was learned jointly on many epigenomes and the whole genome. The Roadmap annotation was made on hg19 and lifted over to hg38.
+
+## By hand
+
+Do these on paper.
+
+**B1. Binarisation.** On chr21 (46.7 Mb) a mark has 600 000 reads.
+
+(a) How many 200-bp bins does chr21 have? What is the mean number of reads per bin, λ?
+
+(b) Using the table, what is the smallest count $k^*$ with $P(X \ge k^*) < 10^{-4}$?
+
+| $k$ | 9 | 10 | 11 | 12 |
+|---|---|---|---|---|
+| $P(X \ge k \mid 2.57)$ | 0.0014 | 3.4 × 10<sup>-4</sup> | 7.8 × 10<sup>-5</sup> | 1.6 × 10<sup>-5</sup> |
+
+(c) In a bin, the input has twice its average density. What is λ there? Will the threshold go up or down, and why is that sensible?
+
+(d) Another mark was sequenced half as deeply. Without changing anything else, what happens to the fraction of bins called 1? Why does this matter for a chromatin-state model?
+
+**B2. Emissions.** A learned model has these emission probabilities:
+
+| state | H3K4me3 | H3K27ac | H3K4me1 | H3K36me3 | H3K27me3 | H3K9me3 |
+|---|---|---|---|---|---|---|
+| 1 | 0.92 | 0.85 | 0.30 | 0.03 | 0.02 | 0.01 |
+| 2 | 0.05 | 0.70 | 0.92 | 0.04 | 0.01 | 0.01 |
+| 3 | 0.01 | 0.02 | 0.05 | 0.75 | 0.01 | 0.04 |
+| 4 | 0.40 | 0.05 | 0.55 | 0.02 | 0.85 | 0.02 |
+| 5 | 0.01 | 0.01 | 0.02 | 0.03 | 0.02 | 0.02 |
+
+(a) Name each state.
+
+(b) Compute $P(o \mid s)$ for states 1 and 2 for a bin with H3K27ac and H3K4me1 present and all others absent. Which state explains it better, and by how much?
+
+(c) A bin has H3K4me3, H3K4me1 and H3K27me3 present. Without computing everything, which state wins? Which single factor makes the biggest difference against state 1?
+
+**B3. Forward algorithm.** A toy HMM has states A (active) and Q (quiet), one mark, $\pi$ = (0.5, 0.5), $P(\text{mark} \mid A) = 0.8$, $P(\text{mark} \mid Q) = 0.1$, $P(\text{stay}) = 0.9$, $P(\text{switch}) = 0.1$. The observed sequence is 1, 0, 1.
+
+(a) Compute $\alpha_1$, $\alpha_2$ and $\alpha_3$ for both states.
+
+(b) What is $P(1, 0, 1)$?
+
+(c) What is the posterior probability that bin 3 is in state A, given all three observations?
+
+**B4. Viterbi.** For the same model and sequence 1, 0, 1:
+
+(a) Compute $\delta_t(A)$ and $\delta_t(Q)$ for $t$ = 1, 2, 3, and the back-pointers.
+
+(b) What is the most probable state path, and its probability? Check it against the brute-force list of all eight paths (you only need to compute the two or three best candidates).
+
+(c) Change $P(\text{stay})$ to 0.6. Does the path for 1, 0, 1 change? What does $P(\text{stay})$ control?
+
+**B5. Enrichment.** On chr21 there are 233 549 bins. A state covers 1 120 bins; 640 bins overlap a CpG island, 120 of which are in that state.
+
+(a) Compute the fold enrichment of the state for CpG islands.
+
+(b) What fraction of the state's bins are CpG-island bins? Why can a state be highly enriched at CpG islands and still mostly lie outside them?
+
+**B6. Read the transition matrix.** In a learned 8-state model, the transition probability from "TSS flank" to "active TSS" is 0.13, from "TSS flank" to "transcribed" 0.08, and from "quiescent" to "quiescent" 0.999. (a) What is the expected length of a run of quiescent bins, in kb? (b) What do the off-diagonal entries say about the order of elements along a gene?
+
+**B7. How many states?** A colleague learns models with 5, 10, 15, 20 and 25 states. The log-likelihood increases every time, and she chooses 25. What is wrong with the argument, and what would you do instead?
+
+**B8. Judge the claims.** (a) "Variant rs… lies in an EnhA state in E116, so it disrupts the enhancer of the nearest gene." (b) "We compared the chromatin states of cell type X (our data, 10 M reads per mark) with Roadmap's state map of cell type Y and found 3000 regions that switch from enhancer to quiescent." For each, say what has and has not been shown.
+
+## On the command line
+
+### C1 — Binarise
+
+```bash
+printf "chr21\t46709983\n" > chr21.sizes
+for m in H3K4me3 H3K27ac H3K4me1 H3K36me3 H3K27me3 H3K9me3; do
+  l=$(echo $m | tr 'A-Z' 'a-z')
+  printf "GM12878\t%s\tgm12878_%s_chip_chr21.bam\tgm12878_input_chr21.bam\n" $m $l
+done > cellmarkfiletable.txt
+cat cellmarkfiletable.txt
+java -mx4G -jar $CHMM BinarizeBam -b 200 chr21.sizes $D cellmarkfiletable.txt binary
+head -4 binary/GM12878_chr21_binary.txt
+awk 'NR == 2 { for (i = 1; i <= NF; i++) m[i] = $i } NR > 2 { n++; k = 0; for (i = 1; i <= NF; i++) { s[i] += $i; k += $i }; z += (k == 0) }
+     END { for (i = 1; i <= 6; i++) printf "%s %.2f%%\n", m[i], 100 * s[i] / n; printf "bins %d, no mark %.1f%%\n", n, 100 * z / n }' \
+  binary/GM12878_chr21_binary.txt
+for f in $D/gm12878_*_chr21.bam; do echo $(basename $f) $(samtools view -c $f); done
+```
+
+(a) What are the four columns of the cell-mark file table? Why is chr21.sizes needed?
+
+(b) What fraction of bins is called 1 for each mark, and what fraction has no mark at all? Relate the numbers to the read counts and to what each mark covers biologically.
+
+### C2 — Learn models
+
+```bash
+for K in 4 8 12; do
+  java -mx4G -jar $CHMM LearnModel -b 200 -l chr21.sizes -noautoopen binary model_$K $K hg38 > learn_$K.log
+  echo "K = $K: last iteration, log-likelihood:" $(grep -E "^ +[0-9]+ +-[0-9]" learn_$K.log | tail -1 | awk '{ print $1, $2 }')
+done
+ls model_8
+cat model_8/emissions_8.txt
+```
+
+(a) Open `model_8/emissions_8.png` and `transitions_8.png`. Using the emissions, give each of the 8 states a name.
+
+(b) How many iterations did training of the 8-state model take, and what was the final log-likelihood? How does the log-likelihood change from 4 to 8 to 12 states?
+
+(c) Compare the 4-, 8- and 12-state emission matrices. Which distinctions appear only with more states?
+
+### C3 — Enrichments
+
+```bash
+column -t -s $'\t' model_8/GM12878_8_overlap.txt
+cut -f1,2,7,12,17,22 model_8/GM12878_8_RefSeqTSS_neighborhood.txt | column -t     # -2, -1, 0, +1, +2 kb
+```
+
+(a) `GM12878_8_overlap.txt` has one row per state: the percentage of chr21 in the state, then the fold enrichment for CpG islands, RefSeq exons, genes, TES, TSS and TSS ± 2 kb. Which states are enriched at TSSs and CpG islands? Which at gene bodies? Does this confirm your names from C2?
+
+(b) In the TSS neighbourhood file (fold enrichment at positions relative to RefSeq TSSs), which state peaks right at the TSS, and which on its flanks?
+
+### C4 — Compare with the Roadmap segmentation
+
+```bash
+zcat $D/roadmap_E116_18state_hg38.bed.gz | awk '$1 == "chr21"' | sort -k1,1 -k2,2n > rm_chr21.bed
+awk '{ w[$4] += $3 - $2; t += $3 - $2 } END { for (s in w) printf "%s\t%.2f\n", s, 100 * w[s] / t }' rm_chr21.bed | LC_ALL=C sort -k2,2gr
+sort -k1,1 -k2,2n model_8/GM12878_8_segments.bed > our_chr21.bed
+bedtools intersect -a our_chr21.bed -b rm_chr21.bed -wo \
+  | awk '{ n[$4 "\t" $8] += $9 } END { for (k in n) print k "\t" n[k] }' | sort -k1,1 -k3,3nr > overlap_bp.txt
+awk '$1 == "E1"' overlap_bp.txt | head -5
+```
+
+(a) What fraction of chr21 does Roadmap assign to each state? Which state dominates?
+
+(b) For your state E1 (and two others of your choice), which Roadmap states does it overlap most? Does it agree with the name you gave it?
+
+## In R
+
+You need `GenomicRanges`, `rtracklayer` and `ggplot2`. Work in the same folder:
+
+```r
+library(GenomicRanges); library(rtracklayer); library(ggplot2)
+D <- "/path/to/course/data"
+setwd("~/epi/states")
+b <- read.table("binary/GM12878_chr21_binary.txt", skip = 1, header = TRUE)
+dim(b); colMeans(b)
+em <- read.table("model_8/emissions_8.txt", header = TRUE, sep = "\t", check.names = FALSE, row.names = 1)
+tr <- read.table("model_8/transitions_8.txt", header = TRUE, sep = "\t", check.names = FALSE, row.names = 1)
+round(em, 2); round(tr, 3)
+```
+
+### R1 — Which mark combinations occur?
+
+```r
+combo <- apply(b[, c("H3K4me3", "H3K27ac", "H3K4me1", "H3K36me3", "H3K27me3", "H3K9me3")], 1, paste, collapse = "")
+tab <- sort(table(combo), decreasing = TRUE)
+length(tab); head(round(100 * tab / sum(tab), 2), 12)
+nz <- tab[names(tab) != "000000"]          # bins with at least one mark
+sum(head(nz, 10)) / sum(nz)
+```
+
+(a) How many of the 64 possible combinations occur at least once? What fraction of bins has no mark?
+
+(b) Among bins with at least one mark, what fraction is covered by the ten most common combinations? Decode the top five (the string is H3K4me3, H3K27ac, H3K4me1, H3K36me3, H3K27me3, H3K9me3).
+
+### R2 — Name the states and compare with Roadmap
+
+```r
+seg <- import("model_8/GM12878_8_segments.bed", format = "bed")
+rm  <- import(file.path(D, "roadmap_E116_18state_hg38.bed.gz"), format = "bed")
+rm  <- rm[seqnames(rm) == "chr21"]
+bins <- GRanges("chr21", IRanges(seq(1, by = 200, length.out = nrow(b)), width = 200))   # ChromHMM's bins, in file order
+bins$ours <- seg$name[findOverlaps(bins, seg, select = "first")]
+mid <- resize(bins, 1, fix = "center")
+bins$rm <- rm$name[findOverlaps(mid, rm, select = "first")]
+ct <- table(ours = bins$ours, roadmap = bins$rm)
+round(100 * prop.table(ct, 1), 1)          # for each of our states: % of its bins in each Roadmap state
+round(100 * prop.table(table(bins$ours)), 2)
+```
+
+(a) For each of your states, which Roadmap state does it overlap most, and with what percentage? Write down a mapping (e.g. E1 → TssA).
+
+(b) Which of your states are "pure" (most bins in one Roadmap state) and which are mixtures? Why can an 8-state model not reproduce 18 states?
+
+(c) What fraction of chr21 is in your quiescent state(s), and in Roadmap's 18_Quies?
+
+### R3 — Enrichment at TSSs, done by hand
+
+```r
+gtf <- import(file.path(D, "gencode.v46.basic.annotation.gtf.gz"))
+tx <- gtf[gtf$type == "transcript" & gtf$transcript_type == "protein_coding" & seqnames(gtf) == "chr21"]
+tss <- unique(resize(tx, 1, fix = "start"))
+at_tss <- overlapsAny(bins, tss)
+body <- overlapsAny(bins, reduce(tx)) & !at_tss
+st <- paste0("E", rownames(em))                 # state names as in the segmentation
+fe <- function(sel) (table(factor(bins$ours[sel], levels = st)) / sum(sel)) /
+                    (table(factor(bins$ours, levels = st)) / length(bins))
+round(cbind(TSS = fe(at_tss), gene_body = fe(body)), 2)
+```
+
+(a) Which states are most enriched in TSS bins and in gene-body bins? Compare with ChromHMM's own `overlap.txt` (C3), which uses RefSeq instead of GENCODE.
+
+(b) Why is the enrichment of the quiescent state at TSSs below 1, and what is the maximum possible fold enrichment of a state?
+
+### R4 — Viterbi with the learned model
+
+```r
+viterbi <- function(O, em, tr, init) {          # O: bins x marks (0/1); em: states x marks
+  E <- as.matrix(em[, colnames(O)]); A <- log(as.matrix(tr)); K <- nrow(E); n <- nrow(O)
+  le <- O %*% t(log(E)) + (1 - O) %*% t(log(1 - E))       # log P(o_t | s), n x K
+  d <- matrix(0, n, K); bp <- matrix(0L, n, K)
+  d[1, ] <- log(init) + le[1, ]
+  for (t in 2:n) {
+    cand <- d[t - 1, ] + A                                 # K x K: from r (rows) to s (cols)
+    bp[t, ] <- apply(cand, 2, which.max)
+    d[t, ] <- cand[cbind(bp[t, ], 1:K)] + le[t, ]
+  }
+  path <- integer(n); path[n] <- which.max(d[n, ])
+  for (t in n:2) path[t - 1] <- bp[t, path[t]]
+  path
+}
+O <- as.matrix(b[, colnames(em)])
+init <- rep(1 / nrow(em), nrow(em))
+v <- viterbi(O, em, tr, init)
+ours <- as.integer(sub("E", "", bins$ours))
+mean(v == ours)                                           # agreement with ChromHMM's posterior decoding
+# without transitions: assign each bin its most likely state from the emissions alone
+le <- O %*% t(log(as.matrix(em))) + (1 - O) %*% t(log(1 - as.matrix(em)))
+nt <- apply(le, 1, which.max)
+mean(nt == ours); c(segments_viterbi = sum(diff(v) != 0) + 1, segments_no_transitions = sum(diff(nt) != 0) + 1)
+```
+
+(a) How often does your Viterbi path agree with ChromHMM's assignment (which uses the posterior of each bin)? Why are they not identical?
+
+(b) How many segments does the Viterbi path have, and how many does the emission-only assignment have? What do the transitions contribute?
+
+## Hints
+
+::: {.callout-tip collapse="true" title="Hint 1 — Poisson thresholds (B1, C1)"}
+$\lambda$ = reads / bins; with a control, λ is scaled by the local input enrichment. The ChromHMM [manual](https://ernstlab.github.io/ChromHMM/ChromHMM_manual.pdf) describes BinarizeBam/BinarizeBed: options `-b` (bin size), `-p` (Poisson threshold, default 10<sup>-4</sup>), `-n` (read shift, default 100 bp), `-u` and `-w` (pseudocount and window of the control). The cell-mark file table has four columns: cell type, mark, read file, control file.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 2 — HMM algorithms (B3, B4, R4)"}
+Write the forward and Viterbi recursions as a table with one column per bin and one row per state. Work with probabilities on paper; in code, use logarithms (products of many small numbers underflow). Rabiner's [tutorial on HMMs](https://doi.org/10.1109/5.18626) (Proc IEEE 1989) is the classic reference; Ernst & Kellis 2012 and the ChromHMM manual describe the model ChromHMM uses (multivariate Bernoulli emissions).
+:::
+
+::: {.callout-tip collapse="true" title="Hint 3 — LearnModel and its outputs (C2, C3)"}
+`LearnModel [options] inputdir outputdir numstates assembly`; `-l` restricts output to the chromosomes in a file, `-p` sets the number of processors, `-noautoopen` stops it from opening a browser. Outputs are described in the ChromHMM [manual](https://ernstlab.github.io/ChromHMM/ChromHMM_manual.pdf): `emissions_K.txt`, `transitions_K.txt`, `*_segments.bed` (chromosome, start, end, state), `*_overlap.txt` (fold enrichments), `*_neighborhood.txt`. Ernst & Kellis 2017 (*Nat Protoc*) discusses choosing the number of states.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 4 — Roadmap states (C4, R2)"}
+The 18-state model's states, emissions and colours are described on the [Roadmap chromatin-state page](https://egg2.wustl.edu/roadmap/web_portal/chr_state_learning.html) and in the Roadmap 2015 paper (Fig. 4). [`bedtools intersect -wo`](https://bedtools.readthedocs.io/en/latest/content/tools/intersect.html) reports the number of overlapping bases as the last column. In R, [`findOverlaps(..., select = "first")`](https://rdrr.io/bioc/GenomicRanges/man/findOverlaps-methods.html) and [`tile()`](https://rdrr.io/bioc/GenomicRanges/man/tile-methods.html).
+:::
+
+## Solutions
+
+::: {.callout-note collapse="true" title="Solutions — by hand"}
+**B1.** (a) 46 709 983 / 200 ≈ 233 550 bins; λ = 600 000 / 233 550 = 2.57. (b) $k^* = 11$: $P(X \ge 11) = 7.8 \times 10^{-5} < 10^{-4}$, while $P(X \ge 10) = 3.4 \times 10^{-4}$ is still above. (c) λ = 5.14; the threshold rises (to 16 reads). A region with more input reads (an amplification, a repeat with mappability problems, an open region that shears easily) gives more ChIP reads without enrichment; a higher threshold avoids calling the mark there. (d) λ halves, the threshold falls a little, but the counts at true sites halve too, so fewer bins pass: the mark is called present in fewer bins (low sensitivity), most for broad, weakly enriched marks (H3K36me3, H3K27me3, H3K9me3). The model then learns low emission probabilities for that mark, and states defined by it become weak or merge with "quiescent". Unequal depth between marks or between cell types changes the states.
+
+**B2.** (a) 1 active TSS (TssA); 2 active enhancer (EnhA); 3 transcribed (Tx); 4 bivalent TSS / Polycomb-associated promoter (TssBiv); 5 quiescent. (b) State 1: 0.08 × 0.85 × 0.30 × 0.97 × 0.98 × 0.99 = 0.0192. State 2: 0.95 × 0.70 × 0.92 × 0.96 × 0.99 × 0.99 = 0.576. State 2 is ~30 times more likely. (c) State 4: it is the only one with a high H3K27me3 emission. Against state 1 the H3K27me3 term is 0.85 vs 0.02, a factor of ~40; the H3K4me1 term (0.55 vs 0.30) and the missing H3K27ac (0.95 vs 0.15) also favour state 4.
+
+**B3.** (a) $\alpha_1$: A = 0.5 × 0.8 = 0.4, Q = 0.5 × 0.1 = 0.05. $\alpha_2$ (observation 0): A = (0.4 × 0.9 + 0.05 × 0.1) × 0.2 = 0.073; Q = (0.4 × 0.1 + 0.05 × 0.9) × 0.9 = 0.0765. $\alpha_3$ (observation 1): A = (0.073 × 0.9 + 0.0765 × 0.1) × 0.8 = 0.0587; Q = (0.073 × 0.1 + 0.0765 × 0.9) × 0.1 = 0.0076. (b) $P(1,0,1) = 0.0587 + 0.0076 = 0.0663$. (c) For the last bin the backward term is 1, so $P(s_3 = A \mid o) = 0.0587 / 0.0663 = 0.885$.
+
+**B4.** (a) $\delta_1$: A 0.4, Q 0.05. $\delta_2$: A = max(0.4 × 0.9, 0.05 × 0.1) × 0.2 = 0.072 (from A); Q = max(0.4 × 0.1, 0.05 × 0.9) × 0.9 = 0.0405 (from Q). $\delta_3$: A = max(0.072 × 0.9, 0.0405 × 0.1) × 0.8 = 0.0518 (from A); Q = max(0.072 × 0.1, 0.0405 × 0.9) × 0.1 = 0.0036 (from Q). (b) Best end A (0.0518), back-pointers A ← A ← A: path A A A with probability 0.0518. Brute force: AAA = 0.5 × 0.8 × 0.9 × 0.2 × 0.9 × 0.8 = 0.0518; next best QQQ = 0.0036 and AQQ = QQA = 0.0032; the eight paths sum to 0.0663 (B3). The 0 in the middle is explained as a missed mark, not as a switch. (c) With P(stay) = 0.6: AAA = 0.5 × 0.8 × 0.6 × 0.2 × 0.6 × 0.8 = 0.0230; AQA = 0.5 × 0.8 × 0.4 × 0.9 × 0.4 × 0.8 = 0.0461. The path becomes A Q A. P(stay) sets how strongly the model smooths along the genome: the higher it is, the longer the segments and the more isolated bins are absorbed.
+
+**B5.** (a) Fraction of CpG-island bins in the state: 120 / 640 = 0.1875; fraction of all bins in the state: 1 120 / 233 549 = 0.0048; fold enrichment = 39. (b) 120 / 1 120 = 11% of the state's bins are CpG-island bins. CpG islands are a tiny part of the genome (0.27% of bins here): a state can be 39 times enriched at them and still have most of its bins elsewhere (here in the flanks of promoters and at promoters without islands).
+
+**B6.** (a) The run length is geometric with mean 1 / (1 − 0.999) = 1000 bins = 200 kb. (b) The flanks of promoters lead into active TSSs and into transcribed regions: the model has learned the typical order promoter flank → TSS → transcribed gene body; transitions record which elements are neighbours along the genome.
+
+**B7.** Models with more states contain the smaller ones as special cases, so the likelihood always increases; it cannot choose *K*. Instead: look for the smallest model whose states are biologically distinct and interpretable (enrichments), check that states are reproducible (e.g. between replicates or chromosomes), and compare models with ChromHMM's CompareModels (how well each state of a big model is represented in smaller ones). The Roadmap consortium chose 15 states for 5 marks and 18 for 6 marks this way.
+
+**B8.** (a) Shown: in GM12878, the chromatin at the variant looks like an active enhancer (H3K4me1 + H3K27ac). Not shown: that it acts as an enhancer, that its target is the nearest gene, that the variant changes it, that GM12878 is the relevant cell type, or that this variant (and not one in LD) is causal. (b) Not shown: that the differences are biological. Different labs, antibodies, depths (10 M vs Roadmap's subsampled depth), processing and possibly marks change binarisation and states. A fair comparison needs the same marks processed the same way at the same depth, ideally in one concatenated model, with replicates.
+:::
+
+::: {.callout-note collapse="true" title="Solutions — command line"}
+Numbers from our run (ChromHMM 1.28, Java 19, bedtools 2.30.0). The command-line part takes about 1.5 minutes (binarisation 12 s; learning 6 s, 15 s and 47 s for 4, 8 and 12 states).
+
+**C1.** (a) Cell type, mark, read file (in the directory given as `$D`), control file. ChromHMM needs the chromosome lengths to know how many bins each chromosome has; with only chr21 in the file, only chr21 is binarised. (b) Bins called 1: H3K4me3 2.97%, H3K27ac 1.77%, H3K4me1 3.61%, H3K36me3 2.22%, H3K27me3 0.88%, H3K9me3 0.96%; 91.9% of the 233 549 bins have no mark at all. Reads on chr21 (replicates 1 + 2): H3K4me3 791 771, H3K27ac 141 058, H3K4me1 401 955, H3K36me3 158 528, H3K27me3 154 148, H3K9me3 285 065, input 134 625. The sharp marks (H3K4me3, H3K27ac) give strong local enrichment, so a few percent of bins pass easily. The broad marks cover more of the genome biologically (H3K36me3 over every expressed gene body, H3K27me3 and H3K9me3 over large domains), but their enrichment per 200-bp bin is weak, so with ~150 000 reads only 1–2% of bins pass the Poisson threshold. This is the depth-dependence of B1(d): with replicate 1 alone, H3K36me3 was called in 0.74% of bins and H3K27me3 in 0.73%, which is why we merged two replicates.
+
+**C2.** (a) From `emissions_8.txt` (columns in ChromHMM's own order): E1 H3K36me3 0.34 → transcribed (Tx); E2 H3K4me1 0.71 → weak enhancer (EnhWk); E3 H3K4me1 0.96, H3K27ac 0.92, H3K4me3 0.82 → TSS-flanking/active-enhancer-like (TssFlnkU); E4 H3K4me3 0.94, H3K27ac 0.91, little H3K4me1 → active TSS (TssA); E5 H3K4me3 0.92, H3K4me1 0.71, no H3K27ac → flanking TSS (TssFlnk); E6 nothing → quiescent; E7 H3K9me3 0.37, H3K4me3 0.13 → ZNF genes and repeats / heterochromatin; E8 only H3K27me3 0.04 → weak Polycomb (ReprPCWk) or quiescent. (b) 71 iterations, final log-likelihood −63 805 (ChromHMM's scale). It rises from −70 792 (4 states) to −63 805 (8) to −61 374 (12): always up, by less and less. (c) 4 states: active promoter/enhancer, weak H3K4me1(+H3K4me3), transcribed, quiescent; no Polycomb or heterochromatin state at all. 8 states: separates TSS from flanks, and adds H3K9me3 and weak H3K27me3 states. 12 states: two quiescent states, an H3K4me1 + H3K36me3 state (an enhancer inside a transcribed gene, Roadmap's EnhG), several TSS-flank states, and a state with H3K9me3 together with H3K27ac/H3K4me1. More states first separate biologically meaningful classes, then start to split them into variants that are hard to interpret.
+
+**C3.** (a) Fold enrichments (RefSeq annotation in ChromHMM's COORDS): E4 is 55-fold enriched at CpG islands and 57-fold at TSSs (24-fold within 2 kb); E5 10-fold at CpG islands and 7-fold at TSSs; E3 3.6-fold at TSSs, 5.5-fold within 2 kb; E1 5.3-fold at exons and 3.0-fold over genes, but depleted at TSSs (0.34). E6 is depleted everywhere (~0.5). This supports the names: E4 active TSS, E3/E5 flanks, E1 gene bodies. (b) E4 peaks exactly at the TSS (57-fold at 0, 17 at −1 kb, 35 at +1 kb); E3 and E5 are highest about 1–2 kb on either side (E3 6.6 at −1 kb and 5.8 at +1 kb; E5 ~10 at ±1–2 kb); E1 increases downstream (0.34 at 0 → 0.72 at +2 kb) as the transcribed body begins.
+
+**C4.** (a) The lifted-over Roadmap segmentation covers 35.1 Mb of chr21 (the rest is unassembled sequence or did not lift over). Of that: 18_Quies 65.9%, 13_Het 8.3%, 6_TxWk 7.5%, 17_ReprPCWk 6.4%, 5_Tx 3.7%, 12_ZNF/Rpts 2.3%, 11_EnhWk 1.9%, all promoter and enhancer states together a few percent. Quiescent dominates, as in our model. (b) E1 overlaps 5_Tx (1.22 Mb) and 6_TxWk (1.11 Mb): transcribed, as named. E3 overlaps 3_TssFlnkU (264 kb) and 9_EnhA1 (162 kb), then 8_EnhG2 and 1_TssA: an "upstream flank / active enhancer" state. E7 (R2) overlaps 12_ZNF/Rpts and 13_Het.
+:::
+
+::: {.callout-note collapse="true" title="Solutions — R"}
+The R part runs in about two minutes (most of it the Viterbi loop).
+
+**R1.** (a) 46 of the 64 combinations occur; 91.9% of bins have no mark. (b) The ten most common combinations cover 91% of the marked bins. Top five, as % of all bins: 000100 (H3K36me3 only, 1.77%: gene bodies), 001000 (H3K4me1 only, 1.33%: weak/primed enhancers and promoter flanks), 111000 (H3K4me3 + H3K27ac + H3K4me1, 0.89%: active promoters and their flanks), 000010 (H3K27me3 only, 0.79%: Polycomb), 000001 (H3K9me3 only, 0.65%: heterochromatin). The rest are mostly variants of the promoter/enhancer combinations; impossible-looking combinations (e.g. H3K9me3 with H3K4me3) are rare.
+
+**R2.** (a) E1 → 5_Tx (50%) / 6_TxWk (45%); E2 → 11_EnhWk (51%); E3 → 3_TssFlnkU (44%) / 9_EnhA1 (27%); E4 → 1_TssA (86%); E5 → 4_TssFlnkD (30%), 11_EnhWk (19%), 2_TssFlnk (19%); E6 → 18_Quies (88%); E7 → 12_ZNF/Rpts (61%) / 13_Het (27%); E8 → 18_Quies (55%) / 17_ReprPCWk (21%) / 6_TxWk (11%). (b) Pure: E4, E6, and E1 (if Tx and TxWk are counted together). Mixtures: E3 (flanking promoter and active enhancer), E5 (three flank/enhancer states), E8 (quiet with weak Polycomb). Eight states cannot carry the distinctions of eighteen; also our H3K27me3 is called in only 0.9% of bins, so our model has no strong Polycomb or bivalent state, while Roadmap learned those from many epigenomes where they are common (GM12878 itself has only 0.24% 16_ReprPC and 0.04% 14_TssBiv on chr21). (c) E6 covers 67.1% of chr21 (E8, nearly unmarked, another 21.8%); Roadmap's 18_Quies 65.9% of the part it covers. Both say: two-thirds of the chromosome carries none of the six marks.
+
+**R3.** (a) TSS bins: E4 80-fold, E5 9.6, E3 3.1, E2 2.8; gene-body bins: E1 3.7, the promoter/enhancer states 2.2–2.5 (genes are where regulatory elements are), E6 0.57. Same picture as ChromHMM's RefSeq-based table, with slightly different numbers because GENCODE has more transcripts. (b) Quiescent bins are where no mark is, and TSSs of protein-coding genes are rarely completely unmarked; the enrichment is below 1 because the state is under-represented there. The maximum fold enrichment is 1 / (fraction of the genome in the state), reached if every annotated bin is in the state: for E4 (0.40% of chr21) that is 250.
+
+**R4.** (a) 98.2% of bins get the same state. ChromHMM assigns each bin the state with the highest posterior probability (forward–backward), which is optimal bin by bin; Viterbi gives the single most probable path, optimal for the whole sequence. They differ at segment boundaries and in short ambiguous stretches. (Our Viterbi also uses uniform initial probabilities, which only affects the first bin.) (b) The Viterbi path has 3 603 segments (ChromHMM's own segmentation has 4 064 lines); assigning each bin its best state from the emissions alone gives 18 327 segments and agrees with ChromHMM for only 73% of bins. The transitions smooth: they absorb single bins where a mark was missed or called by chance, and keep elements in one piece.
+:::
+
+## Where this leads
+
+- *Epigenomics and genetic variation* tests whether trait-associated variants are enriched in chromatin states of particular cell types, with proper background models.
+- *Linking regulatory elements to genes* asks which gene an enhancer state regulates.
+- *What people try to predict, and how to tell if it works* includes imputing missing marks, which is how the Roadmap 25-state model was made.
+
+## Key papers (optional further reading)
+
+*Not required reading and not examined.*
+
+- Ernst et al. 2011, *Nature*. [Mapping and analysis of chromatin state dynamics in nine human cell types](https://doi.org/10.1038/nature09906).
+- Ernst & Kellis 2012, *Nat Methods*. [ChromHMM: automating chromatin-state discovery and characterization](https://doi.org/10.1038/nmeth.1906).
+- Hoffman et al. 2012, *Nat Methods*. [Unsupervised pattern discovery in human chromatin structure through genomic segmentation](https://doi.org/10.1038/nmeth.1937).
+- Roadmap Epigenomics Consortium 2015, *Nature*. [Integrative analysis of 111 reference human epigenomes](https://doi.org/10.1038/nature14248).
+- Ernst & Kellis 2017, *Nat Protoc*. [Chromatin-state discovery and genome annotation with ChromHMM](https://doi.org/10.1038/nprot.2017.124).
+- Vu & Ernst 2022, *Genome Biol*. [Universal annotation of the human genome through integration of over a thousand epigenomic datasets](https://doi.org/10.1186/s13059-021-02572-z).

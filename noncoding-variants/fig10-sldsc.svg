@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 340" width="1120" height="340" font-family="Helvetica, Arial, sans-serif">
+<rect width="1120" height="340" fill="#ffffff"/>
+<text x="20" y="30" font-size="17" font-weight="bold" fill="#1b2a3a">1. A SNP that tags more SNPs has a larger association statistic</text>
+<line x1="70" y1="270" x2="480" y2="270" stroke="#1b2a3a" stroke-width="1.5"/>
+<line x1="70" y1="270" x2="70" y2="60" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="275" y="296" font-size="15" fill="#1b2a3a" text-anchor="middle">LD score: sum of r<tspan dy="-6" font-size="11">2</tspan><tspan dy="6"> with all SNPs nearby</tspan></text>
+<text x="50" y="165" font-size="15" fill="#1b2a3a" text-anchor="middle" transform="rotate(-90 50 165)">GWAS chi-square</text>
+<g fill="#2a6f97" fill-opacity="0.6">
+<circle cx="90" cy="250" r="4"/><circle cx="110" cy="240" r="4"/><circle cx="130" cy="246" r="4"/><circle cx="150" cy="228" r="4"/><circle cx="170" cy="236" r="4"/><circle cx="190" cy="214" r="4"/><circle cx="210" cy="222" r="4"/><circle cx="230" cy="200" r="4"/><circle cx="250" cy="206" r="4"/><circle cx="270" cy="186" r="4"/><circle cx="290" cy="194" r="4"/><circle cx="310" cy="170" r="4"/><circle cx="330" cy="178" r="4"/><circle cx="350" cy="156" r="4"/><circle cx="370" cy="164" r="4"/><circle cx="390" cy="142" r="4"/><circle cx="410" cy="150" r="4"/><circle cx="430" cy="128" r="4"/><circle cx="450" cy="136" r="4"/>
+</g>
+<line x1="80" y1="252" x2="470" y2="124" stroke="#c0392b" stroke-width="2.5"/>
+<text x="300" y="110" font-size="15" fill="#c0392b">slope ≈ heritability per SNP</text>
+<text x="80" y="326" font-size="15" fill="#5b6b7a">polygenic signal grows with LD; confounding (stratification) does not</text>
+
+<text x="580" y="30" font-size="17" font-weight="bold" fill="#1b2a3a">2. Split the LD score by annotation (stratified LDSC)</text>
+<text x="580" y="64" font-size="15" fill="#1b2a3a">mean chi-square of SNP j = 1 + N × Σ over annotations C of τ(C) × LDscore(j, C)</text>
+<text x="580" y="88" font-size="15" fill="#5b6b7a">C = immune enhancers, conserved DNA, ... and a baseline of ~50 others</text>
+<!-- bars -->
+<line x1="640" y1="270" x2="1080" y2="270" stroke="#1b2a3a" stroke-width="1.5"/>
+<rect x="680" y="250" width="70" height="20" fill="#5b6b7a"/>
+<rect x="770" y="130" width="70" height="140" fill="#c0392b"/>
+<text x="715" y="242" font-size="15" fill="#1b2a3a" text-anchor="middle">2%</text>
+<text x="805" y="122" font-size="15" fill="#1b2a3a" text-anchor="middle">20%</text>
+<text x="715" y="292" font-size="15" fill="#5b6b7a" text-anchor="middle">of SNPs</text>
+<text x="805" y="292" font-size="15" fill="#c0392b" text-anchor="middle">of heritability</text>
+<text x="880" y="180" font-size="16" font-weight="bold" fill="#1b2a3a">enrichment</text>
+<text x="880" y="204" font-size="16" font-weight="bold" fill="#1b2a3a">= 20% / 2% = 10</text>
+<text x="880" y="236" font-size="14" fill="#5b6b7a">(toy numbers)</text>
+<text x="580" y="326" font-size="15" fill="#5b6b7a">uses all SNPs and summary statistics, not only lead SNPs</text>
+</svg>

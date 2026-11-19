@@ -1,0 +1,402 @@
+---
+title: "Exercise: Hi-C, from reads to contact matrices"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+## Goal
+
+After this exercise you will be able to:
+
+- Write the ligation junction of a restriction enzyme, classify read pairs as valid contacts or artefacts, and bin pairs into a matrix, by hand.
+- Run one iteration of matrix balancing (ICE) and compute expected values and observed/expected on a small matrix.
+- Process real Hi-C reads on the command line: align the two ends separately with `bwa mem -SP5M`, parse pairs with `pairtools`, remove duplicates, and build and balance a `.cool` matrix with `cooler`.
+- Read Hi-C QC statistics, and compare your map with a published one in Python: balancing, $P(s)$, and resolution against depth.
+
+## Background
+
+**Junction.** A restriction enzyme with a 5′ overhang (MboI: ^GATC) leaves ends that are filled in and ligated blunt; the overhang is duplicated: GATC + GATC = **GATCGATC**.
+
+**Pairs.** Each side of a read pair is placed by the 5′ end of its 5′-most alignment. A side is **U**nique (MAPQ ≥ 30), **M**ulti-mapped, **N**ull (unmapped), **R**escued (part of a chimeric read explained by one ligation) or part of a **W**alk. Pair types UU, UR and RU are kept.
+
+**Artefacts.** Pairs within one restriction fragment with reads pointing **inward** (+ −) are dangling ends; pointing **outward** (− +) are self-circles. At large distances the four orientations (+ −, − +, + +, − −) each make up 25%. **Duplicates** share both 5′ positions and strands.
+
+**Matrix.** bin = ⌊position / bin size⌋; pixel (i, j) counts pairs with one side in bin i and one in bin j.
+
+**Balancing (ICE).** Model $O_{ij} = b_i b_j T_{ij}$; iterate $b_i \leftarrow$ row sum$_i$ / mean row sum, divide pixel (i, j) by $b_i b_j$, until row sums are equal. **Expected** $E(s)$ = mean of the balanced diagonal at distance $s$; O/E = pixel / $E(s)$.
+
+## Data
+
+| file | what |
+|---|---|
+| `gm12878_hic_R1.fastq.gz`, `gm12878_hic_R2.fastq.gz` | GM12878 in situ Hi-C (Rao et al. 2014), run SRR1658570 (library HIC001, MboI, 2 × 101 bp): the read pairs from the first 30 M of the run whose sides map to chr21 |
+| `gm12878_hic_fullgenome_stats.txt` | `pairtools` statistics of all 30 M read pairs aligned to the whole genome |
+| `hg38_chr21.fa.gz` | the chr21 sequence (UCSC hg38) |
+| `gm12878_hic_chr19_chr21.mcool` | ENCODE's map of the same experiment (all replicates, 4.6 billion contacts), chr19 and chr21 |
+
+```bash
+data/download.sh hic-processing      # the reads are made by data/prepare-hic.sh (see data/README.md)
+mkdir -p ~/epi/hic && cd ~/epi/hic
+D=/path/to/course/data
+```
+
+You need `bwa`, `samtools`, `pairtools` (1.1), `cooler` (0.10) and, in Python, `cooler`, `cooltools`, `numpy`, `pandas` and `matplotlib` (one conda line: `conda create -n hic -c conda-forge -c bioconda python=3.11 cooler=0.10 cooltools=0.7 pairtools=1.1 bwa samtools bedtools pybigwig pyfaidx bioframe matplotlib`). The command-line part takes about 10 minutes with 8 threads; on a cluster, wrap C2 in a SLURM job (`sbatch -c 8 --mem 8G --wrap "..."`).
+
+*Simplification:* the reads were selected by aligning 30 million read pairs to the whole genome and keeping those with a side on chr21 (the other side on chr21 or unplaced), so you can align to chr21 only. Contacts with other chromosomes are absent, and a few reads that are multi-mapped in the whole genome look unique on chr21 alone. The whole-genome statistics are in `gm12878_hic_fullgenome_stats.txt`.
+
+## By hand
+
+**B1. Junctions and fragments.**
+
+(a) HindIII cuts A^AGCTT, leaving a 5′ overhang AGCT. Write the junction after fill-in and blunt ligation. Do the same for NcoI (C^CATGG).
+
+(b) In random sequence with equal base frequencies, how often does a 4-bp site occur? A 6-bp site? How many MboI sites do you expect on chr21 (40.1 Mb of sequence)?
+
+(c) Why can a 6-cutter map not reach 1-kb resolution, whatever the depth?
+
+**B2. A chimeric read.** A 101-bp read 1 has the junction GATCGATC starting at position 41 (1-based). Its first 44 bases align to chr21:20 000 000 (+ strand), the rest to chr21:34 500 120 (+ strand). Read 2 aligns to chr21:34 500 600 on the − strand.
+
+(a) Which positions represent the two sides of the pair?
+
+(b) Why is the pair "rescued" (UR) rather than a walk?
+
+(c) What would a normal paired-end aligner (without `-SP`) have done with this pair?
+
+**B3. Classify pairs.** MboI sites near the loci are at chr21:1 000 000, 1 000 310, 1 000 650 and 1 001 020. Classify each pair (side 1 always the leftmost):
+
+| pair | pos1 | strand1 | pos2 | strand2 |
+|---|---|---|---|---|
+| p1 | 1 000 020 | + | 1 000 290 | − |
+| p2 | 1 000 030 | − | 1 000 280 | + |
+| p3 | 1 000 100 | + | 1 000 600 | − |
+| p4 | 1 000 400 | − | 1 250 000 | − |
+| p5 | 1 000 400 | − | 1 250 000 | − |
+| p6 | 1 000 700 | + | (chr19) 2 000 000 | + |
+
+**B4. Bin and count.** With 100-kb bins, fill the upper triangle of a 4 × 4 matrix for chr21:0–400 kb from these pairs: (15 000, 80 000), (120 000, 390 000), (210 000, 260 000), (230 000, 280 000), (50 000, 330 000), (305 000, 395 000), (110 000, 190 000), (99 999, 100 000).
+
+**B5. One ICE iteration.** A balanced map must have equal row sums. Raw matrix:
+
+```
+      a    b    c
+a    10    8    2
+b     8   20    6
+c     2    6    4
+```
+
+(a) Compute the row sums and their mean, the bias $b_i$ of each bin, and the matrix after one iteration (divide pixel (i, j) by $b_i b_j$).
+
+(b) Compute the new row sums. Are they closer to equal?
+
+(c) Bin c had 4 % of the reads in the previous library and 12 % in this one, which has the same cell type. What could cause that, and does balancing fix it?
+
+**B6. Expected and O/E.** A balanced 5-bin map (upper triangle, diagonal excluded):
+
+```
+      1     2     3     4     5
+1     –   0.20  0.08  0.05  0.06
+2           –   0.22  0.07  0.03
+3                 –   0.18  0.09
+4                       –   0.20
+```
+
+(a) Compute $E(s)$ for $s$ = 1, 2 and 3 bins. (b) Compute O/E for pixels (1, 3), (3, 5), (1, 4) and (1, 5). Which pixel is most enriched? (c) Is the pixel with the highest balanced value the most interesting?
+
+**B7. Read the QC.** Two libraries from the same cells, 50 M read pairs each:
+
+| | library A | library B |
+|---|---|---|
+| UU + UR + RU | 78% | 74% |
+| duplicates (of mapped) | 4% | 38% |
+| cis among unique pairs | 84% | 52% |
+| cis > 20 kb among unique pairs | 55% | 21% |
+| orientations converge at | 1.5 kb | 2 kb |
+
+(a) Which library would you sequence deeper? (b) What do B's duplicate rate and cis fraction suggest about what went wrong?
+
+**B8. Depth for resolution.** A Hi-C library gives 400 million valid contacts genome-wide (3.1 Gb), 75% cis.
+
+(a) How many 5-kb bins are there in the genome? On average, how many contacts touch each bin? (Each contact counts for two bins.)
+
+(b) Rao et al.'s criterion asks for ≥ 1 000 contacts in 80% of bins. Is 5 kb realistic? 25 kb?
+
+## On the command line
+
+### C1 — The reference, the reads and the junction
+
+```bash
+zcat $D/hg38_chr21.fa.gz > chr21.fa
+bwa index chr21.fa 2> bwa_index.log
+samtools faidx chr21.fa
+cut -f1,2 chr21.fa.fai > chr21.sizes
+cat chr21.sizes
+zcat $D/gm12878_hic_R1.fastq.gz | awk 'NR % 4 == 2' | wc -l
+zcat $D/gm12878_hic_R1.fastq.gz | awk 'NR % 4 == 2' | head -200000 | grep -c GATCGATC
+grep -v '>' chr21.fa | tr -d '\n' | tr acgtn ACGTN | grep -o GATC | wc -l
+grep -v '>' chr21.fa | tr -d '\n' | tr acgtn ACGTN | grep -o AAGCTT | wc -l
+```
+
+(a) How many read pairs are there? What fraction of read 1 contains the MboI junction?
+
+(b) How many MboI and HindIII sites does chr21 have? Compare with B1(b). (chr21 has 46.7 Mb including 6.6 Mb of N.)
+
+### C2 — Align and parse
+
+```bash
+bwa mem -SP5M -t 8 chr21.fa $D/gm12878_hic_R1.fastq.gz $D/gm12878_hic_R2.fastq.gz 2> bwa.log \
+  | pairtools parse --min-mapq 30 --walks-policy 5unique --max-inter-align-gap 30 --drop-sam --drop-seq \
+      -c chr21.sizes --output-stats parse.stats -o chr21.pairs.gz
+zcat chr21.pairs.gz | grep -v '^#' | head -5
+zcat chr21.pairs.gz | grep '^#columns'
+grep -E '^(total|total_unmapped|total_single_sided_mapped|total_mapped|cis_1kb\+)\s' parse.stats
+grep '^pair_types' parse.stats
+```
+
+(a) What are the columns of the `.pairs` file? Which column holds the pair type?
+
+(b) How many pairs have both sides mapped? Which pair types are most common?
+
+(c) How long did the alignment take? (`time` in front of the command, or the timestamps in `bwa.log`.)
+
+### C3 — Sort, deduplicate, select
+
+```bash
+pairtools sort --nproc 4 -o chr21.sorted.pairs.gz chr21.pairs.gz
+pairtools dedup --max-mismatch 3 --output-stats dedup.stats --output-dups chr21.dups.pairs.gz \
+  -o chr21.nodups.pairs.gz chr21.sorted.pairs.gz
+pairtools select '(pair_type == "UU") or (pair_type == "UR") or (pair_type == "RU")' \
+  -o chr21.valid.pairs.gz chr21.nodups.pairs.gz
+grep -E '^(total_mapped|total_dups|total_nodups|cis|cis_1kb\+|cis_20kb\+)\s' dedup.stats
+zcat chr21.valid.pairs.gz | grep -vc '^#'
+```
+
+(a) What fraction of mapped pairs are duplicates? (b) How many valid contacts remain? What fraction are more than 1 kb and more than 20 kb apart?
+
+### C4 — Whole-genome QC from the prepared statistics
+
+```bash
+S=$D/gm12878_hic_fullgenome_stats.txt
+grep -E '^(total|total_mapped|total_dups|total_nodups|cis|trans|cis_1kb\+|cis_20kb\+)\s' $S
+awk '$1 == "cis" { c = $2 } $1 == "trans" { t = $2 } $1 == "cis_20kb+" { l = $2 } $1 == "total_nodups" { n = $2 }
+     END { printf "cis %.3f  trans %.3f  cis>20kb %.3f\n", c / n, t / n, l / n }' $S
+grep '^pair_types' $S | sort -k2,2nr | head -6
+grep -E '^dist_freq/(178-237|316-422|1778-2371|31623-42170)/' $S
+```
+
+(a) Compute the cis and trans fractions and the fraction of long-range cis contacts. Does the library pass the QC thresholds of the lecture?
+
+(b) In the `dist_freq` lines, compare the four orientations at short distances (178–237 bp, 316–422 bp) and at 1.8–2.4 kb and 32–42 kb. Where do they become equal?
+
+### C5 — Bin into a matrix and balance
+
+```bash
+cooler cload pairs -c1 2 -p1 3 -c2 4 -p2 5 chr21.sizes:10000 chr21.valid.pairs.gz chr21_10kb.cool
+cooler info chr21_10kb.cool | grep -E 'nbins|nnz|sum'
+cooler zoomify -r 10000,50000,100000,250000,500000 --balance --balance-args '--cis-only' \
+  -o chr21.mcool chr21_10kb.cool
+cooler ls chr21.mcool
+cooler dump -t bins chr21.mcool::resolutions/250000 | head -60 | tail -5
+cooler dump -t bins chr21.mcool::resolutions/250000 | awk '$4 == "" || $4 == "nan"' | wc -l
+```
+
+(a) How many bins, non-zero pixels and contacts does the 10-kb matrix have?
+
+(b) What is the fourth column of the bins table, and why is it empty (NaN) for some bins?
+
+### C6 — Compare with the published map
+
+```bash
+cooler dump --join -r chr21:35,000,000-35,500,000 chr21.mcool::resolutions/100000 | head -3
+cooler dump --join -r chr21:35,000,000-35,500,000 $D/gm12878_hic_chr19_chr21.mcool::resolutions/100000 | head -3
+```
+
+How many times more contacts does ENCODE's map have in the same pixels? Compare with the total numbers of contacts.
+
+## In Python
+
+```python
+import re, numpy as np, pandas as pd, matplotlib.pyplot as plt
+from matplotlib.colors import LogNorm
+import cooler, cooltools
+D = "/path/to/course/data"
+```
+
+### P1 — The orientation plot
+
+```python
+st = pd.read_csv(f"{D}/gm12878_hic_fullgenome_stats.txt", sep="\t", header=None, index_col=0)[1]
+rows = [(int(m.group(1)), m.group(2), float(v)) for k, v in st.items()
+        if (m := re.match(r"dist_freq/(\d+)-?(?:\d+|\+)?/(..)$", k))]
+dfq = pd.DataFrame(rows, columns=["lo", "strand", "n"]).pivot(index="lo", columns="strand", values="n")
+dfq = dfq[(dfq.index >= 1) & (dfq.index < 1e6)]
+frac = dfq.div(dfq.sum(axis=1), axis=0)
+print((frac * 100).round(1).iloc[::3])
+frac.plot(logx=True, marker="o", ms=3); plt.axhline(0.25, ls="--", color="grey")
+plt.xlabel("distance (bp)"); plt.ylabel("fraction"); plt.savefig("p1_orientation.png", dpi=120)
+```
+
+(a) Which orientation dominates below 1 kb, and which artefact is it? Above which distance are all four within 0.03 of 0.25?
+
+### P2 — Raw and balanced
+
+```python
+c = cooler.Cooler("chr21.mcool::resolutions/250000")
+raw = c.matrix(balance=False).fetch("chr21").astype(float)
+bal = c.matrix(balance=True).fetch("chr21")
+w = c.bins().fetch("chr21")["weight"]
+print(len(w), "bins;", w.isna().sum(), "masked")
+cov = raw.sum(axis=0)
+print("raw row sums of unmasked bins: min", cov[w.notna()].min(), "max", cov[w.notna()].max())
+far = np.abs(np.subtract.outer(np.arange(len(w)), np.arange(len(w)))) >= 2   # balancing ignores 2 diagonals
+print("balanced row sums:", np.round(np.nansum(np.where(far, bal, 0), axis=0)[w.notna()][:5], 3))
+fig, axs = plt.subplots(1, 2, figsize=(11, 5))
+for ax, M, t in zip(axs, [raw, bal], ["raw", "balanced"]):
+    M = np.where(M > 0, M, np.nan)
+    ax.imshow(M, cmap="Reds", norm=LogNorm(vmin=np.nanpercentile(M, 5), vmax=np.nanpercentile(M, 99.5))); ax.set_title(t)
+plt.savefig("p2_balance.png", dpi=120)
+```
+
+(a) How many bins are masked, and where are they? (b) How much do raw row sums vary? What are the balanced row sums?
+
+### P3 — Distance decay: ours against ENCODE's
+
+```python
+v = pd.DataFrame({"chrom": ["chr21"], "start": [0], "end": [46_709_983], "name": ["chr21"]})
+for lab, fn in [("ours", "chr21.mcool::resolutions/10000"),
+                ("ENCODE", f"{D}/gm12878_hic_chr19_chr21.mcool::resolutions/10000")]:
+    c = cooler.Cooler(fn)
+    e = cooltools.expected_cis(c, view_df=v, nproc=2)
+    e["s"] = e.dist * 10000
+    e = e[(e.dist >= 2) & (e.s <= 2e7)]
+    plt.loglog(e.s, e["balanced.avg"] / e["balanced.avg"].sum(), label=lab)
+    sel = (e.s >= 1e5) & (e.s <= 1e6)
+    print(lab, "slope 100 kb-1 Mb:", round(np.polyfit(np.log10(e.s[sel]), np.log10(e["balanced.avg"][sel]), 1)[0], 2))
+plt.legend(); plt.xlabel("s (bp)"); plt.ylabel("P(s)"); plt.savefig("p3_ps.png", dpi=120)
+```
+
+(a) Compare the two slopes. (b) Why does $P(s)$ need so few reads while loops need billions?
+
+### P4 — Resolution against depth
+
+```python
+for res in [10000, 50000, 100000, 250000]:
+    out = []
+    for fn in [f"chr21.mcool::resolutions/{res}", f"{D}/gm12878_hic_chr19_chr21.mcool::resolutions/{res}"]:
+        m = cooler.Cooler(fn).matrix(balance=False, sparse=True).fetch("chr21")
+        cov = np.asarray(m.sum(axis=1)).ravel()          # symmetric matrix: row sum = contacts of the bin
+        cov = cov[cov > 0]
+        out.append(round(np.mean(cov >= 1000) * 100, 1))
+    print(f"{res // 1000:>4} kb: ours {out[0]:5.1f}%  ENCODE {out[1]:5.1f}% of bins with >= 1000 contacts")
+```
+
+(a) What is the resolution of our map, and of ENCODE's, by Rao et al.'s 80% criterion? (b) What does this mean for which features you can analyse with our map?
+
+### P5 — Observed/expected on our map
+
+```python
+c = cooler.Cooler("chr21.mcool::resolutions/250000")
+e = cooltools.expected_cis(c, view_df=v, nproc=1).set_index("dist")["balanced.avg"]
+m = c.matrix(balance=True).fetch("chr21")
+n = m.shape[0]
+d = np.abs(np.subtract.outer(np.arange(n), np.arange(n)))
+oe = m / e.reindex(np.arange(n)).values[d]
+plt.figure(figsize=(6, 5.5))
+plt.imshow(np.log2(oe), cmap="coolwarm", vmin=-1.5, vmax=1.5); plt.colorbar(label="log2 O/E")
+plt.title("our chr21, 250 kb, O/E"); plt.savefig("p5_oe.png", dpi=120)
+print("mean O/E 2, 10 and 40 bins from the diagonal:", [round(np.nanmean(np.diag(oe, k)), 2) for k in (2, 10, 40)])
+```
+
+(a) Why is the mean O/E along each diagonal 1? (b) Can you see compartments in our 250-kb map? Compare with *Calling compartments, TADs and loops*.
+
+## Hints
+
+::: {.callout-tip collapse="true" title="Hint 1 — junctions, pairs and artefacts (B1–B3)"}
+Fill-in copies the 4-nt overhang onto the other end, so the junction is site-up-to-cut + overhang + overhang + rest of site. Probability of a $k$-mer at a position is $4^{-k}$ (count one strand for a palindromic site). The two sides of a pair are the 5′ ends of the 5′-most alignment of each read. A pair is an artefact if both sides fall between the same two restriction sites (or adjacent fragments) with inward (+ −) or outward (− +) reads. Duplicates match at both sides and strands. See [Lajoie et al. 2015](https://doi.org/10.1016/j.ymeth.2014.10.031) and the [pairtools documentation on pair types](https://pairtools.readthedocs.io/en/latest/parsing.html).
+:::
+
+::: {.callout-tip collapse="true" title="Hint 2 — binning, ICE and O/E (B4–B6, B8)"}
+bin = ⌊pos / 100 000⌋; order the two bins so i ≤ j. For ICE: $b_i$ = row sum$_i$ / mean of the row sums, new pixel = old pixel / ($b_i b_j$). $E(s)$ = mean of one diagonal. [Imakaev et al. 2012](https://doi.org/10.1038/nmeth.2148) for ICE; for resolution, [Rao et al. 2014](https://doi.org/10.1016/j.cell.2014.11.021).
+:::
+
+::: {.callout-tip collapse="true" title="Hint 3 — command line (C1–C6)"}
+[`bwa mem`](https://bio-bwa.sourceforge.net/bwa.shtml) options `-S` (skip mate rescue), `-P` (skip pairing), `-5` (5′-most split alignment primary), `-M` (mark shorter splits secondary). [`pairtools parse`, `sort`, `dedup`, `select`](https://pairtools.readthedocs.io/en/latest/cli_tools.html); the [.pairs format](https://github.com/4dn-dcic/pairix/blob/master/pairs_format_specification.md); [`pairtools stats` output](https://pairtools.readthedocs.io/en/latest/stats.html). [`cooler cload pairs`, `zoomify`, `balance`, `dump`](https://cooler.readthedocs.io/en/latest/cli.html). A `.mcool` resolution is addressed as `file.mcool::resolutions/10000`.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 4 — Python (P1–P5)"}
+The stats file is two columns, key and value. [cooler API](https://cooler.readthedocs.io/en/latest/api.html): `matrix(balance=False)` raw counts, `balance=True` balanced, `sparse=True` a SciPy sparse matrix; `bins()` the bin table with `weight`. [`cooltools.expected_cis`](https://cooltools.readthedocs.io/en/latest/cooltools.api.html#cooltools.api.expected.expected_cis): `dist` in bins, `balanced.avg` is $E(s)$. `np.subtract.outer` gives the distance of every pixel from the diagonal.
+:::
+
+## Solutions
+
+::: {.callout-note collapse="true" title="Solutions — by hand"}
+**B1.** (a) HindIII: A + AGCT (filled in) + AGCT + T → **AAGCTAGCTT**. NcoI: C + CATG + CATG + G → **CCATGCATGG**. (b) $4^{-4}$: once every **256 bp**; $4^{-6}$: once every **4 096 bp** (both sites are palindromes, so count one strand). chr21: 40.1 × 10⁶ / 256 ≈ **157 000** MboI sites expected (C1 counts the real number). (c) A contact is only resolved to the restriction fragments it joins; with fragments of ~4 kb on average (and many much longer), contacts within or between neighbouring fragments are blurred over several kb, and bins of 1 kb would often contain no cut site at all.
+
+**B2.** (a) Side 1: the 5′ end of read 1's first alignment, chr21:20 000 000 (+). Side 2: the 5′ end of read 2, which on the − strand is its rightmost base, near chr21:34 500 700 (the reported position is the 5′ end). (b) The 3′ part of read 1 and read 2 both map near 34.5 Mb, on the same fragment and consistent with one molecule: one ligation explains everything, so the chimeric part adds no new contact. A walk would need a third locus. (c) It would expect the mates to face each other a few hundred bp apart: it might rescue read 2 by forcing a local alignment near 20 Mb, mark the pair improper, or choose a poor alignment of the 3′ part, losing or corrupting the contact.
+
+**B3.** p1: both sides in the fragment 1 000 000–1 000 310, inward (+ −): **dangling end**. p2: same fragment, outward (− +): **self-circle**. p3: + − inward across one site (1 000 310) into the next fragment, 500 bp: **re-ligation** of neighbours (or a dangling end over an uncut site), not a useful contact. p4: different fragments 250 kb apart: **valid cis contact**. p5: identical to p4 at both sides and strands: **duplicate** of p4, removed. p6: **valid trans contact** (chr21–chr19).
+
+**B4.** Bins (i, j): (0, 0), (1, 3), (2, 2), (2, 2), (0, 3), (3, 3), (1, 1), (0, 1) — the last one because 99 999 is in bin 0 and 100 000 in bin 1. Upper triangle:
+
+```
+      0   1   2   3
+0     1   1   0   1
+1         1   0   1
+2             2   0
+3                 1
+```
+
+**B5.** (a) Row sums 20, 34, 12; mean 22. Biases $b$ = 0.909, 1.545, 0.545. New matrix: (a, a) = 10/0.826 = 12.1; (a, b) = 8/1.405 = 5.69; (a, c) = 2/0.496 = 4.03; (b, b) = 20/2.388 = 8.38; (b, c) = 6/0.843 = 7.12; (c, c) = 4/0.298 = 13.4. (b) New row sums: a 12.1 + 5.69 + 4.03 = **21.8**; b 5.69 + 8.38 + 7.12 = **21.2**; c 4.03 + 7.12 + 13.4 = **24.6**. Much closer than 20, 34, 12; further iterations converge. (c) A copy-number gain (a duplicated region in this cell population), a change in mappability (different read length or aligner), or a GC/PCR bias difference between libraries. Balancing removes it as if it were a visibility bias; for a real copy-number gain that is wrong, because the extra copies really make extra contacts.
+
+**B6.** (a) $E(1)$ = (0.20 + 0.22 + 0.18 + 0.20)/4 = **0.20**; $E(2)$ = (0.08 + 0.07 + 0.09)/3 = **0.08**; $E(3)$ = (0.05 + 0.03)/2 = **0.04**. (b) (1, 3) = 0.08/0.08 = **1.0**; (3, 5) = 0.09/0.08 = **1.13**; (1, 4) = 0.05/0.04 = **1.25**; (1, 5): $E(4)$ = 0.06 (one pixel), O/E = **1.0** by definition. (1, 4) is the most enriched. (c) No: the highest balanced values are always at short distances (the diagonal +1: 0.20–0.22). Only O/E compares a pixel with what its distance predicts. Note also that $E(4)$ from a single pixel is meaningless: real maps average thousands of pixels per diagonal.
+
+**B7.** (a) Library A: low duplicates (complex library, deeper sequencing will give new contacts), high cis and long-range cis fractions. (b) B's 38% duplicates mean low complexity: few distinct ligation products (little input material, over-amplification); sequencing deeper would mostly give more duplicates. Its low cis fraction (52%) and low long-range cis (21%) point to many random ligations (nuclei lysed, poor crosslinking, ligation in solution) and many short-range artefacts.
+
+**B8.** (a) 3.1 × 10⁹ / 5 000 = **620 000** bins; 400 M contacts × 2 sides / 620 000 ≈ **1 290** contacts per bin on average. (b) The average is barely above 1 000, so far fewer than 80% of bins pass (coverage varies a lot): 5 kb is not realistic. At 25 kb: 124 000 bins, about 6 450 contacts per bin, so 80% passing is plausible: **25 kb** resolution, good for domains and strong loops (with APA), not for fine loops.
+:::
+
+::: {.callout-note collapse="true" title="Solutions — command line"}
+**C1.** (a) **273 200** read pairs; **30 023** of the first 200 000 read-1 sequences (**15%**) contain GATCGATC. (b) **91 397** MboI sites (157 000 expected for random sequence with equal base frequencies: GATC is under-represented in the human genome, about 0.6 of the random expectation) and **11 263** HindIII sites (expected 40.1 × 10⁶ / 4 096 ≈ 9 800). Building the bwa index takes about a minute.
+
+**C2.** (a) `readID chrom1 pos1 chrom2 pos2 strand1 strand2 pair_type`; the 8th column is the pair type. Positions are the 5′ ends of the reported alignments; the side with the smaller position is side 1 (pairs are "flipped" into genomic order). (b) **221 776** of **273 200** pairs (**81%**) have both sides uniquely mapped; the most common types are UU (194 256), MU (24 656), NU (17 572), UR (14 014) and RU (13 506). (c) About **20 seconds** (wall clock) with 8 threads; the whole genome would take hours.
+
+**C3.** (a) **4 277** duplicates among **221 776** mapped pairs (**1.9%**). (b) **217 499** valid contacts (UU/UR/RU, deduplicated); **184 958** (85%) are > 1 kb apart and **140 644** (65%) > 20 kb apart. (These fractions are higher than genome-wide because there are no trans pairs here.)
+
+**C4.** (a) `cis 0.837  trans 0.163  cis>20kb 0.561`; 23.8 M of 30 M pairs (79%) have both sides uniquely mapped (UU 20.7 M, RU 1.30 M, UR 1.29 M) and 1.9% of them are duplicates. The library passes easily: most pairs map uniquely, cis dominates, and long-range cis is well above 40%. (b) At 178–237 bp the counts are small and mixed; at 316–422 bp **+ −** dominates (620 797 against about 8 000–10 000 for each other orientation: 96%): dangling ends. At 1.8–2.4 kb the four are within 6% of each other (72 171, 68 167, 68 043, 68 028) and at 32–42 kb equal (117 061–117 736): from about 1–2 kb on, pairs are genuine ligation products.
+
+**C5.** (a) **4 671** bins, **123 129** non-zero pixels, **217 499** contacts. (b) The balancing weight (1/bias). It is NaN for masked bins: too few contacts (the short arm and centromere of chr21, 0–14 Mb, and repeat-rich bins), so no reliable weight can be estimated; **50** of 187 bins at 250 kb.
+
+**C6.** The three pixels have 324, 104 and 54 contacts in our map and 55 048, 16 576 and 10 102 in ENCODE's: 160–190 times more, close to the ratio of the totals on chr21 (35.2 M / 217 499 = 162).
+:::
+
+::: {.callout-note collapse="true" title="Solutions — Python"}
+**P1.** Between about 250 and 600 bp the inward orientation (+ −) dominates (96% at 316–422 bp): dangling ends and re-ligated neighbours. Below 200 bp other artefacts of very short molecules appear (outward pairs at < 20 bp, tandem pairs at 20–200 bp). From the 1–1.3 kb bin on, all four are within 0.03 of 0.25 (24.8, 27.8, 22.9, 24.6%), and within 0.01 from about 2–4 kb.
+
+**P2.** (a) **50** of **187** bins are masked: the short arm and centromere (0–14 Mb) and a few bins near 43–44 Mb (segmental duplications). (b) Raw row sums of unmasked bins range from **399** to **3 587** contacts, a ninefold range; balanced row sums are all **1.0** (cooler scales them to 1), counted without the first two diagonals, which balancing ignores.
+
+**P3.** (a) Ours **−1.02**, ENCODE **−0.97**: practically the same curve. (b) $P(s)$ averages all pixels on a diagonal (thousands at each distance), so even a few hundred thousand contacts give a precise estimate; a loop is a single pixel and needs hundreds of contacts in that one pixel to stand out from its neighbours.
+
+**P4.** (a) Ours: 81.5% of bins at 250 kb, 42.9% at 100 kb, 0% at 50 and 10 kb: a **250-kb** map. ENCODE: 92.8% even at 10 kb (it reaches 5 kb and finer). (b) With our map: $P(s)$, QC and coarse compartments; not domains or loops. Those need ENCODE's map (*Calling compartments, TADs and loops*).
+
+**P5.** (a) $E(s)$ is defined as the mean of each diagonal, so dividing by it makes the mean O/E 1 on every diagonal (1.0 at 2, 10 and 40 bins; distances 0 and 1 are not used). (b) Yes, noisily: a checkerboard of red and blue blocks from about 14 Mb on, the same pattern as the chr21 eigenvector in *Calling compartments, TADs and loops* (mostly B from 16 to 32 Mb, A from 32 to 37 and 41 to 46 Mb). Compartments need few reads; this is why they were discovered first, with 1-Mb maps.
+:::
+
+## Where this leads
+
+- *Calling compartments, TADs and loops* starts from a balanced map and its expected values, as built here, and uses ENCODE's deep map to call features.
+- The full pipeline for a whole Hi-C or Micro-C experiment is run with distiller, nf-core/hic or Juicer on a cluster; the steps are the ones of C1–C5.
+- Pairs files are also the input for single-cell Hi-C and for multi-way contact methods (Pore-C), which keep walks rather than reducing them to pairs.
+
+## Key papers (optional further reading)
+
+*Not required reading and not examined.*
+
+- Lieberman-Aiden et al. 2009, *Science*. [Comprehensive mapping of long-range interactions reveals folding principles of the human genome](https://doi.org/10.1126/science.1181369).
+- Rao et al. 2014, *Cell*. [A 3D map of the human genome at kilobase resolution reveals principles of chromatin looping](https://doi.org/10.1016/j.cell.2014.11.021).
+- Imakaev et al. 2012, *Nat Methods*. [Iterative correction of Hi-C data reveals hallmarks of chromosome organization](https://doi.org/10.1038/nmeth.2148).
+- Lajoie, Dekker & Kaplan 2015, *Methods*. [The Hitchhiker's guide to Hi-C analysis: practical guidelines](https://doi.org/10.1016/j.ymeth.2014.10.031).
+- Open2C et al. 2024, *PLoS Comput Biol*. [Pairtools: from sequencing data to chromosome contacts](https://doi.org/10.1371/journal.pcbi.1012164).
+- Abdennur & Mirny 2020, *Bioinformatics*. [Cooler: scalable storage for Hi-C data and other genomically labeled arrays](https://doi.org/10.1093/bioinformatics/btz540).

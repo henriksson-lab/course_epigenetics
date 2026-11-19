@@ -1,0 +1,418 @@
+---
+title: "Exercise: What people try to predict, and how to tell if it works"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+## Goal
+
+After this exercise you will be able to:
+
+- Describe a prediction task in epigenomics by its **input**, its **labels**, its **intended use**, and the **test** that matches that use.
+- Recognise **leakage** in a data split, and show with real data how much it inflates a memorising model ([k-nearest neighbours](https://rdrr.io/cran/class/man/knn.html)) compared with simpler ones.
+- Explain why the **negatives** define the question, and show that a GC-only model is at chance once negatives are **GC-matched**.
+- Use a **known motif** and **k-mer counts** as baselines for a TF-binding model.
+- Test whether a model trained in one cell type works in another, and say which regions it gets wrong.
+
+## Background
+
+**Leakage.** A test set is meant to be new. In genomic data many examples are related: shifted or overlapping windows, several summits of one peak, neighbouring regions in the same domain, copies of a repeat. If related examples fall on both sides of a split, the test set partly repeats the training set, and models that can **memorise** look much better than they are. Split by **group** (region, gene, chromosome), and do augmentation after the split.
+
+**Negatives.** A classifier learns whatever separates positives from negatives. Peaks are GC-rich; random genome is not. With random negatives GC content alone scores well; with **GC-matched** negatives (same GC distribution as the positives) it cannot, and only sequence information beyond GC helps. **Accessible** negatives (open regions without the TF) ask what makes a site bound rather than merely open.
+
+**Baselines.** Report the simple models next to the complex one: GC content, k-mer counts, the known motif (a PWM), nearest gene. A complex model is interesting by how much it adds.
+
+**Generalisation.** A held-out chromosome tests new regions in the same cell type. New cell types and new individuals are harder, and are the tests that matter for many uses.
+
+## Data
+
+The same files as *Machine learning from scratch*, plus the GM12878 CTCF peaks and the **K562 ATAC-seq peaks** (ENCODE ENCSR483RKN, IDR thresholded peaks ENCFF925CYR, GRCh38; the same lab and pipeline as the GM12878 ATAC data). From the course repository:
+
+```bash
+data/download.sh ml-prediction-tasks
+cd ~/epi/ml                         # where ml_atac.rds from Machine learning from scratch R1 is
+```
+
+You need `ml_atac.rds`, the open/closed data set made in R1 of the *Machine learning from scratch* exercise; run that step first if you do not have it. Packages: as in that exercise, plus [**class**](https://cran.r-project.org/package=class) (k-nearest neighbours; installed with R). Runtimes on one core: R1 about 10 minutes (k-nearest neighbours is slow), R2 about 5 minutes, R3 about 3 minutes.
+
+*Simplifications.* The models here are small (k-NN, logistic and ridge regression on 4-mer counts), so that each trap shows clearly in minutes. The traps are the same for deep networks, and usually worse, because deep networks memorise more easily.
+
+## By hand
+
+**B1. Name the task.** For each study give the input, the source of the labels, the intended use, and what the test set must contain to support that use.
+
+(a) A CNN predicts H3K27ac peaks in 50 tissues from 2 kb of sequence; the authors want to interpret GWAS variants.
+
+(b) An elastic net predicts gestational age from cord-blood methylation; the authors want a tool for other hospitals.
+
+(c) A model predicts Hi-C contact maps of a new cell type from its ATAC-seq and CTCF ChIP-seq.
+
+**B2. Which split leaks?** Say for each whether information can leak from test to training, and why.
+
+(a) Peaks are cut into 200-bp bins with 1000 bp of input each (neighbouring inputs overlap by 800 bp); bins are split 80/20 at random.
+
+(b) The same, but chromosomes 8 and 9 are the test set.
+
+(c) Each peak window and its reverse complement are added as separate examples, and examples are split at random.
+
+(d) Feature selection (keep the 500 k-mers most different between bound and unbound) is done on all data; then a classifier is cross-validated on those 500 k-mers.
+
+(e) A methylation age clock is trained on 2000 blood samples from one cohort and tested on 500 other samples of the same cohort, which include siblings of people in the training set.
+
+**B3. A nearest-neighbour classifier by hand.** Windows are described by two features, (GC, CpG o/e). Training windows: A = (0.62, 0.70) open; B = (0.38, 0.15) closed; C = (0.45, 0.30) open; D = (0.41, 0.22) closed. Test window T = (0.43, 0.24).
+
+(a) Compute the Euclidean distance from T to each training window. What does the 1-nearest-neighbour classifier predict?
+
+(b) T is in fact a copy of D shifted by 100 bp, so its true label is closed. What does a random split risk doing with such copies?
+
+**B4. GC matching.** Positives (CTCF peaks) and a pool of random windows have these counts per GC bin:
+
+| GC bin | 0.30–0.40 | 0.40–0.50 | 0.50–0.60 | 0.60–0.70 |
+|---|---|---|---|---|
+| positives | 200 | 400 | 300 | 100 |
+| random pool | 40 000 | 30 000 | 8 000 | 1 000 |
+
+(a) What fraction of the positives and of the pool have GC above 0.5? Would a GC-only model separate positives from 1000 random windows drawn from the pool?
+
+(b) How many negatives do you draw from each bin to make 1000 GC-matched negatives? Is the pool large enough?
+
+(c) With GC-matched negatives, what ROC AUC do you expect for the GC-only model? Explain.
+
+**B5. Judge the baselines.** A paper reports, for CTCF peaks vs GC-matched negatives on held-out chromosomes: CNN ROC AUC 0.94; CTCF PWM best-match score 0.91; GC content 0.50.
+
+(a) What does the GC result tell you about the negatives?
+
+(b) How much does the CNN add over the motif? What could the extra 0.03 come from?
+
+(c) A second paper reports CNN AUC 0.97 with random genomic negatives and no baselines. Can you say which CNN is better?
+
+(d) A third paper reports the same PWM baseline at only 0.83. Its methods say the best-match score was taken from a scan at p < 5 × 10⁻⁵, with score 0 for windows without a match; 91% of the negatives and 28% of the peaks have no match. Why is its baseline lower, and is the comparison with its CNN fair?
+
+**B6. A random-guess F1.** An enhancer–promoter data set has 1 positive pair for every 20 negative pairs. A "classifier" calls every pair positive.
+
+(a) What are its precision and recall? Compute $F_1 = 2PR/(P + R)$.
+
+(b) TargetFinder had F1 0.83 with random cross-validation and 0.13 with chromosome-split cross-validation. Compare both with (a).
+
+**B7. Across genes, across people.** A model predicts, for gene X, that the alternative allele of an eQTL SNP *lowers* expression. In 400 people, carriers of the alternative allele have *higher* measured expression of X.
+
+(a) Across these people, is the correlation between predicted and measured expression of X positive or negative?
+
+(b) The same model correlates well with expression across 10 000 genes in the reference genome. Explain how both results can be true.
+
+**B8. Another cell type.** A model of open chromatin is trained in GM12878 (B cells; motifs of PU.1, EBF1, IRF and CTCF) and tested in K562 (erythroid; GATA1, TAL1, CTCF).
+
+(a) Rank, from best to worst predicted, K562 regions that are: open in both cell lines; open only in K562.
+
+(b) Will GM12878-only regions give false positives or false negatives when the model is used in K562?
+
+## In R
+
+### R0 — Set up
+
+```r
+suppressPackageStartupMessages({
+  library(GenomicRanges); library(rtracklayer); library(Rsamtools); library(Biostrings)
+  library(JASPAR2024); library(TFBSTools); library(RSQLite); library(motifmatchr)
+  library(glmnet); library(class)
+})
+D <- "/path/to/course/data"
+fa   <- FaFile(file.path(D, "hg38.fa.bgz"))
+auto <- paste0("chr", 1:22)
+bl   <- import(file.path(D, "hg38_blacklist.bed.gz"))
+auc_roc <- function(score, label) {               # ROC AUC with ties handled, as in R6 of
+  o  <- order(score, decreasing = TRUE)            # Machine learning from scratch
+  s  <- score[o]; l <- label[o]; k <- c(diff(s) != 0, TRUE)
+  tpr <- cumsum(l)[k] / sum(l); fpr <- cumsum(1 - l)[k] / sum(1 - l)
+  sum(diff(c(0, fpr)) * (tpr + c(0, head(tpr, -1))) / 2)
+}
+kmers   <- function(gr) oligonucleotideFrequency(getSeq(fa, gr), 4, as.prob = TRUE)
+dat <- readRDS("ml_atac.rds")        # open/closed windows from Machine learning from scratch, R1
+dim(dat)
+```
+
+The helper `auc_roc` is the tie-aware ROC AUC from R6 of *Machine learning from scratch*; `kmers` returns the frequencies of the 256 4-mers in each window.
+
+### R1 — Leakage through overlapping windows
+
+```r
+set.seed(4)
+reg <- dat[c(sample(which(dat$open == 1), 3000), sample(which(dat$open == 0), 3000)), ]
+reg$region <- seq_len(nrow(reg))
+# three windows per region, shifted by -150, 0 and +150 bp: a common "augmentation"
+win <- do.call(rbind, lapply(c(-150, 0, 150), function(o)
+  transform(reg, start = start + o, end = end + o, shift = o)))
+gr  <- GRanges(win$chrom, IRanges(win$start + 1, win$end))
+X   <- kmers(gr)
+win$gc <- letterFrequency(getSeq(fa, gr), "GC")[, 1] / width(gr)
+y   <- win$open
+dim(X)
+
+set.seed(5)
+splits <- list(random     = runif(nrow(win)) < 0.2,                          # windows at random
+               region     = win$region %in% sample(reg$region, 0.2 * nrow(reg)),  # whole regions
+               chromosome = win$chrom %in% c("chr8", "chr9"))                # whole chromosomes
+sapply(splits, sum)                  # test windows in each split
+```
+
+```r
+evaluate <- function(te) {
+  set.seed(1)
+  nn1  <- knn(X[!te, ], X[te, ], factor(y[!te]), k = 1)
+  nn25 <- knn(X[!te, ], X[te, ], factor(y[!te]), k = 25, prob = TRUE)
+  p25  <- ifelse(nn25 == "1", attr(nn25, "prob"), 1 - attr(nn25, "prob"))
+  rdg  <- cv.glmnet(X[!te, ], y[!te], family = "binomial", alpha = 0, nfolds = 5)
+  gcm  <- glm(y ~ gc, binomial, data.frame(y = y, gc = win$gc)[!te, ])
+  c(knn1_accuracy = mean(as.character(nn1) == y[te]),
+    knn25_AUC = auc_roc(p25, y[te]),
+    ridge_AUC = auc_roc(as.numeric(predict(rdg, X[te, ], s = "lambda.min")), y[te]),
+    gc_AUC    = auc_roc(predict(gcm, data.frame(gc = win$gc[te])), y[te]))
+}
+leak <- sapply(splits, evaluate)
+round(leak, 3)
+```
+
+```r
+# why: for a random split, who is the nearest training window?
+te <- splits$random
+nn <- knn(X[!te, ], X[te, ], factor(win$region[!te]), k = 1)
+mean(as.character(nn) == win$region[te])        # fraction whose nearest neighbour is a shifted copy
+```
+
+(a) How many windows are there, and how many test windows does each split give? Why does the chromosome split give fewer?
+
+(b) Fill in a table of the four measures for the three splits. Which model gains most from the random split, and which hardly at all? Why?
+
+(c) What fraction of test windows in the random split have a shifted copy of themselves as nearest training window? Relate this to the 1-NN accuracy.
+
+(d) The GC model's AUC differs between the region split and the chromosome split, although GC cannot memorise anything. What else differs between these two test sets?
+
+### R2 — The negatives decide what is learned: CTCF peaks
+
+```r
+ctcf <- import(file.path(D, "gm12878_ctcf_peaks.bed.gz"), format = "narrowPeak")
+ctcf <- ctcf[seqnames(ctcf) %in% auto]
+pos  <- resize(GRanges(seqnames(ctcf), IRanges(start(ctcf) + ctcf$peak, width = 1)), 500, fix = "center")
+pos  <- pos[!overlapsAny(pos, bl) & countOverlaps(pos, pos) == 1]
+set.seed(1)
+pos  <- sort(pos[sample(length(pos), 10000)])
+
+gc_of <- function(gr) { s <- getSeq(fa, gr); f <- letterFrequency(s, c("G", "C", "N"))
+  data.frame(gc = (f[, 1] + f[, 2]) / width(s), n = f[, 3]) }
+pos$gc <- gc_of(pos)$gc
+
+# a pool of random windows away from CTCF peaks
+len <- seqlengths(seqinfo(fa))[auto]
+set.seed(2)
+chr  <- sample(auto, 300000, replace = TRUE, prob = len)
+pool <- GRanges(chr, IRanges(floor(runif(300000, 1, len[chr] - 500)), width = 500))
+pool <- pool[!overlapsAny(pool, ctcf, maxgap = 500) & !overlapsAny(pool, bl)]
+g    <- gc_of(pool); pool <- pool[g$n == 0]; pool$gc <- g$gc[g$n == 0]
+
+# negative set 1: random windows
+rnd <- pool[1:10000]
+# negative set 2: GC-matched, the same number of windows per 2%-GC bin as the positives
+bin  <- function(x) cut(x, seq(0, 1, 0.02), include.lowest = TRUE)
+need <- table(bin(pos$gc))
+set.seed(3)
+idx <- unlist(lapply(names(need)[need > 0], function(b) {
+  w <- which(bin(pool$gc) == b); w[sample.int(length(w), min(need[b], length(w)))] }))
+gcm <- pool[idx]
+# negative set 3: open but not CTCF-bound: GM12878 ATAC summits away from CTCF peaks
+atac <- import(file.path(D, "gm12878_atac_peaks.bed.gz"), format = "narrowPeak")
+atac <- atac[seqnames(atac) %in% auto]
+aw   <- resize(GRanges(seqnames(atac), IRanges(start(atac) + atac$peak, width = 1)), 500, fix = "center")
+aw   <- unique(aw[!overlapsAny(aw, ctcf, maxgap = 500) & !overlapsAny(aw, bl)])
+set.seed(4)
+acc  <- aw[sample(length(aw), 10000)]; acc$gc <- gc_of(acc)$gc
+round(c(positives = mean(pos$gc), random = mean(rnd$gc), gc_matched = mean(gcm$gc),
+        accessible = mean(acc$gc)), 3)
+```
+
+```r
+jdb <- dbConnect(SQLite(), db(JASPAR2024()))
+ctcf_pwm <- getMatrixByID(jdb, "MA0139.2")
+feat <- function(gr) {
+  s  <- getSeq(fa, gr)
+  sc <- matchMotifs(ctcf_pwm, s, p.cutoff = 1, bg = "even", out = "scores")      # every window: its best score
+  ht <- matchMotifs(ctcf_pwm, s, p.cutoff = 5e-5, bg = "even", out = "scores")   # strict: is there a match?
+  list(chrom = as.character(seqnames(gr)), gc = letterFrequency(s, "GC")[, 1] / width(s),
+       motif = as.numeric(motifScores(sc)[, 1]), hit = as.numeric(motifCounts(ht)[, 1]) > 0,
+       k4 = oligonucleotideFrequency(s, 4, as.prob = TRUE))
+}
+fp <- feat(pos)
+neg_res <- sapply(list(random = rnd, gc_matched = gcm, accessible = acc), function(ng) {
+  fn <- feat(ng)
+  y  <- rep(1:0, c(length(pos), length(ng)))
+  te <- c(fp$chrom, fn$chrom) %in% c("chr8", "chr9")
+  d  <- data.frame(y = y, gc = c(fp$gc, fn$gc), motif = c(fp$motif, fn$motif))
+  K  <- rbind(fp$k4, fn$k4)
+  m_gc  <- glm(y ~ gc, binomial, d[!te, ])
+  m_mot <- glm(y ~ motif, binomial, d[!te, ])
+  fold  <- match(c(fp$chrom, fn$chrom), auto) %% 5 + 1          # chromosome-grouped folds
+  m_k4  <- cv.glmnet(K[!te, ], y[!te], family = "binomial", alpha = 0, foldid = fold[!te])
+  c(gc_AUC    = auc_roc(predict(m_gc, d[te, ]), y[te]),
+    motif_AUC = auc_roc(predict(m_mot, d[te, ]), y[te]),
+    kmer_AUC  = auc_roc(as.numeric(predict(m_k4, K[te, ], s = "lambda.min")), y[te]),
+    motif_in_negatives = mean(fn$hit))
+})
+round(neg_res, 3)
+mean(fp$hit)                         # fraction of CTCF peaks with a motif match
+```
+
+(a) What is the mean GC of the positives and of each negative set? Was the matching successful?
+
+(b) Fill in the table of AUCs (three models × three negative sets). Which model depends on the choice of negatives, and which does not?
+
+(c) The 4-mer ridge model is worse than the single PWM score against GC-matched negatives, although it has 256 parameters. Explain.
+
+(d) What fraction of CTCF peaks, and of each negative set, has a motif match? Think of two reasons why a GC-matched window can contain a CTCF motif without being a CTCF peak.
+
+(e) The code scans twice: with `p.cutoff = 1` for the score and `p.cutoff = 5e-5` for presence. Change the first to `5e-5` and rerun the motif model against GC-matched negatives. What happens to the AUC, and why? (Hint 2.)
+
+### R3 — Does a GM12878 model work in another cell type?
+
+```r
+k562 <- import(file.path(D, "k562_atac_peaks.bed.gz"), format = "narrowPeak")
+gm   <- import(file.path(D, "gm12878_atac_peaks.bed.gz"), format = "narrowPeak")
+summits <- function(pk) {
+  pk <- pk[seqnames(pk) %in% auto]
+  pk <- pk[order(-pk$signalValue)]
+  pk <- pk[!duplicated(paste(seqnames(pk), start(pk), end(pk)))]
+  w  <- resize(GRanges(seqnames(pk), IRanges(start(pk) + pk$peak, width = 1)), 500, fix = "center")
+  w[!overlapsAny(w, bl) & countOverlaps(w, w) == 1]
+}
+gm_w <- summits(gm); k5_w <- summits(k562)
+
+# closed in both cell types: the closed windows of ml_atac.rds that are also far from K562 peaks
+neg <- with(dat[dat$open == 0, ], GRanges(chrom, IRanges(start + 1, end)))
+neg <- neg[!overlapsAny(neg, k562, maxgap = 500)]
+test_chr <- c("chr8", "chr9")
+is_test  <- function(gr) as.character(seqnames(gr)) %in% test_chr
+
+# train one model per cell type: 4-mer ridge regression, training chromosomes only
+train_model <- function(open_w) {
+  set.seed(8)
+  p <- open_w[!is_test(open_w)]; p <- p[sample(length(p), 15000)]
+  n <- neg[!is_test(neg)]
+  fold <- match(c(as.character(seqnames(p)), as.character(seqnames(n))), auto) %% 5 + 1
+  cv.glmnet(rbind(kmers(p), kmers(n)), rep(1:0, c(length(p), length(n))),
+            family = "binomial", alpha = 0, foldid = fold)
+}
+fit_gm <- train_model(gm_w); fit_k5 <- train_model(k5_w)
+
+# test windows on chr8 and chr9, split into shared and cell-type-specific open regions
+t_gm <- gm_w[is_test(gm_w)]; t_k5 <- k5_w[is_test(k5_w)]
+tests <- list(GM12878_only = t_gm[!overlapsAny(t_gm, k562)],
+              shared       = t_gm[overlapsAny(t_gm, k562)],
+              K562_only    = t_k5[!overlapsAny(t_k5, gm)])
+t_neg <- neg[is_test(neg)]
+sapply(tests, length); length(t_neg)
+Kneg <- kmers(t_neg)
+cross <- sapply(tests, function(w) {
+  K <- rbind(kmers(w), Kneg); y <- rep(1:0, c(length(w), length(t_neg)))
+  c(trained_on_GM12878 = auc_roc(as.numeric(predict(fit_gm, K, s = "lambda.min")), y),
+    trained_on_K562    = auc_roc(as.numeric(predict(fit_k5, K, s = "lambda.min")), y))
+})
+round(cross, 3)
+```
+
+(a) How many test windows are in each group?
+
+(b) Fill in the 2 × 3 table of AUCs. Which regions are easy for both models? Which model is better on each cell-type-specific set?
+
+(c) The GM12878 model still reaches 0.82 on K562-only regions. What has it learned that transfers? What would you expect for a model trained against GC-matched negatives?
+
+## Hints
+
+::: {.callout-tip collapse="true" title="Hint 1 — leakage (B2, B3, R1)"}
+Ask of every pair of examples on opposite sides of a split: do they share sequence, a peak, a promoter, a person, or a decision? [`knn`](https://rdrr.io/cran/class/man/knn.html) from the class package gives each test example the majority label of its `k` nearest training examples (Euclidean distance on the features); with `prob = TRUE` it also returns the fraction of neighbours that voted for the winning class. The review by [Whalen et al. 2022](https://doi.org/10.1038/s41576-021-00434-9) lists the common forms of leakage in genomics.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 2 — negatives and baselines (B4, B5, R2)"}
+GC matching means: the same number of negatives as positives in every GC bin, so the two GC distributions are identical. A model of one feature cannot separate two classes whose distributions of that feature are identical. [`matchMotifs(..., out = "scores")`](https://bioconductor.org/packages/release/bioc/vignettes/motifmatchr/inst/doc/motifmatchr.html) returns, per window, the best match score (`motifScores`) and the number of matches (`motifCounts`). Careful: a window with no match passing `p.cutoff` gets score **0**, so with the usual cutoff (5 × 10⁻⁵) most windows tie at 0 and the score loses its ranking. For a continuous score use `p.cutoff = 1` (every window keeps its true best score); for counts or presence keep a strict cutoff. *How a CNN reads DNA* meets the same trap. Motif background and GC matching are also discussed in *Motifs, motif enrichment and TF footprinting*.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 3 — F1 and correlations (B6, B7)"}
+Calling everything positive gives recall 1 and precision = fraction of positives. A correlation across people is positive when people with higher predicted expression tend to have higher measured expression. See [Sasse et al. 2023](https://doi.org/10.1038/s41588-023-01524-6) and [Huang et al. 2023](https://doi.org/10.1038/s41588-023-01574-w).
+:::
+
+::: {.callout-tip collapse="true" title="Hint 4 — cross-cell-type (B8, R3)"}
+Which TFs open chromatin in each cell type? PU.1 (SPI1), EBF1 and IRF4 in B cells; GATA1 and TAL1 in erythroid cells; CTCF and CpG-island promoters everywhere. [`overlapsAny`](https://rdrr.io/bioc/GenomicRanges/man/findOverlaps-methods.html) splits the peaks into shared and specific.
+:::
+
+## Solutions
+
+::: {.callout-note collapse="true" title="Solutions — by hand"}
+
+**B1.** (a) Input: 2 kb of reference sequence; labels: H3K27ac peaks per tissue (ChIP-seq); use: predict the effect of GWAS variants, i.e. of sequence changes. The test must contain held-out chromosomes, and, for the variant claim, a comparison of predicted effects with measured allelic effects (allele-specific H3K27ac, QTLs, reporter assays). (b) Input: CpG methylation of cord blood; labels: gestational age from clinical records; use: other hospitals. Test on independent cohorts measured in other labs and, ideally, on other array versions: batch effects between labs are the main threat. (c) Input: ATAC-seq and CTCF ChIP-seq tracks (plus sequence); labels: Hi-C maps; use: new cell types. Test on cell types not used in training, not only on held-out regions of training cell types.
+
+**B2.** (a) Leaks: neighbouring bins share 800 of their 1000 input bases and usually the same peak, and random splitting puts neighbours on both sides. (b) Does not leak through overlap (each chromosome entirely on one side); similar sequences on other chromosomes can still leak a little. (c) Leaks: a window and its reverse complement carry identical information, so the test set contains reverse-complement copies of training examples. (d) Leaks: the selection used the labels of the examples that later serve as cross-validation test folds. Select features inside each fold. (e) Leaks, mildly: siblings share half their genome and often their environment, so their methylation is correlated. Split by family.
+
+**B3.** (a) Distances: A $\sqrt{0.19^2 + 0.46^2} = 0.50$; B $\sqrt{0.05^2 + 0.09^2} = 0.10$; C $\sqrt{0.02^2 + 0.06^2} = 0.063$; D $\sqrt{0.02^2 + 0.02^2} = 0.028$. Nearest is D: predicted closed. (b) The prediction is right, but only because a copy of T was in the training set. With a random split many test windows have such copies, and accuracy measures memory, not generalisation.
+
+**B4.** (a) Positives: 400/1000 = 40% above 0.5; pool: 9000/79 000 = 11%. Random negatives would be mostly AT-rich, and GC alone would separate them from peaks fairly well. (b) 200, 400, 300 and 100: the same counts as the positives. The smallest bin of the pool (1000 windows at 0.6–0.7) is enough for 100. (Matching gets hard for very GC-rich positives, where the pool is thin.) (c) About 0.5: the GC distributions are identical by construction, so GC carries no information about the label.
+
+**B5.** (a) The matching worked: GC carries no information (0.50 = chance). (b) 0.03 of AUC. It could come from flanking sequence around the motif, weaker or non-canonical CTCF motifs below the PWM threshold, the number and arrangement of motifs, or sequence features of open chromatin (CTCF binds mostly in accessible DNA). (c) No: different negatives make different questions, and random negatives are easier (GC helps). Without a baseline on the same data, 0.97 cannot be compared with 0.94. (d) All windows without a significant match tie at score 0, so the baseline cannot rank 91% of the negatives and 28% of the peaks among themselves; it degenerates to little more than "is there a match?". The CNN is compared with a crippled baseline, and its advantage is overstated. Scan with `p.cutoff = 1` to keep every window's best score (R2e; *How a CNN reads DNA*).
+
+**B6.** (a) Precision $= 1/21 = 0.048$, recall 1; $F_1 = 2 \times 0.048 \times 1 / 1.048 = 2/22 = 0.091$. (b) 0.83 is far above it, but 0.13 is barely above the 0.09 of calling everything positive: with new promoters the model had little real skill.
+
+**B7.** (a) Negative: people the model predicts to have lower expression (carriers) have higher measured expression. (b) Across genes, the model needs to rank genes by expression, which depends on large differences (promoter strength, CpG islands, chromatin context) that it learned from the reference genome. Across people, it must predict the small effect of a single base change on one gene, which it was never trained on directly; the sign of such small effects is often wrong (Sasse et al. 2023; Huang et al. 2023).
+
+**B8.** (a) Open in both (promoters, CTCF sites: sequence features common to both cell types), then K562-only (needs erythroid motifs the model did not learn). (b) False positives: the model predicts them open because they look like GM12878 open regions, but they are closed in K562.
+:::
+
+::: {.callout-note collapse="true" title="Solutions — R"}
+
+**R1.** (a) 6000 regions × 3 shifts = 18 000 windows. Test windows: 3590 (random), 3600 (whole regions, 20% of 6000 × 3) and 1746 (chr8 + chr9, about 10% of the genome). (b)
+
+| | random windows | whole regions | whole chromosomes |
+|---|---|---|---|
+| 1-NN accuracy | **0.959** | 0.648 | 0.636 |
+| 25-NN ROC AUC | 0.855 | 0.794 | 0.775 |
+| ridge on 4-mers, ROC AUC | 0.850 | 0.823 | 0.822 |
+| GC only, ROC AUC | 0.752 | 0.745 | 0.715 |
+
+The 1-NN classifier gains most (+0.31): it memorises. The 25-NN model averages over 25 neighbours, of which at most two are copies, so it gains less (+0.06). Ridge regression (+0.03) and GC (+0.01) cannot memorise individual windows. (c) 0.87: for 87% of test windows the nearest training window is one of its own shifted copies, so the 1-NN classifier copies the right label. Accuracy 0.96 is what memory gives; 0.65 is what the model has learned. (d) The test windows themselves: the region split samples regions from the whole genome, the chromosome split only chr8 and chr9, which differ in GC composition and in their mix of promoters and distal sites. Compare models only on the same test set.
+
+**R2.** (a) Mean GC: CTCF peaks 0.487, random 0.409, GC-matched 0.487, accessible 0.496. The matching worked exactly (10 000 of 10 000 matched). (b)
+
+| | random | GC-matched | accessible |
+|---|---|---|---|
+| GC only | 0.707 | **0.486** | 0.506 |
+| 256 4-mers (ridge) | 0.797 | 0.703 | 0.728 |
+| best CTCF PWM score | 0.941 | 0.905 | 0.918 |
+
+GC depends entirely on the negatives; the PWM score much less (0.94 → 0.91). The 4-mer model loses 0.09: part of what it had learned was GC. (c) 0.70 against 0.91. The CTCF motif is about 19 bp long, and 4-mer counts cannot represent it: they count short words anywhere in the window, losing their order and the motif's long-range pattern. One well-chosen feature that encodes biology beats many generic ones. A CNN can learn long motifs from the sequence itself, which is the subject of *How a CNN reads DNA*. (d) 71.7% of CTCF peaks have a match; 5.0% of random, 9.3% of GC-matched and 8.2% of accessible windows. Reasons for unbound motifs: methylated CpGs within the motif block CTCF binding; the site is in closed chromatin or bound in other cell types only; the match is weak and passes the threshold by chance (a 500-bp window offers about 1000 positions on two strands, and at p < 5 × 10⁻⁵ about 5% of windows get a match by chance). (e) With `p.cutoff = 5e-5` for the score, every window without a significant match gets score 0: 91% of the GC-matched windows and 28% of the peaks tie at 0, the ranking within them is lost, and the AUC against GC-matched negatives falls from 0.905 to 0.834. A continuous score needs `p.cutoff = 1`.
+
+**R3.** (a) chr8–9: 4070 GM12878-only, 2039 shared, 1925 K562-only open windows, against 1965 windows closed in both. (b)
+
+| trained on | GM12878 only | shared | K562 only |
+|---|---|---|---|
+| GM12878 | **0.792** | 0.912 | 0.821 |
+| K562 | 0.728 | 0.920 | **0.868** |
+
+Shared regions are easy for both (CpG-island promoters, CTCF sites). Each model is best on its own cell type's specific regions and loses 0.05–0.06 on the other's. (c) Generic features of open DNA: GC- and CpG-rich words, the absence of AT-rich words typical of closed DNA. Both cell types' open regions share these, so they transfer. With GC-matched negatives, these generic features would help less, the cell-type-specific motifs would carry more of the signal, and the drop between cell types would be larger.
+:::
+
+## Where this leads
+
+- *How a CNN reads DNA* trains a CNN on CTCF peaks against GC-matched negatives, with chr8 and chr9 held out, and compares it with the PWM baseline of R2.
+- *What did the model learn? Variant effects* asks whether the CNN's predicted effects of mutations make biological sense.
+- *Linking regulatory elements to genes* covers the enhancer–gene task and the ABC model.
+- *Epigenetic clocks and biomarkers* evaluates methylation predictors across cohorts.
+
+## Key papers (optional further reading)
+
+*Not required reading and not examined.*
+
+- Whalen, Schreiber, Noble & Pollard 2022, *Nat Rev Genet*. [Navigating the pitfalls of applying machine learning in genomics](https://doi.org/10.1038/s41576-021-00434-9).
+- Zhou & Troyanskaya 2015, *Nat Methods*. [Predicting effects of noncoding variants with deep learning–based sequence model](https://doi.org/10.1038/nmeth.3547).
+- Avsec et al. 2021, *Nat Methods*. [Effective gene expression prediction from sequence by integrating long-range interactions](https://doi.org/10.1038/s41592-021-01252-x).
+- Xi & Beer 2018, *PLoS Comput Biol*. [Local epigenomic state cannot discriminate interacting and non-interacting enhancer–promoter pairs with high accuracy](https://doi.org/10.1371/journal.pcbi.1006625).
+- Sasse et al. 2023, *Nat Genet*. [Benchmarking of deep neural networks for predicting personal gene expression from DNA sequence highlights shortcomings](https://doi.org/10.1038/s41588-023-01524-6).
+- Huang et al. 2023, *Nat Genet*. [Personal transcriptome variation is poorly explained by current genomic deep learning models](https://doi.org/10.1038/s41588-023-01574-w).

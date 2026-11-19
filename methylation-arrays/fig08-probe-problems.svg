@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 400" width="1120" height="400" font-family="Helvetica, Arial, sans-serif">
+<rect width="1120" height="400" fill="#ffffff"/>
+<line x1="373" y1="20" x2="373" y2="380" stroke="#dfe6ec" stroke-width="2"/>
+<line x1="746" y1="20" x2="746" y2="380" stroke="#dfe6ec" stroke-width="2"/>
+<!-- Panel A: SNP -->
+<text x="186" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1b2a3a">A. A SNP at the CpG</text>
+<text x="186" y="54" text-anchor="middle" font-size="15" fill="#5b6b7a">C/T SNP: T allele reads as "unmethylated"</text>
+<!-- axis: genotype groups -->
+<line x1="74" y1="90" x2="74" y2="270" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="66" y="94" text-anchor="end" font-size="14" fill="#1b2a3a">1</text>
+<text x="66" y="184" text-anchor="end" font-size="14" fill="#1b2a3a">0.5</text>
+<text x="66" y="274" text-anchor="end" font-size="14" fill="#1b2a3a">0</text>
+<text x="22" y="185" text-anchor="middle" font-size="16" fill="#1b2a3a">β</text>
+<g fill="#2a6f97" fill-opacity="0.8">
+<circle cx="100" cy="104" r="5"/><circle cx="112" cy="108" r="5"/><circle cx="124" cy="102" r="5"/><circle cx="106" cy="114" r="5"/><circle cx="118" cy="110" r="5"/><circle cx="130" cy="106" r="5"/><circle cx="96" cy="110" r="5"/><circle cx="136" cy="112" r="5"/>
+<circle cx="190" cy="186" r="5"/><circle cx="202" cy="190" r="5"/><circle cx="214" cy="184" r="5"/><circle cx="196" cy="196" r="5"/><circle cx="208" cy="180" r="5"/><circle cx="220" cy="192" r="5"/>
+<circle cx="282" cy="262" r="5"/><circle cx="294" cy="258" r="5"/><circle cx="306" cy="264" r="5"/>
+</g>
+<text x="116" y="292" text-anchor="middle" font-size="15" fill="#1b2a3a">CC</text>
+<text x="205" y="292" text-anchor="middle" font-size="15" fill="#1b2a3a">CT</text>
+<text x="294" y="292" text-anchor="middle" font-size="15" fill="#1b2a3a">TT</text>
+<text x="205" y="312" text-anchor="middle" font-size="14" fill="#5b6b7a">genotype of each person</text>
+<text x="186" y="346" text-anchor="middle" font-size="15" fill="#1b2a3a">β tracks the genotype, not methylation.</text>
+<text x="186" y="366" text-anchor="middle" font-size="15" fill="#1b2a3a">Also at the extension base (Type I).</text>
+<!-- Panel B: cross-reactive -->
+<text x="560" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1b2a3a">B. Cross-reactive probes</text>
+<text x="560" y="54" text-anchor="middle" font-size="15" fill="#5b6b7a">the 50-mer matches more than one locus</text>
+<circle cx="430" cy="190" r="22" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="2"/>
+<rect x="452" y="186" width="120" height="8" fill="#5b6b7a"/>
+<text x="512" y="216" text-anchor="middle" font-size="14" fill="#5b6b7a">probe</text>
+<!-- two loci -->
+<line x1="600" y1="120" x2="720" y2="120" stroke="#1b2a3a" stroke-width="2.5"/>
+<rect x="620" y="112" width="70" height="16" fill="#2a6f97" fill-opacity="0.3"/>
+<text x="660" y="104" text-anchor="middle" font-size="14" fill="#1b2a3a">chr3 (target)</text>
+<line x1="600" y1="260" x2="720" y2="260" stroke="#1b2a3a" stroke-width="2.5"/>
+<rect x="620" y="252" width="70" height="16" fill="#e67e22" fill-opacity="0.35"/>
+<text x="660" y="290" text-anchor="middle" font-size="14" fill="#1b2a3a">chr12 (47 of 50 match)</text>
+<path d="M574,186 C595,160 600,140 616,124" fill="none" stroke="#2a6f97" stroke-width="2"/>
+<path d="M574,194 C595,220 600,240 616,256" fill="none" stroke="#e67e22" stroke-width="2" stroke-dasharray="6,4"/>
+<text x="560" y="346" text-anchor="middle" font-size="15" fill="#1b2a3a">The signal is a mixture of two loci.</text>
+<text x="560" y="366" text-anchor="middle" font-size="15" fill="#1b2a3a">Worse after bisulfite: a 3-letter genome.</text>
+<!-- Panel C: sex chromosomes -->
+<text x="933" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1b2a3a">C. Sex chromosomes</text>
+<text x="933" y="54" text-anchor="middle" font-size="15" fill="#5b6b7a">a CpG-island promoter on chrX</text>
+<text x="800" y="120" font-size="15" fill="#1b2a3a">female</text>
+<line x1="870" y1="104" x2="1080" y2="104" stroke="#1b2a3a" stroke-width="2"/>
+<line x1="870" y1="136" x2="1080" y2="136" stroke="#1b2a3a" stroke-width="2"/>
+<g stroke="#1b2a3a" stroke-width="1.8">
+<line x1="940" y1="104" x2="940" y2="92"/><line x1="960" y1="104" x2="960" y2="92"/><line x1="980" y1="104" x2="980" y2="92"/>
+<line x1="940" y1="136" x2="940" y2="124"/><line x1="960" y1="136" x2="960" y2="124"/><line x1="980" y1="136" x2="980" y2="124"/>
+</g>
+<circle cx="940" cy="88" r="5" fill="#ffffff" stroke="#1b2a3a" stroke-width="1.8"/><circle cx="960" cy="88" r="5" fill="#ffffff" stroke="#1b2a3a" stroke-width="1.8"/><circle cx="980" cy="88" r="5" fill="#ffffff" stroke="#1b2a3a" stroke-width="1.8"/>
+<circle cx="940" cy="120" r="5" fill="#1b2a3a"/><circle cx="960" cy="120" r="5" fill="#1b2a3a"/><circle cx="980" cy="120" r="5" fill="#1b2a3a"/>
+<text x="1086" y="109" font-size="13" fill="#5b6b7a">Xa</text>
+<text x="1086" y="141" font-size="13" fill="#5b6b7a">Xi</text>
+<text x="1010" y="166" font-size="15" font-weight="bold" fill="#1b2a3a">β ≈ 0.5</text>
+<text x="800" y="230" font-size="15" fill="#1b2a3a">male</text>
+<line x1="870" y1="226" x2="1080" y2="226" stroke="#1b2a3a" stroke-width="2"/>
+<g stroke="#1b2a3a" stroke-width="1.8"><line x1="940" y1="226" x2="940" y2="214"/><line x1="960" y1="226" x2="960" y2="214"/><line x1="980" y1="226" x2="980" y2="214"/></g>
+<circle cx="940" cy="210" r="5" fill="#ffffff" stroke="#1b2a3a" stroke-width="1.8"/><circle cx="960" cy="210" r="5" fill="#ffffff" stroke="#1b2a3a" stroke-width="1.8"/><circle cx="980" cy="210" r="5" fill="#ffffff" stroke="#1b2a3a" stroke-width="1.8"/>
+<text x="1086" y="231" font-size="13" fill="#5b6b7a">Xa</text>
+<text x="1010" y="256" font-size="15" font-weight="bold" fill="#1b2a3a">β ≈ 0</text>
+<text x="933" y="346" text-anchor="middle" font-size="15" fill="#1b2a3a">Huge "sex effects" on chrX; chrY</text>
+<text x="933" y="366" text-anchor="middle" font-size="15" fill="#1b2a3a">probes empty in women. Model or drop.</text>
+</svg>

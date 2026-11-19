@@ -1,0 +1,468 @@
+---
+title: "Exercise: Machine learning from scratch"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+## Goal
+
+After this exercise you will be able to:
+
+- Turn a biological question into a **supervised learning** problem: examples, features, labels, parameters.
+- Fit a **logistic regression** with [`glm`](https://rdrr.io/r/stats/glm.html), interpret its coefficients as log-odds and odds ratios, and fit the same model yourself by **gradient descent**.
+- Split data **by chromosome**, recognise **overfitting**, and control it with **regularisation** ([glmnet](https://glmnet.stanford.edu/articles/glmnet.html)) and **cross-validation**.
+- Compute a **confusion matrix**, precision, recall and FPR, and draw **ROC** and **precision–recall** curves by hand and in R.
+- Explain why **class imbalance** changes the PR curve but not the ROC curve, and why every model needs a **baseline**.
+
+## Background
+
+**Supervised learning.** Each example (here a 500-bp window of the genome) has a **label** (open = 1, closed = 0) and a set of **features** computed from it (GC fraction, CpG observed/expected, motif counts). A **model** maps features to a prediction and has **parameters** that are chosen to make the predictions match the labels on the **training** examples. Its quality is measured on **test** examples that played no part in fitting.
+
+**Logistic regression.** $\text{score} = b_0 + b_1 x_1 + \dots + b_p x_p$ is the log-odds of being open; $P(\text{open}) = 1 / (1 + e^{-\text{score}})$. A coefficient $b$ adds $b$ to the log-odds per unit of its feature, i.e. multiplies the odds by $e^b$, with the other features held fixed.
+
+**Loss and fitting.** The **log-loss** of one window is $-\log p$ if it is open and $-\log(1-p)$ if it is closed, where $p$ is the predicted P(open). Fitting minimises the mean log-loss over the training set (= maximum likelihood). **Gradient descent** does this by repeated small steps against the slope; for logistic regression the slope for coefficient $j$ is the mean of $(p_i - y_i)\,x_{ij}$.
+
+**Overfitting and regularisation.** With many parameters and few examples a model can fit the training data perfectly and new data badly. **Ridge (L2)** and **lasso (L1)** add a penalty $\lambda \sum b_j^2$ or $\lambda \sum |b_j|$ to the loss; the lasso sets many coefficients exactly to 0. $\lambda$ is chosen by **cross-validation** within the training set.
+
+**Metrics.** At a threshold: TP, FP, FN, TN; accuracy $=(TP+TN)/n$, precision $=TP/(TP+FP)$, recall $=TPR=TP/(TP+FN)$, $FPR=FP/(FP+TN)$. Over all thresholds: the **ROC curve** (TPR against FPR; AUC = probability that a random positive scores above a random negative) and the **PR curve** (precision against recall; a random model sits at the fraction of positives).
+
+## Data
+
+The exercise uses the GM12878 ATAC-seq peaks (ENCODE ENCSR095QNB, IDR thresholded peaks, GRCh38), the ENCODE blacklist, and the hg38 genome as a bgzipped, indexed FASTA (the same files as in *Motifs, motif enrichment and TF footprinting*). From the course repository:
+
+```bash
+data/download.sh ml-basics              # about 1 GB, mostly the genome
+mkdir -p ~/epi/ml && cd ~/epi/ml
+```
+
+You need R with **GenomicRanges, rtracklayer, Rsamtools, Biostrings, JASPAR2024, TFBSTools, RSQLite, motifmatchr** (Bioconductor) and **glmnet, pROC** (CRAN); see *Install the software you need*. Building the data set (R1) takes one to two minutes; every other step runs in seconds, except R9 (about a minute). A laptop is enough.
+
+*Simplification.* The labels are one cell line's peak calls, the negatives are random genomic windows, and the features are five numbers chosen by hand. The next unit shows how the choice of negatives changes the answer; *How a CNN reads DNA* lets the model learn its own features from the sequence.
+
+## By hand
+
+Do these on paper. A calculator is fine.
+
+**B1. Framing a prediction problem.** A study predicts, for every CpG in blood, whether it is methylated (β > 0.5), from three numbers: the GC fraction of the 500 bp around it, whether it lies in a CpG island (0/1), and the log distance to the nearest TSS. It uses 400 000 CpGs measured on arrays in 10 people.
+
+(a) What are the examples, the features and the label? How many parameters does a logistic regression with these features have?
+
+(b) A 500-bp window has 130 C, 120 G and 18 CG dinucleotides. Compute its GC fraction and its CpG o/e $= \#CG \times 500 / (\#C \times \#G)$. Another has 100 C, 105 G and 5 CG. Which looks like a CpG island?
+
+(c) A colleague proposes adding a fourth feature: the methylation of the same CpG measured on the 450K array of the same person. Why is that a bad idea if the goal is to predict methylation where it has not been measured?
+
+**B2. Logistic regression.** The five-feature model fitted in R7 is
+
+$$\text{score} = -4.20 + 8.04\,\text{GC} + 0.97\,\text{CpG o/e} + 1.41\,\text{CTCF} + 0.60\,\text{SPI1} + 0.24\,\text{EBF1}$$
+
+with motif features counting matches in the window.
+
+(a) Compute the score and P(open) for a window with GC 0.45, CpG o/e 0.30 and no motif matches.
+
+(b) The same window with one CTCF match. By what factor do the **odds** change? By what factor does the **probability** change? Why are these different?
+
+(c) How many PU.1 (SPI1) matches raise the score as much as one CTCF match?
+
+(d) By what factor do the odds change when GC rises by 0.1?
+
+**B3. Log-loss.** A model predicts P(open) = 0.8 for an open window, 0.3 for a closed window and 0.1 for an open window.
+
+(a) Compute the log-loss of each window (natural log) and the mean.
+
+(b) Compare with a model that predicts 0.5 for everything. Which window is responsible for most of the first model's loss?
+
+**B4. Confusion matrix.** A classifier is tested on 1000 windows, 200 open and 800 closed. At its threshold it calls 250 windows open, of which 150 are truly open.
+
+(a) Fill in TP, FP, FN, TN.
+
+(b) Compute accuracy, precision, recall, FPR and $F_1 = 2 \cdot \text{precision} \cdot \text{recall} / (\text{precision} + \text{recall})$.
+
+(c) What accuracy does a "model" get that calls every window closed? What does this say about accuracy as a metric here?
+
+**B5. ROC and PR by hand.** Eight test windows, sorted by score:
+
+| score | 0.92 | 0.85 | 0.77 | 0.64 | 0.50 | 0.41 | 0.33 | 0.12 |
+|---|---|---|---|---|---|---|---|---|
+| label | open | closed | open | open | closed | open | closed | closed |
+
+(a) Walk down the list and write the (FPR, TPR) point after each window. Draw the ROC curve.
+
+(b) Compute the ROC AUC by counting (open, closed) pairs in which the open window has the higher score.
+
+(c) At threshold 0.6, what are precision and recall?
+
+(d) Compute the precision at the rank of each open window, and their mean (the **average precision**, an estimate of the PR AUC).
+
+**B6. Class imbalance.** A model has TPR 0.8 and FPR 0.05 at its chosen threshold.
+
+(a) On a balanced test set with 1000 open and 1000 closed windows: how many TP and FP, and what precision?
+
+(b) Genome-wide, with 1000 open and 99 000 closed windows: how many TP and FP, and what precision?
+
+(c) Does the ROC curve of the model change between (a) and (b)? Does its PR curve?
+
+**B7. Judge the design.**
+
+(a) Three models on the same data: A (2 features) training AUC 0.74, test 0.73; B (60 features) 0.86 and 0.79; C (5000 features) 1.00 and 0.61. Which overfits? Which would you choose?
+
+(b) A student tries 40 feature sets, keeps the one with the highest test AUC (0.81), and reports 0.81 as the expected performance on new data. What is wrong, and what should they have done?
+
+(c) A paper splits 1 million 200-bp genomic windows at random into 80% training and 20% test. Why might its test AUC be too optimistic? (Hint: how far apart are neighbouring windows, and are they independent?)
+
+**B8. Regularisation and cross-validation.**
+
+(a) A lasso and a ridge model are fitted to the same 256 4-mer features. One keeps 47 non-zero coefficients, the other 256. Which is which, and why?
+
+(b) In 5-fold cross-validation on 36 000 training windows, how many windows is each model fitted on, and how many models are fitted to choose among 100 values of λ?
+
+(c) Horvath's methylation clock used elastic net on about 21 000 CpGs and selected 353. Why is regularisation essential when the number of CpGs is comparable to, or larger than, the number of samples?
+
+## In R
+
+### R1 — Build the data set: open and closed windows
+
+```r
+suppressPackageStartupMessages({
+  library(GenomicRanges); library(rtracklayer); library(Rsamtools); library(Biostrings)
+  library(JASPAR2024); library(TFBSTools); library(RSQLite); library(motifmatchr)
+})
+D <- "/path/to/course/data"
+fa   <- FaFile(file.path(D, "hg38.fa.bgz"))          # bgzipped + indexed genome
+auto <- paste0("chr", 1:22)
+bl   <- import(file.path(D, "hg38_blacklist.bed.gz"))
+atac <- import(file.path(D, "gm12878_atac_peaks.bed.gz"), format = "narrowPeak")
+
+# positives: 500 bp centred on the summit of each distinct peak (keep the strongest summit)
+pk  <- atac[seqnames(atac) %in% auto]
+pk  <- pk[order(-pk$signalValue)]
+pk  <- pk[!duplicated(paste(seqnames(pk), start(pk), end(pk)))]
+pos <- resize(GRanges(seqnames(pk), IRanges(start(pk) + pk$peak, width = 1)), 500, fix = "center")
+pos <- pos[!overlapsAny(pos, bl) & countOverlaps(pos, pos) == 1]   # no overlapping windows
+set.seed(1)
+pos <- sort(pos[sample(length(pos), 20000)])
+
+# negatives: random 500 bp windows, at least 500 bp from any ATAC peak, no blacklist, no N
+len <- seqlengths(seqinfo(fa))[auto]
+set.seed(2)
+chr <- sample(auto, 60000, replace = TRUE, prob = len)
+neg <- GRanges(chr, IRanges(floor(runif(60000, 1, len[chr] - 500)), width = 500))
+neg <- neg[!overlapsAny(neg, atac, maxgap = 500) & !overlapsAny(neg, bl)]
+neg <- neg[letterFrequency(getSeq(fa, neg), "N")[, 1] == 0]
+neg <- sort(neg[1:20000])
+c(positives = length(pos), negatives = length(neg))
+```
+
+```r
+# features: GC fraction, CpG observed/expected, and motif counts for three TFs
+jdb  <- dbConnect(SQLite(), db(JASPAR2024()))
+pwms <- do.call(PFMatrixList, lapply(c("MA0139.2", "MA0080.7", "MA0154.5"),
+                                     function(id) getMatrixByID(jdb, id)))
+names(pwms) <- c("ctcf", "spi1", "ebf1")
+features <- function(gr) {
+  s  <- getSeq(fa, gr)
+  L  <- width(s)
+  nc <- letterFrequency(s, "C")[, 1]; ng <- letterFrequency(s, "G")[, 1]
+  cg <- vcountPattern("CG", s)
+  mc <- as.matrix(motifCounts(matchMotifs(pwms, s, p.cutoff = 5e-5, bg = "even", out = "scores")))
+  colnames(mc) <- names(pwms)
+  data.frame(chrom = as.character(seqnames(gr)), start = start(gr) - 1, end = end(gr),
+             gc = (nc + ng) / L, cpg_oe = cg * L / pmax(nc * ng, 1), mc)
+}
+dat <- rbind(cbind(features(pos), open = 1), cbind(features(neg), open = 0))
+saveRDS(dat, "ml_atac.rds")
+head(dat, 3)
+```
+
+This takes one to two minutes. It is the only step that needs the genome; everything after it reads `ml_atac.rds`.
+
+(a) Explain each filter applied to the positives and to the negatives. Why are negatives kept at least 500 bp away from *any* ATAC peak, and why are windows that overlap another window dropped?
+
+(b) Why is the summit `start(pk) + pk$peak` and not `start(pk) + pk$peak + 1`? (Recall *Genomic intervals*, R1.)
+
+(c) Look at the three rows printed. Compute GC and CpG o/e for a window yourself from `getSeq(fa, ...)` for the first row and check them against the table.
+
+The motif features are deliberately **counts** of matches at a strict cutoff (`motifCounts`, p < 5 × 10⁻⁵). If you want a continuous motif *score* instead, use `motifScores` with `p.cutoff = 1`: with a strict cutoff every window without a match gets score 0, and the ranking is lost (see *What people try to predict, and how to tell if it works*, R2, and *How a CNN reads DNA*).
+
+### R2 — Look at the data before modelling
+
+```r
+dat <- readRDS("ml_atac.rds")
+table(dat$open)
+aggregate(cbind(gc, cpg_oe, ctcf, spi1, ebf1) ~ open, data = dat, FUN = mean)
+aggregate(cbind(ctcf > 0, spi1 > 0, ebf1 > 0) ~ open, data = dat, FUN = mean)
+par(mfrow = c(1, 3))
+boxplot(gc ~ open, dat, names = c("closed", "open"), main = "GC fraction")
+boxplot(cpg_oe ~ open, dat, names = c("closed", "open"), main = "CpG o/e")
+barplot(t(as.matrix(aggregate(cbind(ctcf, spi1, ebf1) ~ open, dat, mean)[, -1])),
+        beside = TRUE, names.arg = c("closed", "open"), legend.text = c("CTCF", "SPI1", "EBF1"),
+        main = "motif matches per window")
+```
+
+(a) Which feature differs most between open and closed windows, judged by eye? Which motif is most enriched in open windows (ratio of the fractions)?
+
+(b) About three quarters of open windows have no CTCF match. Does that make CTCF a poor feature?
+
+### R3 — Split by chromosome and fit a logistic regression
+
+```r
+test  <- dat$chrom %in% c("chr8", "chr9")
+train <- dat[!test, ]
+tst   <- dat[test, ]
+c(train = nrow(train), test = nrow(tst))
+
+m1 <- glm(open ~ gc, family = binomial, data = train)
+coef(m1)
+p1 <- predict(m1, newdata = tst, type = "response")     # P(open) for the test windows
+summary(p1)
+```
+
+(a) How many training and test windows are there? What fraction of the test windows is open?
+
+(b) Write the fitted model as an equation. Use it to compute, by hand, P(open) for a window with GC 0.40 and one with GC 0.60. Check with `predict(m1, data.frame(gc = c(0.4, 0.6)), type = "response")`.
+
+### R4 — Fitting by hand: gradient descent
+
+```r
+X <- cbind(1, train$gc)                        # design matrix: intercept and GC
+y <- train$open
+sigmoid  <- function(z) 1 / (1 + exp(-z))
+log_loss <- function(b) { p <- sigmoid(X %*% b); -mean(y * log(p) + (1 - y) * log(1 - p)) }
+
+b  <- c(0, 0)                                  # start somewhere
+lr <- 5                                        # learning rate: the step size
+for (i in 1:2000) {
+  grad <- crossprod(X, sigmoid(X %*% b) - y) / nrow(X)   # slope of the loss
+  b    <- b - lr * grad                                  # step downhill
+  if (i %in% c(1, 10, 100, 500, 2000)) cat(i, round(b, 3), round(log_loss(b), 4), "\n")
+}
+c(gradient_descent = b, glm = coef(m1))
+```
+
+(a) How does the loss change over the iterations? After how many steps are the coefficients within 0.01 of `glm`'s?
+
+(b) Rerun with `lr <- 50` and with `lr <- 0.5`. What happens in each case, and why?
+
+(c) The loss at the start, with both coefficients 0, is 0.693. Why exactly that number?
+
+### R5 — From probabilities to calls: the confusion matrix
+
+```r
+call <- as.integer(p1 >= 0.5)
+table(true = tst$open, predicted = call)
+TP <- sum(call == 1 & tst$open == 1); FP <- sum(call == 1 & tst$open == 0)
+FN <- sum(call == 0 & tst$open == 1); TN <- sum(call == 0 & tst$open == 0)
+round(c(accuracy  = (TP + TN) / nrow(tst),
+        precision = TP / (TP + FP),
+        recall    = TP / (TP + FN),
+        FPR       = FP / (FP + TN)), 3)
+```
+
+(a) Fill in the confusion matrix and check the four metrics by hand.
+
+(b) Change the threshold to 0.3 and to 0.7. Which metrics go up and which go down?
+
+### R6 — ROC and precision–recall curves, coded by hand
+
+```r
+curves <- function(score, label) {
+  o  <- order(score, decreasing = TRUE)         # walk down the ranked list
+  s  <- score[o]; l <- label[o]
+  tp <- cumsum(l); fp <- cumsum(1 - l)
+  k  <- c(diff(s) != 0, TRUE)                   # tied scores: one threshold, one point
+  data.frame(threshold = s[k], tpr = tp[k] / sum(l), fpr = fp[k] / sum(1 - l),
+             precision = tp[k] / (tp[k] + fp[k]))
+}
+auc_roc  <- function(cv) sum(diff(c(0, cv$fpr)) * (cv$tpr + c(0, head(cv$tpr, -1))) / 2)  # trapezoids
+avg_prec <- function(cv) sum(diff(c(0, cv$tpr)) * cv$precision)   # area under the PR steps
+c1 <- curves(p1, tst$open)
+c(ROC_AUC = auc_roc(c1), PR_AUC = avg_prec(c1))
+pROC::auc(tst$open, p1, quiet = TRUE)                          # check with a package
+par(mfrow = c(1, 2))
+plot(c1$fpr, c1$tpr, type = "l", xlab = "FPR", ylab = "TPR", main = "ROC"); abline(0, 1, lty = 2)
+plot(c1$tpr, c1$precision, type = "l", xlab = "recall", ylab = "precision", main = "PR", ylim = c(0, 1))
+abline(h = mean(tst$open), lty = 2)
+```
+
+(a) What are the ROC AUC and PR AUC of the GC model? Does your ROC AUC agree with `pROC::auc`?
+
+(b) Ties: GC is a count divided by 500, so many windows have exactly the same GC. Remove the line `k <- c(diff(s) != 0, TRUE)` (and the `[k]`s) to break ties by row order instead, and recompute. Why does the AUC go *up*? (Look at the order of the rows in `dat`.)
+
+(c) Where on the PR plot does the dashed line sit, and what does it represent?
+
+### R7 — More features, and baselines
+
+```r
+models <- list(gc = open ~ gc, gc_cpg = open ~ gc + cpg_oe, motifs = open ~ ctcf + spi1 + ebf1,
+               all = open ~ gc + cpg_oe + ctcf + spi1 + ebf1)
+set.seed(7)
+scores <- c(list(coin_flip = runif(nrow(tst))),
+            lapply(models, function(f) predict(glm(f, binomial, train), tst)))
+t(sapply(scores, function(s) { cv <- curves(s, tst$open)
+  round(c(ROC_AUC = auc_roc(cv), PR_AUC = avg_prec(cv)), 3) }))
+m_all <- glm(models$all, binomial, train)
+round(summary(m_all)$coefficients, 3)
+round(exp(coef(m_all)), 2)                     # odds ratios
+```
+
+(a) Rank the models by ROC AUC. How much does CpG o/e add to GC? How much do the motifs add?
+
+(b) The three-motif model has a lower AUC than GC alone, but its coefficients are large. Explain how both can be true.
+
+(c) Interpret the odds ratio for `ctcf` in one sentence. Why is the odds ratio for `gc` so large (3105), and what is it per 0.1 increase in GC?
+
+### R8 — Overfitting: many features, few examples
+
+```r
+s4  <- getSeq(fa, GRanges(dat$chrom, IRanges(dat$start + 1, dat$end)))
+kmr <- lapply(1:4, function(k) oligonucleotideFrequency(s4, k, as.prob = TRUE))
+sapply(kmr, ncol)                              # 4, 16, 64, 256 features
+set.seed(3)
+small <- sample(which(!test), 500)             # only 500 training windows
+over <- t(sapply(1:4, function(k) {
+  d <- data.frame(open = dat$open, kmr[[k]])
+  m <- suppressWarnings(glm(open ~ ., binomial, d[small, ]))
+  c(k = k, features = ncol(kmr[[k]]),
+    train_AUC = auc_roc(curves(predict(m, d[small, ]), dat$open[small])),
+    test_AUC  = auc_roc(curves(suppressWarnings(predict(m, d[test, ])), dat$open[test])))
+}))
+round(over, 3)
+```
+
+(a) Describe how training and test AUC change as the number of features grows. Which model would you choose, and which would you have chosen if you had looked only at training AUC?
+
+(b) Why does the 256-feature model fit the training data perfectly? (Count parameters and examples.)
+
+(c) Ignore the `glm.fit` warnings for k = 4 and say what they mean: "fitted probabilities numerically 0 or 1 occurred".
+
+### R9 — Regularisation and cross-validation with glmnet
+
+```r
+library(glmnet)
+X4   <- kmr[[4]]
+fold <- match(dat$chrom, paste0("chr", 1:22)) %% 5 + 1     # 5 folds = 5 groups of chromosomes
+table(fold[!test])
+ridge <- cv.glmnet(X4[small, ], dat$open[small], family = "binomial", alpha = 0, foldid = fold[small])
+lasso <- cv.glmnet(X4[small, ], dat$open[small], family = "binomial", alpha = 1, foldid = fold[small])
+c(ridge = auc_roc(curves(as.numeric(predict(ridge, X4[test, ], s = "lambda.min")), dat$open[test])),
+  lasso = auc_roc(curves(as.numeric(predict(lasso, X4[test, ], s = "lambda.min")), dat$open[test])))
+c(ridge_nonzero = sum(coef(ridge, s = "lambda.min")[-1] != 0),
+  lasso_nonzero = sum(coef(lasso, s = "lambda.min")[-1] != 0))
+par(mfrow = c(1, 2)); plot(lasso); plot(lasso$glmnet.fit, xvar = "lambda")
+```
+
+```r
+# all training windows, 4-mers plus the five hand-made features
+Xall <- cbind(X4, as.matrix(dat[, c("gc", "cpg_oe", "ctcf", "spi1", "ebf1")]))
+big <- cv.glmnet(Xall[!test, ], dat$open[!test], family = "binomial", alpha = 1, foldid = fold[!test])
+p_big <- as.numeric(predict(big, Xall[test, ], s = "lambda.min"))
+c1b <- curves(p_big, dat$open[test])
+c(ROC_AUC = auc_roc(c1b), PR_AUC = avg_prec(c1b), nonzero = sum(coef(big, s = "lambda.min")[-1] != 0))
+```
+
+(a) Compare the test AUC of ridge and lasso on the 500 windows with the unpenalised 256-feature model of R8. How many 4-mers does the lasso keep?
+
+(b) Look at `plot(lasso)`: which λ does cross-validation choose, and how does the curve behave at the extremes?
+
+(c) The second chunk uses all 36 317 training windows. Compare its test ROC AUC with the five-feature `glm` of R7. Which of the two would you report as your model, and with which baseline next to it?
+
+### R10 — Class imbalance
+
+```r
+set.seed(6)
+keep <- which(tst$open == 0 | runif(nrow(tst)) < 0.1)   # keep all closed, 10% of open windows
+mean(tst$open[keep])                                     # new fraction of positives
+ci <- curves(p_big[keep], tst$open[keep])
+rbind(balanced = c(ROC_AUC = auc_roc(c1b), PR_AUC = avg_prec(c1b)),
+      imbalanced = c(auc_roc(ci), avg_prec(ci)))
+mean(tst$open[keep] == 0)                                # accuracy of "always closed"
+```
+
+(a) What fraction of the windows are open after subsampling? How do ROC AUC and PR AUC change, compared with the balanced test set?
+
+(b) What is the accuracy of a "model" that calls every window closed? Would you be impressed by a paper reporting 92% accuracy on this test set?
+
+## Hints
+
+::: {.callout-tip collapse="true" title="Hint 1 — logistic regression (B2, R3, R7)"}
+$P = 1/(1 + e^{-\text{score}})$; odds $= P/(1-P) = e^{\text{score}}$. Adding $b$ to the score multiplies the odds by $e^b$, whatever the starting point; the change in probability depends on where you start. In R, [`glm(..., family = binomial)`](https://rdrr.io/r/stats/glm.html) fits the model and [`predict(..., type = "response")`](https://rdrr.io/r/stats/predict.glm.html) returns probabilities (the default, `type = "link"`, returns the score). A friendly introduction: chapter 4 of [*An Introduction to Statistical Learning*](https://www.statlearning.com/), free online.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 2 — loss and gradient descent (B3, R4)"}
+Use natural logarithms: $-\log(0.5) = 0.693$. In gradient descent the step is learning rate × slope: too large and each step jumps over the valley to a higher point on the other side; too small and progress is slow. [`crossprod(X, r)`](https://rdrr.io/r/base/crossprod.html) is $X^\top r$.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 3 — confusion matrix and curves (B4–B6, R5, R6, R10)"}
+Write the 2 × 2 table first, with row sums P and N. ROC: each open window moves the curve up by $1/P$, each closed window right by $1/N$. AUC by pairs: for each open window, count the closed windows with a lower score; add up; divide by $P \times N$ (a tie counts ½). Precision depends on how many closed windows there are; TPR and FPR do not. Background: [Saito & Rehmsmeier 2015](https://doi.org/10.1371/journal.pone.0118432); [`pROC::auc`](https://rdrr.io/cran/pROC/man/auc.html).
+:::
+
+::: {.callout-tip collapse="true" title="Hint 4 — overfitting, regularisation, CV (B7, B8, R8, R9)"}
+Count parameters (one per feature, plus the intercept) and compare with the number of training examples. [`cv.glmnet`](https://glmnet.stanford.edu/reference/cv.glmnet.html) fits the lasso (`alpha = 1`) or ridge (`alpha = 0`) for a sequence of λ values on each fold; `foldid` sets which fold each example belongs to; `s = "lambda.min"` uses the λ with the best cross-validated score. See the [glmnet vignette](https://glmnet.stanford.edu/articles/glmnet.html).
+:::
+
+::: {.callout-tip collapse="true" title="Hint 5 — building the data (R1)"}
+[`resize(..., fix = "center")`](https://rdrr.io/bioc/GenomicRanges/man/intra-range-methods.html) makes a window around a point; [`overlapsAny(..., maxgap = 500)`](https://rdrr.io/bioc/GenomicRanges/man/findOverlaps-methods.html) counts ranges within 500 bp as overlapping; [`getSeq`](https://rdrr.io/bioc/Rsamtools/man/FaFile-class.html) on a `FaFile` reads only the windows you ask for; [`letterFrequency`](https://rdrr.io/bioc/Biostrings/man/letterFrequency.html), [`vcountPattern`](https://rdrr.io/bioc/Biostrings/man/matchPattern.html) and [`oligonucleotideFrequency`](https://rdrr.io/bioc/Biostrings/man/letterFrequency.html) count letters, a pattern and all k-mers; [`matchMotifs`](https://bioconductor.org/packages/release/bioc/vignettes/motifmatchr/inst/doc/motifmatchr.html) scans PWMs as in *Gene regulation*.
+:::
+
+## Solutions
+
+::: {.callout-note collapse="true" title="Solutions — by hand"}
+
+**B1.** (a) Examples: CpGs in individuals (400 000 CpGs × 10 people, or 400 000 if averaged). Features: window GC, CpG island (0/1), log distance to TSS. Label: methylated (β > 0.5) or not. Parameters: 4 (intercept + one per feature). Note that all three features are the same for every person: such a model can predict which CpGs are methylated, but nothing about differences between people. (b) GC $= 250/500 = 0.50$, CpG o/e $= 18 \times 500 / (130 \times 120) = 0.58$: close to the classic CpG island criteria (GC > 0.5, o/e > 0.6). The second: GC 0.41, o/e $= 5 \times 500 / (100 \times 105) = 0.24$, typical bulk genome. (c) The feature is a measurement of the label itself. It would make the model look excellent, but it is not available for the CpGs and people we want to predict: leakage.
+
+**B2.** (a) $-4.20 + 8.04 \times 0.45 + 0.97 \times 0.30 = -0.29$; $P = 1/(1 + e^{0.29}) = 0.43$. (b) Score $-0.29 + 1.41 = 1.12$, $P = 0.75$. The odds are multiplied by $e^{1.41} = 4.1$ (from 0.75 to 3.1); the probability by only $0.75/0.43 = 1.76$, because the logistic curve flattens towards 1. The odds ratio is the same for every window; the change in probability is not. (c) $1.41 / 0.60 = 2.35$: two matches add 1.20, three add 1.80, so three. (d) $e^{8.04 \times 0.1} = e^{0.80} = 2.2$.
+
+**B3.** (a) $-\log 0.8 = 0.22$, $-\log 0.7 = 0.36$, $-\log 0.1 = 2.30$; mean 0.96. (b) The constant model has loss 0.69 for each window, mean 0.69: better than our model, because of the third window, where the model was confident and wrong. Log-loss punishes overconfidence.
+
+**B4.** (a) TP 150, FP 100, FN 50, TN 700. (b) Accuracy 0.85, precision 0.60, recall 0.75, FPR 0.125, $F_1 = 2 \times 0.6 \times 0.75 / 1.35 = 0.67$. (c) 800/1000 = 0.80: almost as good as the model by accuracy, while finding no open window at all. With imbalanced classes, accuracy mostly measures the majority class.
+
+**B5.** (a) (0, 0.25), (0.25, 0.25), (0.25, 0.5), (0.25, 0.75), (0.5, 0.75), (0.5, 1), (0.75, 1), (1, 1), starting from (0, 0). (b) The open window at 0.92 beats all 4 closed; 0.77 beats 3 (0.50, 0.33, 0.12); 0.64 beats 3; 0.41 beats 2: $12/16 = 0.75$. (c) Calls 0.92, 0.85, 0.77, 0.64: TP 3, FP 1, FN 1: precision 0.75, recall 0.75. (d) Open windows at ranks 1, 3, 4, 6: precision 1/1, 2/3, 3/4, 4/6; mean $(1 + 0.667 + 0.75 + 0.667)/4 = 0.77$.
+
+**B6.** (a) TP $0.8 \times 1000 = 800$, FP $0.05 \times 1000 = 50$, precision $800/850 = 0.94$. (b) TP 800, FP $0.05 \times 99\,000 = 4950$, precision $800/5750 = 0.14$: six of seven calls are wrong. (c) The ROC curve is the same (TPR and FPR are each computed within one class). The PR curve drops, because precision depends on how many negatives there are.
+
+**B7.** (a) C overfits badly (perfect training, worst test); B overfits a little (gap 0.07) but generalises best. Choose B, but the choice should be made on validation data or by cross-validation, keeping the test set for the final number. (b) The test set has become part of model selection: picking the best of 40 rewards luck as well as quality, so 0.81 is optimistic. Select with cross-validation or a validation set, then evaluate the single chosen model once on the test set. (c) Neighbouring windows overlap or share their surroundings (same peak, same domain, similar GC), and their labels are correlated. A random split puts near-copies on both sides, so the test set is not new. Split by chromosome (or by region).
+
+**B8.** (a) The lasso keeps 47: the absolute-value penalty has a corner at 0, so it sets weak coefficients exactly to 0. Ridge shrinks all 256 towards 0 but none to exactly 0. (b) Each fit uses 4/5 of the data, 28 800 windows; 5 folds × 100 λ = 500 fits (glmnet computes each fold's whole λ path in one go), plus a final fit on all training data at the chosen λ. (c) With as many or more CpGs than samples, there are infinitely many coefficient vectors that fit the training data perfectly; the penalty picks a small, stable one and, with L1, a short list of CpGs. Neighbouring CpGs are also strongly correlated, which makes unpenalised coefficients unstable.
+:::
+
+::: {.callout-note collapse="true" title="Solutions — R"}
+
+**R1.** (a) Positives: one summit per distinct peak region (the ENCODE file lists many regions several times with different summits), autosomes only, no blacklist overlap, and no window overlapping another, so that no two examples share sequence. Negatives: random windows on the same chromosomes, in proportion to their length, at least 500 bp from any ATAC peak (so that the flanks of peaks are not labelled closed), not blacklisted, and without N (unsequenced gaps would give meaningless features). Of 60 000 candidates, about 53 000 pass; the first 20 000 are kept. (b) `import()` already added 1 to the BED start, so `start(pk) + pk$peak` is the 1-based position of the summit base (file start + peak + 1). (c) `s <- getSeq(fa, GRanges("chr9", IRanges(88582, 89081)))`, then `letterFrequency(s, "GC") / 500` gives 0.44 and `vcountPattern("CG", s) * 500 / (letterFrequency(s, "C") * letterFrequency(s, "G"))` gives 0.374.
+
+**R2.** (a) GC (mean 0.50 open vs 0.41 closed) and CpG o/e (0.34 vs 0.20) shift most. CTCF is the most enriched motif: 26% of open windows vs 5.2% of closed (5×); EBF1 12% vs 5.2% (2.4×); SPI1 28% vs 16% (1.7×). (b) No. A feature can be informative without being present in every positive: among windows with a CTCF match, $0.26/(0.26 + 0.052) = 83\%$ are open (in this balanced set). Open chromatin has many causes; CTCF is one.
+
+**R3.** (a) 36 317 training and 3683 test windows; 1692 test windows are open (46%). (b) $\text{score} = -4.57 + 10.28\,\text{GC}$. GC 0.40: score $-0.46$, $P = 0.39$; GC 0.60: score 1.60, $P = 0.83$.
+
+**R4.** (a) The loss falls from 0.693 to 0.6907 after one step, 0.607 after 100, 0.590 after 500, and stays at 0.5898; the coefficients are within 0.01 of glm's after 1111 steps and equal to four digits after 2000 (−4.5744, 10.2845). (b) `lr <- 50`: the steps overshoot. After one step the loss is 0.735, after two 4.8, after three 10.4; the coefficients jump back and forth across the valley and never settle (after 2000 steps −52, 91, loss 4.5). `lr <- 0.5`: every step is ten times smaller; after 2000 steps the coefficients are −3.56 and 8.00, loss 0.594, still on the way down. Choosing the learning rate is a real problem when training neural networks. (c) With $b = (0, 0)$ every window gets $P = 0.5$, and $-\log 0.5 = \log 2 = 0.693$.
+
+**R5.** (a) TN 1441, FP 550, FN 756, TP 936: accuracy $2377/3683 = 0.645$, precision $936/1486 = 0.630$, recall $936/1692 = 0.553$, FPR $550/1991 = 0.276$. (b) Threshold 0.3: recall 0.907 and FPR 0.696 rise, precision falls to 0.526, accuracy 0.581. Threshold 0.7: recall 0.302 and FPR 0.070 fall, precision rises to 0.786, accuracy 0.642. Precision and recall pull in opposite directions.
+
+**R6.** (a) ROC AUC 0.712, PR AUC 0.698; `pROC::auc` gives 0.7124, the same. (b) GC takes only 284 distinct values among the 3683 test windows, so ties are common. Broken by row order, the AUC of the GC model rises to 0.715, and that of the motif model in R7 from 0.667 to 0.856: 62% of test windows have no motif match and the same score, and because all open windows come first in `dat`, every tie is broken in favour of the positives. Tied scores must move the curve up and right together (a diagonal step), which is what `k` does. (c) At 0.46, the fraction of open windows: the precision of a model that ranks at random.
+
+**R7.** (a) ROC AUC (PR AUC): coin flip 0.507 (0.463), motifs 0.667 (0.617), GC 0.712 (0.698), GC + CpG 0.713 (0.703), all five 0.764 (0.748). CpG o/e adds almost nothing once GC is known (they are correlated); the motifs add 0.05 on top of GC. (b) A motif match is strong evidence (odds × 4 for CTCF), but 62% of windows have no match for any of the three motifs, and the model can say nothing about them. Large coefficients on rare features give confident predictions for few windows; AUC measures the ranking of all windows. (c) "Each additional CTCF match multiplies the odds that a window is open by 4.1, at fixed GC, CpG o/e and other motif counts." The GC odds ratio (3105) is per unit of GC, i.e. from 0 to 1, a range no window spans; per 0.1 it is $e^{0.804} = 2.2$.
+
+**R8.** (a) Training AUC rises steadily: 0.716, 0.779, 0.857, 1.000. Test AUC: 0.713, 0.740, 0.738, 0.618: best at 16–64 features, worst at 256. Training AUC would have picked the 256-feature model, the worst on new data. (b) 257 parameters for 500 windows: enough freedom to find coefficients that put every training window on the right side of the boundary (the classes are linearly separable in the training set). (c) The warning means perfect separation: the likelihood keeps improving as the coefficients grow, so they run off towards ±∞ and the fit has no finite optimum. A sign of overfitting.
+
+**R9.** (a) Ridge 0.779 and lasso 0.761 on the test chromosomes, against 0.618 for the unpenalised fit with the same 256 features and 500 windows. The lasso keeps 47 of 256 4-mers. (b) `plot(lasso)` shows the cross-validated binomial deviance (lower is better) against $\log \lambda$, with dashed lines at `lambda.min` and `lambda.1se`. It is high at large λ (all coefficients 0: too simple), falls to a minimum, and rises again at small λ (overfitting). (c) All training data, 4-mers plus the five features: ROC AUC 0.861, PR AUC 0.835, with 204 non-zero coefficients, against 0.764 for the five-feature glm. Report the lasso model, with the GC-only model (0.712) and the coin flip as baselines.
+
+**R10.** (a) 7.7% open. ROC AUC 0.861 → 0.871 (the difference is sampling noise: only 167 open windows remain); PR AUC 0.835 → 0.412. (b) 92.3%. Not impressive at all: it is the fraction of closed windows. Ask for the PR AUC, precision at a useful recall, and the prevalence.
+:::
+
+## Where this leads
+
+- *What people try to predict, and how to tell if it works* asks what changes when the negatives are GC-matched, when windows overlap, and when the test cell type is different.
+- *How a CNN reads DNA* replaces the hand-made features by filters that the network learns, trained by the same gradient descent (R4).
+- *Epigenetic clocks and biomarkers* uses the elastic net (R9) to predict age from methylation.
+
+## Key papers (optional further reading)
+
+*Not required reading and not examined.*
+
+- Libbrecht & Noble 2015, *Nat Rev Genet*. [Machine learning applications in genetics and genomics](https://doi.org/10.1038/nrg3920).
+- Greener et al. 2022, *Nat Rev Mol Cell Biol*. [A guide to machine learning for biologists](https://doi.org/10.1038/s41580-021-00407-0).
+- Friedman, Hastie & Tibshirani 2010, *J Stat Softw*. [Regularization paths for generalized linear models via coordinate descent](https://doi.org/10.18637/jss.v033.i01).
+- Horvath 2013, *Genome Biol*. [DNA methylation age of human tissues and cell types](https://doi.org/10.1186/gb-2013-14-10-r115).
+- Saito & Rehmsmeier 2015, *PLoS ONE*. [The precision-recall plot is more informative than the ROC plot when evaluating binary classifiers on imbalanced datasets](https://doi.org/10.1371/journal.pone.0118432).

@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1120 420" width="1120" height="420" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <g id="nuc"><ellipse cx="0" cy="0" rx="14" ry="11" fill="#2a9d8f" stroke="#1b2a3a" stroke-width="1.2"/></g>
+    <g id="cut"><path d="M-6,-16 L2,-5 L-3,-5 L5,8" fill="none" stroke="#c0392b" stroke-width="2.4" stroke-linejoin="round"/></g>
+    <g id="scis"><path d="M0,-18 L0,-6" stroke="#6b4fa0" stroke-width="2.6"/><path d="M-5,-11 L0,-5 L5,-11" fill="none" stroke="#6b4fa0" stroke-width="2.4"/></g>
+  </defs>
+  <rect width="1120" height="420" fill="#ffffff"/>
+
+  <!-- LEFT: sonication -->
+  <text x="20" y="28" font-size="18" font-weight="bold" fill="#1b2a3a">Sonication (crosslinked ChIP)</text>
+  <text x="20" y="50" font-size="15" fill="#5b6b7a">ultrasound shears DNA at random positions</text>
+  <!-- closed chromatin left, open region right -->
+  <line x1="20" y1="110" x2="530" y2="110" stroke="#1b2a3a" stroke-width="3"/>
+  <use xlink:href="#nuc" x="45" y="110"/><use xlink:href="#nuc" x="75" y="110"/><use xlink:href="#nuc" x="105" y="110"/><use xlink:href="#nuc" x="135" y="110"/><use xlink:href="#nuc" x="165" y="110"/><use xlink:href="#nuc" x="195" y="110"/><use xlink:href="#nuc" x="225" y="110"/>
+  <use xlink:href="#nuc" x="410" y="110"/><use xlink:href="#nuc" x="445" y="110"/><use xlink:href="#nuc" x="480" y="110"/><use xlink:href="#nuc" x="512" y="110"/>
+  <rect x="250" y="78" width="135" height="48" fill="#2e8b57" fill-opacity="0.12"/>
+  <text x="317" y="146" font-size="14" fill="#2e8b57" text-anchor="middle">open (promoter)</text>
+  <text x="125" y="146" font-size="14" fill="#5b6b7a" text-anchor="middle">compact</text>
+  <use xlink:href="#cut" x="150" y="96"/>
+  <use xlink:href="#cut" x="275" y="96"/><use xlink:href="#cut" x="310" y="96"/><use xlink:href="#cut" x="345" y="96"/><use xlink:href="#cut" x="372" y="96"/>
+  <use xlink:href="#cut" x="462" y="96"/>
+  <text x="20" y="180" font-size="15" fill="#1b2a3a">Breaks anywhere, but <tspan font-weight="bold">more often in open chromatin</tspan>:</text>
+  <text x="20" y="200" font-size="15" fill="#1b2a3a">promoters are over-represented even without an antibody.</text>
+  <!-- size distribution: broad -->
+  <line x1="60" y1="330" x2="500" y2="330" stroke="#1b2a3a" stroke-width="1.5"/>
+  <line x1="60" y1="330" x2="60" y2="226" stroke="#1b2a3a" stroke-width="1.5"/>
+  <path d="M60,329 C100,328 120,250 180,246 C240,242 300,280 360,304 C410,322 460,327 500,329" fill="#8c564b" fill-opacity="0.25" stroke="#8c564b" stroke-width="2.2"/>
+  <g font-size="13" fill="#5b6b7a" text-anchor="middle"><text x="60" y="348">0</text><text x="170" y="348">200</text><text x="280" y="348">400</text><text x="390" y="348">600</text><text x="500" y="348">800 bp</text></g>
+  <text x="280" y="368" font-size="14" fill="#1b2a3a" text-anchor="middle">fragment length</text>
+  <text x="330" y="244" font-size="14" fill="#1b2a3a">broad: 100–600 bp,</text>
+  <text x="330" y="262" font-size="14" fill="#1b2a3a">set by cycles and power</text>
+
+  <line x1="560" y1="16" x2="560" y2="380" stroke="#cfd8e0" stroke-width="1.5"/>
+
+  <!-- RIGHT: MNase -->
+  <text x="590" y="28" font-size="18" font-weight="bold" fill="#1b2a3a">Micrococcal nuclease (native ChIP)</text>
+  <text x="590" y="50" font-size="15" fill="#5b6b7a">an enzyme digests DNA that no protein protects</text>
+  <line x1="590" y1="110" x2="1100" y2="110" stroke="#1b2a3a" stroke-width="3"/>
+  <use xlink:href="#nuc" x="630" y="110"/><use xlink:href="#nuc" x="690" y="110"/><use xlink:href="#nuc" x="750" y="110"/>
+  <rect x="805" y="94" width="20" height="16" rx="5" fill="#8c564b" stroke="#1b2a3a" stroke-width="1.2"/>
+  <use xlink:href="#nuc" x="880" y="110"/><use xlink:href="#nuc" x="940" y="110"/><use xlink:href="#nuc" x="1000" y="110"/><use xlink:href="#nuc" x="1060" y="110"/>
+  <use xlink:href="#scis" x="660" y="102"/><use xlink:href="#scis" x="720" y="102"/><use xlink:href="#scis" x="785" y="102"/><use xlink:href="#scis" x="845" y="102"/>
+  <use xlink:href="#scis" x="910" y="102"/><use xlink:href="#scis" x="970" y="102"/><use xlink:href="#scis" x="1030" y="102"/>
+  <text x="815" y="146" font-size="14" fill="#8c564b" text-anchor="middle">TF footprint</text>
+  <text x="690" y="146" font-size="14" fill="#5b6b7a" text-anchor="middle">linkers cut</text>
+  <text x="590" y="180" font-size="15" fill="#1b2a3a">Cuts in <tspan font-weight="bold">linker DNA</tspan>: nucleosome-sized fragments;</text>
+  <text x="590" y="200" font-size="15" fill="#1b2a3a">a bound TF leaves a short protected piece.</text>
+  <!-- ladder distribution -->
+  <line x1="630" y1="330" x2="1070" y2="330" stroke="#1b2a3a" stroke-width="1.5"/>
+  <line x1="630" y1="330" x2="630" y2="226" stroke="#1b2a3a" stroke-width="1.5"/>
+  <path d="M630,329 C694,329 702,240 718,236 C734,232 742,326 762,326 C790,326 796,292 808,290 C820,288 828,326 850,327 C880,328 890,314 902,313 C914,312 922,328 950,329 L1070,329" fill="#2a9d8f" fill-opacity="0.25" stroke="#2a9d8f" stroke-width="2.2"/>
+  <g font-size="13" fill="#5b6b7a" text-anchor="middle"><text x="630" y="348">0</text><text x="740" y="348">200</text><text x="850" y="348">400</text><text x="960" y="348">600</text><text x="1070" y="348">800 bp</text></g>
+  <text x="850" y="368" font-size="14" fill="#1b2a3a" text-anchor="middle">fragment length</text>
+  <text x="734" y="236" font-size="14" fill="#1b2a3a">mono-nucleosome (147 bp core + linker)</text>
+  <text x="820" y="284" font-size="14" fill="#1b2a3a">di-</text>
+  <text x="914" y="306" font-size="14" fill="#1b2a3a">tri-</text>
+
+  <text x="20" y="402" font-size="15" fill="#5b6b7a">Sonication suits any target but is noisy and hard to standardise. MNase gives nucleosome resolution for histone marks, but prefers AT-rich DNA.</text>
+</svg>

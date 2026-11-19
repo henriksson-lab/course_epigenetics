@@ -1,0 +1,388 @@
+---
+title: "Exercise: Bisulfite and enzymatic sequencing"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+## Goal
+
+After this exercise you will be able to:
+
+- Convert a DNA sequence **by hand** as bisulfite does, for both strands, and call methylation from aligned reads.
+- Decode Bismark's methylation call string, compute a **conversion rate** and its effect on β, and decide which read positions to ignore from an **M-bias** plot.
+- Run a complete WGBS pipeline on the command line: trimming (fastp), a bisulfite index and alignment (**Bismark**), deduplication, methylation extraction, strand merging.
+- In R, read the M-bias and conversion statistics, build a per-CpG table, compare it with ENCODE's calls, and see how **SNPs** masquerade as unmethylated CpGs.
+
+## Background
+
+**Conversion.** Bisulfite (or the enzymes of EM-seq) turns unmethylated C into U, read as T after PCR; 5mC and 5hmC stay C. A read from the original top strand (OT) is the top strand with every unmethylated C replaced by T. A read from the original bottom strand (OB) is the same operation on the bottom strand, written 5' to 3'.
+
+**Calls.** At a reference C, a read with C is a methylated call, a read with T an unmethylated call. Bismark's `XM` tag has one character per base: `Z`/`z` methylated/unmethylated CpG, `X`/`x` CHG, `H`/`h` CHH, `U`/`u` unknown context, `.` not a C.
+
+**Conversion rate.** In most mammalian cells non-CpG cytosines are unmethylated, so the fraction of CHH calls that are "methylated" estimates the non-conversion rate $f$. An observed level is then $\beta_\text{obs} = \beta + (1-\beta) f$.
+
+**Precision.** With $N$ reads, the standard error of $\hat\beta$ is $\sqrt{\beta(1-\beta)/N}$.
+
+## Data
+
+From the course repository:
+
+```bash
+data/download.sh methylation-bisulfite      # about 45 MB
+mkdir -p ~/epi/bisulfite && cd ~/epi/bisulfite
+D=/path/to/course/data                      # where download.sh put the files
+```
+
+- `gm12878_wgbs_reads.fastq.gz`: 360 142 read-1 sequences (125 bp, a few 151 bp; untrimmed) from ENCODE's GM12878 WGBS replicate 1 ([ENCSR890UQO](https://www.encodeproject.org/experiments/ENCSR890UQO/), FASTQ ENCFF798RSS), a directional library.
+- `hg38_chr21.fa.gz`: the reference, chr21 of hg38.
+- `gm12878_wgbs_rep1_chr21.bed.gz` (+ `.tbi`): ENCODE's per-CpG calls for the same replicate (see *DNA methylation biology*: column 10 coverage, 11 percent methylated, 13 called genotype).
+- `gm12878_wgbs_pe_mbias.txt`: an M-bias table (read 1 and read 2) computed by Bismark on 3 million random read pairs of the same replicate.
+
+**Shortcuts, said plainly.** The reads are the ones ENCODE aligned to **chr21:33–35 Mb**, recovered from ENCODE's alignment file and turned back into FASTQ (`data/prepare-meth.sh`). We align them to chr21 only. That keeps the run to a few minutes, but it inflates the alignment rate: reads from elsewhere in the genome are simply not in the file. A real analysis aligns all reads to the whole genome (and takes a day on a cluster node). Only read 1 is used, so the strong read-2 M-bias is shown with the separate table.
+
+You need fastp and Bismark (which brings bowtie2 and samtools); see *Install the software you need*, or `mamba install -c bioconda bismark fastp`. The whole command-line part takes about 4–5 minutes on 8 threads (2–3 times longer on a laptop). On the cluster, run it in an interactive job or wrap the commands in an `sbatch` script with `--cpus-per-task=8`. The R part takes under a minute.
+
+## By hand
+
+Do these on paper.
+
+**B1. Convert.** The top strand of a piece of genome is 5'-ACGTCCGATCAG-3'. The first CpG (positions 2–3) is methylated on both strands; the second CpG (positions 6–7) is unmethylated; all other Cs are unmethylated.
+
+(a) Write the bottom strand 5' to 3'.
+
+(b) Write the read you would get from the original top strand (OT) and from the original bottom strand (OB).
+
+(c) After in-silico conversion of all C to T, which converted genome (C→T or G→A) does each read match?
+
+**B2. Call methylation.** Six reads aligned to a reference; only the bases at three reference Cs are shown:
+
+| read | C at 101 (CpG) | C at 105 (CHH) | C at 112 (CpG) |
+|---|:---:|:---:|:---:|
+| r1 | C | T | C |
+| r2 | C | T | T |
+| r3 | T | T | C |
+| r4 | C | T | C |
+| r5 | C | C | T |
+| r6 | C | T | C |
+
+(a) Compute β at positions 101 and 112. (b) What is the most likely explanation for r5's C at 105? (c) Write the `XM` characters for r2 at the three positions.
+
+**B3. Decode an XM tag.** A read has `XM:Z:..Z...hx..z....x..x...`. How many methylated and unmethylated CpG calls, CHG calls and CHH calls does it contain? What fraction of its Cs are in CpG context?
+
+**B4. Conversion.** (a) A library has 30 824 methylated and 4 613 214 unmethylated CHH calls. What is the non-conversion rate and the conversion rate? (b) What β is observed at a truly unmethylated CpG and at a CpG with true β = 0.5? (c) A second library has a lambda spike-in: 30 of 2000 lambda C calls are methylated. What conversion rate? Would you use it together with the first library in a comparison of unmethylated CpG islands? (d) Why can you not use CHH calls to estimate conversion in neurons or in *Arabidopsis*?
+
+**B5. Read the M-bias.** CpG methylation by read position, from a paired-end library (the lecture plot):
+
+| position | 1 | 2 | 3 | 4 | 5 | 6 | median of 30–100 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| read 1 | 52.3 | 48.2 | 47.7 | 50.9 | 51.6 | 48.1 | 47.5 |
+| read 2 | 66.0 | 40.2 | 43.0 | 43.2 | 47.1 | 48.6 | 48.0 |
+
+(a) Which positions would you ignore, in which read? (b) Why is read 2 affected more than read 1? (c) Why is this a bias and not biology?
+
+**B6. Coverage.** (a) A CpG has 3 of 4 reads methylated, another 30 of 40. Both have β = 0.75. Give the approximate 95% interval of each. (b) How many reads do you need for a standard error of 0.05 at β = 0.5? (c) ENCODE asks for 30x per replicate. What is the standard error at β = 0.5 with 30 reads?
+
+**B7. Duplicates.** (a) Our run removed 19% of aligned reads as duplicates. What would go wrong if you kept them? (b) Should you deduplicate an RRBS library? Why?
+
+**B8. A suspicious difference.** In a comparison of two people, one CpG has β = 0.45 in person A (40 reads) and 0.90 in person B (40 reads); its neighbours are at 0.9 in both. (a) Give a technical explanation that involves the DNA sequence. (b) How would you check it in the BAM file of person A? (c) What would you do with such sites in a differential analysis?
+
+**B9. Choose an assay.** Which method (WGBS, EM-seq, RRBS, EPIC array, nanopore, oxBS) would you choose for each, and why? (a) 1000 blood samples for an epigenome-wide association study. (b) 2 ng of cell-free DNA per patient, genome-wide. (c) Allele-specific methylation of an imprinted region in one person. (d) 5hmC vs 5mC in mouse cerebellum, genome-wide. (e) Promoter methylation in 300 tumours, cheaply, at single-CpG resolution.
+
+## On the command line
+
+```bash
+export PATH=/path/to/Bismark:$PATH      # only if Bismark is not installed with conda
+```
+
+### C1 — Look at the reads
+
+```bash
+zcat $D/gm12878_wgbs_reads.fastq.gz | head -8
+zcat $D/gm12878_wgbs_reads.fastq.gz | awk 'NR % 4 == 2' | wc -l
+zcat $D/gm12878_wgbs_reads.fastq.gz | awk 'NR % 4 == 2 { print length($0) }' | sort -n | uniq -c
+zcat $D/gm12878_wgbs_reads.fastq.gz | awk 'NR % 4 == 2' | head -100000 | fold -w1 | sort | uniq -c
+zcat $D/hg38_chr21.fa.gz | grep -v '>' | tr 'acgtn' 'ACGTN' | tr -d 'N\n' | fold -w1 | sort | uniq -c
+```
+
+(a) How many reads, and how long? (b) Compare the base composition of the reads with that of chr21. Which strands do these reads come from? (The last command takes about a minute.)
+
+### C2 — Trim
+
+```bash
+fastp -i $D/gm12878_wgbs_reads.fastq.gz -o trimmed.fastq.gz \
+  --adapter_sequence AGATCGGAAGAGC --length_required 30 -w 4 -j fastp.json -h fastp.html
+```
+
+How many reads pass, how many fail on quality, and in how many was an adapter trimmed? Why do we give the adapter sequence instead of relying on fastp's auto-detection for single-end reads?
+
+### C3 — Bisulfite index
+
+```bash
+mkdir -p genome && zcat $D/hg38_chr21.fa.gz > genome/chr21.fa
+bismark_genome_preparation --parallel 4 genome > genome_prep.log 2>&1
+ls genome/Bisulfite_Genome/*
+head -c 300 genome/Bisulfite_Genome/CT_conversion/genome_mfa.CT_conversion.fa; echo
+```
+
+What two genomes did Bismark make, and what does the first line of sequence look like?
+
+### C4 — Align
+
+```bash
+bismark --genome genome --parallel 2 -p 2 trimmed.fastq.gz > bismark.log 2>&1
+grep -E "analysed|unique best|Mapping efficiency|no alignments|did not map uniquely|CT/CT|CT/GA|GA/CT|GA/GA" \
+  trimmed_bismark_bt2_SE_report.txt
+```
+
+(a) What is the mapping efficiency, and how many reads aligned to each strand? (b) Why are there no CTOT/CTOB alignments? (c) Is 93% a realistic alignment rate for WGBS? (See the Data section.)
+
+### C5 — Look inside the BAM
+
+```bash
+samtools view trimmed_bismark_bt2.bam | head -2 | cut -f 1-6,12-
+samtools view trimmed_bismark_bt2.bam | grep -o 'XG:Z:..' | sort | uniq -c
+samtools view trimmed_bismark_bt2.bam | head -1000 | grep -o 'XM:Z:[^[:space:]]*' | cut -c6- | fold -w1 | sort | uniq -c
+```
+
+(a) What do the `XR` and `XG` tags record? (b) In the first 1000 reads, what fraction of CpG calls is methylated, and what fraction of CHH calls?
+
+### C6 — Deduplicate
+
+```bash
+deduplicate_bismark --single --bam trimmed_bismark_bt2.bam > dedup.log 2>&1
+grep -E "analysed|removed|leftover" trimmed_bismark_bt2.deduplication_report.txt
+```
+
+How many reads were removed?
+
+### C7 — Extract methylation calls
+
+```bash
+bismark_methylation_extractor --single-end --gzip --bedGraph --parallel 4 \
+  trimmed_bismark_bt2.deduplicated.bam > extract.log 2>&1
+ls
+grep -E "C methylated in|Total methylated C|Total C to T" trimmed_bismark_bt2.deduplicated_splitting_report.txt
+zcat trimmed_bismark_bt2.deduplicated.bismark.cov.gz | head -3
+```
+
+(a) What are the methylation levels in CpG, CHG and CHH context? (b) What are the columns of the `.cov` file?
+
+### C8 — One row per CpG, and ENCODE's calls for the same region
+
+```bash
+coverage2cytosine --merge_CpG --zero_based --genome_folder genome -o gm_cpg \
+  trimmed_bismark_bt2.deduplicated.bismark.cov.gz > c2c.log 2>&1
+head -3 gm_cpg.CpG_report.merged_CpG_evidence.cov
+wc -l < gm_cpg.CpG_report.merged_CpG_evidence.cov
+tabix $D/gm12878_wgbs_rep1_chr21.bed.gz chr21:33000001-35000000 \
+  | awk -F'\t' -v OFS='\t' '$13 == "CG" { s = ($6 == "+") ? $2 : $2 - 1
+        N[s] += $10; M[s] += int($10 * $11 / 100 + 0.5) }
+      END { for (s in N) print "chr21", s, s + 2, M[s], N[s] }' | sort -k2,2n > encode_region.bed
+wc -l < encode_region.bed
+```
+
+(a) How many CpGs have at least one read in our run, and how many in ENCODE's file for the region? (b) Why are the start coordinates of the two files directly comparable here?
+
+## In R
+
+You need data.table and ggplot2.
+
+```r
+suppressPackageStartupMessages({ library(data.table); library(ggplot2) })
+D <- "/path/to/course/data"
+```
+
+### R1 — M-bias
+
+```r
+read_mbias <- function(file) {
+  l <- readLines(file); out <- list(); section <- NA
+  for (x in l) {
+    if (grepl("context", x)) { section <- x; next }
+    if (grepl("^[0-9]+\t", x)) {
+      v <- as.numeric(strsplit(x, "\t")[[1]][1:3])
+      out[[length(out) + 1]] <- data.table(section, pos = v[1], meth = v[2], unmeth = v[3])
+    }
+  }
+  x <- rbindlist(out)
+  x[, context := sub(" context.*", "", section)][, read := ifelse(grepl("R2", section), "R2", "R1")]
+  x[, pct := 100 * meth / (meth + unmeth)][]
+}
+pe <- read_mbias(file.path(D, "gm12878_wgbs_pe_mbias.txt"))
+se <- read_mbias("trimmed_bismark_bt2.deduplicated.M-bias.txt")
+pe[context == "CpG" & pos <= 6, .(read, pos, pct = round(pct, 1))]
+pe[context == "CpG" & pos %in% 30:100, .(plateau = median(pct)), by = read]
+ggplot(pe[context == "CpG" & meth + unmeth > 2000], aes(pos, pct, colour = read)) + geom_line() +
+  labs(x = "position in read", y = "% CpG methylated")
+ggplot(se[context == "CpG"], aes(pos, pct)) + geom_line() + labs(x = "position in read 1", y = "% CpG methylated")
+se[context == "CHH" & pos <= 3, .(pos, pct = round(pct, 2))]
+```
+
+(a) Which positions deviate from the plateau in each read of the paired-end library? (b) Is there any M-bias in our single-end read 1? Look at both CpG and CHH. (c) Write the Bismark option you would add to the extractor for the paired-end library.
+
+### R2 — Conversion
+
+```r
+sp <- readLines("trimmed_bismark_bt2.deduplicated_splitting_report.txt")
+get <- function(pat) as.numeric(sub(".*:\\s*", "", grep(pat, sp, value = TRUE)))
+chh_m <- get("Total methylated C's in CHH"); chh_u <- get("Total C to T conversions in CHH")
+f <- chh_m / (chh_m + chh_u)
+c(non_conversion = f, conversion = 1 - f)
+beta_obs <- function(beta, f) beta + (1 - beta) * f
+beta_obs(c(0, 0.5, 1), f)
+beta_obs(c(0, 0.5, 1), 0.05)
+```
+
+What is the conversion rate? How much does it change β at 0 and at 0.5? What if it were only 95%?
+
+### R3 — The per-CpG table and its precision
+
+```r
+ours <- fread("gm_cpg.CpG_report.merged_CpG_evidence.cov",
+              col.names = c("chr", "start", "end", "pct", "M", "U"))
+ours[, N := M + U][, beta := M / N]
+nrow(ours); nrow(ours[start >= 33e6 & start < 35e6])
+summary(ours$N); mean(ours$N >= 10)
+ours[N >= 10, .(mean_beta = mean(beta), low = mean(beta < 0.2), high = mean(beta > 0.8))]
+ggplot(ours[start >= 33e6 & start < 35e6], aes(pmin(N, 50))) + geom_histogram(binwidth = 1)
+# exact binomial 95% intervals for two CpGs with beta = 0.75
+binom.test(3, 4)$conf.int; binom.test(30, 40)$conf.int
+```
+
+(a) How many CpGs, what median coverage, what fraction with at least 10 reads? (b) Why are there CpGs outside 33–35 Mb? (c) Compare the binomial intervals with your answer to B6.
+
+### R4 — Compare with ENCODE
+
+```r
+enc <- fread("encode_region.bed", col.names = c("chr", "start", "end", "M", "N"))
+m <- merge(ours[, .(start, Mo = M, No = N)], enc[, .(start, Me = M, Ne = N)], by = "start")
+nrow(m)
+mean(m$Mo == m$Me & m$No == m$Ne)
+fm <- m[No >= 10 & Ne >= 10]
+nrow(fm)
+cor(fm$Mo / fm$No, fm$Me / fm$Ne)
+mean(abs(fm$Mo / fm$No - fm$Me / fm$Ne))
+c(ours = sum(m$Mo) / sum(m$No), encode = sum(m$Me) / sum(m$Ne))
+ggplot(fm, aes(Me / Ne, Mo / No)) + geom_bin2d(bins = 40) + geom_abline(colour = "red") +
+  labs(x = "ENCODE (gemBS)", y = "this exercise (Bismark)")
+```
+
+(a) How well do the two pipelines agree? (b) Why are the counts not identical, although the reads are the same?
+
+### R5 — SNPs that look like unmethylated CpGs
+
+```r
+x <- fread(cmd = paste("tabix", file.path(D, "gm12878_wgbs_rep1_chr21.bed.gz"), "chr21:33000001-35000000"),
+           header = FALSE, select = c(2, 6, 13), col.names = c("s0", "strand", "call"))
+x[, start := ifelse(strand == "+", s0, s0 - 1L)]
+snp <- x[call != "CG", .(calls = paste(sort(unique(call)), collapse = ",")), by = start]
+snp[, type := ifelse(grepl("TG|CA", calls), "homozygous C>T",
+              ifelse(grepl("YG|CR", calls), "heterozygous C/T", "other SNP"))]
+table(snp$type)
+o <- merge(ours[N >= 8], snp[, .(start, type)], by = "start", all.x = TRUE)
+o[is.na(type), type := "no SNP"]
+o[, .(CpGs = .N, beta = sum(M) / sum(N)), by = type]
+```
+
+(a) What does ENCODE's genotype code `YG` mean (IUPAC: Y = C or T)? And `TG`? (b) Compare the methylation that Bismark reports at each type of site. Explain the numbers. (c) Why do "other" SNPs (e.g. G/T at the G) lower β less?
+
+## Hints
+
+::: {.callout-tip collapse="true" title="Hint 1 — conversion by hand (B1, B2, B3)"}
+Write the bottom strand as the reverse complement of the top. Then, on each strand separately, replace every C that is not methylated by T. A CpG on the top strand at positions $i, i+1$ has its bottom-strand C opposite position $i+1$. The [Bismark user guide](https://felixkrueger.github.io/Bismark/bismark/methylation_extraction/) explains the `XM` characters and the four strands ([alignment modes](https://felixkrueger.github.io/Bismark/bismark/library_types/)).
+:::
+
+::: {.callout-tip collapse="true" title="Hint 2 — conversion rate and M-bias (B4, B5, R1, R2)"}
+Non-conversion = methylated CHH / all CHH calls. A spike-in of unmethylated lambda DNA gives the same estimate where CHH methylation is real. The M-bias plot was introduced with [BSmooth (Hansen et al. 2012)](https://doi.org/10.1186/gb-2012-13-10-r83); Bismark's extractor has `--ignore`, `--ignore_r2`, `--ignore_3prime` and `--ignore_3prime_r2` ([manual](https://felixkrueger.github.io/Bismark/bismark/methylation_extraction/)).
+:::
+
+::: {.callout-tip collapse="true" title="Hint 3 — precision (B6, R3)"}
+95% interval ≈ $\hat\beta \pm 1.96\sqrt{\hat\beta(1-\hat\beta)/N}$; for small $N$ use the exact interval ([`binom.test`](https://rdrr.io/r/stats/binom.test.html)). Solve $\sqrt{0.25/N} = 0.05$ for $N$.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 4 — tools (C2–C8)"}
+[fastp](https://github.com/OpenGene/fastp) trims adapters and low-quality reads; [Bismark](https://felixkrueger.github.io/Bismark/) documents `bismark_genome_preparation`, `bismark`, `deduplicate_bismark`, `bismark_methylation_extractor` and `coverage2cytosine`. [`tabix`](https://www.htslib.org/doc/tabix.html) extracts a region from an indexed file. `XR` and `XG` are explained in the [Bismark output description](https://felixkrueger.github.io/Bismark/bismark/alignment/).
+:::
+
+::: {.callout-tip collapse="true" title="Hint 5 — SNPs and assay choice (B8, B9, R5)"}
+IUPAC codes: Y = C/T, R = A/G, K = G/T, M = A/C, S = C/G. Bisulfite cannot create an A or a G, or turn a G into anything else. The lecture's "Choosing an assay" table and *Methylation arrays* help with B9.
+:::
+
+## Solutions
+
+::: {.callout-note collapse="true" title="Solutions — by hand"}
+
+**B1.** (a) Bottom strand 5'→3': **CTGATCGGACGT**. (b) OT: **ACGTTTGATTAG** (the C at position 2 stays C, the Cs at 5, 6 and 10 become T). OB: **TTGATTGGACGT** (bottom-strand Cs at its positions 1 and 6 become T; the C at position 10, which pairs with the G of the methylated first CpG, stays C). (c) OT, after C→T, matches the C→T genome (top strand); OB, after C→T, matches the G→A genome (the top strand with G→A is the reverse complement of the C→T-converted bottom strand).
+
+**B2.** (a) 101: 5 C of 6 = **0.83**; 112: 4 of 6 = **0.67**. (b) Incomplete conversion of that molecule (or a sequencing error); in mammals CHH methylation is near 0. A read with several unconverted non-CpG Cs is usually removed (Bismark's `filter_non_conversion`). (c) r2: `Z`, `h`, `z`.
+
+**B3.** One methylated CpG (`Z`), one unmethylated CpG (`z`), three unmethylated CHG (`x`), one unmethylated CHH (`h`); six C calls, of which 2/6 = 33% in CpG context.
+
+**B4.** (a) $f = 30\,824/4\,644\,038 = 0.66\%$; conversion **99.34%**. (b) $0 + 1 \times 0.0066 = 0.0066$; $0.5 + 0.5 \times 0.0066 = 0.503$. (c) $30/2000 = 1.5\%$, conversion 98.5%: acceptable by ENCODE's ≥ 98%, but unmethylated islands would read about 1.5% vs 0.7% in the two libraries, a small systematic difference. Fine for most purposes; correct for it or treat library as a covariate if you compare low-methylation regions between batches. (d) Neurons have real non-CpG (mostly CpA) methylation, and plants methylate CHG and CHH: methylated CHH calls are then biology, not failed conversion. Use an unmethylated spike-in.
+
+**B5.** (a) Read 2: ignore positions 1–4 (1 is too high, 2–4 too low; from 5 on it is near the 48% plateau): `--ignore_r2 4`. Read 1: position 1 is slightly high (52.3) and 4–5 slightly noisy; ignoring the first 1–2 bases is a cautious choice (`--ignore 2`). (b) End repair fills in the fragment end that read 2 starts from with unmethylated C; read 1 starts at the other end. (c) The methylation of a CpG cannot depend on where in a read it happens to be observed; averaged over millions of reads, every position should show the same level.
+
+**B6.** (a) 3/4: $0.75 \pm 1.96\sqrt{0.1875/4} = 0.75 \pm 0.42$ (the normal approximation fails here; the exact interval is 0.19–0.99). 30/40: $0.75 \pm 1.96\sqrt{0.1875/40} = 0.75 \pm 0.13$ (0.62–0.88). (b) $\sqrt{0.25/N} = 0.05 \Rightarrow N = 100$. (c) $\sqrt{0.25/30} = 0.091$.
+
+**B7.** (a) Copies of one molecule count as independent observations: coverage and confidence are inflated, and one molecule's methylation is over-weighted (pseudo-replication, as in differential accessibility). (b) No: RRBS fragments all start at MspI sites, so identical starts are expected and removing them would remove most real data (UMIs can identify true duplicates).
+
+**B8.** (a) Person A is heterozygous for a C→T SNP at the CpG: the T allele reads as "unmethylated", halving β. (b) Look at reads from the other strand (OB if the SNP is at the top-strand C): at the opposite base they show G (reference) vs A (SNP), unchanged by bisulfite. A SNP caller for bisulfite data (Bis-SNP, BISCUIT, gemBS) does this systematically; or check dbSNP. (c) Remove CpGs that overlap known common SNPs or SNPs called in the samples before testing, or analyse them as meQTLs with genotype in the model.
+
+**B9.** (a) EPIC array: cheapest per sample, standardised, 900 000 CpGs chosen for relevance; good statistical power from many samples. (b) EM-seq: works on picograms to nanograms with little damage (bisulfite would destroy much of 2 ng). (c) Nanopore or PacBio long reads: one read spans the region and heterozygous SNPs, so methylation is assigned to each parental haplotype. (d) oxBS together with BS (or TAB-seq), or nanopore: bisulfite or EM-seq alone report 5mC + 5hmC. (e) RRBS (or a targeted panel): covers most CpG-island promoters at single-CpG resolution cheaply; arrays are an alternative if the promoters of interest are on the array.
+:::
+
+::: {.callout-note collapse="true" title="Solutions — command line"}
+
+Run times on 8 server threads.
+
+**C1.** (a) 360 142 reads: 335 040 of 125 bp and 25 102 of 151 bp (two sequencing runs). (b) Reads: about 28.8% A, 1.5% C, 21.2% G, 48.5% T. chr21: 11.8 M A, 8.2 M C, 8.2 M G, 11.9 M T (about 29.5%, 20.4%, 20.5%, 29.6%). C is almost gone and T much increased, G unchanged: read 1 of a directional library comes from the converted original strands (OT, OB). The remaining Cs are methylated CpGs.
+
+**C2.** 338 087 reads pass; 21 908 fail on quality, 57 are too short, 90 have too many N; adapters trimmed in 36 808 reads (1.09 M bases). For single-end data fastp detects adapters by overrepresented sequences, which bisulfite's skewed composition makes unreliable; the standard Illumina adapter start (AGATCGGAAGAGC) is safer. (3 s.)
+
+**C3.** Two copies of chr21: one with every C converted to T (`CT_conversion`) and one with every G converted to A (`GA_conversion`), each with a bowtie2 index. The sequence starts with N (the unassembled start of chr21). (48 s.)
+
+**C4.** (a) 338 087 analysed, **315 951** unique best hits (**93.5%**); 21 757 without alignment, 379 not unique; 158 877 OT (CT/CT) and 157 074 OB (CT/GA). (b) The library is directional: Bismark does not even try CTOT/CTOB (GA/CT, GA/GA = 0). (c) No: the reads were pre-selected as ENCODE-aligned to this region; real WGBS gives 60–80% unique alignment to the whole genome. (59 s.)
+
+**C5.** (a) `XR` is the conversion of the read (always CT for read 1 here), `XG` the conversion of the genome strand it matched: `CT` = top strand (OT), `GA` = bottom (OB); 158 877 CT, 157 074 GA. (b) In the first 1000 reads: 795 `Z` and 648 `z` (55% of CpG calls methylated); 125 `H` and 18 455 `h` (0.7% of CHH calls methylated).
+
+**C6.** 61 418 of 315 951 removed (**19.4%**), 254 533 left. (11 s.)
+
+**C7.** (a) CpG **61.0%**, CHG 0.7%, CHH 0.7% (209 721 methylated / 134 141 unmethylated CpG calls; 30 824 / 4 613 214 CHH). (b) chromosome, start, end (the same 1-based position), % methylated, count methylated, count unmethylated; one line per cytosine and strand, no strand column. (26 s.)
+
+**C8.** (a) 24 675 CpGs in our merged file; 23 583 in ENCODE's file for the region. (b) Both are BED-style: `--zero_based` makes Bismark's start the 0-based position of the C on the + strand, and the awk command assigns the − strand C to the CpG start (position − 1), as ENCODE's + strand line does. (coverage2cytosine 69 s.)
+:::
+
+::: {.callout-note collapse="true" title="Solutions — R"}
+
+**R1.** (a) Paired-end: read 2 positions 1–4 (66.0, 40.2, 43.0, 43.2% against a plateau of 48.0%); read 1 is close to its plateau (47.5%) except position 1 (52.3%). (b) Our read 1 is flat around 61% for CpG (only the last two positions dip slightly, to 58% and 57%), but CHH is 1.76% at position 1 vs about 0.65% further in: a small 5' artefact, too small to matter for CpG calls. (c) `--ignore_r2 4` (and perhaps `--ignore 1`) for `bismark_methylation_extractor --paired-end`.
+
+**R2.** Non-conversion 0.66%, conversion **99.34%**. β of 0 becomes 0.0066, 0.5 becomes 0.503, 1 stays 1. At 95% conversion: 0.05 and 0.525: every unmethylated CpG looks 5% methylated.
+
+**R3.** (a) 24 675 CpGs (24 355 in 33–35 Mb), median 14 reads, 74.8% with ≥ 10; among those, mean β 0.62, 24% below 0.2 and 52% above 0.8 (this region is not in a partially methylated domain). (b) Reads that ENCODE placed in 33–35 Mb but Bismark placed elsewhere on chr21 (repeats, paralogous sequence), and reads overhanging the region boundaries. (c) `binom.test(3, 4)`: 0.19–0.99; `binom.test(30, 40)`: 0.59–0.87; close to the normal approximation for 40 reads, very different for 4.
+
+**R4.** (a) 23 567 shared CpGs; 17 483 with ≥ 10 reads in both; Pearson **r = 0.997**, mean |Δβ| **0.016**; overall 0.618 (ours) vs 0.616 (ENCODE). (b) Only 28% of CpGs have identical counts: different trimming (fastp vs gemBS), alignment filters (MAPQ, soft-clipping), duplicate removal, and treatment of read ends and low-quality bases change a few reads per CpG.
+
+**R5.** (a) `YG`: at the C of this CpG the cell line is heterozygous C/T (the CpG exists on one allele only). `TG`: homozygous T: there is no CpG on either allele. (`CR` and `CA` are the same SNPs seen from the other strand.) In the region ENCODE called 328 heterozygous, 84 homozygous and 343 other SNP CpGs. (b) With ≥ 8 reads: no SNP 0.63 (19 991 CpGs); heterozygous C/T **0.38** (301); homozygous **0.01** (67); other 0.52 (182). The T allele produces T in the read, exactly like an unmethylated C, so heterozygous sites lose about half their signal and homozygous ones look completely unmethylated. (c) A G/T or C/A change produces a base that bisulfite conversion cannot produce (A at a C, or T at the G read on the other strand): Bismark treats it as a mismatch and does not count it as an unmethylated call, so β drops less.
+:::
+
+## Where this leads
+
+- *Differential methylation* takes per-CpG counts like those of C8 from several samples (ENCODE's GM12878 and K562 replicates) and tests where they differ.
+- *Methylation arrays* measure selected CpGs with bisulfite conversion and hybridisation instead of sequencing.
+- *Methylation and chromatin from long reads* reads methylation without conversion, on single molecules and haplotypes.
+- At scale, `nf-core/methylseq` runs the same steps (trim, Bismark or bwa-meth, deduplicate, extract, MultiQC) on a cluster.
+
+## Key papers (optional further reading)
+
+*Not required reading and not examined.*
+
+- Frommer et al. 1992, *PNAS*. [A genomic sequencing protocol that yields a positive display of 5-methylcytosine residues in individual DNA strands](https://doi.org/10.1073/pnas.89.5.1827).
+- Meissner et al. 2005, *Nucleic Acids Res*. [Reduced representation bisulfite sequencing for comparative high-resolution DNA methylation analysis](https://doi.org/10.1093/nar/gki901).
+- Lister et al. 2009, *Nature*. [Human DNA methylomes at base resolution show widespread epigenomic differences](https://doi.org/10.1038/nature08514).
+- Krueger & Andrews 2011, *Bioinformatics*. [Bismark: a flexible aligner and methylation caller for Bisulfite-Seq applications](https://doi.org/10.1093/bioinformatics/btr167).
+- Vaisvila et al. 2021, *Genome Res*. [Enzymatic methyl sequencing detects DNA methylation at single-base resolution from picograms of DNA](https://doi.org/10.1101/gr.266551.120).
+- Liu et al. 2019, *Nat Biotechnol*. [Bisulfite-free direct detection of 5-methylcytosine and 5-hydroxymethylcytosine at base resolution](https://doi.org/10.1038/s41587-019-0041-2).

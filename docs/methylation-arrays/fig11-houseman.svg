@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 420" width="1120" height="420" font-family="Helvetica, Arial, sans-serif">
+<rect width="1120" height="420" fill="#ffffff"/>
+<text x="560" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1b2a3a">A blood sample is a weighted sum of reference profiles</text>
+<!-- reference matrix: x 150..390, 3 cols of 80; rows 6 of 40 from y 90 -->
+<text x="270" y="64" text-anchor="middle" font-size="15" fill="#1b2a3a">reference β (sorted cells)</text>
+<text x="190" y="84" text-anchor="middle" font-size="14" fill="#5b6b7a">neutro.</text>
+<text x="270" y="84" text-anchor="middle" font-size="14" fill="#5b6b7a">CD4 T</text>
+<text x="350" y="84" text-anchor="middle" font-size="14" fill="#5b6b7a">B cell</text>
+<g font-size="15" text-anchor="middle">
+<!-- row values: fills by beta (0.1 light, 0.5 mid, 0.8-0.9 dark) -->
+<rect x="150" y="90" width="80" height="40" fill="#1b2a3a"/><text x="190" y="116" fill="#ffffff">0.9</text>
+<rect x="230" y="90" width="80" height="40" fill="#eaf1f7"/><text x="270" y="116" fill="#1b2a3a">0.1</text>
+<rect x="310" y="90" width="80" height="40" fill="#eaf1f7"/><text x="350" y="116" fill="#1b2a3a">0.1</text>
+<rect x="150" y="130" width="80" height="40" fill="#eaf1f7"/><text x="190" y="156" fill="#1b2a3a">0.1</text>
+<rect x="230" y="130" width="80" height="40" fill="#1b2a3a"/><text x="270" y="156" fill="#ffffff">0.9</text>
+<rect x="310" y="130" width="80" height="40" fill="#eaf1f7"/><text x="350" y="156" fill="#1b2a3a">0.1</text>
+<rect x="150" y="170" width="80" height="40" fill="#eaf1f7"/><text x="190" y="196" fill="#1b2a3a">0.1</text>
+<rect x="230" y="170" width="80" height="40" fill="#eaf1f7"/><text x="270" y="196" fill="#1b2a3a">0.1</text>
+<rect x="310" y="170" width="80" height="40" fill="#1b2a3a"/><text x="350" y="196" fill="#ffffff">0.9</text>
+<rect x="150" y="210" width="80" height="40" fill="#1b2a3a"/><text x="190" y="236" fill="#ffffff">0.9</text>
+<rect x="230" y="210" width="80" height="40" fill="#1b2a3a"/><text x="270" y="236" fill="#ffffff">0.9</text>
+<rect x="310" y="210" width="80" height="40" fill="#eaf1f7"/><text x="350" y="236" fill="#1b2a3a">0.1</text>
+<rect x="150" y="250" width="80" height="40" fill="#eaf1f7"/><text x="190" y="276" fill="#1b2a3a">0.1</text>
+<rect x="230" y="250" width="80" height="40" fill="#34495e"/><text x="270" y="276" fill="#ffffff">0.8</text>
+<rect x="310" y="250" width="80" height="40" fill="#34495e"/><text x="350" y="276" fill="#ffffff">0.8</text>
+</g>
+<rect x="150" y="90" width="240" height="200" fill="none" stroke="#5b6b7a" stroke-width="1.5"/>
+<g font-size="14" fill="#5b6b7a" text-anchor="end">
+<text x="140" y="115">CpG 1</text><text x="140" y="155">CpG 2</text><text x="140" y="195">CpG 3</text><text x="140" y="235">CpG 4</text><text x="140" y="275">CpG 5</text>
+</g>
+<!-- times -->
+<text x="430" y="198" text-anchor="middle" font-size="30" fill="#1b2a3a">×</text>
+<!-- weights -->
+<text x="510" y="64" text-anchor="middle" font-size="15" fill="#1b2a3a">fractions w</text>
+<g font-size="15" text-anchor="middle">
+<rect x="470" y="130" width="80" height="40" fill="#e67e22" fill-opacity="0.75"/><text x="510" y="156" fill="#1b2a3a">0.6</text>
+<rect x="470" y="170" width="80" height="40" fill="#e67e22" fill-opacity="0.45"/><text x="510" y="196" fill="#1b2a3a">0.3</text>
+<rect x="470" y="210" width="80" height="40" fill="#e67e22" fill-opacity="0.2"/><text x="510" y="236" fill="#1b2a3a">0.1</text>
+</g>
+<text x="590" y="198" text-anchor="middle" font-size="30" fill="#1b2a3a">=</text>
+<!-- bulk -->
+<text x="670" y="64" text-anchor="middle" font-size="15" fill="#1b2a3a">bulk sample y</text>
+<g font-size="15" text-anchor="middle">
+<rect x="630" y="90" width="80" height="40" fill="#5b6b7a"/><text x="670" y="116" fill="#ffffff">0.58</text>
+<rect x="630" y="130" width="80" height="40" fill="#a9b5c0"/><text x="670" y="156" fill="#1b2a3a">0.34</text>
+<rect x="630" y="170" width="80" height="40" fill="#d5dde4"/><text x="670" y="196" fill="#1b2a3a">0.18</text>
+<rect x="630" y="210" width="80" height="40" fill="#34495e"/><text x="670" y="236" fill="#ffffff">0.82</text>
+<rect x="630" y="250" width="80" height="40" fill="#a9b5c0"/><text x="670" y="276" fill="#1b2a3a">0.38</text>
+</g>
+<rect x="630" y="90" width="80" height="200" fill="none" stroke="#5b6b7a" stroke-width="1.5"/>
+<!-- right: how -->
+<rect x="760" y="80" width="340" height="216" rx="8" fill="#f4f6f8"/>
+<text x="780" y="110" font-size="16" font-weight="bold" fill="#1b2a3a">Houseman et al. 2012</text>
+<text x="780" y="138" font-size="15" fill="#1b2a3a">Know R and y, find w:</text>
+<text x="780" y="164" font-size="15" fill="#1b2a3a">minimise Σ (y − R w)<tspan dy="-7" font-size="11">2</tspan></text>
+<text x="780" y="190" font-size="15" fill="#1b2a3a">subject to w ≥ 0, Σ w ≤ 1</text>
+<text x="780" y="222" font-size="15" fill="#1b2a3a">R: a few hundred CpGs that</text>
+<text x="780" y="244" font-size="15" fill="#1b2a3a">differ most between sorted</text>
+<text x="780" y="266" font-size="15" fill="#1b2a3a">cell types (FACS + array)</text>
+<text x="560" y="336" text-anchor="middle" font-size="15" fill="#1b2a3a">Each row is one linear equation; with hundreds of marker CpGs and 6 cell types,</text>
+<text x="560" y="358" text-anchor="middle" font-size="15" fill="#1b2a3a">w is overdetermined and is fitted by constrained least squares.</text>
+<text x="560" y="392" text-anchor="middle" font-size="14" fill="#5b6b7a">References: Reinius 2012 (450k, 6 leukocyte types), Salas 2018/2022 (EPIC, 6–12 cell types)</text>
+</svg>

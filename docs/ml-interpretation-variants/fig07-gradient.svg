@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 380" width="1120" height="380" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker><marker id="ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker><marker id="ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker><marker id="ahgr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker><marker id="ahb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a6f97"/></marker><marker id="aho" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e67e22"/></marker><marker id="ahp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b4fa0"/></marker></defs>
+<rect width="1120" height="380" fill="#ffffff"/>
+<text x="20.0" y="30.0" font-size="17" fill="#1b2a3a" text-anchor="start" font-weight="bold">Gradient: how fast does z change if one input changes?</text>
+<line x1="80.0" y1="300.0" x2="500.0" y2="300.0" stroke="#1b2a3a" stroke-width="1.5"/>
+<line x1="80.0" y1="300.0" x2="80.0" y2="60.0" stroke="#1b2a3a" stroke-width="1.5"/>
+<path d="M80.0,293.0 L84.2,292.9 L88.4,292.8 L92.6,292.7 L96.8,292.5 L101.0,292.4 L105.2,292.2 L109.4,292.1 L113.6,291.9 L117.8,291.7 L122.0,291.5 L126.2,291.3 L130.4,291.0 L134.6,290.7 L138.8,290.4 L143.0,290.1 L147.2,289.7 L151.4,289.3 L155.6,288.9 L159.8,288.4 L164.0,287.9 L168.2,287.4 L172.4,286.8 L176.6,286.1 L180.8,285.4 L185.0,284.6 L189.2,283.8 L193.4,282.9 L197.6,281.9 L201.8,280.8 L206.0,279.6 L210.2,278.4 L214.4,277.0 L218.6,275.6 L222.8,274.0 L227.0,272.3 L231.2,270.4 L235.4,268.5 L239.6,266.3 L243.8,264.1 L248.0,261.7 L252.2,259.1 L256.4,256.3 L260.6,253.4 L264.8,250.3 L269.0,247.1 L273.2,243.6 L277.4,240.0 L281.6,236.2 L285.8,232.2 L290.0,228.1 L294.2,223.8 L298.4,219.4 L302.6,214.8 L306.8,210.1 L311.0,205.2 L315.2,200.3 L319.4,195.3 L323.6,190.2 L327.8,185.1 L332.0,180.0 L336.2,174.9 L340.4,169.8 L344.6,164.7 L348.8,159.7 L353.0,154.8 L357.2,149.9 L361.4,145.2 L365.6,140.6 L369.8,136.2 L374.0,131.9 L378.2,127.8 L382.4,123.8 L386.6,120.0 L390.8,116.4 L395.0,112.9 L399.2,109.7 L403.4,106.6 L407.6,103.7 L411.8,100.9 L416.0,98.3 L420.2,95.9 L424.4,93.7 L428.6,91.5 L432.8,89.6 L437.0,87.7 L441.2,86.0 L445.4,84.4 L449.6,83.0 L453.8,81.6 L458.0,80.4 L462.2,79.2 L466.4,78.1 L470.6,77.1 L474.8,76.2 L479.0,75.4 L483.2,74.6 L487.4,73.9 L491.6,73.2 L495.8,72.6 L500.0,72.1" fill="none" stroke="#5b6b7a" stroke-width="2.5"/>
+<circle cx="80.0" cy="293.0" r="6.0" fill="#2a6f97" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="500.0" cy="72.1" r="6.0" fill="#c0392b" stroke="#ffffff" stroke-width="1.5"/>
+<text x="84.0" y="237.0" font-size="14" fill="#2a6f97" text-anchor="start">base mutated away (x = 0)</text>
+<text x="488.0" y="58.1" font-size="14" fill="#c0392b" text-anchor="end">reference base (x = 1)</text>
+<line x1="340.4" y1="93.1" x2="500.0" y2="72.1" stroke="#6b4fa0" stroke-width="2.2" stroke-dasharray="6 4"/>
+<text x="326.0" y="118.2" font-size="14" fill="#6b4fa0" text-anchor="end">gradient at the reference</text>
+<text x="326.0" y="136.2" font-size="14" fill="#6b4fa0" text-anchor="end">(almost flat: saturated)</text>
+<line x1="520.0" y1="293.0" x2="520.0" y2="72.1" stroke="#2e8b57" stroke-width="2"/>
+<line x1="514.0" y1="293.0" x2="526.0" y2="293.0" stroke="#2e8b57" stroke-width="2"/>
+<line x1="514.0" y1="72.1" x2="526.0" y2="72.1" stroke="#2e8b57" stroke-width="2"/>
+<text x="530.0" y="187.5" font-size="15" fill="#2e8b57" text-anchor="start" font-weight="bold">ISM Δ</text>
+<text x="290.0" y="328.0" font-size="14" fill="#1b2a3a" text-anchor="middle">amount of the reference base at one position (one-hot input, 0 → 1)</text>
+<text x="45.0" y="180.0" font-size="16" fill="#1b2a3a" text-anchor="middle">z</text>
+<text x="620.0" y="30.0" font-size="17" fill="#1b2a3a" text-anchor="start" font-weight="bold">Gradient × input</text>
+<text x="620.0" y="65.0" font-size="15" fill="#1b2a3a" text-anchor="start">One backward pass gives ∂z/∂x for all 4 × 200 inputs.</text>
+<text x="620.0" y="88.0" font-size="15" fill="#1b2a3a" text-anchor="start">Multiply by the one-hot input: keep the reference base.</text>
+<text x="620.0" y="111.0" font-size="15" fill="#1b2a3a" text-anchor="start">= one number per position, like ISM importance.</text>
+<rect x="620.0" y="135.0" width="470.0" height="92.0" rx="8" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1.2"/>
+<text x="636.0" y="162.0" font-size="15" fill="#1b2a3a" text-anchor="start" font-weight="bold">cost per sequence</text>
+<text x="636.0" y="188.0" font-size="15" fill="#1b2a3a" text-anchor="start">ISM: 3 × 200 + 1 = 601 forward passes</text>
+<text x="636.0" y="212.0" font-size="15" fill="#1b2a3a" text-anchor="start">gradient: 1 forward + 1 backward pass</text>
+<text x="620.0" y="262.0" font-size="15" fill="#1b2a3a" text-anchor="start">But a gradient is a local slope: it can miss effects</text>
+<text x="620.0" y="285.0" font-size="15" fill="#1b2a3a" text-anchor="start">when the model saturates (left) or when a change</text>
+<text x="620.0" y="308.0" font-size="15" fill="#1b2a3a" text-anchor="start">switches a ReLU off. DeepLIFT and integrated gradients</text>
+<text x="620.0" y="331.0" font-size="15" fill="#1b2a3a" text-anchor="start">follow the whole path from a reference instead.</text>
+</svg>

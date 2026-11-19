@@ -42,6 +42,75 @@ Record fixes in the Git history.
 - [ ] `motifs-footprinting/exercise.qmd` — added 2026-11-18; chunks run as written by its author; needs independent audit
 - [ ] `motifs-footprinting/make-motifs-figs.R` — added 2026-11-18; needs audit
 - [ ] `data/prepare-reads.sh`, `data/filter_fastq_by_names.py` — added 2026-11-18 (read-name `/1` fix 2026-11-18)
+- [ ] `chipseq-intro/lec.qmd` — added 2026-11-19; needs audit
+- [ ] `chipseq-intro/exercise.qmd` — added 2026-11-19; chunks run as written by its author; needs independent audit
+- [ ] `chipseq-intro/make-chipintro-figs.R` — added 2026-11-19; needs audit
+- [ ] `chipseq-peaks/lec.qmd` — added 2026-11-19; needs audit
+- [ ] `chipseq-peaks/exercise.qmd` — added 2026-11-19; chunks run as written by its author; needs independent audit
+- [ ] `chipseq-peaks/make-chippeaks-figs.R` — added 2026-11-19; needs audit
+- [ ] `cutrun-cuttag/lec.qmd` — added 2026-11-19; needs audit
+- [ ] `cutrun-cuttag/exercise.qmd` — added 2026-11-19; chunks run as written by its author; needs independent audit
+- [ ] `cutrun-cuttag/make-cuttag-figs.R` — added 2026-11-19; needs audit
+- [ ] `chipseq-downstream/lec.qmd` — added 2026-11-19; needs audit
+- [ ] `chipseq-downstream/exercise.qmd` — added 2026-11-19; chunks run as written by its author; needs independent audit
+- [ ] `chipseq-downstream/make-chipdown-figs.R` — added 2026-11-19; needs audit
+- [ ] `chromatin-states/lec.qmd` — added 2026-11-19; needs audit
+- [ ] `chromatin-states/exercise.qmd` — added 2026-11-19; chunks run as written by its author; needs independent audit
+- [ ] `chromatin-states/make-chromstates-figs.R` — added 2026-11-19; needs audit
+- [ ] `methylation-biology/lec.qmd` — added 2026-11-19; needs audit
+- [ ] `methylation-biology/exercise.qmd` — added 2026-11-19; chunks run as written by its author; needs independent audit
+- [ ] `methylation-biology/make-methbio-figs.R` — added 2026-11-19; needs audit
+- [ ] `methylation-bisulfite/lec.qmd` — added 2026-11-19; needs audit
+- [ ] `methylation-bisulfite/exercise.qmd` — added 2026-11-19; chunks run as written by its author; needs independent audit
+- [ ] `methylation-bisulfite/make-bisulfite-figs.R` — added 2026-11-19; needs audit
+- [ ] `methylation-differential/lec.qmd` — added 2026-11-19; needs audit
+- [ ] `methylation-differential/exercise.qmd` — added 2026-11-19; chunks run as written by its author; needs independent audit
+- [ ] `methylation-differential/make-diffmeth-figs.R` — added 2026-11-19; needs audit
+- [ ] `methylation-arrays/lec.qmd` — added 2026-11-19; needs audit
+- [ ] `methylation-arrays/exercise.qmd` — added 2026-11-19; chunks run as written by its author; needs independent audit
+- [ ] `methylation-arrays/make-arrays-figs.R` — added 2026-11-19; needs audit
+- [ ] `epigenetic-clocks/lec.qmd` — added 2026-11-19; needs audit
+- [ ] `epigenetic-clocks/exercise.qmd` — added 2026-11-19; chunks run as written by its author; needs independent audit
+- [ ] `epigenetic-clocks/make-clocks-figs.R` — added 2026-11-19; needs audit
+- [ ] `longread-epigenomics/lec.qmd` — added 2026-11-19; needs audit
+- [ ] `longread-epigenomics/exercise.qmd` — added 2026-11-19; chunks run as written by its author; needs independent audit
+- [ ] `longread-epigenomics/make-longread-figs.R` — added 2026-11-19; needs audit
+- [ ] `genome-3d-intro/lec.qmd` — added 2026-11-19; needs audit
+- [ ] `genome-3d-intro/exercise.qmd` — added 2026-11-19; chunks run as written by its author; needs independent audit
+- [ ] `genome-3d-intro/make-genome3d-figs.py` — added 2026-11-19; needs audit
+- [ ] `hic-processing/lec.qmd` — added 2026-11-19; needs audit
+- [ ] `hic-processing/exercise.qmd` — added 2026-11-19; chunks run as written by its author; needs independent audit
+- [ ] `hic-processing/make-hicproc-figs.py` — added 2026-11-19; needs audit
+- [ ] `hic-features/lec.qmd` — added 2026-11-19; needs audit
+- [ ] `hic-features/exercise.qmd` — added 2026-11-19; chunks run as written by its author; needs independent audit
+- [ ] `hic-features/make-hicfeatures-figs.py` — added 2026-11-19; needs audit
+- [ ] `integration-rnaseq/lec.qmd` — added 2026-11-19; needs audit
+- [ ] `integration-rnaseq/exercise.qmd` — added 2026-11-19; chunks run as written by its author; needs independent audit
+- [ ] `integration-rnaseq/make-integ-figs.R` — added 2026-11-19; needs audit
+- [ ] `noncoding-variants/lec.qmd` — added 2026-11-19; needs audit
+- [ ] `noncoding-variants/exercise.qmd` — added 2026-11-19; chunks run as written by its author; needs independent audit
+- [ ] `noncoding-variants/make-variants-figs.R` — added 2026-11-19; needs audit
+- [ ] `ml-basics/lec.qmd` — added 2026-11-19; needs audit
+- [ ] `ml-basics/exercise.qmd` — added 2026-11-19; chunks run as written by its author; needs independent audit
+- [ ] `ml-basics/make-mlbasics-figs.R` — added 2026-11-19; needs audit
+- [ ] `ml-prediction-tasks/lec.qmd` — added 2026-11-19; needs audit
+- [ ] `ml-prediction-tasks/exercise.qmd` — added 2026-11-19; chunks run as written by its author; needs independent audit
+- [ ] `ml-prediction-tasks/make-mltasks-figs.R` — added 2026-11-19; needs audit
+- [ ] `ml-cnn-dna/lec.qmd` — added 2026-11-19; needs audit
+- [ ] `ml-cnn-dna/exercise.qmd` — added 2026-11-19; chunks run as written by its author; needs independent audit
+- [ ] `ml-cnn-dna/make-mlcnn-figs.R` — added 2026-11-19; needs audit
+- [ ] `ml-interpretation-variants/lec.qmd` — added 2026-11-19; needs audit
+- [ ] `ml-interpretation-variants/exercise.qmd` — added 2026-11-19; chunks run as written by its author; needs independent audit
+- [ ] `ml-interpretation-variants/make-mlinterp-figs.R` — added 2026-11-19; needs audit
+- [ ] `data/prepare-chip.sh` — added 2026-11-19; run end to end by its author
+- [ ] `data/prepare-cuttag.sh` — added 2026-11-19; run end to end by its author
+- [ ] `data/prepare-hic.sh` — added 2026-11-19; run end to end by its author
+- [ ] `data/prepare-integ.sh` — added 2026-11-19; run end to end by its author
+- [ ] `data/prepare-meth.sh` — added 2026-11-19; run end to end by its author
+- [ ] `data/prepare-meth2.sh` — added 2026-11-19; run end to end by its author
+- [ ] `data/prepare-ml2.sh` — added 2026-11-19; run end to end by its author
+- [ ] `data/bam_slice_remote.py` — added 2026-11-19
+- [ ] `plan/merge-manifests.py`, `plan/build-key-papers.py` — added 2026-11-19
 
 ## Build and presentation code
 

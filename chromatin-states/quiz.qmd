@@ -1,0 +1,99 @@
+---
+title: "Quiz: combining marks into chromatin states"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+Short questions on binarisation, hidden Markov models and chromatin-state annotations. Try each on paper first, then open the answer.
+
+---
+
+**Q1.** A bin has these marks present: H3K4me1 and H3K27ac, nothing else. Another has H3K4me1 only. A third has H3K4me3 and H3K27me3. Name the likely element for each.
+
+::: {.callout-note collapse="true" title="Answer"}
+Active enhancer (EnhA); weak or primed enhancer (EnhWk); bivalent promoter (TssBiv), typical of developmental genes in stem cells, or of a mixture of cells in which the promoter is active in some and Polycomb-repressed in others.
+:::
+
+---
+
+**Q2.** A mark has on average 0.5 reads per 200-bp bin on a chromosome. In a bin with normal input coverage, how many reads are needed to call the mark present at $P(X \ge k) < 10^{-4}$? Use $P(X \ge 5 \mid 0.5) = 1.7 \times 10^{-4}$ and $P(X \ge 6 \mid 0.5) = 1.4 \times 10^{-5}$. What happens in a bin where the input is three times its average?
+
+::: {.callout-tip collapse="true" title="Hint"}
+With control data, λ is the mark's mean multiplied by the local input enrichment.
+:::
+
+::: {.callout-note collapse="true" title="Answer"}
+k* = 6 reads ($P(X \ge 5) = 1.7 \times 10^{-4}$ is not below $10^{-4}$, $P(X \ge 6) = 1.4 \times 10^{-5}$ is). With three times the input, λ = 1.5 and the threshold rises (to 9 reads), so regions with high background (amplifications, artefact-prone repeats) need more reads before a mark is called.
+:::
+
+---
+
+**Q3.** In a ChromHMM model, state 4 has emission probabilities H3K4me3 0.02, H3K27ac 0.05, H3K4me1 0.10, H3K36me3 0.85, H3K27me3 0.01, H3K9me3 0.03. Compute the probability of a bin with only H3K36me3 present under state 4. What is the state?
+
+::: {.callout-note collapse="true" title="Answer"}
+$0.98 \times 0.95 \times 0.90 \times 0.85 \times 0.99 \times 0.97 = 0.68$. Transcribed gene body (Tx).
+:::
+
+---
+
+**Q4.** What does the transition matrix of a chromatin-state HMM tell you? Give one biologically expected pattern.
+
+::: {.callout-note collapse="true" title="Answer"}
+For each state, the probability that the next 200-bp bin is in each state. Most of the probability is on the diagonal (states extend over many bins). Off the diagonal, expected neighbours: active TSS next to TSS-flanking states and those next to transcribed states (promoter → gene body); enhancer states next to weak enhancer states; Polycomb states next to quiescent ones.
+:::
+
+---
+
+**Q5.** A toy HMM has two states, A and Q, start probabilities 0.5/0.5, P(mark | A) = 0.8, P(mark | Q) = 0.1, and P(stay) = 0.9. The first two bins are 1, 0. Compute the forward probabilities $\alpha_2(A)$ and $\alpha_2(Q)$.
+
+::: {.callout-tip collapse="true" title="Hint"}
+$\alpha_1(s) = \pi_s\, P(o_1 \mid s)$; $\alpha_2(s) = \left[\sum_r \alpha_1(r)\, a_{rs}\right] P(o_2 \mid s)$.
+:::
+
+::: {.callout-note collapse="true" title="Answer"}
+$\alpha_1(A) = 0.5 \times 0.8 = 0.4$, $\alpha_1(Q) = 0.5 \times 0.1 = 0.05$. $\alpha_2(A) = (0.4 \times 0.9 + 0.05 \times 0.1) \times 0.2 = 0.073$; $\alpha_2(Q) = (0.4 \times 0.1 + 0.05 \times 0.9) \times 0.9 = 0.0765$. The total probability of the observations "1, 0" is 0.1495, and P(bin 2 in Q | bins 1–2) = 0.0765/0.1495 = 0.51.
+:::
+
+---
+
+**Q6.** Why can't you choose the number of states by picking the model with the highest likelihood?
+
+::: {.callout-note collapse="true" title="Answer"}
+A model with more states can always fit the data at least as well (it contains the smaller one as a special case), so the likelihood keeps increasing with *K*. Penalised criteria such as BIC still choose very many states on genome-sized data. In practice one chooses the smallest *K* whose states are interpretable, distinct and reproducible, often by comparing a series of models (ChromHMM's CompareModels).
+:::
+
+---
+
+**Q7.** A state covers 2% of the genome and 0.5% of chr21 bins overlap a RefSeq TSS. 18% of TSS bins are in that state. Compute the fold enrichment of the state at TSSs.
+
+::: {.callout-note collapse="true" title="Answer"}
+Fold enrichment = (fraction of TSS bins in the state) / (fraction of all bins in the state) = 0.18 / 0.02 = 9. (The 0.5% is not needed: it would be needed for the reverse question, what fraction of the state's bins are at TSSs: 0.18 × 0.005 / 0.02 = 4.5%.)
+:::
+
+---
+
+**Q8.** What is the difference between a concatenated and a stacked ChromHMM model? Which would you use to ask "which enhancers are active in B cells but not in T cells"?
+
+::: {.callout-note collapse="true" title="Answer"}
+Concatenated: one set of states learned from all cell types together, with a separate segmentation per cell type (state definitions shared). Stacked: the marks of all cell types are the observation of one model, which gives one segmentation of the genome whose states encode patterns across cell types. Both can answer the question: with a concatenated model, find bins in an enhancer state in B cells and another state in T cells; a stacked model may directly have a "B-cell-only enhancer" state.
+:::
+
+---
+
+**Q9.** A paper reports: "the risk variant lies in an active-enhancer state in GM12878 (Roadmap E116), so it disrupts an enhancer of the nearest gene, *IKZF3*." List what has and has not been shown.
+
+::: {.callout-note collapse="true" title="Answer"}
+Shown: the chromatin at the variant in a lymphoblastoid cell line looks like an active enhancer (H3K4me1 + H3K27ac). Not shown: that the element is a functional enhancer, that it regulates *IKZF3* (the nearest gene is often not the target), that the variant changes its activity (allele-specific signal, reporter assays, CRISPR editing), or that GM12878 is the relevant cell type for the disease. The causal variant may also be another one in linkage disequilibrium.
+:::
+
+---
+
+**Q10.** Give two reasons why two ChromHMM segmentations of the same cell type, from two labs, can differ.
+
+::: {.callout-note collapse="true" title="Answer"}
+Different sequencing depth (deeper data → more bins pass the Poisson threshold), different antibodies or protocols (different efficiency per mark), a different set of marks, different binarisation thresholds or bin sizes, a different number of states or a different local optimum of the EM, and different cell populations (culture conditions, passage, mixtures).
+:::

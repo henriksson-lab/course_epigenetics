@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 386" width="1120" height="386" font-family="Helvetica, Arial, sans-serif">
+<rect width="1120" height="386" fill="#ffffff"/>
+<line x1="560" y1="20" x2="560" y2="370" stroke="#dfe6ec" stroke-width="2"/>
+<!-- Panel A: WGBS -->
+<text x="280" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1b2a3a">A. Bisulfite: short, converted reads</text>
+<text x="280" y="54" text-anchor="middle" font-size="15" fill="#5b6b7a">one region, two alleles, 150-bp reads</text>
+<!-- allele lines -->
+<text x="40" y="100" font-size="14" fill="#5b6b7a">pat</text>
+<line x1="80" y1="96" x2="520" y2="96" stroke="#1b2a3a" stroke-width="2"/>
+<text x="40" y="140" font-size="14" fill="#5b6b7a">mat</text>
+<line x1="80" y1="136" x2="520" y2="136" stroke="#1b2a3a" stroke-width="2"/>
+<!-- SNP -->
+<rect x="146" y="88" width="10" height="16" fill="#e67e22"/>
+<rect x="146" y="128" width="10" height="16" fill="#2a6f97"/>
+<text x="151" y="80" text-anchor="middle" font-size="13" fill="#5b6b7a">SNP</text>
+<!-- CpGs on pat: methylated; on mat: unmethylated -->
+<g fill="#1b2a3a"><circle cx="250" cy="96" r="5"/><circle cx="290" cy="96" r="5"/><circle cx="330" cy="96" r="5"/><circle cx="370" cy="96" r="5"/><circle cx="410" cy="96" r="5"/></g>
+<g fill="#ffffff" stroke="#1b2a3a" stroke-width="1.8"><circle cx="250" cy="136" r="5"/><circle cx="290" cy="136" r="5"/><circle cx="330" cy="136" r="5"/><circle cx="370" cy="136" r="5"/><circle cx="410" cy="136" r="5"/></g>
+<!-- short reads -->
+<g stroke-width="5" stroke-linecap="round">
+<line x1="100" y1="182" x2="190" y2="182" stroke="#e67e22"/>
+<line x1="230" y1="182" x2="320" y2="182" stroke="#8a97a3"/>
+<line x1="350" y1="182" x2="440" y2="182" stroke="#8a97a3"/>
+<line x1="140" y1="204" x2="230" y2="204" stroke="#2a6f97"/>
+<line x1="270" y1="204" x2="360" y2="204" stroke="#8a97a3"/>
+<line x1="400" y1="204" x2="490" y2="204" stroke="#8a97a3"/>
+<line x1="200" y1="226" x2="290" y2="226" stroke="#8a97a3"/>
+<line x1="320" y1="226" x2="410" y2="226" stroke="#8a97a3"/>
+</g>
+<text x="280" y="258" text-anchor="middle" font-size="14" fill="#5b6b7a">grey: reads without the SNP cannot be assigned to an allele</text>
+<rect x="30" y="280" width="500" height="88" rx="8" fill="#f4f6f8"/>
+<text x="46" y="306" font-size="15" fill="#1b2a3a">• C→T conversion: alignment to a 3-letter genome</text>
+<text x="46" y="330" font-size="15" fill="#1b2a3a">• 5mC and 5hmC both read as C (EM-seq too)</text>
+<text x="46" y="354" font-size="15" fill="#1b2a3a">• a few CpGs per read; phasing only near SNPs</text>
+<!-- Panel B: long reads -->
+<text x="840" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1b2a3a">B. Long reads: native single molecules</text>
+<text x="840" y="54" text-anchor="middle" font-size="15" fill="#5b6b7a">same region, reads of 10–100 kb</text>
+<text x="600" y="100" font-size="14" fill="#5b6b7a">pat</text>
+<line x1="640" y1="96" x2="1080" y2="96" stroke="#1b2a3a" stroke-width="2"/>
+<text x="600" y="140" font-size="14" fill="#5b6b7a">mat</text>
+<line x1="640" y1="136" x2="1080" y2="136" stroke="#1b2a3a" stroke-width="2"/>
+<rect x="706" y="88" width="10" height="16" fill="#e67e22"/>
+<rect x="706" y="128" width="10" height="16" fill="#2a6f97"/>
+<g fill="#1b2a3a"><circle cx="810" cy="96" r="5"/><circle cx="850" cy="96" r="5"/><circle cx="890" cy="96" r="5"/><circle cx="930" cy="96" r="5"/><circle cx="970" cy="96" r="5"/></g>
+<g fill="#ffffff" stroke="#1b2a3a" stroke-width="1.8"><circle cx="810" cy="136" r="5"/><circle cx="850" cy="136" r="5"/><circle cx="890" cy="136" r="5"/><circle cx="930" cy="136" r="5"/><circle cx="970" cy="136" r="5"/></g>
+<!-- long reads coloured by haplotype, with calls -->
+<line x1="650" y1="186" x2="1060" y2="186" stroke="#e67e22" stroke-width="5" stroke-linecap="round"/>
+<line x1="660" y1="216" x2="1040" y2="216" stroke="#2a6f97" stroke-width="5" stroke-linecap="round"/>
+<g fill="#1b2a3a"><circle cx="810" cy="186" r="5"/><circle cx="850" cy="186" r="5"/><circle cx="890" cy="186" r="5"/><circle cx="930" cy="186" r="5"/><circle cx="970" cy="186" r="5"/></g>
+<g fill="#ffffff" stroke="#1b2a3a" stroke-width="1.8"><circle cx="810" cy="216" r="5"/><circle cx="850" cy="216" r="5"/><circle cx="890" cy="216" r="5"/><circle cx="930" cy="216" r="5"/><circle cx="970" cy="216" r="5"/></g>
+<text x="1066" y="191" font-size="13" fill="#e67e22">pat</text>
+<text x="1046" y="221" font-size="13" fill="#2a6f97">mat</text>
+<text x="840" y="258" text-anchor="middle" font-size="14" fill="#5b6b7a">every read spans the SNP: every CpG call gets a haplotype</text>
+<rect x="590" y="280" width="500" height="88" rx="8" fill="#f4f6f8"/>
+<text x="606" y="306" font-size="15" fill="#1b2a3a">• no conversion: modification read from the signal</text>
+<text x="606" y="330" font-size="15" fill="#1b2a3a">• 5mC, 5hmC (and 6mA) called separately</text>
+<text x="606" y="354" font-size="15" fill="#1b2a3a">• one molecule: haplotype, CpGs, accessibility, repeats</text>
+</svg>

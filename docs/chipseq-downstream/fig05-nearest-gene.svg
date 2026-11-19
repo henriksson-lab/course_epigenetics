@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 330" width="1120" height="330" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="aG" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker>
+    <marker id="aR" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a8324a"/></marker>
+  </defs>
+  <rect width="1120" height="330" fill="#ffffff"/>
+  <line x1="30" y1="200" x2="1090" y2="200" stroke="#1b2a3a" stroke-width="2"/>
+  <!-- gene X (target) far left -->
+  <rect x="90" y="190" width="160" height="20" fill="#2e8b57"/>
+  <path d="M90,190 L90,172 L118,172" fill="none" stroke="#1b2a3a" stroke-width="2"/><path d="M114,167 L124,172 L114,177 z" fill="#1b2a3a"/>
+  <text x="170" y="236" font-size="15" fill="#2e8b57" text-anchor="middle">gene X (the real target)</text>
+  <!-- CTCF boundary -->
+  <!-- enhancer -->
+  <rect x="560" y="186" width="44" height="28" rx="4" fill="#e67e22"/>
+  <text x="582" y="236" font-size="15" fill="#e67e22" text-anchor="middle">peak (enhancer)</text>
+  <!-- gene Y nearest -->
+  <rect x="680" y="190" width="120" height="20" fill="#9aa5b1"/>
+  <path d="M680,190 L680,172 L708,172" fill="none" stroke="#1b2a3a" stroke-width="2"/><path d="M704,167 L714,172 L704,177 z" fill="#1b2a3a"/>
+  <text x="740" y="236" font-size="15" fill="#5b6b7a" text-anchor="middle">gene Y (nearest TSS)</text>
+  <rect x="900" y="190" width="150" height="20" fill="#9aa5b1"/>
+  <text x="975" y="236" font-size="15" fill="#5b6b7a" text-anchor="middle">gene Z</text>
+  <!-- arcs -->
+  <path d="M582,184 C560,60 140,60 120,166" fill="none" stroke="#2e8b57" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#aG)"/>
+  <text x="350" y="64" font-size="15" fill="#2e8b57" text-anchor="middle">contact in 3D: a loop (Hi-C, CRISPRi), 450 kb</text>
+  <path d="M590,184 C610,140 680,140 694,166" fill="none" stroke="#a8324a" stroke-width="2.5" marker-end="url(#aR)"/>
+  <text x="640" y="128" font-size="15" fill="#a8324a" text-anchor="middle">nearest gene, 80 kb</text>
+  <text x="30" y="276" font-size="15" fill="#1b2a3a">"Nearest gene" is a convenient label, not a target. Enhancers often skip the nearest gene: in CRISPR screens a large share of</text>
+  <text x="30" y="298" font-size="15" fill="#1b2a3a">enhancers act on a more distant gene. Better evidence: 3D contacts, activity correlated across cell types, perturbation.</text>
+  <text x="30" y="320" font-size="15" fill="#5b6b7a">That is the subject of <tspan font-style="italic">Linking regulatory elements to genes</tspan>.</text>
+</svg>

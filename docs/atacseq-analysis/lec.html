@@ -494,11 +494,11 @@ Epigenetics
 
 <img data-src="fig10-local-lambda.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><ul>
 <li><span class="math inline">\lambda_\text{BG}</span> = total reads × window / genome size. But open domains, copy-number gains and mappability make background vary.</li>
-<li>MACS uses <span class="math inline">\lambda_\text{local} = \max(\lambda_\text{BG}, \lambda_\text{1k}, \lambda_\text{5k}, \lambda_\text{10k})</span>: the <strong>largest</strong> estimate, the conservative choice.</li>
+<li>With a control, MACS2/3 use <span class="math inline">\lambda_\text{local} = \max(\lambda_\text{BG}, \lambda_d, \lambda_\text{1k}, \lambda_\text{10k})</span>, the windows measured in the control: the <strong>largest</strong> estimate, the conservative choice. (The 2008 paper used 1, 5 and 10 kb.)</li>
 <li>Without a control (ATAC-seq), MACS3 uses <span class="math inline">\lambda_\text{BG}</span> and the sample’s own <strong>10-kb</strong> window.</li>
 </ul>
 <aside class="notes">
-<p>All λ values are expected counts in a window of the same size as the one in which k is counted (MACS scales each window’s count to that size). In the original paper, the 1k, 5k and 10k windows were measured in the control (input DNA), and λBG from the genome-wide average. Taking the maximum protects against local biases: a region with high background everywhere does not get peaks just for being high. In MACS3 the defaults are –slocal 1000 and –llocal 10000. With no control, using the 1-kb window of the sample itself would include the peak and swallow it, so MACS3 skips it and uses only the 10-kb window and the genome background. Worked example on the slide: λBG = 3, λ1k = 8, λ5k = 7, λ10k = 6, so λlocal = 8, and the candidate with 25 reads gets p = P(X ≥ 25 | 8) ≈ 1.2 × 10⁻⁶ instead of 3 × 10⁻¹⁵ against the genome average. The exercise has a similar calculation by hand.</p>
+<p>All λ values are expected counts in a window of the same size as the one in which k is counted (MACS scales each window’s count to that size). In the original 2008 paper, the 1k, 5k and 10k windows were measured in the control (input DNA), and λBG from the genome-wide average; MACS2 and MACS3 use the control’s pileup over the fragment width d, and its 1-kb and 10-kb windows (the <em>Peak calling</em> unit of the ChIP-seq block goes through this with real data). Taking the maximum protects against local biases: a region with high background everywhere does not get peaks just for being high. In MACS3 the defaults are –slocal 1000 and –llocal 10000. With no control, using the 1-kb window of the sample itself would include the peak and swallow it, so MACS3 skips it and uses only the 10-kb window and the genome background. Worked example in the figure (2008-style windows): λBG = 3, λ1k = 8, λ5k = 7, λ10k = 6, so λlocal = 8, and the candidate with 25 reads gets p = P(X ≥ 25 | 8) ≈ 1.2 × 10⁻⁶ instead of 3 × 10⁻¹⁵ against the genome average. The exercise has a similar calculation by hand.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -868,7 +868,7 @@ Epigenetics
 </tr>
 <tr class="even">
 <td>peaks</td>
-<td>Poisson test against <span class="math inline">\lambda_\text{local} = \max(\lambda_\text{BG}, \lambda_\text{1k}, \lambda_\text{5k}, \lambda_\text{10k})</span>; q-values by BH</td>
+<td>Poisson test against <span class="math inline">\lambda_\text{local}</span> = the largest background estimate (with no control: <span class="math inline">\max(\lambda_\text{BG}, \lambda_\text{10k})</span>); q-values by BH</td>
 </tr>
 <tr class="odd">
 <td>MACS3 for ATAC</td>

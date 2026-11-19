@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-662ae1889177880cb371f83234c0a158.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.7.30">
+
+  <meta name="author" content="Epigenetics">
+  <title>Epigenetics – Differential methylation</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-bf56578b9c06c165c166475cd19dbcd1.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Differential methylation</h1>
+  <p class="subtitle">Count models, smoothing, DMLs and DMRs</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Epigenetics 
+</div>
+</div>
+</div>
+
+</section>
+<section id="about-this-lecture" class="slide level2">
+<h2>About this lecture</h2>
+<p><em>Bisulfite and enzymatic sequencing</em> turned reads into a table of methylated and total reads per CpG. This lecture compares such tables between groups of samples.</p>
+<ul>
+<li>The data: <strong>two count matrices</strong>, methylated reads and all reads, CpGs × samples.</li>
+<li>The models: <strong>binomial</strong> sampling and <strong>beta-binomial</strong> biological variation, the analogue of Poisson and negative binomial in RNA-seq.</li>
+<li><strong>Smoothing</strong>: borrowing strength from neighbouring CpGs.</li>
+<li><strong>DMLs and DMRs</strong>: single CpGs vs regions; multiple testing; effect sizes in Δβ.</li>
+<li>Real data: ENCODE GM12878 vs K562, two replicates each, chr21, with <strong>DSS</strong>; annotation and expression.</li>
+<li>Design: what replicates of a cell line can and cannot tell you.</li>
+</ul>
+<aside class="notes">
+<p>Students know DESeq2. The structure of this unit mirrors <em>Differential accessibility</em>: a count model with a dispersion parameter, shrinkage of that parameter across features, a Wald test, multiple testing, then annotation. What is different: the data are proportions with known denominators (no library-size normalisation), neighbouring features are strongly correlated (so smoothing and regions make sense), and global differences between samples are common and biologically meaningful. The data are the same four ENCODE files used in <em>DNA methylation biology</em>; DSS runs on chr21 in about a minute.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-data-methylated-reads-out-of-all-reads" class="slide level2 smaller">
+<h2>The data: methylated reads out of all reads</h2>
+
+<img data-src="fig01-count-table.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>For every CpG and sample: <strong>M</strong> methylated reads and <strong>N</strong> reads in total (both strands combined).</li>
+<li>β = M/N is the level, but its precision depends on N: 6/8 and 60/80 are both 0.75.</li>
+<li>No library-size normalisation is needed: each CpG is its own denominator.</li>
+</ul>
+<aside class="notes">
+<p>Compared with RNA-seq, each entry of the matrix is a pair, and that pair already contains its own normalisation: sequencing depth changes N, not the expected β. This is why methylation analyses do not use size factors. They do need coverage filters (too few reads give no information; extreme coverage suggests copy-number changes or repeats) and they need to keep N in the model rather than analysing β alone. The toy numbers are illustrative; the real matrix has 366 640 CpGs that are covered in at least one of our four samples.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="two-sources-of-variation" class="slide level2 smaller">
+<h2>Two sources of variation</h2>
+
+<img data-src="fig02-two-sources.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><ul>
+<li><strong>Biological</strong>: each sample has its own true level around the group mean (cell mix, individual, culture history).</li>
+<li><strong>Sampling</strong>: given the true level, reads are a binomial draw; this noise shrinks as N grows, the biological part does not.</li>
+<li>The <strong>beta-binomial</strong> combines them, with an overdispersion parameter φ per CpG.</li>
+</ul>
+<aside class="notes">
+<p>The hierarchy is exactly that of the negative binomial in RNA-seq: there a gamma-distributed true expression and Poisson counts; here a beta-distributed true proportion and binomial counts. φ (DSS uses φ, other papers ρ) is the intra-class correlation: the variance of the count is N p (1−p) [1 + (N − 1) φ]. With φ = 0 we are back at the binomial. Two practical consequences. First, sequencing deeper does not reduce the biological part: beyond about 10–20 reads per CpG, more replicates help more than more depth (Ziller et al.&nbsp;2015). Second, tests that ignore φ, such as Fisher’s exact test on pooled reads, treat the reads as the replicates.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="binomial-and-beta-binomial" class="slide level2 smaller">
+<h2>Binomial and beta-binomial</h2>
+
+<img data-src="fig03-binom-betabinom.png" class="quarto-figure quarto-figure-center r-stretch" style="width:85.0%"><ul>
+<li>With 20 reads and a mean level of 0.5: the binomial gives SD 2.2 reads (β ± 0.11).</li>
+<li>With φ = 0.2 the SD is 4.9 reads (β ± 0.24): the same mean, more than twice the spread, and 0 or 20 of 20 is no longer rare.</li>
+</ul>
+<aside class="notes">
+<p>Read the numbers off the variance formula N p (1−p) [1 + (N − 1) φ]. With N = 20 and p = 0.5, N p (1−p) = 5, so the binomial SD is √5 = 2.2 reads. With φ = 0.05 the variance is 5 × 1.95 = 9.75 (SD 3.1 reads); with φ = 0.2 it is 5 × 4.8 = 24 (SD 4.9 reads, or 0.24 in β). The point for students: a test that assumes the black bars will call many CpGs significant whose difference is well within the orange spread. Exam calculations use the variance formula, not the density.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="real-replicates-are-overdispersed" class="slide level2 smaller">
+<h2>Real replicates are overdispersed</h2>
+
+<img data-src="fig04-overdispersion.png" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>Compare the two replicates of each cell line, CpG by CpG, scaled by the binomial standard error. Pure sampling noise would give a variance of 1.</li>
+<li><strong>K562</strong>: 1.05, close to binomial. <strong>GM12878</strong>: 3.44: the two cultures really differ.</li>
+<li>The spiky shape comes from small integer counts (10–20 reads).</li>
+</ul>
+<aside class="notes">
+<p>z = (β1 − β2) / sqrt(p(1−p)(1/N1 + 1/N2)) with p the pooled level; CpGs with at least 10 reads in both replicates and 0 &lt; p &lt; 1 (169 163 for GM12878, 137 943 for K562). K562’s two replicates behave like two sequencing runs of one sample. The GM12878 replicates are independent growths of a lymphoblastoid line, and rep2 is about 0.07 more methylated than rep1 across most of chr21 (next slide). This is the biological variation of the previous slides in action: estimating it requires replicates, and a test that ignores it is anticonservative.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="replicates-in-100-kb-bins" class="slide level2 smaller">
+<h2>Replicates in 100-kb bins</h2>
+
+<img data-src="fig05-replicate-bins.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"><ul>
+<li>K562 replicates agree almost perfectly (r = 0.999). GM12878 rep2 is <strong>0.067 higher</strong> on average than rep1, most in partially methylated domains.</li>
+<li>A global shift between replicates is real variation between cultures, not noise. In human samples it can come from age, cell composition or proliferation.</li>
+</ul>
+<aside class="notes">
+<p>Correlations of bin means: GM12878 replicates 0.957, K562 replicates 0.999, GM12878 vs K562 about 0.64. Global shifts matter in two ways. They inflate dispersion and so reduce power; and if they are confounded with the groups (for example all cases processed in one batch, or cases older than controls), they create thousands of “DMRs” that are not about the question asked. Note that β needs no normalisation, but that does not protect against biological or technical global shifts; there is no “median of ratios” fix for them, only design.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="testing-one-cpg" class="slide level2 smaller">
+<h2>Testing one CpG</h2>
+
+<img data-src="fig06-tests.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"><ul>
+<li><strong>Fisher’s exact test on pooled reads</strong> treats reads as independent: between the two GM12878 replicates, where there is no group difference, it calls <strong>20 902</strong> CpGs at FDR &lt; 0.05.</li>
+<li><strong>DSS</strong> fits a beta-binomial per CpG, shrinks φ towards a common prior (empirical Bayes, as DESeq2 does), and uses a Wald test.</li>
+<li>Smoothing (next slide) adds information from neighbours and raises the number of significant CpGs.</li>
+</ul>
+<aside class="notes">
+<p>The bar chart compares three tests of GM12878 vs K562 on chr21 at FDR &lt; 0.05. All three find very many CpGs, because the two cell lines differ in about two thirds of chr21’s 100-kb bins. The telling number is in the bullet: the same Fisher test applied to rep1 vs rep2 of GM12878 calls 20 902 CpGs (7% of those tested), which are false positives by construction. With only two replicates per group the dispersion of a single CpG cannot be estimated well; DSS borrows information across CpGs with a prior on φ, just like DESeq2’s dispersion shrinkage. methylKit offers logistic regression with an overdispersion correction; RADmeth and MACAU use beta-binomial regression with covariates.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="neighbouring-cpgs-are-correlated-smoothing" class="slide level2 smaller">
+<h2>Neighbouring CpGs are correlated: smoothing</h2>
+
+<img data-src="fig07-smoothing.png" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><ul>
+<li>Methylation changes over hundreds of bp, but each CpG has only 10–20 reads. Averaging neighbours trades resolution for precision.</li>
+<li><strong>BSmooth</strong> fits a local likelihood smoother per sample; <strong>DSS</strong> smooths with a moving average (default window 500 bp) before testing.</li>
+<li>Smoothing assumes neighbours share a level: it blurs sharp boundaries and single-CpG events (e.g.&nbsp;at a TF site).</li>
+</ul>
+<aside class="notes">
+<p>Dots are raw per-CpG levels (CpGs with at least 5 reads) of all four samples, lines are DSS’s smoothed group means (mu1, mu2 of DMLtest). The raw values of one sample jump between 0 and 1 because 1 of 2 and 9 of 10 are both possible; the smoothed curve recovers the regional level. Hansen, Langmead &amp; Irizarry 2012 (key paper) showed that smoothing lets 4x coverage WGBS detect DMRs reliably, which made large WGBS studies affordable. Smoothing should be switched off when the question is about single CpGs (e.g.&nbsp;a CpG in a TF motif or an imprinting control CpG) or when CpGs are sparse (RRBS, arrays).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="dss-in-a-few-lines" class="slide level2">
+<h2>DSS in a few lines</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DSS)</span>
+<span id="cb1-2"><a aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">lapply</span>(files, fread)                      <span class="co"># each: chr, pos, N, X (X = methylated reads)</span></span>
+<span id="cb1-3"><a aria-hidden="true" tabindex="-1"></a>bs  <span class="ot">&lt;-</span> <span class="fu">makeBSseqData</span>(dat, <span class="fu">c</span>(<span class="st">"gm1"</span>, <span class="st">"gm2"</span>, <span class="st">"k1"</span>, <span class="st">"k2"</span>))</span>
+<span id="cb1-4"><a aria-hidden="true" tabindex="-1"></a>dml <span class="ot">&lt;-</span> <span class="fu">DMLtest</span>(bs, <span class="at">group1 =</span> <span class="fu">c</span>(<span class="st">"gm1"</span>, <span class="st">"gm2"</span>), <span class="at">group2 =</span> <span class="fu">c</span>(<span class="st">"k1"</span>, <span class="st">"k2"</span>), <span class="at">smoothing =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-5"><a aria-hidden="true" tabindex="-1"></a>dmls <span class="ot">&lt;-</span> <span class="fu">callDML</span>(dml, <span class="at">delta =</span> <span class="fl">0.2</span>, <span class="at">p.threshold =</span> <span class="fl">1e-5</span>)    <span class="co"># single CpGs</span></span>
+<span id="cb1-6"><a aria-hidden="true" tabindex="-1"></a>dmrs <span class="ot">&lt;-</span> <span class="fu">callDMR</span>(dml, <span class="at">delta =</span> <span class="fl">0.2</span>, <span class="at">p.threshold =</span> <span class="fl">1e-5</span>)    <span class="co"># regions</span></span>
+<span id="cb1-7"><a aria-hidden="true" tabindex="-1"></a><span class="fu">DMLfit.multiFactor</span>(bs, <span class="at">design =</span> df, <span class="at">formula =</span> <span class="sc">~</span> group <span class="sc">+</span> sex)  <span class="co"># general designs</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><code>delta</code>: test |Δβ| &gt; delta rather than Δβ ≠ 0 (an effect-size threshold built into the test).</li>
+<li>Run time for chr21 (366 640 CpGs, 4 samples): <strong>under 1 minute</strong>.</li>
+</ul>
+<aside class="notes">
+<p>DSS (Feng, Conneely &amp; Wu 2014, key paper) is light to install and fast. The input is one table per sample with chromosome, position, total reads (N) and methylated reads (X): exactly what the command-line part of the exercise builds from the ENCODE files. DMLtest handles two groups; DMLfit.multiFactor handles designs with covariates (Park &amp; Wu 2016), the equivalent of a DESeq2 design formula. With delta set, callDML reports the posterior probability that |Δβ| exceeds delta, which avoids calling tiny but significant differences. The p threshold of 1e-5 is DSS’s default for callDMR.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="single-cpgs-the-volcano" class="slide level2 smaller">
+<h2>Single CpGs: the volcano</h2>
+
+<img data-src="fig09-volcano.png" class="quarto-figure quarto-figure-center r-stretch" style="width:72.0%"><ul>
+<li>87 108 differential CpGs (|Δβ| &gt; 0.2, p &lt; 10⁻⁵); <strong>82 788 (95%) are lower in K562</strong>.</li>
+<li>The asymmetry is biology: K562 lost methylation in large domains; gains are few and focal.</li>
+</ul>
+<aside class="notes">
+<p>A volcano plot of DSS’s Wald test, x axis K562 minus GM12878 (smoothed), 60 000 random CpGs shown. The left arm is dense because large domains lost methylation together; the right arm is sparse. Unlike an RNA-seq volcano there is a hard limit at ±1. With so many CpGs, p-values become tiny for small Δβ; the vertical lines at ±0.2 are the effect-size threshold. What Δβ is “biologically relevant” depends on the question: 0.05 can matter in a population study of blood (<em>Methylation arrays</em>), while cell-type differences are typically 0.3 or more.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="from-cpgs-to-regions" class="slide level2 smaller">
+<h2>From CpGs to regions</h2>
+
+<img data-src="fig08-dml-to-dmr.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>A <strong>DMR</strong> is a run of nearby differential CpGs: fewer, more interpretable units than single CpGs, closer to the scale of regulatory elements.</li>
+<li>Each tool has its own rules (gap, minimum CpGs, minimum length, fraction significant) and the results depend on them.</li>
+</ul>
+<aside class="notes">
+<p>Why regions: biological changes in methylation usually span many CpGs (an enhancer, a CGI shore, a PMD); single-CpG calls are noisy and redundant; and regions can be annotated and validated. DSS merges CpGs below the p threshold that are less than 100 bp apart, then keeps regions with at least 3 CpGs, 50 bp and 50% significant CpGs. BSmooth uses runs of t-statistics above a cutoff; metilene uses a segmentation algorithm; dmrseq (next slides) defines candidate regions and tests them as units.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="dmrs-between-gm12878-and-k562" class="slide level2 smaller">
+<h2>DMRs between GM12878 and K562</h2>
+
+<img data-src="fig10-dmrs.png" class="quarto-figure quarto-figure-center r-stretch" style="width:98.0%"><ul>
+<li><strong>5 061 DMRs</strong> on chr21: 4 803 lower in K562 (3.3 Mb in total) and 258 higher.</li>
+<li>68% of the losses lie in K562’s hypomethylated domains (46% of tested CpGs do). Gains are <strong>enriched at CpG islands</strong> (9.7% vs 7.1% of CpGs) and promoters (6.6% vs 4.9%).</li>
+</ul>
+<aside class="notes">
+<p>Median DMR: 416 bp and 10 CpGs for losses, 495 bp and 7 CpGs for gains. Many of the “losses” are pieces of the same megabase domains, cut into hundreds of DMRs by DSS’s 100-bp merging rule: counting DMRs inflates the number of “events”. Report the total length and the domain structure, or call large-scale blocks separately (BSmooth’s block finder; PMD callers such as MethylSeekR). The gains at CpG islands are the classic cancer pattern, CGI hypermethylation on a background of global hypomethylation (<em>Epigenetics in disease and therapy</em>), visible even on one chromosome of a leukaemia cell line.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="multiple-testing-cpgs-vs-regions" class="slide level2 smaller">
+<h2>Multiple testing: CpGs vs regions</h2>
+<ul>
+<li>Whole genome: ~28 million CpGs. At p &lt; 0.001 you expect ~28 000 false positives: control the <strong>FDR</strong> (Benjamini–Hochberg), as in RNA-seq.</li>
+<li>But an FDR over CpGs is <strong>not</strong> an FDR over regions: one false region can contain 10 false CpGs, and regions are defined after looking at the data.</li>
+<li><strong>dmrseq</strong> defines candidate regions, scores each as a unit, and gets region-level p-values by <strong>permuting sample labels</strong>: valid FDR for DMRs, but it needs enough samples to permute.</li>
+</ul>
+<aside class="notes">
+<p>No figure. With 2 vs 2 samples there are only three distinct ways to split the four samples into two groups, so permutation-based region FDR (dmrseq; Korthauer et al.&nbsp;2019) is not available, and the DMR list from DSS should be read as a ranking with strong evidence, not as a calibrated FDR. This is a good exam point: “FDR &lt; 5% DMRs” in a paper with 2 vs 2 samples needs a closer look at how the FDR was computed. For larger designs, dmrseq or a region-level model with covariates is the better choice.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-promoter-dmr" class="slide level2 smaller">
+<h2>A promoter DMR</h2>
+
+<img data-src="fig11-dmr-locus.png" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><ul>
+<li><em>ITGB2</em> (integrin β2, CD18, a leukocyte gene): CpG-island promoter at <strong>0.04</strong> in GM12878 and <strong>0.40</strong> in K562 (DMR of 399 bp).</li>
+<li>Expression: <strong>16.8 TPM</strong> in GM12878, <strong>0.2</strong> in K562. Gain of promoter methylation, loss of expression.</li>
+</ul>
+<aside class="notes">
+<p>Chosen by a rule in the figure script, not by eye: among genes whose CpG-island promoter overlaps a DMR higher in K562 and that are expressed in GM12878 (TPM &gt; 2), the one with the largest drop in K562. Dots: per-CpG levels of the four samples (at least 5 reads); lines: DSS smoothed means; shaded: DSS DMRs. ITGB2 encodes the β chain of the leukocyte integrins (LFA-1), expressed in lymphocytes, so silence in an erythroleukaemia line is expected. The methylation in K562 is partial (0.4): the island may be methylated on one allele or in a subset of cells, which bulk data cannot tell apart (<em>Methylation and chromatin from long reads</em>). As always, this is consistent with methylation silencing ITGB2 in K562, and equally with methylation following silencing caused by lineage.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="do-promoter-dmrs-change-expression" class="slide level2 smaller">
+<h2>Do promoter DMRs change expression?</h2>
+
+<img data-src="fig12-expression.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"><ul>
+<li>Promoters <strong>higher in K562</strong>: 5 of 11 genes are down more than 2-fold in K562, 1 up.</li>
+<li>Promoters <strong>lower in K562</strong>: 7 up, 7 down of 63: no consistent direction (many are silent genes in domains that lost methylation).</li>
+<li>Expression is weakly linked to promoter methylation genome-wide; strongly at CGI promoters that become methylated.</li>
+</ul>
+<aside class="notes">
+<p>ENCODE total RNA-seq, two replicates per cell line (mean TPM), log2 (TPM + 1) ratio; promoter = TSS ± 1 kb. On one chromosome the numbers are small and the conclusions are tentative. The pattern is the one expected from <em>DNA methylation biology</em>: a methylated CpG-island promoter is a stable silent state, so gains at CGI promoters go with loss of expression; losses of methylation in PMDs happen at genes that are silent in both cell lines and stay silent, so they are not followed by activation. Never conclude causality from this kind of plot: methylation could follow silencing (most likely for many CGIs), and the two cell lines differ in everything (lineage, transformation, karyotype).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="design-what-are-the-replicates" class="slide level2 smaller">
+<h2>Design: what are the replicates?</h2>
+<ul>
+<li><strong>Cell-line replicates</strong> (our data) measure technical and culture variation. The p-values say “these two cultures differ”, not “B cells differ from erythroleukaemia”.</li>
+<li>In <strong>human samples</strong>, differences can come from <strong>cell-type composition</strong>, age, sex, genotype (SNPs, meQTLs), smoking, batch and conversion efficiency. Put them in the model or in the design.</li>
+<li>Methylation differences between cell types are large (Δβ 0.3–1); between exposed and unexposed people often small (Δβ 0.01–0.05): they need many samples, which is why population studies use arrays.</li>
+</ul>
+<aside class="notes">
+<p>The judgement slide. Cell-type composition is the classic confounder of methylation studies in blood and tissue: if cases have more neutrophils, every neutrophil-specific CpG looks differentially methylated (Houseman et al.&nbsp;2012; Jaffe &amp; Irizarry 2014; covered in <em>Methylation arrays</em>). Sex matters for chrX (and chrY) CpGs; age changes thousands of CpGs (<em>Epigenetic clocks and biomarkers</em>); genotype changes methylation at CpG-SNPs and meQTLs (<em>Bisulfite and enzymatic sequencing</em>, <em>Epigenomics and genetic variation</em>). Our GM12878 vs K562 comparison is a teaching example of the method only: the two lines come from different people, different lineages, and one was immortalised by EBV while the other is a leukaemia. Any DMR could be due to any of these differences.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="tools" class="slide level2 smaller">
+<h2>Tools</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 31%">
+<col style="width: 27%">
+<col style="width: 31%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>tool</th>
+<th>model</th>
+<th>regions</th>
+<th>notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>DSS</td>
+<td>beta-binomial, shrunken dispersion, Wald test; smoothing</td>
+<td>callDMR merges DMLs</td>
+<td>fast; multi-factor designs</td>
+</tr>
+<tr class="even">
+<td>BSmooth (bsseq)</td>
+<td>local-likelihood smoothing, t-statistics</td>
+<td>runs of large t; blocks</td>
+<td>low coverage OK; needs ≥ 2–3 per group</td>
+</tr>
+<tr class="odd">
+<td>dmrseq</td>
+<td>beta-binomial GLM on candidate regions</td>
+<td>permutation FDR for regions</td>
+<td>needs more samples</td>
+</tr>
+<tr class="even">
+<td>methylKit</td>
+<td>logistic regression (+ overdispersion)</td>
+<td>tiles or merged CpGs</td>
+<td>popular for RRBS</td>
+</tr>
+<tr class="odd">
+<td>metilene</td>
+<td>segmentation, no model per CpG</td>
+<td>yes</td>
+<td>very fast, few assumptions</td>
+</tr>
+<tr class="even">
+<td>limma on M-values</td>
+<td>linear model</td>
+<td>DMRcate, bumphunter</td>
+<td>arrays (<em>Methylation arrays</em>)</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>A reference table. What matters for choosing: does the model account for overdispersion (all modern tools do), does it allow covariates (DSS multi-factor, dmrseq, methylKit, limma), does it control a region-level error rate (dmrseq), and does it suit the coverage pattern (smoothing for WGBS; tiles or per-CpG tests for RRBS). Results differ between tools mostly in borderline regions; strong DMRs are found by all.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="summary" class="slide level2 smaller">
+<h2>Summary</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 80%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>idea</th>
+<th>key fact</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>data</td>
+<td>methylated and total reads per CpG and sample; no library-size normalisation</td>
+</tr>
+<tr class="even">
+<td>model</td>
+<td>binomial sampling + beta biological variation = beta-binomial; Var = Np(1−p)[1+(N−1)φ]</td>
+</tr>
+<tr class="odd">
+<td>replicates</td>
+<td>K562 replicates ~binomial (z variance 1.05); GM12878 overdispersed (3.44)</td>
+</tr>
+<tr class="even">
+<td>pooling</td>
+<td>Fisher on pooled reads calls 20 902 false CpGs between two GM12878 replicates</td>
+</tr>
+<tr class="odd">
+<td>smoothing</td>
+<td>borrows neighbours (BSmooth, DSS); blurs sharp single-CpG changes</td>
+</tr>
+<tr class="even">
+<td>DML vs DMR</td>
+<td>CpG tests, then merging rules; region FDR needs region-level methods (dmrseq)</td>
+</tr>
+<tr class="odd">
+<td>effect size</td>
+<td>report Δβ; use a delta threshold</td>
+</tr>
+<tr class="even">
+<td>this dataset</td>
+<td>5 061 DMRs; 95% lower in K562, mostly in hypomethylated domains; gains at CGIs</td>
+</tr>
+<tr class="odd">
+<td>design</td>
+<td>cell lines ≠ populations; composition, age, sex, genotype, batch confound</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>Students should leave able to: write the beta-binomial variance and compute it; explain why pooling reads over replicates is wrong; say what smoothing buys and costs; apply DMR merging rules to a list of CpGs; interpret a DMR table with Δβ and length; list the confounders of a methylation study. Next: <em>Methylation arrays</em>, the platform of most human population studies, where the same questions are asked with a linear model on M-values.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="key-papers-optional-further-reading" class="slide level2 smaller">
+<h2>Key papers (optional further reading)</h2>
+<p><em>Not required reading and not examined. For those who want the primary literature.</em></p>
+<ul>
+<li>Hansen, Langmead &amp; Irizarry 2012, <em>Genome Biol</em>. <a href="https://doi.org/10.1186/gb-2012-13-10-r83">BSmooth: from whole genome bisulfite sequencing reads to differentially methylated regions</a>. Smoothing; low coverage, many samples.</li>
+<li>Feng, Conneely &amp; Wu 2014, <em>Nucleic Acids Res</em>. <a href="https://doi.org/10.1093/nar/gku154">A Bayesian hierarchical model to detect differentially methylated loci from single nucleotide resolution sequencing data</a>. DSS: beta-binomial with shrunken dispersion.</li>
+<li>Akalin et al.&nbsp;2012, <em>Genome Biol</em>. <a href="https://doi.org/10.1186/gb-2012-13-10-r87">methylKit: a comprehensive R package for the analysis of genome-wide DNA methylation profiles</a>. A widely used alternative, especially for RRBS.</li>
+<li>Korthauer et al.&nbsp;2019, <em>Biostatistics</em>. <a href="https://doi.org/10.1093/biostatistics/kxy007">Detection and accurate false discovery rate control of differentially methylated regions from whole genome bisulfite sequencing</a>. dmrseq: region-level FDR.</li>
+<li>Hansen et al.&nbsp;2011, <em>Nat Genet</em>. <a href="https://doi.org/10.1038/ng.865">Increased methylation variation in epigenetic domains across cancer types</a>. Large hypomethylated blocks in cancer.</li>
+<li>Ziller et al.&nbsp;2015, <em>Nat Methods</em>. <a href="https://doi.org/10.1038/nmeth.3152">Coverage recommendations for methylation analysis by whole-genome bisulfite sequencing</a>. Replicates vs depth.</li>
+</ul>
+
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'visible',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: false,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+            const codeEl = trigger.previousElementSibling.cloneNode(true);
+            for (const childEl of codeEl.children) {
+              if (isCodeAnnotation(childEl)) {
+                childEl.remove();
+              }
+            }
+            return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 520" width="1120" height="520" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker></defs>
+<rect width="1120" height="520" fill="#ffffff"/>
+<text x="160" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1b2a3a">Input</text>
+<text x="850" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1b2a3a">What is predicted (examples)</text>
+<rect x="40" y="116" width="250" height="62" rx="8" fill="#f4f6f8" stroke="#1b2a3a" stroke-width="2"/>
+<text x="165" y="142" text-anchor="middle" font-size="16" font-weight="bold" fill="#1b2a3a">DNA sequence</text>
+<text x="165" y="164" text-anchor="middle" font-size="14" fill="#5b6b7a">one-hot A/C/G/T, 0.2 kb – 1 Mb</text>
+<rect x="40" y="296" width="250" height="62" rx="8" fill="#f4f6f8" stroke="#e67e22" stroke-width="2"/>
+<text x="165" y="322" text-anchor="middle" font-size="16" font-weight="bold" fill="#e67e22">epigenome tracks</text>
+<text x="165" y="344" text-anchor="middle" font-size="14" fill="#5b6b7a">ATAC, ChIP, Hi-C of a cell type</text>
+<rect x="40" y="406" width="250" height="62" rx="8" fill="#f4f6f8" stroke="#6b4fa0" stroke-width="2"/>
+<text x="165" y="432" text-anchor="middle" font-size="16" font-weight="bold" fill="#6b4fa0">DNA methylation</text>
+<text x="165" y="454" text-anchor="middle" font-size="14" fill="#5b6b7a">β values at CpGs (arrays)</text>
+<rect x="640" y="50" width="440" height="54" rx="8" fill="#eaf1f7" stroke="#2a6f97" stroke-width="1.5"/>
+<text x="656" y="72" font-size="16" font-weight="bold" fill="#1b2a3a">TF binding, accessibility</text>
+<text x="656" y="93" font-size="14" fill="#5b6b7a">DeepSEA, Basset, BPNet</text>
+<rect x="640" y="113" width="440" height="54" rx="8" fill="#eaf1f7" stroke="#2a6f97" stroke-width="1.5"/>
+<text x="656" y="135" font-size="16" font-weight="bold" fill="#1b2a3a">gene expression (RNA)</text>
+<text x="656" y="156" font-size="14" fill="#5b6b7a">Enformer, Borzoi, AlphaGenome</text>
+<rect x="640" y="176" width="440" height="54" rx="8" fill="#eaf1f7" stroke="#2a6f97" stroke-width="1.5"/>
+<text x="656" y="198" font-size="16" font-weight="bold" fill="#1b2a3a">effect of a non-coding variant</text>
+<text x="656" y="219" font-size="14" fill="#5b6b7a">predict(alt) − predict(ref)</text>
+<rect x="640" y="239" width="440" height="54" rx="8" fill="#eaf1f7" stroke="#2a6f97" stroke-width="1.5"/>
+<text x="656" y="261" font-size="16" font-weight="bold" fill="#1b2a3a">3D contacts (Hi-C map)</text>
+<text x="656" y="282" font-size="14" fill="#5b6b7a">Akita; C.Origami (+ ATAC, CTCF)</text>
+<rect x="640" y="302" width="440" height="54" rx="8" fill="#eaf1f7" stroke="#2a6f97" stroke-width="1.5"/>
+<text x="656" y="324" font-size="16" font-weight="bold" fill="#1b2a3a">which enhancer regulates which gene</text>
+<text x="656" y="345" font-size="14" fill="#5b6b7a">ABC score, TargetFinder</text>
+<rect x="640" y="365" width="440" height="54" rx="8" fill="#eaf1f7" stroke="#2a6f97" stroke-width="1.5"/>
+<text x="656" y="387" font-size="16" font-weight="bold" fill="#1b2a3a">a missing mark in a cell type</text>
+<text x="656" y="408" font-size="14" fill="#5b6b7a">ChromImpute, Avocado</text>
+<rect x="640" y="428" width="440" height="54" rx="8" fill="#eaf1f7" stroke="#2a6f97" stroke-width="1.5"/>
+<text x="656" y="450" font-size="16" font-weight="bold" fill="#1b2a3a">age; tumour type</text>
+<text x="656" y="471" font-size="14" fill="#5b6b7a">epigenetic clocks; CNS tumour classifier</text>
+<path d="M292,150 C460,150 470,76 636,76" fill="none" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M292,150 C460,150 470,139 636,139" fill="none" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M292,150 C460,150 470,202 636,202" fill="none" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M292,150 C460,150 470,265 636,265" fill="none" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M292,330 C460,330 470,265 636,265" fill="none" stroke="#e67e22" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#ah)"/>
+<path d="M292,330 C460,330 470,328 636,328" fill="none" stroke="#e67e22" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M292,330 C460,330 470,391 636,391" fill="none" stroke="#e67e22" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M292,440 C460,440 470,454 636,454" fill="none" stroke="#6b4fa0" stroke-width="2" marker-end="url(#ah)"/>
+<text x="40" y="508" font-size="15" fill="#5b6b7a">Nearly all are supervised learning: inputs → labels that an assay measured. The assays of this course supply the labels.</text>
+</svg>

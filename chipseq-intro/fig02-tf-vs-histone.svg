@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1120 430" width="1120" height="430" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <g id="nuc"><ellipse cx="0" cy="0" rx="14" ry="11" fill="#2a9d8f" stroke="#1b2a3a" stroke-width="1.2"/></g>
+    <g id="mnuc"><ellipse cx="0" cy="0" rx="14" ry="11" fill="#2a9d8f" stroke="#1b2a3a" stroke-width="1.2"/><line x1="0" y1="-11" x2="0" y2="-22" stroke="#1b2a3a" stroke-width="1.4"/><circle cx="0" cy="-25" r="4" fill="#2e8b57" stroke="#1b2a3a" stroke-width="1"/></g>
+    <g id="ab" stroke="#c0392b" stroke-width="3" stroke-linecap="round" fill="none">
+      <line x1="0" y1="0" x2="0" y2="-12"/><line x1="0" y1="-12" x2="-7" y2="-21"/><line x1="0" y1="-12" x2="7" y2="-21"/>
+    </g>
+    <marker id="dim" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker>
+  </defs>
+  <rect width="1120" height="430" fill="#ffffff"/>
+
+  <!-- LEFT: TF -->
+  <text x="20" y="28" font-size="18" font-weight="bold" fill="#1b2a3a">Transcription factor (e.g. CTCF)</text>
+  <line x1="20" y1="120" x2="530" y2="120" stroke="#1b2a3a" stroke-width="3"/>
+  <use xlink:href="#nuc" x="60" y="120"/><use xlink:href="#nuc" x="100" y="120"/><use xlink:href="#nuc" x="140" y="120"/>
+  <use xlink:href="#nuc" x="180" y="120"/>
+  <use xlink:href="#nuc" x="330" y="120"/><use xlink:href="#nuc" x="370" y="120"/><use xlink:href="#nuc" x="410" y="120"/><use xlink:href="#nuc" x="450" y="120"/><use xlink:href="#nuc" x="490" y="120"/>
+  <rect x="244" y="96" width="34" height="20" rx="6" fill="#8c564b" stroke="#1b2a3a" stroke-width="1.2"/>
+  <rect x="250" y="122" width="22" height="6" fill="#d4a017"/>
+  <g stroke="#c0392b" stroke-width="3" stroke-linecap="round"><line x1="253" y1="95" x2="261" y2="85"/><line x1="269" y1="95" x2="261" y2="85"/><line x1="261" y1="85" x2="261" y2="68"/></g>
+  <text x="272" y="74" font-size="14" fill="#c0392b">antibody against the protein</text>
+  <text x="225" y="146" font-size="14" fill="#8a6d00">motif, ~20 bp</text>
+  <!-- fragments that carry the site -->
+  <g stroke="#8c564b" stroke-width="4" stroke-linecap="round">
+    <line x1="200" y1="170" x2="300" y2="170"/>
+    <line x1="230" y1="182" x2="330" y2="182"/>
+    <line x1="215" y1="194" x2="290" y2="194"/>
+    <line x1="245" y1="206" x2="340" y2="206"/>
+    <line x1="190" y1="218" x2="275" y2="218"/>
+  </g>
+  <text x="350" y="200" font-size="15" fill="#1b2a3a">every enriched fragment</text>
+  <text x="350" y="218" font-size="15" fill="#1b2a3a">overlaps the same site</text>
+  <path d="M20,320 L190,320 C220,320 236,248 261,248 C286,248 302,320 332,320 L530,320" fill="#8c564b" fill-opacity="0.35" stroke="#8c564b" stroke-width="2.2"/>
+  <line x1="20" y1="320" x2="530" y2="320" stroke="#1b2a3a" stroke-width="1.5"/>
+  <line x1="214" y1="338" x2="308" y2="338" stroke="#1b2a3a" stroke-width="1.5" marker-start="url(#dim)" marker-end="url(#dim)"/>
+  <text x="261" y="360" font-size="15" fill="#1b2a3a" text-anchor="middle">a few hundred bp</text>
+  <text x="20" y="392" font-size="16" fill="#1b2a3a"><tspan font-weight="bold">Sharp peak</tspan>: tall, narrow, a summit on the site.</text>
+  <text x="20" y="414" font-size="15" fill="#5b6b7a">Thousands to ~100 000 sites per genome.</text>
+
+  <line x1="560" y1="16" x2="560" y2="414" stroke="#cfd8e0" stroke-width="1.5"/>
+
+  <!-- RIGHT: histone mark over a gene -->
+  <text x="590" y="28" font-size="18" font-weight="bold" fill="#1b2a3a">Histone mark (e.g. H3K36me3)</text>
+  <!-- gene -->
+  <line x1="640" y1="64" x2="1050" y2="64" stroke="#1b2a3a" stroke-width="1.5"/>
+  <rect x="640" y="56" width="22" height="16" fill="#1b2a3a"/><rect x="760" y="56" width="16" height="16" fill="#1b2a3a"/><rect x="880" y="56" width="16" height="16" fill="#1b2a3a"/><rect x="1020" y="56" width="30" height="16" fill="#1b2a3a"/>
+  <path d="M640,56 L640,42 L664,42" fill="none" stroke="#1b2a3a" stroke-width="1.8"/>
+  <path d="M660,37 L670,42 L660,47 z" fill="#1b2a3a"/>
+  <text x="1050" y="46" font-size="14" fill="#5b6b7a" text-anchor="end">transcribed gene</text>
+  <line x1="590" y1="120" x2="1100" y2="120" stroke="#1b2a3a" stroke-width="3"/>
+  <use xlink:href="#nuc" x="610" y="120"/><use xlink:href="#nuc" x="645" y="120"/>
+  <use xlink:href="#mnuc" x="680" y="120"/><use xlink:href="#nuc" x="715" y="120"/><use xlink:href="#mnuc" x="750" y="120"/><use xlink:href="#mnuc" x="785" y="120"/>
+  <use xlink:href="#mnuc" x="820" y="120"/><use xlink:href="#nuc" x="855" y="120"/><use xlink:href="#mnuc" x="890" y="120"/><use xlink:href="#mnuc" x="925" y="120"/>
+  <use xlink:href="#mnuc" x="960" y="120"/><use xlink:href="#mnuc" x="995" y="120"/><use xlink:href="#nuc" x="1030" y="120"/><use xlink:href="#nuc" x="1065" y="120"/>
+  <circle cx="646" cy="148" r="4" fill="#2e8b57" stroke="#1b2a3a" stroke-width="1"/><text x="656" y="153" font-size="14" fill="#2e8b57">= the mark on an H3 tail (antibody against the mark)</text>
+  <!-- fragments spread over the domain -->
+  <g stroke="#2e8b57" stroke-width="4" stroke-linecap="round">
+    <line x1="660" y1="172" x2="740" y2="172"/><line x1="800" y1="172" x2="880" y2="172"/><line x1="930" y1="172" x2="1010" y2="172"/>
+    <line x1="700" y1="182" x2="790" y2="182"/><line x1="880" y1="182" x2="950" y2="182"/>
+    <line x1="740" y1="194" x2="820" y2="194"/><line x1="960" y1="194" x2="1030" y2="194"/>
+    <line x1="670" y1="206" x2="745" y2="206"/><line x1="840" y1="206" x2="925" y2="206"/>
+  </g>
+  <text x="640" y="236" font-size="15" fill="#1b2a3a">enriched fragments come from many nucleosomes</text>
+  <path d="M590,320 L650,320 C665,320 668,294 680,292 L700,296 L725,290 L760,295 L790,286 L830,293 L860,288 L900,284 L940,290 L980,285 L1010,294 C1022,296 1028,320 1040,320 L1100,320" fill="#2e8b57" fill-opacity="0.35" stroke="#2e8b57" stroke-width="2.2"/>
+  <line x1="590" y1="320" x2="1100" y2="320" stroke="#1b2a3a" stroke-width="1.5"/>
+  <line x1="668" y1="338" x2="1030" y2="338" stroke="#1b2a3a" stroke-width="1.5" marker-start="url(#dim)" marker-end="url(#dim)"/>
+  <text x="849" y="360" font-size="15" fill="#1b2a3a" text-anchor="middle">kilobases to hundreds of kilobases</text>
+  <text x="590" y="392" font-size="16" fill="#1b2a3a"><tspan font-weight="bold">Broad domain</tspan>: low, wide, no single summit.</text>
+  <text x="590" y="414" font-size="15" fill="#5b6b7a">H3K4me3 and H3K27ac sit in between: a few nucleosomes, 1–5 kb.</text>
+</svg>

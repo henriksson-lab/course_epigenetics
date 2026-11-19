@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 330" width="1120" height="330" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker>
+  </defs>
+  <rect width="1120" height="330" fill="#ffffff"/>
+  <!-- start box -->
+  <rect x="10" y="120" width="170" height="90" rx="8" fill="#f3e9e4" stroke="#8c564b"/>
+  <text x="24" y="150" font-size="17" font-weight="bold" fill="#1b2a3a">Peaks + BAMs</text>
+  <text x="24" y="174" font-size="15" fill="#1b2a3a">per sample, from</text>
+  <text x="24" y="194" font-size="15" fill="#1b2a3a"><tspan font-style="italic">Peak calling</tspan></text>
+  <!-- upper branch: describe -->
+  <text x="230" y="30" font-size="16" font-weight="bold" fill="#5b6b7a">Describe one condition</text>
+  <rect x="230" y="44" width="250" height="96" rx="8" fill="#f4f6f8" stroke="#cfd8e0"/>
+  <text x="244" y="72" font-size="16" font-weight="bold" fill="#1b2a3a">Annotate</text>
+  <text x="244" y="96" font-size="15" fill="#1b2a3a">promoter / intron / distal;</text>
+  <text x="244" y="118" font-size="15" fill="#1b2a3a">nearest gene (ChIPseeker)</text>
+  <rect x="510" y="44" width="260" height="96" rx="8" fill="#f4f6f8" stroke="#cfd8e0"/>
+  <text x="524" y="72" font-size="16" font-weight="bold" fill="#1b2a3a">Profiles and heatmaps</text>
+  <text x="524" y="96" font-size="15" fill="#1b2a3a">signal around TSSs, summits,</text>
+  <text x="524" y="118" font-size="15" fill="#1b2a3a">peak groups (deepTools)</text>
+  <rect x="800" y="44" width="310" height="96" rx="8" fill="#f4f6f8" stroke="#cfd8e0"/>
+  <text x="814" y="72" font-size="16" font-weight="bold" fill="#1b2a3a">Interpret</text>
+  <text x="814" y="96" font-size="15" fill="#1b2a3a">motifs, gene sets, other marks</text>
+  <text x="814" y="118" font-size="15" fill="#1b2a3a">(later units)</text>
+  <!-- lower branch: compare -->
+  <text x="230" y="200" font-size="16" font-weight="bold" fill="#5b6b7a">Compare conditions, with replicates</text>
+  <rect x="230" y="214" width="170" height="96" rx="8" fill="#eaf1f7" stroke="#2a6f97"/>
+  <text x="244" y="242" font-size="16" font-weight="bold" fill="#1b2a3a">Consensus</text>
+  <text x="244" y="266" font-size="15" fill="#1b2a3a">one set of regions</text>
+  <text x="244" y="288" font-size="15" fill="#1b2a3a">for all samples</text>
+  <rect x="430" y="214" width="170" height="96" rx="8" fill="#eaf1f7" stroke="#2a6f97"/>
+  <text x="444" y="242" font-size="16" font-weight="bold" fill="#1b2a3a">Count</text>
+  <text x="444" y="266" font-size="15" fill="#1b2a3a">reads per region</text>
+  <text x="444" y="288" font-size="15" fill="#1b2a3a">per sample</text>
+  <rect x="630" y="214" width="220" height="96" rx="8" fill="#fbeaea" stroke="#c0392b"/>
+  <text x="644" y="242" font-size="16" font-weight="bold" fill="#c0392b">Normalise</text>
+  <text x="644" y="266" font-size="15" fill="#1b2a3a">which regions or reads</text>
+  <text x="644" y="288" font-size="15" fill="#1b2a3a">are assumed constant?</text>
+  <rect x="880" y="214" width="230" height="96" rx="8" fill="#eaf1f7" stroke="#2a6f97"/>
+  <text x="894" y="242" font-size="16" font-weight="bold" fill="#1b2a3a">Test</text>
+  <text x="894" y="266" font-size="15" fill="#1b2a3a">DESeq2 / edgeR, as for</text>
+  <text x="894" y="288" font-size="15" fill="#1b2a3a">genes in RNA-seq</text>
+  <g stroke="#5b6b7a" stroke-width="2" marker-end="url(#ar)">
+    <path d="M180,150 C205,150 205,92 228,92" fill="none"/><path d="M180,180 C205,180 205,262 228,262" fill="none"/>
+    <line x1="480" y1="92" x2="508" y2="92"/><line x1="770" y1="92" x2="798" y2="92"/>
+    <line x1="400" y1="262" x2="428" y2="262"/><line x1="600" y1="262" x2="628" y2="262"/><line x1="850" y1="262" x2="878" y2="262"/>
+  </g>
+</svg>

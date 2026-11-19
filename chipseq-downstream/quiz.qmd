@@ -1,0 +1,91 @@
+---
+title: "Quiz: Annotation and differential binding"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+Short questions on annotating peaks, reading heatmaps and testing differential binding. Try each on paper first, then open the answer.
+
+---
+
+**Q1.** A gene on the − strand spans 50 000–80 000 (TSS at 80 000). A peak is centred at 80 600. With a promoter window of TSS ± 1 kb, what is its category, and is it upstream or downstream of the TSS?
+
+::: {.callout-note collapse="true" title="Answer"}
+Promoter (600 bp from the TSS). For a − strand gene, larger coordinates are upstream: the peak is 600 bp **upstream** (distance −600).
+:::
+
+---
+
+**Q2.** 35% of a TF's peaks are "promoters" with a ±3 kb window and 18% with ±1 kb. Which number would you report, and what else must you report with it?
+
+::: {.callout-note collapse="true" title="Answer"}
+Either, but with the window. Also the annotation used (which genes and transcripts) and the priority rule. The category depends on all three, so numbers from different papers are comparable only with the same settings.
+:::
+
+---
+
+**Q3.** Why is "the nearest gene" a weak assignment of a distal peak to a target gene? Name one better kind of evidence.
+
+::: {.callout-note collapse="true" title="Answer"}
+Enhancers act over tens to hundreds of kb and often skip the nearest gene. Better: 3D contacts (Hi-C, HiChIP), correlation of the element's activity with gene expression across samples, or perturbation (CRISPRi/deletion changes the gene's expression).
+:::
+
+---
+
+**Q4.** An average profile of H3K27ac around 5 000 peaks shows a clear peak. What can the heatmap show that the profile cannot?
+
+::: {.callout-note collapse="true" title="Answer"}
+Whether all regions have a similar signal or a few strong regions dominate the average; subgroups with different shapes; regions with no signal at all; whether the pattern is the same in all samples. Each row is one region.
+:::
+
+---
+
+**Q5.** Why must a consensus region set for differential binding include peaks from all conditions?
+
+::: {.callout-note collapse="true" title="Answer"}
+Regions that only have signal in one condition would otherwise be missing, so gains (or losses) in that condition could never be found: the test is biased towards the condition whose peaks were used.
+:::
+
+---
+
+**Q6.** Two ChIP libraries have equal depth. Sample B has FRiP 0.3, sample A 0.15, and all peaks are 2× higher in B. Give one biological and one technical explanation. Which normalisation does each call for?
+
+::: {.callout-note collapse="true" title="Answer"}
+Biological: B has twice as much of the mark at its sites (a global increase) → library-size normalisation, or better spike-ins, keeps the difference. Technical: B's IP was more efficient → normalising on peaks (DESeq2's median-of-ratios) removes the artefact. The data alone cannot tell them apart.
+:::
+
+---
+
+**Q7.** Spike-in reads: control 30 000 and 30 000, treated 90 000 and 90 000. A region has 450 reads in each sample. Compute spike-in size factors and normalised counts. What happened to the region?
+
+::: {.callout-note collapse="true" title="Answer"}
+Geometric mean = √(30 000 × 90 000) = 51 962. Size factors 0.577, 0.577, 1.732, 1.732. Normalised counts 780 and 260: the region lost two thirds of its signal (log2FC −1.58), although the raw counts are identical.
+:::
+
+---
+
+**Q8.** In whole-genome inputs, chr22 holds 1.46% of the reads in cell line X and 1.14% in cell line Y. What does that imply for a differential binding analysis of chr22 regions between X and Y?
+
+::: {.callout-note collapse="true" title="Answer"}
+X has about 1.28× more chr22 DNA relative to its genome (a copy-number gain): every chr22 region gets about +0.36 log2 units in X before any biology. Correct with input-based copy-number factors, greylists, or by comparing within equal copy number; otherwise many "gains" in X are copy number.
+:::
+
+---
+
+**Q9.** After an EZH2 inhibitor, a paper finds H3K27me3 "redistributed": lost from some domains and gained at others, using reads-per-million normalisation and no spike-in. Why might the "gains" be artefacts?
+
+::: {.callout-note collapse="true" title="Answer"}
+EZH2 inhibition lowers H3K27me3 globally. Normalising to equal totals scales the remaining signal up, so domains that lost less than average (or kept their mark) appear gained. A spike-in (or a western blot showing the global loss) is needed before calling gains.
+:::
+
+---
+
+**Q10.** Which parts of a differential binding analysis with DESeq2 are exactly as in RNA-seq, and which are different?
+
+::: {.callout-note collapse="true" title="Answer"}
+Same: the count matrix (features × samples), negative binomial model, dispersion estimation, design formula with batch, Wald/LRT tests, FDR, MA and volcano plots, the need for ≥ 3 biological replicates. Different: the features are derived from the data (consensus peaks or windows), fragments are counted, normalisation must consider signal-to-noise, copy number and global changes (spike-ins), and the input/background must be considered.
+:::

@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 360" width="1120" height="360" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker><marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker></defs>
+<rect width="1120" height="360" fill="white"/>
+<text x="30" y="28" font-size="17" font-weight="bold" fill="#1b2a3a">1 · test every CpG (smoothed): significant CpGs = DMLs</text>
+<line x1="30" y1="200" x2="1090" y2="200" stroke="#1b2a3a" stroke-width="2"/>
+<line x1="30" y1="120" x2="1090" y2="120" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="6,4"/>
+<text x="1090" y="112" font-size="14" text-anchor="end" fill="#c0392b">p threshold</text>
+<rect x="54" y="178.19759551312828" width="12" height="21.802404486871726" fill="#c9d3dc"/>
+<rect x="89" y="184.84169828846422" width="12" height="15.15830171153579" fill="#c9d3dc"/>
+<rect x="124" y="170.19708786946595" width="12" height="29.80291213053405" fill="#c9d3dc"/>
+<rect x="169" y="182.25138645987948" width="12" height="17.748613540120513" fill="#c9d3dc"/>
+<rect x="199" y="102.00682069441845" width="12" height="97.99317930558155" fill="#2a6f97"/>
+<rect x="224" y="86.92840434817163" width="12" height="113.07159565182837" fill="#2a6f97"/>
+<rect x="246" y="63.69202306105265" width="12" height="136.30797693894735" fill="#2a6f97"/>
+<rect x="264" y="68.97964418268862" width="12" height="131.02035581731138" fill="#2a6f97"/>
+<rect x="284" y="70.56768288725527" width="12" height="129.43231711274473" fill="#2a6f97"/>
+<rect x="309" y="95.0132320939357" width="12" height="104.9867679060643" fill="#2a6f97"/>
+<rect x="334" y="163.16599959125932" width="12" height="36.83400040874068" fill="#c9d3dc"/>
+<rect x="374" y="176.16586782792749" width="12" height="23.83413217207251" fill="#c9d3dc"/>
+<rect x="424" y="181.36677353573157" width="12" height="18.633226464268446" fill="#c9d3dc"/>
+<rect x="464" y="184.6908353784235" width="12" height="15.309164621576507" fill="#c9d3dc"/>
+<rect x="514" y="179.27997837105417" width="12" height="20.720021628945823" fill="#c9d3dc"/>
+<rect x="554" y="63.263596585737275" width="12" height="136.73640341426272" fill="#2a6f97"/>
+<rect x="594" y="148.55399756107903" width="12" height="51.44600243892097" fill="#c9d3dc"/>
+<rect x="634" y="149.66738266488383" width="12" height="50.33261733511617" fill="#c9d3dc"/>
+<rect x="684" y="149.9776080728517" width="12" height="50.02239192714831" fill="#c9d3dc"/>
+<rect x="714" y="96.2953971891342" width="12" height="103.7046028108658" fill="#2a6f97"/>
+<rect x="739" y="91.0567519215209" width="12" height="108.9432480784791" fill="#2a6f97"/>
+<rect x="762" y="76.78609789140914" width="12" height="123.21390210859086" fill="#2a6f97"/>
+<rect x="784" y="72.06473810045769" width="12" height="127.93526189954231" fill="#2a6f97"/>
+<rect x="806" y="66.54082389038939" width="12" height="133.4591761096106" fill="#2a6f97"/>
+<rect x="834" y="145.99746243194002" width="12" height="54.00253756805997" fill="#c9d3dc"/>
+<rect x="874" y="185.66408736825392" width="12" height="14.33591263174609" fill="#c9d3dc"/>
+<rect x="924" y="159.707405814006" width="12" height="40.29259418599399" fill="#c9d3dc"/>
+<rect x="969" y="156.41492717417634" width="12" height="43.585072825823666" fill="#c9d3dc"/>
+<rect x="1004" y="164.70231121447924" width="12" height="35.29768878552076" fill="#c9d3dc"/>
+<rect x="1044" y="181.11049128796077" width="12" height="18.889508712039223" fill="#c9d3dc"/>
+<text x="30" y="222" font-size="14" fill="#5b6b7a">bar height: −log10 p of each CpG; position along the chromosome</text>
+<text x="30" y="250" font-size="17" font-weight="bold" fill="#1b2a3a">2 · merge nearby DMLs into regions, then filter</text>
+<rect x="195" y="268" width="130" height="26" rx="4" fill="#d4a017" stroke="#1b2a3a" stroke-width="1.2"/>
+<text x="260.0" y="315" font-size="15" text-anchor="middle" fill="#1b2a3a">DMR: 6 CpGs, 125 bp</text>
+<rect x="555" y="268" width="14" height="26" rx="4" fill="#c9d3dc" stroke="#1b2a3a" stroke-width="1.2"/>
+<text x="560.0" y="315" font-size="15" text-anchor="middle" fill="#5b6b7a">1 CpG: too few</text>
+<rect x="710" y="268" width="112" height="26" rx="4" fill="#d4a017" stroke="#1b2a3a" stroke-width="1.2"/>
+<text x="766.0" y="315" font-size="15" text-anchor="middle" fill="#1b2a3a">DMR: 5 CpGs, 110 bp</text>
+<text x="30" y="348" font-size="15" fill="#5b6b7a">DSS callDMR defaults: gaps &lt; 100 bp merged; at least 3 CpGs and 50 bp; at least 50% of CpGs significant; |Δβ| above delta if set.</text>
+</svg>

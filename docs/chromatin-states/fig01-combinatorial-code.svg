@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 470" width="1120" height="470" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/>
+    </marker>
+    <marker id="arrg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/>
+    </marker>
+    <marker id="arrr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/>
+    </marker>
+    <marker id="arrs" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="3.6" markerHeight="3.6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/>
+    </marker>
+  </defs>
+  <rect width="1120" height="470" fill="#ffffff"/>
+  <text x="440" y="48" font-size="15" fill="#c0392b" text-anchor="middle" font-weight="bold">H3K4me3</text>
+  <text x="565" y="48" font-size="15" fill="#e67e22" text-anchor="middle" font-weight="bold">H3K27ac</text>
+  <text x="690" y="48" font-size="15" fill="#d4a017" text-anchor="middle" font-weight="bold">H3K4me1</text>
+  <text x="815" y="48" font-size="15" fill="#2e8b57" text-anchor="middle" font-weight="bold">H3K36me3</text>
+  <text x="940" y="48" font-size="15" fill="#2a6f97" text-anchor="middle" font-weight="bold">H3K27me3</text>
+  <text x="1065" y="48" font-size="15" fill="#6b4fa0" text-anchor="middle" font-weight="bold">H3K9me3</text>
+  <text x="20" y="48" font-size="15" fill="#1b2a3a" font-weight="bold">element</text>
+  <text x="290" y="48" font-size="15" fill="#1b2a3a" font-weight="bold">state name</text>
+  <rect x="14" y="54" width="1092" height="40" rx="4" fill="#f4f6f8"/>
+  <text x="20" y="80" font-size="15" fill="#1b2a3a">Active promoter</text>
+  <text x="290" y="80" font-size="15" fill="#5b6b7a" font-family="Menlo, Consolas, monospace">TssA</text>
+  <circle cx="440" cy="75" r="13" fill="#c0392b"/>
+  <circle cx="565" cy="75" r="13" fill="#e67e22"/>
+  <circle cx="690" cy="75" r="4" fill="#d0d7de"/>
+  <circle cx="815" cy="75" r="4" fill="#d0d7de"/>
+  <circle cx="940" cy="75" r="4" fill="#d0d7de"/>
+  <circle cx="1065" cy="75" r="4" fill="#d0d7de"/>
+  <text x="20" y="122" font-size="15" fill="#1b2a3a">Active enhancer</text>
+  <text x="290" y="122" font-size="15" fill="#5b6b7a" font-family="Menlo, Consolas, monospace">EnhA</text>
+  <circle cx="440" cy="117" r="4" fill="#d0d7de"/>
+  <circle cx="565" cy="117" r="13" fill="#e67e22"/>
+  <circle cx="690" cy="117" r="13" fill="#d4a017"/>
+  <circle cx="815" cy="117" r="4" fill="#d0d7de"/>
+  <circle cx="940" cy="117" r="4" fill="#d0d7de"/>
+  <circle cx="1065" cy="117" r="4" fill="#d0d7de"/>
+  <rect x="14" y="138" width="1092" height="40" rx="4" fill="#f4f6f8"/>
+  <text x="20" y="164" font-size="15" fill="#1b2a3a">Weak / primed enhancer</text>
+  <text x="290" y="164" font-size="15" fill="#5b6b7a" font-family="Menlo, Consolas, monospace">EnhWk</text>
+  <circle cx="440" cy="159" r="4" fill="#d0d7de"/>
+  <circle cx="565" cy="159" r="4" fill="#d0d7de"/>
+  <circle cx="690" cy="159" r="13" fill="#d4a017"/>
+  <circle cx="815" cy="159" r="4" fill="#d0d7de"/>
+  <circle cx="940" cy="159" r="4" fill="#d0d7de"/>
+  <circle cx="1065" cy="159" r="4" fill="#d0d7de"/>
+  <text x="20" y="206" font-size="15" fill="#1b2a3a">Transcribed gene body</text>
+  <text x="290" y="206" font-size="15" fill="#5b6b7a" font-family="Menlo, Consolas, monospace">Tx</text>
+  <circle cx="440" cy="201" r="4" fill="#d0d7de"/>
+  <circle cx="565" cy="201" r="4" fill="#d0d7de"/>
+  <circle cx="690" cy="201" r="4" fill="#d0d7de"/>
+  <circle cx="815" cy="201" r="13" fill="#2e8b57"/>
+  <circle cx="940" cy="201" r="4" fill="#d0d7de"/>
+  <circle cx="1065" cy="201" r="4" fill="#d0d7de"/>
+  <rect x="14" y="222" width="1092" height="40" rx="4" fill="#f4f6f8"/>
+  <text x="20" y="248" font-size="15" fill="#1b2a3a">Bivalent promoter</text>
+  <text x="290" y="248" font-size="15" fill="#5b6b7a" font-family="Menlo, Consolas, monospace">TssBiv</text>
+  <circle cx="440" cy="243" r="13" fill="#c0392b"/>
+  <circle cx="565" cy="243" r="4" fill="#d0d7de"/>
+  <circle cx="690" cy="243" r="13" fill="#d4a017" fill-opacity="0.3"/>
+  <circle cx="815" cy="243" r="4" fill="#d0d7de"/>
+  <circle cx="940" cy="243" r="13" fill="#2a6f97"/>
+  <circle cx="1065" cy="243" r="4" fill="#d0d7de"/>
+  <text x="20" y="290" font-size="15" fill="#1b2a3a">Polycomb-repressed</text>
+  <text x="290" y="290" font-size="15" fill="#5b6b7a" font-family="Menlo, Consolas, monospace">ReprPC</text>
+  <circle cx="440" cy="285" r="4" fill="#d0d7de"/>
+  <circle cx="565" cy="285" r="4" fill="#d0d7de"/>
+  <circle cx="690" cy="285" r="4" fill="#d0d7de"/>
+  <circle cx="815" cy="285" r="4" fill="#d0d7de"/>
+  <circle cx="940" cy="285" r="13" fill="#2a6f97"/>
+  <circle cx="1065" cy="285" r="4" fill="#d0d7de"/>
+  <rect x="14" y="306" width="1092" height="40" rx="4" fill="#f4f6f8"/>
+  <text x="20" y="332" font-size="15" fill="#1b2a3a">ZNF genes and repeats</text>
+  <text x="290" y="332" font-size="15" fill="#5b6b7a" font-family="Menlo, Consolas, monospace">ZNF/Rpts</text>
+  <circle cx="440" cy="327" r="4" fill="#d0d7de"/>
+  <circle cx="565" cy="327" r="4" fill="#d0d7de"/>
+  <circle cx="690" cy="327" r="4" fill="#d0d7de"/>
+  <circle cx="815" cy="327" r="13" fill="#2e8b57" fill-opacity="0.3"/>
+  <circle cx="940" cy="327" r="4" fill="#d0d7de"/>
+  <circle cx="1065" cy="327" r="13" fill="#6b4fa0"/>
+  <text x="20" y="374" font-size="15" fill="#1b2a3a">Heterochromatin</text>
+  <text x="290" y="374" font-size="15" fill="#5b6b7a" font-family="Menlo, Consolas, monospace">Het</text>
+  <circle cx="440" cy="369" r="4" fill="#d0d7de"/>
+  <circle cx="565" cy="369" r="4" fill="#d0d7de"/>
+  <circle cx="690" cy="369" r="4" fill="#d0d7de"/>
+  <circle cx="815" cy="369" r="4" fill="#d0d7de"/>
+  <circle cx="940" cy="369" r="4" fill="#d0d7de"/>
+  <circle cx="1065" cy="369" r="13" fill="#6b4fa0" fill-opacity="0.3"/>
+  <rect x="14" y="390" width="1092" height="40" rx="4" fill="#f4f6f8"/>
+  <text x="20" y="416" font-size="15" fill="#1b2a3a">Quiescent (no mark)</text>
+  <text x="290" y="416" font-size="15" fill="#5b6b7a" font-family="Menlo, Consolas, monospace">Quies</text>
+  <circle cx="440" cy="411" r="4" fill="#d0d7de"/>
+  <circle cx="565" cy="411" r="4" fill="#d0d7de"/>
+  <circle cx="690" cy="411" r="4" fill="#d0d7de"/>
+  <circle cx="815" cy="411" r="4" fill="#d0d7de"/>
+  <circle cx="940" cy="411" r="4" fill="#d0d7de"/>
+  <circle cx="1065" cy="411" r="4" fill="#d0d7de"/>
+  <circle cx="30" cy="452" r="9" fill="#5b6b7a"/>
+  <text x="46" y="457" font-size="14" fill="#5b6b7a">mark present</text>
+  <circle cx="190" cy="452" r="9" fill="#5b6b7a" fill-opacity="0.3"/>
+  <text x="206" y="457" font-size="14" fill="#5b6b7a">weaker or in part of the bins</text>
+  <text x="1100" y="457" font-size="14" fill="#5b6b7a" text-anchor="end">names as in the Roadmap 18-state model</text>
+</svg>

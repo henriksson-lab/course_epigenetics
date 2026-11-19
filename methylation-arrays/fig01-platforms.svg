@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 400" width="1120" height="400" font-family="Helvetica, Arial, sans-serif">
+<rect width="1120" height="400" fill="#ffffff"/>
+<!-- Panel A: generations -->
+<text x="250" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1b2a3a">A. Four generations of Illumina arrays</text>
+<line x1="150" y1="60" x2="150" y2="300" stroke="#1b2a3a" stroke-width="1.5"/>
+<!-- scale: 0..1,000,000 -> 0..320 px -->
+<text x="140" y="96" text-anchor="end" font-size="15" fill="#1b2a3a">27k (2008)</text>
+<rect x="150" y="78" width="8.8" height="28" fill="#5b6b7a"/>
+<text x="166" y="98" font-size="15" fill="#1b2a3a">27 578</text>
+<text x="140" y="152" text-anchor="end" font-size="15" fill="#1b2a3a">450k (2011)</text>
+<rect x="150" y="134" width="155.4" height="28" fill="#2a6f97"/>
+<text x="313" y="154" font-size="15" fill="#1b2a3a">485 577</text>
+<text x="140" y="208" text-anchor="end" font-size="15" fill="#1b2a3a">EPIC (2016)</text>
+<rect x="150" y="190" width="277.4" height="28" fill="#2a6f97"/>
+<text x="435" y="210" font-size="15" fill="#1b2a3a">866 895</text>
+<text x="140" y="264" text-anchor="end" font-size="15" fill="#1b2a3a">EPIC v2 (2023)</text>
+<rect x="150" y="246" width="300" height="28" fill="#2a6f97"/>
+<text x="458" y="266" font-size="15" fill="#1b2a3a">~935 000</text>
+<text x="300" y="322" text-anchor="middle" font-size="15" fill="#5b6b7a">probes per array (8 samples per EPIC slide,</text>
+<text x="300" y="342" text-anchor="middle" font-size="15" fill="#5b6b7a">12 per 450k slide; 250–500 ng DNA each)</text>
+<!-- Panel B: what is measured -->
+<text x="830" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1b2a3a">B. A preselected 3% of the CpGs</text>
+<text x="830" y="56" text-anchor="middle" font-size="15" fill="#5b6b7a">one stretch of genome, every tick a CpG</text>
+<!-- gene -->
+<line x1="580" y1="120" x2="1090" y2="120" stroke="#5b6b7a" stroke-width="2"/>
+<rect x="700" y="108" width="40" height="24" fill="#1b2a3a"/>
+<rect x="830" y="108" width="30" height="24" fill="#1b2a3a"/>
+<rect x="960" y="108" width="50" height="24" fill="#1b2a3a"/>
+<path d="M700,108 L700,90 L728,90" fill="none" stroke="#1b2a3a" stroke-width="2"/>
+<path d="M722,84 L732,90 L722,96 z" fill="#1b2a3a"/>
+<rect x="672" y="140" width="76" height="14" rx="3" fill="#2e8b57" fill-opacity="0.3"/>
+<text x="710" y="172" text-anchor="middle" font-size="14" fill="#2e8b57">CpG island</text>
+<rect x="602" y="140" width="40" height="14" rx="3" fill="#e67e22" fill-opacity="0.35"/>
+<text x="622" y="172" text-anchor="middle" font-size="14" fill="#e67e22">enhancer</text>
+<!-- CpG ticks: WGBS row -->
+<text x="572" y="212" text-anchor="end" font-size="15" fill="#1b2a3a">WGBS</text>
+<g stroke="#1b2a3a" stroke-width="2">
+<line x1="586" y1="198" x2="586" y2="216"/><line x1="598" y1="198" x2="598" y2="216"/><line x1="611" y1="198" x2="611" y2="216"/><line x1="618" y1="198" x2="618" y2="216"/><line x1="630" y1="198" x2="630" y2="216"/><line x1="652" y1="198" x2="652" y2="216"/>
+<line x1="676" y1="198" x2="676" y2="216"/><line x1="681" y1="198" x2="681" y2="216"/><line x1="686" y1="198" x2="686" y2="216"/><line x1="691" y1="198" x2="691" y2="216"/><line x1="696" y1="198" x2="696" y2="216"/><line x1="701" y1="198" x2="701" y2="216"/><line x1="706" y1="198" x2="706" y2="216"/><line x1="711" y1="198" x2="711" y2="216"/><line x1="716" y1="198" x2="716" y2="216"/><line x1="721" y1="198" x2="721" y2="216"/><line x1="726" y1="198" x2="726" y2="216"/><line x1="731" y1="198" x2="731" y2="216"/><line x1="736" y1="198" x2="736" y2="216"/><line x1="742" y1="198" x2="742" y2="216"/>
+<line x1="770" y1="198" x2="770" y2="216"/><line x1="801" y1="198" x2="801" y2="216"/><line x1="836" y1="198" x2="836" y2="216"/><line x1="871" y1="198" x2="871" y2="216"/><line x1="902" y1="198" x2="902" y2="216"/><line x1="934" y1="198" x2="934" y2="216"/><line x1="966" y1="198" x2="966" y2="216"/><line x1="991" y1="198" x2="991" y2="216"/><line x1="1022" y1="198" x2="1022" y2="216"/><line x1="1051" y1="198" x2="1051" y2="216"/><line x1="1079" y1="198" x2="1079" y2="216"/>
+</g>
+<text x="830" y="240" text-anchor="middle" font-size="14" fill="#5b6b7a">all ~28 million CpGs, with coverage-dependent noise</text>
+<!-- array row -->
+<text x="572" y="290" text-anchor="end" font-size="15" fill="#1b2a3a">array</text>
+<g stroke="#e9eef2" stroke-width="2">
+<line x1="586" y1="276" x2="586" y2="294"/><line x1="598" y1="276" x2="598" y2="294"/><line x1="618" y1="276" x2="618" y2="294"/><line x1="630" y1="276" x2="630" y2="294"/><line x1="652" y1="276" x2="652" y2="294"/>
+<line x1="676" y1="276" x2="676" y2="294"/><line x1="681" y1="276" x2="681" y2="294"/><line x1="691" y1="276" x2="691" y2="294"/><line x1="696" y1="276" x2="696" y2="294"/><line x1="706" y1="276" x2="706" y2="294"/><line x1="711" y1="276" x2="711" y2="294"/><line x1="721" y1="276" x2="721" y2="294"/><line x1="726" y1="276" x2="726" y2="294"/><line x1="736" y1="276" x2="736" y2="294"/><line x1="742" y1="276" x2="742" y2="294"/>
+<line x1="770" y1="276" x2="770" y2="294"/><line x1="801" y1="276" x2="801" y2="294"/><line x1="836" y1="276" x2="836" y2="294"/><line x1="871" y1="276" x2="871" y2="294"/><line x1="902" y1="276" x2="902" y2="294"/><line x1="934" y1="276" x2="934" y2="294"/><line x1="991" y1="276" x2="991" y2="294"/><line x1="1022" y1="276" x2="1022" y2="294"/><line x1="1051" y1="276" x2="1051" y2="294"/><line x1="1079" y1="276" x2="1079" y2="294"/>
+</g>
+<g fill="#c0392b">
+<circle cx="611" cy="285" r="6"/><circle cx="686" cy="285" r="6"/><circle cx="701" cy="285" r="6"/><circle cx="716" cy="285" r="6"/><circle cx="731" cy="285" r="6"/><circle cx="966" cy="285" r="6"/>
+</g>
+<text x="830" y="318" text-anchor="middle" font-size="14" fill="#5b6b7a">probes chosen by design: promoters, CpG islands and shores,</text>
+<text x="830" y="336" text-anchor="middle" font-size="14" fill="#5b6b7a">gene bodies, enhancers (EPIC); the rest is invisible</text>
+<text x="830" y="372" text-anchor="middle" font-size="15" fill="#1b2a3a">In exchange: cheap, robust, 1000s of samples, simple data.</text>
+</svg>

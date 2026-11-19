@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 310" width="1120" height="310" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/>
+    </marker>
+    <marker id="ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/>
+    </marker>
+  </defs>
+  <rect width="1120" height="310" fill="white"/>
+
+  <!-- enzyme labels above the arrows -->
+  <text x="230" y="37" font-size="17" font-weight="bold" fill="#1b2a3a" text-anchor="middle">DNMT</text>
+  <text x="450" y="37" font-size="17" font-weight="bold" fill="#c0392b" text-anchor="middle">TET</text>
+  <text x="670" y="37" font-size="17" font-weight="bold" fill="#c0392b" text-anchor="middle">TET</text>
+  <text x="890" y="37" font-size="17" font-weight="bold" fill="#c0392b" text-anchor="middle">TET</text>
+
+  <!-- boxes -->
+  <g stroke="#1b2a3a" stroke-width="2">
+    <rect x="40" y="50" width="160" height="100" rx="10" fill="#f4f6f8"/>
+    <rect x="260" y="50" width="160" height="100" rx="10" fill="#eaf1f7"/>
+    <rect x="480" y="50" width="160" height="100" rx="10" fill="#eaf1f7"/>
+    <rect x="700" y="50" width="160" height="100" rx="10" fill="#eaf1f7"/>
+    <rect x="920" y="50" width="160" height="100" rx="10" fill="#eaf1f7"/>
+  </g>
+  <g fill="#1b2a3a" text-anchor="middle">
+    <text x="120" y="90" font-size="28" font-weight="bold">C</text>
+    <text x="340" y="90" font-size="28" font-weight="bold">5mC</text>
+    <text x="560" y="90" font-size="28" font-weight="bold">5hmC</text>
+    <text x="780" y="90" font-size="28" font-weight="bold">5fC</text>
+    <text x="1000" y="90" font-size="28" font-weight="bold">5caC</text>
+    <text x="120" y="115" font-size="15">cytosine</text>
+    <text x="340" y="115" font-size="15">5-methyl-C</text>
+    <text x="560" y="115" font-size="15">5-hydroxymethyl-C</text>
+    <text x="780" y="115" font-size="15">5-formyl-C</text>
+    <text x="1000" y="115" font-size="15">5-carboxyl-C</text>
+  </g>
+  <g fill="#5b6b7a" text-anchor="middle" font-size="15">
+    <text x="120" y="138">C5: –H</text>
+    <text x="306" y="138" text-anchor="start">C5: –CH<tspan font-size="11" baseline-shift="sub">3</tspan></text>
+    <text x="516" y="138" text-anchor="start">C5: –CH<tspan font-size="11" baseline-shift="sub">2</tspan>OH</text>
+    <text x="780" y="138">C5: –CHO</text>
+    <text x="1000" y="138">C5: –COOH</text>
+  </g>
+
+  <!-- forward arrows -->
+  <g stroke="#1b2a3a" stroke-width="2.5" marker-end="url(#ah)">
+    <line x1="203" y1="100" x2="256" y2="100"/>
+    <line x1="423" y1="100" x2="476" y2="100"/>
+    <line x1="643" y1="100" x2="696" y2="100"/>
+    <line x1="863" y1="100" x2="916" y2="100"/>
+  </g>
+
+  <!-- return path: TDG + BER -->
+  <path d="M780,152 L780,185" fill="none" stroke="#2e8b57" stroke-width="2.5"/>
+  <path d="M1000,152 L1000,185 L120,185 L120,155" fill="none" stroke="#2e8b57" stroke-width="2.5" marker-end="url(#ahg)"/>
+  <text x="560" y="210" font-size="16" fill="#2e8b57" text-anchor="middle">TDG cuts out 5fC or 5caC; base excision repair puts back an unmodified C (active demethylation)</text>
+
+  <!-- bisulfite readout -->
+  <text x="40" y="251" font-size="16" fill="#1b2a3a" font-weight="bold">Read in bisulfite sequencing as</text>
+  <g font-size="22" font-weight="bold" text-anchor="middle">
+    <circle cx="120" cy="280" r="20" fill="white" stroke="#a8324a" stroke-width="2"/>
+    <text x="120" y="288" fill="#a8324a">T</text>
+    <circle cx="340" cy="280" r="20" fill="white" stroke="#1b2a3a" stroke-width="2"/>
+    <text x="340" y="288" fill="#1b2a3a">C</text>
+    <circle cx="560" cy="280" r="20" fill="white" stroke="#1b2a3a" stroke-width="2"/>
+    <text x="560" y="288" fill="#1b2a3a">C</text>
+    <circle cx="780" cy="280" r="20" fill="white" stroke="#a8324a" stroke-width="2"/>
+    <text x="780" y="288" fill="#a8324a">T</text>
+    <circle cx="1000" cy="280" r="20" fill="white" stroke="#a8324a" stroke-width="2"/>
+    <text x="1000" y="288" fill="#a8324a">T</text>
+  </g>
+</svg>

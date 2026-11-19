@@ -1,0 +1,95 @@
+---
+title: "Quiz: methylation arrays"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+Short questions on Infinium chemistry, β and M values, normalisation, probe filtering, cell composition and EWAS. Try each on paper first, then open the answer.
+
+---
+
+**Q1.** How does an Infinium II probe report whether a CpG was methylated?
+
+::: {.callout-tip collapse="true" title="Hint"}
+What base does the polymerase add after the probe's 3' end?
+:::
+
+::: {.callout-note collapse="true" title="Answer"}
+After bisulfite conversion the CpG reads C (methylated) or T (unmethylated). The Type II probe ends one base before the CpG C; a single labelled nucleotide is added opposite that position: G (green) if the template has C, A (red) if it has T. Green intensity = methylated signal M, red = unmethylated signal U, on the same bead.
+:::
+
+---
+
+**Q2.** A probe has M = 1 800 and U = 600. Compute β (with the offset of 100) and the M-value.
+
+::: {.callout-note collapse="true" title="Answer"}
+β = 1800/(1800 + 600 + 100) = 1800/2500 = **0.72**. M-value = log2(1801/601) ≈ log2(3) = **1.58**.
+:::
+
+---
+
+**Q3.** Why do most EWAS test on M-values but report differences in β?
+
+::: {.callout-note collapse="true" title="Answer"}
+β is bounded and its variance depends on the mean (small near 0 and 1), which violates the constant-variance assumption of linear models; M-values are unbounded and roughly homoscedastic, so tests are better behaved. But β is a proportion that readers understand ("5% more methylated"), so effect sizes are reported as Δβ.
+:::
+
+---
+
+**Q4.** Give one reason to use within-array normalisation (e.g. noob) rather than quantile normalisation when comparing tumours with normal tissue.
+
+::: {.callout-note collapse="true" title="Answer"}
+Quantile normalisation forces every array to have the same β distribution. Tumours often lose methylation globally; quantile normalisation would erase that real global difference. noob corrects background and dye bias within each array without assuming equal distributions (functional normalisation is a between-array alternative that tries to preserve such differences).
+:::
+
+---
+
+**Q5.** At a CpG, β across 400 people forms three tight clusters near 0, 0.5 and 1. What is the most likely explanation, and what do you do with the probe?
+
+::: {.callout-note collapse="true" title="Answer"}
+A SNP at the CpG or at the probe's extension base: the clusters are genotypes (two, one or zero copies of the allele that reads as "unmethylated"), not methylation states. Remove the probe (SNP masks such as Zhou et al. or `dropLociWithSnps`), or analyse it as a genotype; otherwise it creates associations with ancestry.
+:::
+
+---
+
+**Q6.** A CpG has β = 0.9 in granulocytes and 0.2 in lymphocytes. Controls have 60% granulocytes and patients 75%. Assuming nothing changes inside cells, what is the expected Δβ between the groups?
+
+::: {.callout-note collapse="true" title="Answer"}
+Controls: 0.6·0.9 + 0.4·0.2 = 0.62. Patients: 0.75·0.9 + 0.25·0.2 = 0.725. **Δβ = 0.105**, from composition alone.
+:::
+
+---
+
+**Q7.** Why do we leave one cell type out when putting estimated cell fractions into an EWAS design formula?
+
+::: {.callout-note collapse="true" title="Answer"}
+The fractions sum to (about) 1, so together with the intercept they are (nearly) linearly dependent: the design matrix is not of full rank and the coefficients are not identifiable. Leaving one out (as for one level of a factor) fixes this; the remaining coefficients are relative to the omitted cell type.
+:::
+
+---
+
+**Q8.** The median p-value of an EWAS of 450 000 CpGs is 0.10. Compute λ (the 90th percentile of the χ²₁ distribution is 2.71). What does it suggest?
+
+::: {.callout-note collapse="true" title="Answer"}
+p = 0.10 corresponds to χ² = 2.71; λ = 2.71/0.455 = **6.0**. Massive inflation: most CpGs look associated, which suggests confounding (cell composition, batch, unmodelled covariates) rather than a real effect at every CpG. Check the QQ plot, add covariates (cell fractions, chip), or use methods like SVA or bacon.
+:::
+
+---
+
+**Q9.** In a study, all patients' arrays were run in March and all controls' arrays in June. What is the problem and can it be fixed in the analysis?
+
+::: {.callout-note collapse="true" title="Answer"}
+Batch (run date, reagent lot, chip, scanner calibration) is completely confounded with disease. No model can separate batch from disease: a batch covariate would absorb the disease effect. It cannot be fixed afterwards; it must be prevented by randomising samples across chips and runs. At most one can look for effects too large or too specific to be batch, and replicate in a properly designed study.
+:::
+
+---
+
+**Q10.** Your EWAS of smoking does not find *AHRR* cg05575921 among the top hits. What do you conclude?
+
+::: {.callout-note collapse="true" title="Answer"}
+Suspect the analysis before the biology: AHRR hypomethylation in current smokers is one of the most replicated EWAS findings. Check the sample annotation (smoking coding, sample swaps: sex check), the model (coefficient tested, reference level), normalisation and filtering (was the probe removed?), and power (how many current smokers?). A failed positive control means the pipeline cannot be trusted for new findings.
+:::

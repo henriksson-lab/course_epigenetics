@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1120 410" width="1120" height="410" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <g id="nuc"><ellipse cx="0" cy="0" rx="14" ry="11" fill="#2a9d8f" stroke="#1b2a3a" stroke-width="1.2"/></g>
+    <g id="mnuc"><ellipse cx="0" cy="0" rx="14" ry="11" fill="#2a9d8f" stroke="#1b2a3a" stroke-width="1.2"/><line x1="0" y1="-11" x2="0" y2="-20" stroke="#1b2a3a" stroke-width="1.4"/><circle cx="0" cy="-23" r="4" fill="#e67e22" stroke="#1b2a3a" stroke-width="1"/></g>
+  </defs>
+  <rect width="1120" height="410" fill="#ffffff"/>
+  <!-- headers -->
+  <rect x="250" y="10" width="420" height="120" rx="8" fill="#f3e9e4" stroke="#8c564b"/>
+  <rect x="690" y="10" width="420" height="120" rx="8" fill="#e6f2ec" stroke="#2a9d8f"/>
+  <text x="266" y="36" font-size="18" font-weight="bold" fill="#1b2a3a">X-ChIP (crosslinked)</text>
+  <text x="706" y="36" font-size="18" font-weight="bold" fill="#1b2a3a">N-ChIP (native)</text>
+  <!-- X diagram -->
+  <line x1="270" y1="90" x2="650" y2="90" stroke="#1b2a3a" stroke-width="3"/>
+  <use xlink:href="#mnuc" x="300" y="90"/><use xlink:href="#mnuc" x="340" y="90"/><use xlink:href="#nuc" x="380" y="90"/>
+  <rect x="420" y="68" width="22" height="18" rx="5" fill="#8c564b" stroke="#1b2a3a"/>
+  <use xlink:href="#nuc" x="490" y="90"/><use xlink:href="#mnuc" x="530" y="90"/><use xlink:href="#mnuc" x="570" y="90"/><use xlink:href="#nuc" x="610" y="90"/>
+  <g stroke="#c0392b" stroke-width="2"><line x1="427" y1="93" x2="435" y2="101"/><line x1="435" y1="93" x2="427" y2="101"/><line x1="296" y1="98" x2="304" y2="106"/><line x1="304" y1="98" x2="296" y2="106"/></g>
+  <text x="270" y="122" font-size="14" fill="#5b6b7a">fixed (×), then sheared at random</text>
+  <!-- N diagram -->
+  <line x1="710" y1="90" x2="760" y2="90" stroke="#1b2a3a" stroke-width="3"/><use xlink:href="#mnuc" x="735" y="90"/>
+  <line x1="790" y1="90" x2="840" y2="90" stroke="#1b2a3a" stroke-width="3"/><use xlink:href="#mnuc" x="815" y="90"/>
+  <line x1="870" y1="90" x2="920" y2="90" stroke="#1b2a3a" stroke-width="3"/><use xlink:href="#nuc" x="895" y="90"/>
+  <line x1="950" y1="90" x2="1000" y2="90" stroke="#1b2a3a" stroke-width="3"/><use xlink:href="#mnuc" x="975" y="90"/>
+  <line x1="1030" y1="90" x2="1080" y2="90" stroke="#1b2a3a" stroke-width="3"/><use xlink:href="#nuc" x="1055" y="90"/>
+  <text x="710" y="122" font-size="14" fill="#5b6b7a">not fixed; MNase leaves mono-nucleosomes</text>
+
+  <!-- table rows -->
+  <g font-size="15" fill="#1b2a3a">
+    <text x="20" y="166" font-weight="bold">Works for</text>
+    <text x="266" y="166">any protein, including TFs and co-factors</text>
+    <text x="706" y="166">histones and their marks (stay bound unfixed)</text>
+    <text x="20" y="206" font-weight="bold">Resolution</text>
+    <text x="266" y="206">fragment length, ~100–300 bp</text>
+    <text x="706" y="206">one nucleosome, 147 bp; marks per nucleosome</text>
+    <text x="20" y="246" font-weight="bold">Epitopes</text>
+    <text x="266" y="246">can be masked by crosslinks</text>
+    <text x="706" y="246">intact: often a cleaner IP</text>
+    <text x="20" y="286" font-weight="bold">Typical artefacts</text>
+    <text x="266" y="286">shearing bias to open chromatin;</text>
+    <text x="266" y="306">"hyper-ChIPable" active regions</text>
+    <text x="706" y="286">MNase prefers AT-rich linkers; unstable or</text>
+    <text x="706" y="306">fragile nucleosomes are lost or over-digested</text>
+    <text x="20" y="346" font-weight="bold">Control</text>
+    <text x="266" y="346">input chromatin (sonicated)</text>
+    <text x="706" y="346">input (MNase-digested) or total H3</text>
+  </g>
+  <g stroke="#cfd8e0" stroke-width="1"><line x1="20" y1="184" x2="1110" y2="184"/><line x1="20" y1="224" x2="1110" y2="224"/><line x1="20" y1="264" x2="1110" y2="264"/><line x1="20" y1="324" x2="1110" y2="324"/><line x1="20" y1="364" x2="1110" y2="364"/></g>
+  <text x="20" y="394" font-size="15" fill="#5b6b7a">Without fixation, TFs can slide or fall off during digestion and washes: native ChIP of TFs is unreliable. CUT&amp;RUN keeps the native idea.</text>
+</svg>

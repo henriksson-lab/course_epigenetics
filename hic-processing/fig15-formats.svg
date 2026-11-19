@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 400" width="1120" height="400" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker><marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker><marker id="aa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker><marker id="ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a8324a"/></marker><marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a6f97"/></marker><marker id="ao" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e67e22"/></marker><marker id="ap" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b4fa0"/></marker><marker id="an" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8c564b"/></marker></defs>
+<rect width="1120" height="400" fill="#ffffff"/>
+<rect x="20.0" y="50.0" width="360.0" height="250.0" rx="8" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="200.0" y="35.0" font-size="16" text-anchor="middle" font-weight="bold" fill="#1b2a3a">.pairs (text, one line per contact)</text>
+<text x="34.0" y="78.0" font-size="13.5" text-anchor="start" font-weight="normal" fill="#5b6b7a" font-family="Courier New, monospace">##&#160;pairs&#160;format&#160;v1.0</text>
+<text x="34.0" y="102.0" font-size="13.5" text-anchor="start" font-weight="normal" fill="#5b6b7a" font-family="Courier New, monospace">#columns:&#160;readID&#160;chrom1&#160;pos1</text>
+<text x="34.0" y="126.0" font-size="13.5" text-anchor="start" font-weight="normal" fill="#5b6b7a" font-family="Courier New, monospace">#&#160;&#160;chrom2&#160;pos2&#160;strand1&#160;strand2</text>
+<text x="34.0" y="150.0" font-size="13.5" text-anchor="start" font-weight="normal" fill="#5b6b7a" font-family="Courier New, monospace">#&#160;&#160;pair_type</text>
+<text x="34.0" y="174.0" font-size="13.5" text-anchor="start" font-weight="normal" fill="#1b2a3a" font-family="Courier New, monospace">r1&#160;chr21&#160;15012744&#160;chr21&#160;15270113&#160;+&#160;-&#160;UU</text>
+<text x="34.0" y="198.0" font-size="13.5" text-anchor="start" font-weight="normal" fill="#1b2a3a" font-family="Courier New, monospace">r2&#160;chr21&#160;15013290&#160;chr21&#160;46104781&#160;-&#160;-&#160;UU</text>
+<text x="34.0" y="222.0" font-size="13.5" text-anchor="start" font-weight="normal" fill="#1b2a3a" font-family="Courier New, monospace">r3&#160;chr21&#160;15013311&#160;chr21&#160;15013502&#160;+&#160;-&#160;UU</text>
+<text x="34.0" y="246.0" font-size="13.5" text-anchor="start" font-weight="normal" fill="#1b2a3a" font-family="Courier New, monospace">...</text>
+<text x="200.0" y="325.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#5b6b7a">4DN standard; bgzip + index (pairix)</text>
+<text x="200.0" y="345.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#5b6b7a">kept for re-binning and QC</text>
+<line x1="388.0" y1="170.0" x2="428.0" y2="170.0" stroke="#1b2a3a" stroke-width="2" stroke-linecap="butt" marker-end="url(#ak)"/>
+<text x="408.0" y="158.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#5b6b7a">bin</text>
+<rect x="438.0" y="50.0" width="310.0" height="250.0" rx="8" fill="#eaf1f7" stroke="#2a6f97" stroke-width="1.5"/>
+<text x="593.0" y="35.0" font-size="16" text-anchor="middle" font-weight="bold" fill="#1b2a3a">.cool (HDF5, one resolution)</text>
+<text x="456.0" y="90.0" font-size="16" text-anchor="start" font-weight="bold" fill="#2a6f97" font-family="Courier New, monospace">/chroms</text>
+<text x="456.0" y="112.0" font-size="14" text-anchor="start" font-weight="normal" fill="#5b6b7a">name, length</text>
+<text x="456.0" y="142.0" font-size="16" text-anchor="start" font-weight="bold" fill="#2a6f97" font-family="Courier New, monospace">/bins</text>
+<text x="456.0" y="164.0" font-size="14" text-anchor="start" font-weight="normal" fill="#5b6b7a">chrom, start, end, weight</text>
+<text x="456.0" y="194.0" font-size="16" text-anchor="start" font-weight="bold" fill="#2a6f97" font-family="Courier New, monospace">/pixels</text>
+<text x="456.0" y="216.0" font-size="14" text-anchor="start" font-weight="normal" fill="#5b6b7a">bin1_id, bin2_id, count</text>
+<text x="456.0" y="246.0" font-size="16" text-anchor="start" font-weight="bold" fill="#2a6f97" font-family="Courier New, monospace">/indexes</text>
+<text x="456.0" y="268.0" font-size="14" text-anchor="start" font-weight="normal" fill="#5b6b7a">fast lookup of a region</text>
+<text x="593.0" y="325.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#5b6b7a">sparse: only non-zero pixels</text>
+<text x="593.0" y="345.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#5b6b7a">cooler, cooltools, HiCExplorer, HiGlass</text>
+<rect x="790.0" y="50.0" width="310.0" height="115.0" rx="8" fill="#eaf1f7" stroke="#2a6f97" stroke-width="1.5"/>
+<text x="945.0" y="35.0" font-size="16" text-anchor="middle" font-weight="bold" fill="#1b2a3a">.mcool (many resolutions)</text>
+<text x="806.0" y="76.0" font-size="14" text-anchor="start" font-weight="normal" fill="#2a6f97" font-family="Courier New, monospace">::resolutions/5000</text>
+<text x="806.0" y="99.0" font-size="14" text-anchor="start" font-weight="normal" fill="#2a6f97" font-family="Courier New, monospace">::resolutions/10000</text>
+<text x="806.0" y="122.0" font-size="14" text-anchor="start" font-weight="normal" fill="#2a6f97" font-family="Courier New, monospace">::resolutions/...</text>
+<text x="806.0" y="145.0" font-size="14" text-anchor="start" font-weight="normal" fill="#2a6f97" font-family="Courier New, monospace">::resolutions/500000</text>
+<rect x="790.0" y="205.0" width="310.0" height="95.0" rx="8" fill="#fbeee6" stroke="#e67e22" stroke-width="1.5"/>
+<text x="945.0" y="192.0" font-size="16" text-anchor="middle" font-weight="bold" fill="#1b2a3a">.hic (Juicer, binary)</text>
+<text x="806.0" y="232.0" font-size="14" text-anchor="start" font-weight="normal" fill="#1b2a3a">all resolutions + precomputed</text>
+<text x="806.0" y="252.0" font-size="14" text-anchor="start" font-weight="normal" fill="#1b2a3a">normalisations (KR, VC, SCALE)</text>
+<text x="806.0" y="280.0" font-size="14" text-anchor="start" font-weight="normal" fill="#5b6b7a">Juicebox, hic-straw, hictk</text>
+<line x1="754.0" y1="110.0" x2="785.0" y2="110.0" stroke="#1b2a3a" stroke-width="2" stroke-linecap="butt" marker-end="url(#ak)"/>
+<text x="945.0" y="325.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#5b6b7a">convert: hictk convert, hic2cool</text>
+<text x="945.0" y="345.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#5b6b7a">cooler zoomify makes .mcool</text>
+<text x="560.0" y="385.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#5b6b7a" font-style="italic">our data: gm12878_hic_chr19_chr21.mcool, read from ENCODE's .hic with hic-straw</text>
+</svg>

@@ -1,0 +1,400 @@
+---
+title: "Exercise: Annotation and differential binding"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+## Goal
+
+After this exercise you will be able to:
+
+- Annotate peaks relative to genes by hand and with [ChIPseeker](https://bioconductor.org/packages/release/bioc/html/ChIPseeker.html), and say what "nearest gene" does and does not mean.
+- Make profiles and heatmaps with [deepTools](https://deeptools.readthedocs.io/en/latest/) `computeMatrix` and `plotHeatmap`, and read them.
+- Build a consensus peak set and a count matrix, and test differential binding with [DESeq2](https://bioconductor.org/packages/release/bioc/html/DESeq2.html), as in RNA-seq.
+- Compute size factors from library sizes, from peaks, from background bins and from spike-ins, and explain why they disagree.
+- Recognise copy-number differences in inputs and global changes that need spike-ins.
+
+## Background
+
+**Annotation.** Each peak gets one category by priority (ChIPseeker default: promoter > 5' UTR > 3' UTR > exon > intron > downstream > distal intergenic), with "promoter" = TSS ± a window (here 1 kb), and its nearest TSS with a signed distance (negative = upstream, positive = downstream, relative to the gene's strand).
+
+**Differential binding.** Regions from all conditions (union of peak sets, or peaks found in at least *n* samples) → reads (fragments) counted per region and sample → normalisation → negative binomial test (DESeq2/edgeR) with a design formula, exactly as for genes in RNA-seq.
+
+**Size factors.** DESeq2 divides each sample's counts by a size factor $s_j$. Median-of-ratios (default): $s_j$ = median over regions of (count / geometric mean of the region's counts). Library size: $s_j \propto N_j$. Background: median-of-ratios on large bins without peaks. Spike-in: $s_j \propto N_{\text{spike},j}$. Each assumes something is constant between samples: all reads, most peaks, the background, or the spike-in.
+
+## Data
+
+ENCODE H3K27ac ChIP-seq of GM12878 ([ENCSR000AKC](https://www.encodeproject.org/experiments/ENCSR000AKC/), 51 bp) and K562 ([ENCSR000AKP](https://www.encodeproject.org/experiments/ENCSR000AKP/), 36 bp), Broad lab, two biological replicates each, and one input per cell line; ENCODE's filtered GRCh38 alignments (MAPQ ≥ 30, duplicates removed), cut to chr21 by `data/prepare-chip.sh`.
+
+| file | content |
+|---|---|
+| `h3k27ac_{gm12878,k562}_rep{1,2}.chr21.bam` | H3K27ac, 64 000–138 000 reads each on chr21 |
+| `input_{gm12878,k562}.chr21.bam` | inputs (ENCSR000AKJ, ENCSR000AKY) |
+| `h3k27ac_idxstats.tsv` | reads per chromosome in the six **whole** filtered BAMs (`samtools idxstats`) |
+| `gm12878_h3k27ac_peaks.bed.gz`, `k562_h3k27ac_peaks.bed.gz` | ENCODE replicated peaks ([ENCFF361XMX](https://www.encodeproject.org/files/ENCFF361XMX/), [ENCFF439SDV](https://www.encodeproject.org/files/ENCFF439SDV/)) |
+| `gm12878_ctcf_peaks.bed.gz`, `gm12878_*_fc.bigWig` | CTCF peaks and fold-change tracks from earlier units |
+
+```bash
+mkdir -p ~/epi/chipdiff && cd ~/epi/chipdiff
+D=/path/to/course/data
+T=8
+```
+
+You need `bedtools`, `deeptools`, `samtools` and the R packages `DESeq2`, `ChIPseeker`, `txdbmaker`, `GenomicAlignments`, `rtracklayer` (see *Install the software you need*; `BiocManager::install(c("ChIPseeker", "txdbmaker"))`). The command line takes about a minute, the R part about two.
+
+::: {.callout-warning title="Simplifications"}
+Two cell lines are an extreme contrast with thousands of real differences, and two replicates per group is the minimum, not the recommendation (three or more). The two experiments also differ in read length and date: technical variables confounded with cell type. Everything is on chr21.
+:::
+
+## By hand
+
+**B1. Annotate peaks.** Gene G1 is on the + strand with its TSS at 10 000, exons 10 000–10 300, 15 000–15 200 and 29 500–30 000. Gene G2 is on the − strand from 40 000 to 52 000 (its TSS is at 52 000). Using a promoter window of TSS ± 1 kb, "downstream" = up to 300 bp after the gene end, and ChIPseeker's priority, give the category, the nearest TSS and the signed distance to it for peaks centred at: a 9 400; b 10 800; c 15 100; d 22 000; e 30 200; f 51 500; g 35 000.
+
+**B2. Nearest gene.** Peak g of B1 is a strong H3K27ac peak. A paper lists G2 as its target gene. What would you need to believe that? Name two kinds of data that would support or refute it.
+
+**B3. Consensus regions.** Condition A has peaks at chr1:100–600, 2 000–2 400 and 9 000–9 300; condition B at 450–900, 5 000–5 500 and 9 100–9 500.
+
+(a) Write the merged union. How many regions, and which come from one condition only?
+
+(b) A student counts reads only in condition A's peaks and finds "no region gained in B". Why is that unavoidable?
+
+**B4. Three normalisations.** Two libraries, each 1 000 000 reads. Counts in four peaks: A = 100, 200, 300, 400 and B = 150, 300, 450, 600. Counts in background bins (all non-peak DNA): A 999 000, B 998 500.
+
+(a) Compute log2(B/A) for each peak after library-size normalisation.
+
+(b) Compute DESeq2-style size factors from the four peaks (median of ratios; with two samples the ratio of each peak's count to the geometric mean is simple), and the log2 fold changes after this normalisation.
+
+(c) Background-bin normalisation gives nearly the same factors as library size here. Why?
+
+(d) Give one biological and one technical story that would produce these numbers. Which normalisation is right under each?
+
+**B5. Spike-ins.** H3K27me3 ChIP-Rx, control and EZH2 inhibitor, two replicates each, the same amount of *Drosophila* chromatin per sample:
+
+| | ctrl 1 | ctrl 2 | trt 1 | trt 2 |
+|---|---:|---:|---:|---:|
+| fly reads | 40 000 | 44 000 | 120 000 | 116 000 |
+| reads in domain X | 600 | 660 | 600 | 580 |
+
+(a) Compute spike-in size factors (fly reads divided by their geometric mean) and normalised counts in X.
+
+(b) What fraction of H3K27me3 did domain X lose? What would DESeq2's default normalisation (if most domains behaved like X) have concluded?
+
+(c) Why does the treated sample have three times as many fly reads?
+
+**B6. Copy number.** In ENCODE's whole-genome inputs, chr21 has 1.45% of the K562 reads but 1.17% of the GM12878 reads.
+
+(a) What is K562's relative chr21 copy number (relative to its genome average)?
+
+(b) A chr21 enhancer is truly equally acetylated per copy of DNA in both cell lines. What log2 fold change K562/GM12878 would you expect after a normalisation that equalises the genome-wide totals? How could you correct it?
+
+**B7. Library size and FRiP.** The GM12878 libraries have FRiP 0.55, the K562 libraries 0.40 (reads in the consensus regions / all reads). If every peak had the same amount of H3K27ac per cell in both, what median log2 fold change K562/GM12878 would library-size normalisation produce? Compare with the −0.33 observed in R3.
+
+**B8. Judge the study.** "We treated cells with an HDAC inhibitor, performed H3K27ac ChIP-seq (one replicate per condition, no spike-in), normalised to reads per million, and found that acetylation increased at 1 200 enhancers and decreased at 3 400." List the problems and propose a better design.
+
+**B9. Read the heatmap** (lecture: *Real data: H3K27ac in two cell types*). (a) Why are the profiles of the "both" group higher than the cell-type-specific groups in both cell lines? (b) The "GM12878 only" rows are not completely empty in K562. Does that mean these regions should be tested? (c) Why are regions grouped by peak set here rather than by k-means clustering?
+
+## On the command line
+
+### C1 — The libraries and the inputs
+
+```bash
+for f in $D/h3k27ac_*.chr21.bam $D/input_*.chr21.bam; do
+  echo $(basename $f .chr21.bam) $(samtools view -c $f) $(samtools view $f | head -1000 | awk '{ l[length($10)]++ } END { for (x in l) printf "%s ", x }')
+done
+awk -F'\t' 'NR > 1 { tot[$1] += $4 } $2 == "chr21" { c21[$1] = $4 } $2 == "chr22" { c22[$1] = $4 }
+  END { for (s in tot) printf "%s\t%d\t%.2f%%\t%.2f%%\n", s, tot[s], 100 * c21[s] / tot[s], 100 * c22[s] / tot[s] }' $D/h3k27ac_idxstats.tsv | sort
+```
+
+(a) How many reads does each BAM have on chr21, and how long are the reads?
+
+(b) What share of each whole library is on chr21 and on chr22? Compare the two inputs.
+
+### C2 — A consensus region set
+
+```bash
+zcat $D/hg38_blacklist.bed.gz > blacklist.bed
+for c in gm12878 k562; do zcat $D/${c}_h3k27ac_peaks.bed.gz | awk '$1 == "chr21"' | sort -k1,1 -k2,2n > ${c}_peaks.bed; done
+wc -l gm12878_peaks.bed k562_peaks.bed
+cat gm12878_peaks.bed k562_peaks.bed | cut -f1-3 | sort -k1,1 -k2,2n | bedtools merge \
+  | bedtools intersect -v -a - -b blacklist.bed > consensus.bed
+wc -l < consensus.bed
+bedtools intersect -v -a consensus.bed -b k562_peaks.bed > GM12878_only.bed
+bedtools intersect -v -a consensus.bed -b gm12878_peaks.bed > K562_only.bed
+bedtools intersect -u -a consensus.bed -b gm12878_peaks.bed | bedtools intersect -u -a - -b k562_peaks.bed > both.bed
+wc -l GM12878_only.bed both.bed K562_only.bed
+awk '{ print $3 - $2 }' consensus.bed | sort -n | awk '{ a[NR] = $1 } END { print "median", a[int(NR / 2)], "max", a[NR] }'
+```
+
+How many peaks per cell line, how many consensus regions, and how many in each group? How wide are the consensus regions?
+
+### C3 — Normalised tracks
+
+```bash
+for s in gm12878_rep1 gm12878_rep2 k562_rep1 k562_rep2; do
+  bamCoverage -b $D/h3k27ac_$s.chr21.bam -o h3k27ac_$s.cpm.bw --normalizeUsing CPM --extendReads 200 \
+    --binSize 50 --blackListFileName blacklist.bed -p $T 2> /dev/null
+done
+ls h3k27ac_*.cpm.bw
+```
+
+Load the four tracks in IGV with `consensus.bed` and go to `chr21:25,300,000-26,250,000`. Which cell line has the cluster of strong regions at 25.4–25.5 Mb? What is the nearest protein-coding gene?
+
+### C4 — Profiles and heatmaps
+
+```bash
+zcat $D/gencode.v46.basic.annotation.gtf.gz | awk -F'\t' '$1 == "chr21" && $3 == "gene" && $9 ~ /gene_type "protein_coding"/' \
+  | awk -F'\t' -v OFS='\t' '{ match($9, /gene_name "[^"]+"/); n = substr($9, RSTART + 11, RLENGTH - 12)
+      print $1, $4 - 1, $5, n, 0, $7 }' | sort -k1,1 -k2,2n > genes_chr21.bed
+wc -l < genes_chr21.bed
+computeMatrix reference-point --referencePoint TSS -R genes_chr21.bed \
+  -S $D/gm12878_h3k4me3_fc.bigWig $D/gm12878_h3k27ac_fc.bigWig $D/gm12878_h3k36me3_fc.bigWig $D/gm12878_h3k27me3_fc.bigWig \
+  --samplesLabel H3K4me3 H3K27ac H3K36me3 H3K27me3 -a 5000 -b 5000 --binSize 100 \
+  --missingDataAsZero --skipZeros -p $T -o tss.mat.gz 2> /dev/null
+plotHeatmap -m tss.mat.gz -o tss_heatmap.png --sortUsingSamples 1 --colorMap Reds Oranges Greens Blues \
+  --zMax 30 30 6 6 --heatmapHeight 12 --refPointLabel TSS
+computeMatrix reference-point --referencePoint center -R GM12878_only.bed both.bed K562_only.bed \
+  -S h3k27ac_gm12878_rep1.cpm.bw h3k27ac_gm12878_rep2.cpm.bw h3k27ac_k562_rep1.cpm.bw h3k27ac_k562_rep2.cpm.bw \
+  --samplesLabel GM12878_1 GM12878_2 K562_1 K562_2 -a 3000 -b 3000 --binSize 50 -p $T -o h3k27ac.mat.gz 2> /dev/null
+plotHeatmap -m h3k27ac.mat.gz -o h3k27ac_heatmap.png --colorMap Oranges --zMax 150 \
+  --heatmapHeight 12 --refPointLabel centre
+```
+
+(a) Explain the `awk` that makes `genes_chr21.bed`. Why must column 6 hold the strand?
+
+(b) Open `tss_heatmap.png`. About what fraction of chr21 protein-coding genes look active? Where is H3K36me3 relative to the TSS?
+
+(c) Open `h3k27ac_heatmap.png` and answer B9.
+
+## In R
+
+```r
+suppressPackageStartupMessages({ library(GenomicAlignments); library(rtracklayer); library(DESeq2) })
+D <- "/path/to/course/data"
+setwd("~/epi/chipdiff")
+```
+
+### R1 — Annotate three peak sets
+
+```r
+suppressPackageStartupMessages({ library(ChIPseeker); library(txdbmaker) })
+chr21 <- GRanges("chr21", IRanges(1, 46709983))
+gtf <- import(file.path(D, "gencode.v46.basic.annotation.gtf.gz"), which = chr21)
+seqlevels(gtf, pruning.mode = "coarse") <- "chr21"
+txdb <- makeTxDbFromGRanges(gtf[gtf$type %in% c("gene", "transcript", "exon", "CDS", "UTR")])
+np <- function(f) { p <- import(f, format = "narrowPeak"); p[seqnames(p) == "chr21"] }
+sets <- list(CTCF = np(file.path(D, "gm12878_ctcf_peaks.bed.gz")),
+             H3K27ac_GM12878 = np(file.path(D, "gm12878_h3k27ac_peaks.bed.gz")),
+             H3K27ac_K562 = np(file.path(D, "k562_h3k27ac_peaks.bed.gz")))
+ann <- lapply(sets, annotatePeak, TxDb = txdb, tssRegion = c(-1000, 1000), verbose = FALSE)
+st <- do.call(rbind, lapply(names(ann), function(n) data.frame(set = n, getAnnoStat(ann[[n]]))))
+round(xtabs(Frequency ~ Feature + set, st), 1)
+sapply(ann, function(a) { d <- abs(as.data.frame(a)$distanceToTSS); c(within1kb = mean(d <= 1000), over10kb = mean(d > 10000), median = median(d)) })
+plotAnnoBar(ann)
+```
+
+(a) What fraction of each peak set is at promoters, in introns, distal intergenic? How do CTCF and H3K27ac differ, and why?
+
+(b) Run `annotatePeak` once more for CTCF with ChIPseeker's default `tssRegion = c(-3000, 3000)`. How does the promoter fraction change?
+
+### R2 — Count and test
+
+```r
+bl <- import(file.path(D, "hg38_blacklist.bed.gz"))
+cons <- import("consensus.bed")
+smp <- c(GM_1 = "h3k27ac_gm12878_rep1", GM_2 = "h3k27ac_gm12878_rep2", K562_1 = "h3k27ac_k562_rep1", K562_2 = "h3k27ac_k562_rep2",
+         GM_input = "input_gm12878", K562_input = "input_k562")
+centre <- function(s) {                              # fragment centres: shift each read 100 bp along its strand
+  r <- granges(readGAlignments(file.path(D, paste0(s, ".chr21.bam"))))
+  r <- r[!overlapsAny(r, bl)]
+  resize(resize(r, 200, fix = "start"), 1, fix = "center")
+}
+mid <- lapply(smp, centre)
+cnt <- sapply(mid, function(m) countOverlaps(cons, m, ignore.strand = TRUE))
+rownames(cnt) <- paste0("chr21:", start(cons), "-", end(cons))
+colSums(cnt); sapply(mid, length); round(colSums(cnt) / sapply(mid, length), 3)
+cd <- data.frame(cell = factor(c("GM12878", "GM12878", "K562", "K562")), row.names = names(smp)[1:4])
+dds <- DESeqDataSetFromMatrix(cnt[, 1:4], cd, ~ cell)
+dds <- DESeq(dds, quiet = TRUE)
+sizeFactors(dds)
+res <- results(dds, contrast = c("cell", "K562", "GM12878"), alpha = 0.05)
+summary(res)
+plotMA(res, ylim = c(-8, 8))
+```
+
+(a) Why count fragment centres rather than reads? What is FRiP for each library?
+
+(b) How many regions are significantly higher in K562, and how many in GM12878? Which steps are identical to an RNA-seq analysis?
+
+### R3 — Three normalisations
+
+```r
+lib <- sapply(mid[1:4], length)
+bins <- tileGenome(c(chr21 = 46709983), tilewidth = 10000, cut.last.tile.in.chrom = TRUE)
+bins <- bins[start(bins) > 13e6 & !overlapsAny(bins, cons, maxgap = 5000) & !overlapsAny(bins, bl)]
+bg <- sapply(mid[1:4], function(m) countOverlaps(bins, m, ignore.strand = TRUE))
+sf <- cbind(peaks_RLE = sizeFactors(dds), library = lib / exp(mean(log(lib))), background = estimateSizeFactorsForMatrix(bg))
+round(sf, 3)
+test <- function(s) { d <- dds; sizeFactors(d) <- s; results(DESeq(d, quiet = TRUE), contrast = c("cell", "K562", "GM12878")) }
+rs <- lapply(as.data.frame(sf), test)
+sapply(rs, function(r) c(up = sum(r$padj < 0.05 & r$log2FoldChange > 0, na.rm = TRUE),
+                         down = sum(r$padj < 0.05 & r$log2FoldChange < 0, na.rm = TRUE),
+                         median_lfc = median(r$log2FoldChange)))
+```
+
+(a) Compare the three sets of size factors. Which assumption does each make?
+
+(b) How do the numbers of up and down regions and the median log2 fold change change? Explain the direction of the shift with FRiP (B7) and copy number (B6).
+
+### R4 — Copy number from the inputs
+
+```r
+ix <- read.delim(file.path(D, "h3k27ac_idxstats.tsv"))
+ix <- ix[ix$chrom %in% paste0("chr", c(1:22, "X")), ]
+share <- with(ix, tapply(mapped, list(chrom, sample), sum))
+share <- sweep(share, 2, colSums(share), "/")
+cn <- share[, "input_k562"] / share[, "input_gm12878"]
+round(sort(cn), 2)
+barplot(sort(cn), las = 2, ylab = "K562 / GM12878 input share")
+```
+
+Which chromosomes are over- and under-represented in K562 relative to GM12878? What does that mean for a differential analysis restricted to chr21?
+
+### R5 — A global change, simulated
+
+```r
+set.seed(42)
+n <- 2000; mu <- rlnorm(n, log(100), 1)
+change <- rep(0.5, n); change[1:100] <- 1                 # treatment halves the mark at 95% of the peaks
+truth <- cbind(ctrl = mu, ctrl = mu, ctrl = mu, trt = mu * change, trt = mu * change, trt = mu * change)
+depth <- 1e6 / colSums(truth)                             # every library is sequenced to the same depth
+counts <- matrix(rnbinom(length(truth), mu = sweep(truth, 2, depth, "*") * 0.2, size = 20), n)
+spike <- c(5000, 5000, 5000, 10000, 10000, 10000) * c(1, 1.05, 0.95, 1, 0.97, 1.03)   # fly reads: same fly chromatin, half the human
+colnames(counts) <- paste0(c("c", "c", "c", "t", "t", "t"), 1:6)
+cd2 <- data.frame(group = factor(rep(c("ctrl", "trt"), each = 3), c("ctrl", "trt")), row.names = colnames(counts))
+d2 <- DESeqDataSetFromMatrix(counts, cd2, ~ group)
+r_rle <- results(DESeq(d2, quiet = TRUE))
+sizeFactors(d2) <- spike / exp(mean(log(spike)))
+r_spk <- results(DESeq(d2, quiet = TRUE))
+sapply(list(RLE = r_rle, spike_in = r_spk), function(r) c(down = sum(r$padj < 0.05 & r$log2FoldChange < 0, na.rm = TRUE),
+  up = sum(r$padj < 0.05 & r$log2FoldChange > 0, na.rm = TRUE), median_lfc = median(r$log2FoldChange),
+  unchanged_peaks_lfc = median(r$log2FoldChange[1:100])))
+```
+
+(a) Read the simulation: what is the truth, and why are the treated spike-in counts twice the control ones?
+
+(b) What does each normalisation conclude? Which peaks does standard normalisation call "up", and why?
+
+### R6 — The strongest differences, and their nearest genes
+
+```r
+pc <- gtf[gtf$type == "gene" & gtf$gene_type == "protein_coding"]
+pc_tss <- resize(pc, 1, fix = "start")
+nn <- distanceToNearest(cons, pc_tss, ignore.strand = TRUE)
+r <- rs$peaks_RLE
+top <- data.frame(region = rownames(cnt), lfc = round(r$log2FoldChange, 1), padj = signif(r$padj, 2),
+                  nearest_gene = pc_tss$gene_name[subjectHits(nn)], kb_to_tss = round(mcols(nn)$distance / 1000, 1))
+head(top[order(r$log2FoldChange), ], 8)        # higher in GM12878
+head(top[order(-r$log2FoldChange), ], 8)       # higher in K562
+```
+
+Which regions differ most in each direction, and how far are they from the nearest protein-coding TSS? Some top regions are at chr21:5–10 Mb, near the centromere: why would you check those in a browser before believing them?
+
+## Hints
+
+::: {.callout-tip collapse="true" title="Hint 1 — annotation (B1, B2, R1)"}
+Check the categories in priority order; a peak in an intron within 1 kb of a TSS is "promoter". For a − strand gene, upstream means larger coordinates. ChIPseeker: [`annotatePeak`](https://rdrr.io/bioc/ChIPseeker/man/annotatePeak.html) (`tssRegion`, `genomicAnnotationPriority`), [`plotAnnoBar`](https://rdrr.io/bioc/ChIPseeker/man/plotAnnoBar.html); a TxDb from a GTF with [`txdbmaker::makeTxDbFromGRanges`](https://rdrr.io/bioc/txdbmaker/man/makeTxDbFromGRanges.html).
+:::
+
+::: {.callout-tip collapse="true" title="Hint 2 — consensus and counting (B3, C2, R2)"}
+[`bedtools merge`](https://bedtools.readthedocs.io/en/latest/content/tools/merge.html) needs sorted input; [DiffBind](https://bioconductor.org/packages/release/bioc/html/DiffBind.html)'s `dba.peakset(minOverlap = 2)` builds a consensus of peaks in at least two samples. [`countOverlaps`](https://rdrr.io/bioc/GenomicRanges/man/findOverlaps-methods.html) counts per region; `resize(resize(r, 200, fix = "start"), 1, fix = "center")` turns each read into the centre of its 200-bp fragment.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 3 — normalisation (B4–B7, R3, R5)"}
+Median of ratios: divide each count by the geometric mean of its row, take each sample's median ([DESeq2 vignette](https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#sample-size-factors); [`estimateSizeFactorsForMatrix`](https://rdrr.io/bioc/DESeq2/man/estimateSizeFactorsForMatrix.html)). You can set your own with `sizeFactors(dds) <- s`. Background bins and efficiency bias: [Lun & Smyth 2016](https://doi.org/10.1093/nar/gkv1191) and the [csaw book](https://bioconductor.org/books/release/csawBook/). Spike-ins: [Orlando et al. 2014](https://doi.org/10.1016/j.celrep.2014.10.018).
+:::
+
+::: {.callout-tip collapse="true" title="Hint 4 — deepTools (C3, C4, B9)"}
+[`computeMatrix`](https://deeptools.readthedocs.io/en/latest/content/tools/computeMatrix.html) (`reference-point` / `scale-regions`; one group per BED file), [`plotHeatmap`](https://deeptools.readthedocs.io/en/latest/content/tools/plotHeatmap.html) (`--sortUsingSamples`, `--zMax`, `--kmeans`), [`bamCoverage`](https://deeptools.readthedocs.io/en/latest/content/tools/bamCoverage.html). In a GTF the 9th column holds `key "value";` pairs; BED needs 0-based starts.
+:::
+
+## Solutions
+
+Numbers from running the commands as written (bedtools 2.30, deepTools 3.5.1, samtools 1.21, R 4.6, DESeq2 and ChIPseeker from Bioconductor 3.23).
+
+::: {.callout-note collapse="true" title="Solutions — by hand"}
+
+**B1.** a 9 400: within 1 kb of G1's TSS → **promoter**, −600 (upstream). b 10 800: in the first intron but within 1 kb → **promoter** (priority), +800. c 15 100: **exon** (exon 2 of G1), +5 100. d 22 000: **intron**, +12 000 from G1. e 30 200: 200 bp after G1's end → **downstream**; nearest TSS G1 at +20 200 (G2's TSS is 21 800 away). f 51 500: within 1 kb of G2's TSS → **promoter**; G2 is on the − strand, so 51 500 is 500 bp *downstream*: +500. g 35 000: **distal intergenic**; nearest TSS is G2's (17 000 away; G1's is 25 000), and since G2 runs leftwards from 52 000, 35 000 lies beyond its 3' end: +17 000.
+
+**B2.** That an element 17 kb beyond the 3' end of G2 regulates G2 rather than G1 or another gene further away. Support would come from 3D contacts (Hi-C, HiChIP, Capture-C) between g and G2's promoter, from correlation between g's acetylation and G2's expression across many samples, and above all from perturbation (CRISPR interference or deletion of g changes G2's expression). Nearest-gene assignment alone is a hypothesis.
+
+**B3.** (a) 100–900 (A and B overlap), 2 000–2 400 (A only), 5 000–5 500 (B only), 9 000–9 500 (both): four regions, two condition-specific. (b) Regions where only B has signal are not in the set, so a gain in B cannot be counted; the region set itself is biased towards A.
+
+**B4.** (a) Library size is equal, so log2(B/A) = log2 1.5 = **0.58** for every peak: all up. (b) Geometric means per peak: √(100·150) = 122.5, 244.9, 367.4, 489.9; ratios A: 0.816 (all four), B: 1.225. Size factors 0.816 and 1.225; after normalisation all four peaks are equal: log2FC = **0**. (c) Background bins hold almost all reads (99.9%), so equalising them is nearly the same as equalising the totals. (d) Biology: B has 1.5 times more H3K27ac at all its peaks (e.g. after an HDAC inhibitor) → library size or background normalisation is right (or, better, spike-in). Technical: B's IP was more efficient (higher FRiP) → peak-based normalisation is right. The counts alone cannot tell them apart; a spike-in or an orthogonal measurement can.
+
+**B5.** (a) Geometric mean of the fly reads 70 354; size factors 0.57, 0.63, 1.71, 1.65; normalised counts 1 055, 1 055, 352, 352. (b) 352/1 055 = 0.33: domain X lost **two thirds** of its H3K27me3 (log2FC −1.58). Default normalisation (if most domains lose the same fraction) would centre them on zero: "no change", with any domain that lost less looking "gained". (c) The same fly chromatin went into every IP, but treated cells had a third of the human H3K27me3, so the IP pulled down much less human DNA and the fly reads made up a larger share of the same sequencing depth.
+
+**B6.** (a) 1.45/1.17 = **1.24**: about 24% more chr21 DNA per genome in K562 than on average (e.g. 4 copies in a near-triploid genome), relative to GM12878. (b) log2(1.24) = **+0.31** in K562, purely from copy number. Correct by including the input-derived copy-number ratio as an offset or normalisation factor for chr21 regions, by subtracting scaled input, or by comparing only regions of equal copy number.
+
+**B7.** If peaks are equal per cell, K562 reads in peaks are a smaller fraction of its library (0.40 vs 0.55): log2(0.40/0.55) = **−0.46**. The observed −0.33 is in between, consistent with a lower K562 FRiP partly offset by its extra chr21 copies (+0.31, B6) and by real differences.
+
+**B8.** n = 1 per condition (no estimate of variability; no test is valid); no spike-in although HDAC inhibitors raise acetylation globally (reads per million would hide a global increase and could even turn it into apparent decreases at many sites); reads-per-million normalisation assumes the total is unchanged; "increased/decreased" by an unspecified cutoff rather than a statistical test; probably no input (copy number unaffected here, but background). Better: ≥ 3 biological replicates per condition, a spike-in (or synthetic nucleosome standards) added before the IP, an input per sample, DESeq2 with spike-in size factors on a consensus region set, and a western blot of total H3K27ac.
+
+**B9.** (a) Regions with H3K27ac in both cell lines are mostly promoters of widely expressed genes, the strongest acetylated sites in any cell type. (b) Yes: every consensus region is tested in all samples; the grouping only shows where each peak set came from. Low K562 signal there may be a real but weaker region or background; the test decides. (c) Groups defined by peak sets are reproducible and interpretable; k-means starts from random centres and gave different cluster sizes on repeated runs of `plotHeatmap`.
+:::
+
+::: {.callout-note collapse="true" title="Solutions — command line"}
+
+**C1.** (a) GM12878 H3K27ac 77 287 and 63 771 reads, 51 bp; K562 138 349 and 64 594 reads, 36 bp; inputs 67 706 (GM12878, 51 bp) and 238 922 (K562, 36 bp). (b) chr21 share: GM12878 H3K27ac 1.11% and 1.11%, K562 H3K27ac 1.30% and 1.31%, GM12878 input **1.17%**, K562 input **1.45%**. chr22: GM12878 input 1.14%, K562 input 1.46%. K562 has relatively more chr21 and chr22 DNA (R4).
+
+**C2.** 567 GM12878 and 483 K562 peaks on chr21; **841** consensus regions: **378** GM12878 only, **170** both, **293** K562 only. Median width 687 bp, maximum 15 802 bp (merged neighbouring peaks).
+
+**C3.** The cluster at 25.4–25.5 Mb is strong in both GM12878 replicates and absent in K562. The nearest protein-coding gene is MRPL39, more than 100 kb away (a lncRNA, LINC00158, lies within the cluster). Each bamCoverage run takes a few seconds.
+
+**C4.** (a) The first `awk` keeps chr21 gene lines of protein-coding genes; the second extracts the gene name from column 9 and prints BED6: chromosome, start − 1 (BED is 0-based), end, name, score, strand. computeMatrix uses the strand to put the TSS at the start of − strand genes and to flip their profiles. 220 genes. (b) About a third of the genes (the top of the heatmap) have H3K4me3 and H3K27ac at the TSS and H3K36me3 downstream; H3K36me3 starts after the TSS and continues into the gene body. (c) See B9. The two computeMatrix runs take about 20 s each.
+:::
+
+::: {.callout-note collapse="true" title="Solutions — R"}
+
+**R1.** (a) Promoter (±1 kb): CTCF 18.3%, H3K27ac GM12878 33.3%, K562 40.0%. Introns (1st + other): 42.5%, 39.9%, 36.6%. Distal intergenic: 32.6%, 17.1%, 17.2%. Median distance to the nearest TSS 8.6 kb, 3.6 kb and 2.2 kb; 47%, 32% and 27% are more than 10 kb away. H3K27ac marks active promoters and enhancers; CTCF binds insulators and loop anchors, mostly away from promoters. (b) With the default ±3 kb (`annotatePeak(sets$CTCF, TxDb = txdb)`), ChIPseeker splits promoters into ≤ 1 kb (18.3%), 1–2 kb (7.2%) and 2–3 kb (6.4%): **31.9%** of CTCF peaks are now "promoter", taken from introns (33.3% instead of 42.5%) and distal intergenic (29.9% instead of 32.6%). The category depends on the window. Building the TxDb and annotating take about 30 s.
+
+**R2.** (a) A single-end read starts at one end of its fragment; the fragment centre (100 bp into the read's direction for 200-bp fragments) is where the chromatin was, so it is counted in the right region even near region edges. FRiP: 0.555 and 0.549 (GM12878), 0.395 and 0.442 (K562), inputs 0.042 and 0.049. (b) **264** regions higher in K562 and **245** higher in GM12878 (padj < 0.05) of 841. Identical to RNA-seq: the DESeqDataSet, design `~ cell`, size factors, dispersion estimation, the Wald test, Benjamini–Hochberg and the MA plot.
+
+**R3.** (a)
+
+| | peaks (RLE) | library | background |
+|---|---:|---:|---:|
+| GM_1 | 1.044 | 0.949 | 0.827 |
+| GM_2 | 0.936 | 0.783 | 0.690 |
+| K562_1 | 1.427 | 1.696 | 1.942 |
+| K562_2 | 0.761 | 0.793 | 0.952 |
+
+Peaks: most regions unchanged; library: total reads correspond to the same material; background: non-peak DNA is the same. (b) Up/down: **264/245** (peaks), **229/280** (library), **182/319** (background); median log2FC −0.01, −0.33, −0.76. The K562 libraries have a lower FRiP, so relative to all reads, or to background reads, their peaks look lower; with background bins the effect is stronger because the K562 background is also inflated by extra chr21 copies. The strong differences (|log2FC| > 3) are significant under all three.
+
+**R4.** Over-represented in K562: chr7 1.32, chr1 and chr22 1.27, chr21 1.23, chr6 1.19; under-represented: chrX 0.68, chr14 0.69, chr13 0.76, chr9 0.81. On chr21 every region starts with about +0.3 log2 units in K562 counts before any biology; a normalisation computed within chr21 (peaks or background bins of chr21) absorbs part of it, a genome-wide one would not.
+
+**R5.** (a) 2 000 peaks; in the treated samples 95% of peaks have half the signal and 5% (the first 100) are unchanged; all libraries are sequenced to the same depth, so the treated libraries contain relatively more reads per remaining peak. The same fly chromatin is pulled down in every sample, but treated IPs contain half as much human DNA, so fly reads double. (b) Standard normalisation: 1 region down, 43 up; median log2FC −0.03, and the 100 truly unchanged peaks get log2FC +0.91: they look **gained** because everything else was scaled up. Spike-in size factors: **1 562** down, 0 up, median log2FC −1.04, unchanged peaks −0.10: the truth.
+
+**R6.** Higher in GM12878: a cluster of regions at chr21:25.41–25.50 Mb (log2FC −6.6 to −7.5), 111–178 kb from MRPL39, the nearest protein-coding TSS; and the APP promoter (−6.8). Higher in K562: the KCNJ6 promoter at 38.12 Mb (+9.6) and a region 31 kb from it (+9.2), and regions in gene deserts near NCAM2, TCP10L and TMPRSS15. Regions at 5–10 Mb (near TPTE) lie in the pericentromeric part of chr21, full of segmental duplications that are partly copied on other chromosomes: mapping artefacts and copy-number differences between the cell lines can produce huge apparent differences there. Look at them in a browser, check the input and the mappability before believing them.
+:::
+
+## Where this leads
+
+- *Differential accessibility* runs the same analysis on ATAC-seq counts, with more replicates.
+- *Linking regulatory elements to genes* replaces "nearest gene" with contacts and correlation.
+- *Chromatin states* combines several marks into a single annotation of each region.
+- *CUT&RUN and CUT&Tag* produce cleaner data for the same questions; the downstream analysis is the same.
+
+## Key papers (optional further reading)
+
+*Not required reading and not examined.*
+
+- Yu, Wang & He 2015, *Bioinformatics*. [ChIPseeker: an R/Bioconductor package for ChIP peak annotation, comparison and visualization](https://doi.org/10.1093/bioinformatics/btv145).
+- Ramírez et al. 2016, *Nucleic Acids Res*. [deepTools2: a next generation web server for deep-sequencing data analysis](https://doi.org/10.1093/nar/gkw257).
+- Ross-Innes et al. 2012, *Nature*. [Differential oestrogen receptor binding is associated with clinical outcome in breast cancer](https://doi.org/10.1038/nature10730).
+- Lun & Smyth 2016, *Nucleic Acids Res*. [csaw: a Bioconductor package for differential binding analysis of ChIP-seq data using sliding windows](https://doi.org/10.1093/nar/gkv1191).
+- Orlando et al. 2014, *Cell Rep*. [Quantitative ChIP-Seq normalization reveals global modulation of the epigenome](https://doi.org/10.1016/j.celrep.2014.10.018).
+- Chen et al. 2016, *Mol Cell Biol*. [The overlooked fact: fundamental need for spike-in control for virtually all genome-wide analyses](https://doi.org/10.1128/MCB.00970-14).

@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 390" width="1120" height="390" font-family="Helvetica, Arial, sans-serif">
+<defs>
+<marker id="ared" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker>
+<marker id="aink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker>
+</defs>
+<rect width="1120" height="390" fill="#ffffff"/>
+
+<!-- Row 1: SHH / ZRS -->
+<text x="20" y="80" font-size="17" font-weight="bold" fill="#1b2a3a">SHH, limb bud</text>
+<text x="20" y="102" font-size="14" fill="#5b6b7a">ZRS mutations:</text>
+<text x="20" y="120" font-size="14" fill="#5b6b7a">polydactyly</text>
+<line x1="240" y1="110" x2="840" y2="110" stroke="#5b6b7a" stroke-width="1.5"/>
+<rect x="276" y="102" width="14" height="16" fill="#1b2a3a"/>
+<path d="M290,102 L290,88 L278,88" stroke="#1b2a3a" stroke-width="2" fill="none" marker-end="url(#aink)"/>
+<text x="283" y="138" font-size="15" font-style="italic" fill="#1b2a3a" text-anchor="middle">SHH</text>
+<rect x="644" y="104" width="13" height="12" fill="#5b6b7a"/>
+<text x="640" y="138" font-size="15" font-style="italic" fill="#5b6b7a" text-anchor="end">RNF32</text>
+<line x1="657" y1="110" x2="753" y2="110" stroke="#5b6b7a" stroke-width="3"/>
+<rect x="657" y="104" width="8" height="12" fill="#5b6b7a"/><rect x="745" y="104" width="8" height="12" fill="#5b6b7a"/>
+<text x="705" y="138" font-size="15" font-style="italic" fill="#5b6b7a" text-anchor="middle">LMBR1</text>
+<rect x="777" y="104" width="12" height="12" fill="#5b6b7a"/>
+<text x="783" y="138" font-size="15" font-style="italic" fill="#5b6b7a" text-anchor="start">NOM1</text>
+<rect x="703" y="96" width="12" height="14" fill="#c0392b"/>
+<path d="M709,94 C640,40 360,40 292,84" stroke="#c0392b" stroke-width="2.5" fill="none" marker-end="url(#ared)"/>
+<text x="500" y="26" font-size="16" font-weight="bold" fill="#c0392b" text-anchor="middle">ZRS → SHH: ≈ 1 Mb, inside an intron of LMBR1</text>
+
+<!-- Row 2: FTO / IRX3 / IRX5 -->
+<text x="20" y="200" font-size="17" font-weight="bold" fill="#1b2a3a">FTO locus, obesity</text>
+<text x="20" y="222" font-size="14" fill="#5b6b7a">risk SNPs in an FTO intron</text>
+<text x="20" y="240" font-size="14" fill="#5b6b7a">act on IRX3 and IRX5</text>
+<line x1="240" y1="230" x2="900" y2="230" stroke="#5b6b7a" stroke-width="1.5"/>
+<line x1="261" y1="230" x2="306" y2="230" stroke="#5b6b7a" stroke-width="3"/>
+<rect x="261" y="224" width="6" height="12" fill="#5b6b7a"/><rect x="300" y="224" width="6" height="12" fill="#5b6b7a"/>
+<text x="272" y="258" font-size="15" font-style="italic" fill="#5b6b7a" text-anchor="middle">RPGRIP1L</text>
+<line x1="308" y1="230" x2="502" y2="230" stroke="#1b2a3a" stroke-width="2"/>
+<rect x="308" y="222" width="10" height="16" fill="#1b2a3a"/><rect x="420" y="222" width="8" height="16" fill="#1b2a3a"/><rect x="494" y="222" width="8" height="16" fill="#1b2a3a"/>
+<text x="420" y="258" font-size="15" font-style="italic" fill="#1b2a3a" text-anchor="middle">FTO</text>
+<rect x="549" y="222" width="14" height="16" fill="#1b2a3a"/>
+<path d="M563,222 L563,208 L551,208" stroke="#1b2a3a" stroke-width="2" fill="none" marker-end="url(#aink)"/>
+<text x="556" y="258" font-size="15" font-style="italic" fill="#1b2a3a" text-anchor="middle">IRX3</text>
+<line x1="797" y1="230" x2="833" y2="230" stroke="#5b6b7a" stroke-width="3"/>
+<text x="805" y="258" font-size="15" font-style="italic" fill="#5b6b7a" text-anchor="middle">CRNDE</text>
+<rect x="836" y="222" width="14" height="16" fill="#1b2a3a"/>
+<path d="M836,222 L836,208 L848,208" stroke="#1b2a3a" stroke-width="2" fill="none" marker-end="url(#aink)"/>
+<text x="866" y="258" font-size="15" font-style="italic" fill="#1b2a3a" text-anchor="middle">IRX5</text>
+<rect x="328" y="214" width="10" height="16" fill="#c0392b"/>
+<path d="M336,212 C380,170 520,170 559,204" stroke="#c0392b" stroke-width="2.5" fill="none" marker-end="url(#ared)"/>
+<path d="M333,212 C420,140 760,140 834,204" stroke="#c0392b" stroke-width="2.5" fill="none" marker-end="url(#ared)"/>
+<text x="448" y="204" font-size="15" font-weight="bold" fill="#c0392b" text-anchor="middle">≈ 0.5 Mb</text>
+<text x="700" y="204" font-size="15" font-weight="bold" fill="#c0392b" text-anchor="middle">≈ 1.2 Mb</text>
+
+<!-- Row 3: MYC / BENC -->
+<text x="20" y="320" font-size="17" font-weight="bold" fill="#1b2a3a">MYC, blood</text>
+<text x="20" y="342" font-size="14" fill="#5b6b7a">deleting BENC (mouse):</text>
+<text x="20" y="360" font-size="14" fill="#5b6b7a">no Myc in stem cells</text>
+<line x1="240" y1="350" x2="1090" y2="350" stroke="#5b6b7a" stroke-width="1.5"/>
+<rect x="277" y="342" width="14" height="16" fill="#1b2a3a"/>
+<path d="M277,342 L277,328 L289,328" stroke="#1b2a3a" stroke-width="2" fill="none" marker-end="url(#aink)"/>
+<text x="284" y="378" font-size="15" font-style="italic" fill="#1b2a3a" text-anchor="middle">MYC</text>
+<line x1="302" y1="350" x2="471" y2="350" stroke="#5b6b7a" stroke-width="3"/>
+<text x="386" y="378" font-size="15" font-style="italic" fill="#5b6b7a" text-anchor="middle">PVT1</text>
+<line x1="663" y1="350" x2="1090" y2="350" stroke="#5b6b7a" stroke-width="3"/>
+<text x="800" y="378" font-size="15" font-style="italic" fill="#5b6b7a" text-anchor="middle">CCDC26</text>
+<rect x="992" y="334" width="8" height="16" fill="#c0392b"/><rect x="1004" y="334" width="8" height="16" fill="#c0392b"/><rect x="1016" y="334" width="8" height="16" fill="#c0392b"/>
+<text x="1008" y="378" font-size="15" font-weight="bold" fill="#c0392b" text-anchor="middle">BENC</text>
+<path d="M1006,332 C900,288 380,288 291,322" stroke="#c0392b" stroke-width="2.5" fill="none" marker-end="url(#ared)"/>
+<text x="650" y="282" font-size="16" font-weight="bold" fill="#c0392b" text-anchor="middle">≈ 1.7 Mb, past PVT1 and CCDC26</text>
+</svg>

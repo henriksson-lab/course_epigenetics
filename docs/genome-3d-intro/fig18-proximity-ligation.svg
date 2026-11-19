@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 300" width="1120" height="300" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker><marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker><marker id="aa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker><marker id="ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a8324a"/></marker><marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a6f97"/></marker><marker id="ao" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e67e22"/></marker><marker id="ap" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b4fa0"/></marker><marker id="an" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8c564b"/></marker></defs>
+<rect width="1120" height="300" fill="#ffffff"/>
+<text x="140.0" y="32.0" font-size="17" text-anchor="middle" font-weight="bold" fill="#1b2a3a">1. crosslink</text>
+<text x="420.0" y="32.0" font-size="17" text-anchor="middle" font-weight="bold" fill="#1b2a3a">2. cut</text>
+<line x1="280.0" y1="50.0" x2="280.0" y2="290.0" stroke="#d9dde2" stroke-width="1.2" stroke-linecap="butt"/>
+<text x="700.0" y="32.0" font-size="17" text-anchor="middle" font-weight="bold" fill="#1b2a3a">3. ligate nearby ends</text>
+<line x1="560.0" y1="50.0" x2="560.0" y2="290.0" stroke="#d9dde2" stroke-width="1.2" stroke-linecap="butt"/>
+<text x="980.0" y="32.0" font-size="17" text-anchor="middle" font-weight="bold" fill="#1b2a3a">4. sequence both ends</text>
+<line x1="840.0" y1="50.0" x2="840.0" y2="290.0" stroke="#d9dde2" stroke-width="1.2" stroke-linecap="butt"/>
+<ellipse cx="140.0" cy="150.0" rx="30.0" ry="26.0" fill="#dfe3e8" stroke="#5b6b7a" stroke-width="1.2"/>
+<path d="M25,90 C80.0,100 90.0,128 140.0,128 C190.0,128 200.0,100 255,90" fill="none" stroke="#2a6f97" stroke-width="4" stroke-linejoin="round"/>
+<path d="M25,210 C80.0,200 90.0,172 140.0,172 C190.0,172 200.0,200 255,210" fill="none" stroke="#e67e22" stroke-width="4" stroke-linejoin="round"/>
+<line x1="128.0" y1="130.0" x2="128.0" y2="170.0" stroke="#1b2a3a" stroke-width="1.5" stroke-linecap="butt" stroke-dasharray="2 3"/>
+<line x1="152.0" y1="130.0" x2="152.0" y2="170.0" stroke="#1b2a3a" stroke-width="1.5" stroke-linecap="butt" stroke-dasharray="2 3"/>
+<text x="140.0" y="264.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#5b6b7a">two segments far apart in</text>
+<text x="140.0" y="284.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#5b6b7a">sequence, touching in 3D</text>
+<text x="25.0" y="80.0" font-size="15" text-anchor="start" font-weight="bold" fill="#2a6f97">locus 1</text>
+<text x="25.0" y="232.0" font-size="15" text-anchor="start" font-weight="bold" fill="#e67e22">locus 2</text>
+<ellipse cx="420.0" cy="150.0" rx="30.0" ry="26.0" fill="#dfe3e8" stroke="#5b6b7a" stroke-width="1.2"/>
+<path d="M372.0,118 C390.0,128 405.0,128 420.0,128 C435.0,128 450.0,128 468.0,118" fill="none" stroke="#2a6f97" stroke-width="4" stroke-linejoin="round"/>
+<path d="M372.0,182 C390.0,172 405.0,172 420.0,172 C435.0,172 450.0,172 468.0,182" fill="none" stroke="#e67e22" stroke-width="4" stroke-linejoin="round"/>
+<line x1="354.0" y1="104.0" x2="370.0" y2="120.0" stroke="#c0392b" stroke-width="2.5" stroke-linecap="butt"/>
+<line x1="470.0" y1="104.0" x2="486.0" y2="120.0" stroke="#c0392b" stroke-width="2.5" stroke-linecap="butt"/>
+<line x1="354.0" y1="180.0" x2="370.0" y2="196.0" stroke="#c0392b" stroke-width="2.5" stroke-linecap="butt"/>
+<line x1="470.0" y1="180.0" x2="486.0" y2="196.0" stroke="#c0392b" stroke-width="2.5" stroke-linecap="butt"/>
+<line x1="408.0" y1="130.0" x2="408.0" y2="170.0" stroke="#1b2a3a" stroke-width="1.5" stroke-linecap="butt" stroke-dasharray="2 3"/>
+<line x1="432.0" y1="130.0" x2="432.0" y2="170.0" stroke="#1b2a3a" stroke-width="1.5" stroke-linecap="butt" stroke-dasharray="2 3"/>
+<text x="420.0" y="264.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#5b6b7a">restriction enzyme cuts;</text>
+<text x="420.0" y="284.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#5b6b7a">the pieces stay crosslinked</text>
+<ellipse cx="700.0" cy="150.0" rx="30.0" ry="26.0" fill="#dfe3e8" stroke="#5b6b7a" stroke-width="1.2"/>
+<path d="M652.0,118 C685.0,128 715.0,128 748.0,118 C770.0,130 770.0,170 748.0,182" fill="none" stroke="#2a6f97" stroke-width="4" stroke-linejoin="round"/>
+<path d="M748.0,182 C715.0,172 685.0,172 652.0,182" fill="none" stroke="#e67e22" stroke-width="4" stroke-linejoin="round"/>
+<circle cx="763.0" cy="150.0" r="6.0" fill="#c0392b" stroke="#1b2a3a" stroke-width="1"/>
+<text x="775.0" y="155.0" font-size="15" text-anchor="start" font-weight="bold" fill="#c0392b">junction</text>
+<text x="700.0" y="264.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#5b6b7a">ends joined into one</text>
+<text x="700.0" y="284.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#5b6b7a">chimeric molecule</text>
+<line x1="870.0" y1="110.0" x2="980.0" y2="110.0" stroke="#2a6f97" stroke-width="5" stroke-linecap="butt"/>
+<line x1="980.0" y1="110.0" x2="1090.0" y2="110.0" stroke="#e67e22" stroke-width="5" stroke-linecap="butt"/>
+<circle cx="980.0" cy="110.0" r="5.0" fill="#c0392b" stroke="#1b2a3a" stroke-width="1"/>
+<line x1="870.0" y1="90.0" x2="930.0" y2="90.0" stroke="#1b2a3a" stroke-width="2" stroke-linecap="butt" marker-end="url(#ak)"/>
+<line x1="1090.0" y1="90.0" x2="1030.0" y2="90.0" stroke="#1b2a3a" stroke-width="2" stroke-linecap="butt" marker-end="url(#ak)"/>
+<text x="900.0" y="80.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#1b2a3a">read 1</text>
+<text x="1060.0" y="80.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#1b2a3a">read 2</text>
+<line x1="865.0" y1="190.0" x2="1095.0" y2="190.0" stroke="#1b2a3a" stroke-width="2.5" stroke-linecap="butt"/>
+<rect x="890.0" y="182.0" width="30.0" height="16.0" rx="0" fill="#2a6f97" stroke="none" stroke-width="1.5"/>
+<rect x="1040.0" y="182.0" width="30.0" height="16.0" rx="0" fill="#e67e22" stroke="none" stroke-width="1.5"/>
+<line x1="900.0" y1="118.0" x2="905.0" y2="176.0" stroke="#5b6b7a" stroke-width="1.3" stroke-linecap="butt" marker-end="url(#ag)" stroke-dasharray="4 3"/>
+<line x1="1060.0" y1="118.0" x2="1055.0" y2="176.0" stroke="#5b6b7a" stroke-width="1.3" stroke-linecap="butt" marker-end="url(#ag)" stroke-dasharray="4 3"/>
+<text x="980.0" y="225.0" font-size="14" text-anchor="middle" font-weight="normal" fill="#5b6b7a">genome</text>
+<text x="970.0" y="264.0" font-size="15" text-anchor="middle" font-weight="bold" fill="#1b2a3a">one contact: locus 1 – locus 2</text>
+</svg>

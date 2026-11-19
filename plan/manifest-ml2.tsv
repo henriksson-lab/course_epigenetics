@@ -1,0 +1,5 @@
+# id	url	description	used_by
+ctcf_asb_adastra.tsv	https://adastra.autosome.org/api/v6/search/snps/advanced/tsv?transcription_factors=CTCF_HUMAN&fdr=0.05&es=0	ADASTRA (release Mabel v6.1, Nov 2024; Abramov et al. 2021) CTCF allele-specific binding SNPs, FDR < 0.05, all cell types, hg38 1-based positions; 29 519 rows, 4.5 MB (web API export; archival copy of the release: zenodo.org/records/14174114)	ml-interpretation-variants
+ml_ctcf_dataset.rds	prepare-ml2.sh	200-bp windows at GM12878 CTCF summits (44 217) + GC-matched background (43 586), sequences and chromosome split (train / valid chr7 / test chr8, chr9); built by the code of the ml-cnn-dna exercise R1, seed 1; 5.6 MB	ml-cnn-dna, ml-interpretation-variants
+ml_ctcf_cnn.pt	prepare-ml2.sh	trained CTCF CNN (R torch, torch_save; 32 filters x 19 bp, global max pool, dense), seed 1, exercise R5 of ml-cnn-dna; 0.4 MB	ml-cnn-dna, ml-interpretation-variants
+ml_ctcf_cnn_history.tsv	prepare-ml2.sh	training and validation loss/AUC per epoch of ml_ctcf_cnn.pt	ml-cnn-dna

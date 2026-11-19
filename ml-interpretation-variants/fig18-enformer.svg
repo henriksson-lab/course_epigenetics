@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 380" width="1120" height="380" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker><marker id="ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker><marker id="ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker><marker id="ahgr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker><marker id="ahb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a6f97"/></marker><marker id="aho" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e67e22"/></marker><marker id="ahp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b4fa0"/></marker></defs>
+<rect width="1120" height="380" fill="#ffffff"/>
+<text x="20.0" y="30.0" font-size="17" fill="#1b2a3a" text-anchor="start" font-weight="bold">Enformer (2021): sequence → thousands of genomic tracks</text>
+<rect x="20.0" y="70.0" width="1080.0" height="22.0" rx="3" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1"/>
+<text x="560.0" y="86.0" font-size="14" fill="#1b2a3a" text-anchor="middle">196 608 bp of DNA, one-hot</text>
+<path d="M60,110 L1060,110 L860,175 L260,175 Z" fill="#eaf1f7" stroke="#5b6b7a" stroke-width="1.6"/>
+<text x="560.0" y="140.0" font-size="15" fill="#1b2a3a" text-anchor="middle">7 convolution blocks with pooling: motifs, then 1 536 positions of 128 bp each</text>
+<rect x="260.0" y="190.0" width="600.0" height="70.0" rx="8" fill="#efe9f6" stroke="#6b4fa0" stroke-width="1.8"/>
+<text x="560.0" y="218.0" font-size="16" fill="#6b4fa0" text-anchor="middle" font-weight="bold">11 transformer (attention) layers</text>
+<text x="560.0" y="242.0" font-size="14" fill="#1b2a3a" text-anchor="middle">every 128-bp position can use information from every other: up to ~100 kb away</text>
+<line x1="560.0" y1="176.0" x2="560.0" y2="188.0" stroke="#5b6b7a" stroke-width="1.6" marker-end="url(#ahg)"/>
+<line x1="560.0" y1="262.0" x2="560.0" y2="286.0" stroke="#5b6b7a" stroke-width="1.6" marker-end="url(#ahg)"/>
+<rect x="260.0" y="290.0" width="600.0" height="44.0" rx="6" fill="#ffffff" stroke="#1b2a3a" stroke-width="1.4"/>
+<text x="560.0" y="318.0" font-size="15" fill="#1b2a3a" text-anchor="middle">output: 896 bins × 128 bp (central 114 688 bp) × 5 313 human tracks</text>
+<text x="560.0" y="358.0" font-size="14" fill="#5b6b7a" text-anchor="middle">CAGE (transcription), DNase/ATAC, histone marks, TF ChIP-seq, in hundreds of cell types; also 1 643 mouse tracks</text>
+</svg>

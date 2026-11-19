@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 420" width="1120" height="420" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker></defs>
+<rect width="1120" height="420" fill="#ffffff"/>
+<!-- Panel A -->
+<text x="200" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1b2a3a">A. Dying cells release DNA</text>
+<!-- cells -->
+<circle cx="80" cy="100" r="34" fill="#eaf1f7" stroke="#2a6f97" stroke-width="2"/><text x="80" y="105" text-anchor="middle" font-size="14" fill="#1b2a3a">blood</text>
+<circle cx="80" cy="190" r="34" fill="#fdf1e6" stroke="#e67e22" stroke-width="2"/><text x="80" y="195" text-anchor="middle" font-size="14" fill="#1b2a3a">liver</text>
+<circle cx="80" cy="280" r="34" fill="#fbeaea" stroke="#c0392b" stroke-width="2" stroke-dasharray="5,3"/><text x="80" y="285" text-anchor="middle" font-size="14" fill="#1b2a3a">tumour</text>
+<line x1="118" y1="100" x2="190" y2="170" stroke="#5b6b7a" stroke-width="2" marker-end="url(#ah)"/>
+<line x1="118" y1="190" x2="190" y2="190" stroke="#5b6b7a" stroke-width="2" marker-end="url(#ah)"/>
+<line x1="118" y1="280" x2="190" y2="210" stroke="#5b6b7a" stroke-width="2" marker-end="url(#ah)"/>
+<!-- nucleosome fragment -->
+<ellipse cx="270" cy="190" rx="44" ry="26" fill="#2a9d8f" fill-opacity="0.85"/>
+<path d="M210,190 C230,160 310,160 330,190 C310,220 230,220 210,190" fill="none" stroke="#1b2a3a" stroke-width="2.5"/>
+<text x="270" y="248" text-anchor="middle" font-size="15" fill="#1b2a3a">~167-bp fragments</text>
+<text x="270" y="268" text-anchor="middle" font-size="14" fill="#5b6b7a">protected by a nucleosome</text>
+<text x="200" y="330" text-anchor="middle" font-size="15" fill="#1b2a3a">Half-life in plasma: minutes to hours.</text>
+<text x="200" y="352" text-anchor="middle" font-size="15" fill="#1b2a3a">A few ng per ml: thousands of genome</text>
+<text x="200" y="374" text-anchor="middle" font-size="15" fill="#1b2a3a">copies, but every locus is rare.</text>
+<!-- Panel B: healthy composition bar -->
+<line x1="400" y1="20" x2="400" y2="400" stroke="#dfe6ec" stroke-width="2"/>
+<text x="760" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1b2a3a">B. Where plasma cfDNA comes from (healthy)</text>
+<rect x="440" y="60" width="352" height="40" fill="#2a6f97" fill-opacity="0.8"/>
+<rect x="792" y="60" width="192" height="40" fill="#a8324a" fill-opacity="0.8"/>
+<rect x="984" y="60" width="64" height="40" fill="#8ab17d"/>
+<rect x="1048" y="60" width="6.4" height="40" fill="#e67e22"/>
+<text x="616" y="86" text-anchor="middle" font-size="15" fill="#ffffff">white blood cells 55%</text>
+<text x="888" y="86" text-anchor="middle" font-size="14" fill="#ffffff">erythroid prog. 30%</text>
+<text x="1016" y="86" text-anchor="middle" font-size="13" fill="#1b2a3a">endoth.</text>
+<text x="1016" y="122" text-anchor="middle" font-size="14" fill="#1b2a3a">10%</text>
+<text x="1060" y="122" font-size="14" fill="#e67e22">liver 1%</text>
+<text x="440" y="122" font-size="14" fill="#5b6b7a">Moss et al. 2018, array-based deconvolution</text>
+<!-- Panel C: methylation tells tissue -->
+<text x="760" y="170" text-anchor="middle" font-size="18" font-weight="bold" fill="#1b2a3a">C. Methylation says which tissue a fragment came from</text>
+<g font-size="15" fill="#1b2a3a">
+<text x="440" y="212">liver-specific marker region:</text>
+<text x="440" y="240">unmethylated only in hepatocytes</text>
+</g>
+<!-- fragments with CpGs -->
+<g>
+<line x1="700" y1="206" x2="830" y2="206" stroke="#2a6f97" stroke-width="4"/>
+<line x1="860" y1="206" x2="990" y2="206" stroke="#2a6f97" stroke-width="4"/>
+<line x1="700" y1="240" x2="830" y2="240" stroke="#2a6f97" stroke-width="4"/>
+<line x1="860" y1="240" x2="990" y2="240" stroke="#e67e22" stroke-width="4"/>
+</g>
+<g fill="#1b2a3a"><circle cx="725" cy="206" r="6"/><circle cx="765" cy="206" r="6"/><circle cx="805" cy="206" r="6"/>
+<circle cx="885" cy="206" r="6"/><circle cx="925" cy="206" r="6"/><circle cx="965" cy="206" r="6"/>
+<circle cx="725" cy="240" r="6"/><circle cx="765" cy="240" r="6"/><circle cx="805" cy="240" r="6"/></g>
+<g fill="#ffffff" stroke="#1b2a3a" stroke-width="2"><circle cx="885" cy="240" r="6"/><circle cx="925" cy="240" r="6"/><circle cx="965" cy="240" r="6"/></g>
+<text x="1000" y="245" font-size="14" fill="#e67e22">from liver</text>
+<rect x="440" y="272" width="640" height="120" rx="8" fill="#f4f6f8"/>
+<text x="456" y="298" font-size="15" fill="#1b2a3a">• count fragments with the tissue's pattern (fragment level, Loyfer 2023)</text>
+<text x="456" y="322" font-size="15" fill="#1b2a3a">• or deconvolve CpG averages against a reference atlas (as for blood cells)</text>
+<text x="456" y="346" font-size="15" fill="#1b2a3a">• a rise in liver or heart cfDNA marks tissue damage; tumour cfDNA</text>
+<text x="456" y="370" font-size="15" fill="#1b2a3a">   carries cancer-type and tissue-of-origin patterns (Galleri, CCGA)</text>
+</svg>

@@ -1,0 +1,2146 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.30">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Exercise: How a CNN reads DNA – Epigenetics</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-662ae1889177880cb371f83234c0a158.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-d37fb74fd9c61f52627c5754f4dbd5bd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Epigenetics</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-course-info" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Course info</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-course-info">    
+        <li>
+    <a class="dropdown-item" href="../courseplan.html">
+ <span class="dropdown-text">Course plan</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Machine learning for prediction</li><li class="breadcrumb-item"><a href="../ml-cnn-dna/lec.html">How a CNN reads DNA</a></li><li class="breadcrumb-item"><a href="../ml-cnn-dna/exercise.html">Exercise</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Course info</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../courseplan.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Course plan</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../elo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Learning outcomes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../intro/install.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Install software</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dictionary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Glossary</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Foundations</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">What is epigenetics?</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chromatin-intro/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chromatin-intro/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chromatin-intro/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Genomic intervals</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../genomic-intervals/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../genomic-intervals/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../genomic-intervals/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text">Gene regulation</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../gene-regulation/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../gene-regulation/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../gene-regulation/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false">
+ <span class="menu-text">From reads to coverage</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../enrichment-alignment/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../enrichment-alignment/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../enrichment-alignment/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false">
+ <span class="menu-text">Experimental design and QC</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epigenomics-design/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epigenomics-design/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epigenomics-design/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
+ <span class="menu-text">Chromatin accessibility (ATAC-seq)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="false">
+ <span class="menu-text">ATAC-seq: Tn5, fragment sizes, nucleosome ladder</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atacseq-intro/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atacseq-intro/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atacseq-intro/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false">
+ <span class="menu-text">ATAC-seq processing and peak calling</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atacseq-analysis/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atacseq-analysis/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atacseq-analysis/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="false">
+ <span class="menu-text">Differential accessibility</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../differential-accessibility/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../differential-accessibility/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../differential-accessibility/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="false">
+ <span class="menu-text">Motifs, motif enrichment and TF footprinting</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../motifs-footprinting/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../motifs-footprinting/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../motifs-footprinting/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="true">
+ <span class="menu-text">Protein–DNA binding and histone marks (ChIP-seq)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" role="navigation" aria-expanded="false">
+ <span class="menu-text">ChIP-seq: the assay</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-14" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-intro/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-intro/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-intro/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-15" role="navigation" aria-expanded="false">
+ <span class="menu-text">Peak calling</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-15" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-15" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-peaks/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-peaks/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-peaks/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" role="navigation" aria-expanded="false">
+ <span class="menu-text">CUT&amp;RUN and CUT&amp;Tag</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-16" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cutrun-cuttag/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cutrun-cuttag/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cutrun-cuttag/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-17" role="navigation" aria-expanded="false">
+ <span class="menu-text">Annotation and differential binding</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-17" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-17" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-downstream/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-downstream/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-downstream/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-18" role="navigation" aria-expanded="false">
+ <span class="menu-text">Combining marks into chromatin states</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-18" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-18" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chromatin-states/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chromatin-states/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chromatin-states/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-19" role="navigation" aria-expanded="true">
+ <span class="menu-text">DNA methylation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-19" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-19" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-20" role="navigation" aria-expanded="false">
+ <span class="menu-text">DNA methylation biology</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-20" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-20" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-biology/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-biology/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-biology/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-21" role="navigation" aria-expanded="false">
+ <span class="menu-text">Bisulfite and enzymatic sequencing</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-21" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-21" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-bisulfite/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-bisulfite/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-bisulfite/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-22" role="navigation" aria-expanded="false">
+ <span class="menu-text">Differential methylation</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-22" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-22" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-differential/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-differential/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-differential/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-23" role="navigation" aria-expanded="false">
+ <span class="menu-text">Methylation arrays (Illumina EPIC)</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-23" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-23" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-arrays/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-arrays/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-arrays/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-24" role="navigation" aria-expanded="false">
+ <span class="menu-text">Epigenetic clocks and biomarkers</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-24" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-24" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epigenetic-clocks/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epigenetic-clocks/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epigenetic-clocks/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-25" role="navigation" aria-expanded="false">
+ <span class="menu-text">Methylation and chromatin from long reads</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-25" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-25" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../longread-epigenomics/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../longread-epigenomics/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../longread-epigenomics/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-26" role="navigation" aria-expanded="true">
+ <span class="menu-text">3D genome</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-26" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-26" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-27" role="navigation" aria-expanded="false">
+ <span class="menu-text">3D genome organisation</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-27" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-27" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../genome-3d-intro/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../genome-3d-intro/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../genome-3d-intro/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-28" role="navigation" aria-expanded="false">
+ <span class="menu-text">Hi-C: from reads to contact matrices</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-28" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-28" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hic-processing/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hic-processing/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hic-processing/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-29" role="navigation" aria-expanded="false">
+ <span class="menu-text">Calling compartments, TADs and loops</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-29" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-29" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hic-features/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hic-features/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hic-features/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-30" role="navigation" aria-expanded="true">
+ <span class="menu-text">Integration and interpretation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-30" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-30" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-31" role="navigation" aria-expanded="false">
+ <span class="menu-text">Linking regulatory elements to genes</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-31" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-31" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../integration-rnaseq/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../integration-rnaseq/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../integration-rnaseq/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-32" role="navigation" aria-expanded="false">
+ <span class="menu-text">Epigenomics and genetic variation</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-32" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-32" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../noncoding-variants/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../noncoding-variants/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../noncoding-variants/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-33" role="navigation" aria-expanded="true">
+ <span class="menu-text">Machine learning for prediction</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-33" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-33" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-34" role="navigation" aria-expanded="false">
+ <span class="menu-text">Machine learning from scratch</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-34" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-34" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-basics/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-basics/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-basics/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-35" role="navigation" aria-expanded="false">
+ <span class="menu-text">What people try to predict</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-35" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-35" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-prediction-tasks/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-prediction-tasks/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-prediction-tasks/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-36" role="navigation" aria-expanded="true">
+ <span class="menu-text">How a CNN reads DNA</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-36" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-36" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-cnn-dna/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-cnn-dna/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-cnn-dna/exercise.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-37" role="navigation" aria-expanded="false">
+ <span class="menu-text">What did the model learn? Variant effects</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-37" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-37" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-interpretation-variants/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-interpretation-variants/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-interpretation-variants/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#goal" id="toc-goal" class="nav-link active" data-scroll-target="#goal">Goal</a></li>
+  <li><a href="#background" id="toc-background" class="nav-link" data-scroll-target="#background">Background</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
+  <li><a href="#by-hand" id="toc-by-hand" class="nav-link" data-scroll-target="#by-hand">By hand</a></li>
+  <li><a href="#in-r" id="toc-in-r" class="nav-link" data-scroll-target="#in-r">In R</a>
+  <ul class="collapse">
+  <li><a href="#r1-positives-gc-matched-negatives-and-a-chromosome-split" id="toc-r1-positives-gc-matched-negatives-and-a-chromosome-split" class="nav-link" data-scroll-target="#r1-positives-gc-matched-negatives-and-a-chromosome-split">R1 — Positives, GC-matched negatives and a chromosome split</a></li>
+  <li><a href="#r2-one-hot-encoding-and-tensors" id="toc-r2-one-hot-encoding-and-tensors" class="nav-link" data-scroll-target="#r2-one-hot-encoding-and-tensors">R2 — One-hot encoding and tensors</a></li>
+  <li><a href="#r3-baselines-gc-content-and-the-ctcf-pwm" id="toc-r3-baselines-gc-content-and-the-ctcf-pwm" class="nav-link" data-scroll-target="#r3-baselines-gc-content-and-the-ctcf-pwm">R3 — Baselines: GC content and the CTCF PWM</a></li>
+  <li><a href="#r4-the-network" id="toc-r4-the-network" class="nav-link" data-scroll-target="#r4-the-network">R4 — The network</a></li>
+  <li><a href="#r5-training-with-early-stopping" id="toc-r5-training-with-early-stopping" class="nav-link" data-scroll-target="#r5-training-with-early-stopping">R5 — Training with early stopping</a></li>
+  <li><a href="#r6-test-performance" id="toc-r6-test-performance" class="nav-link" data-scroll-target="#r6-test-performance">R6 — Test performance</a></li>
+  <li><a href="#r7-too-little-data-overfitting" id="toc-r7-too-little-data-overfitting" class="nav-link" data-scroll-target="#r7-too-little-data-overfitting">R7 — Too little data: overfitting</a></li>
+  <li><a href="#r8-what-did-the-filters-learn" id="toc-r8-what-did-the-filters-learn" class="nav-link" data-scroll-target="#r8-what-did-the-filters-learn">R8 — What did the filters learn?</a></li>
+  </ul></li>
+  <li><a href="#hints" id="toc-hints" class="nav-link" data-scroll-target="#hints">Hints</a></li>
+  <li><a href="#solutions" id="toc-solutions" class="nav-link" data-scroll-target="#solutions">Solutions</a></li>
+  <li><a href="#where-this-leads" id="toc-where-this-leads" class="nav-link" data-scroll-target="#where-this-leads">Where this leads</a></li>
+  <li><a href="#key-papers-optional-further-reading" id="toc-key-papers-optional-further-reading" class="nav-link" data-scroll-target="#key-papers-optional-further-reading">Key papers (optional further reading)</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Machine learning for prediction</li><li class="breadcrumb-item"><a href="../ml-cnn-dna/lec.html">How a CNN reads DNA</a></li><li class="breadcrumb-item"><a href="../ml-cnn-dna/exercise.html">Exercise</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Exercise: How a CNN reads DNA</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="goal" class="level2">
+<h2 class="anchored" data-anchor-id="goal">Goal</h2>
+<p>After this exercise you will be able to:</p>
+<ul>
+<li><strong>One-hot encode</strong> DNA, and compute by hand what a convolutional filter, a bias, ReLU, max pooling and a dense layer with a sigmoid do to it.</li>
+<li>Compute a <strong>log loss</strong> and one <strong>gradient-descent</strong> step for a weight, by hand.</li>
+<li>Build a labelled data set of <strong>GM12878 CTCF peaks</strong> and <strong>GC-matched background</strong>, split by chromosome.</li>
+<li>Train a small <strong>convolutional neural network</strong> in R with <a href="https://torch.mlverse.org/"><code>torch</code></a> on a CPU, with a validation chromosome and <strong>early stopping</strong>, and compare its test AUC with a <strong>PWM baseline</strong>.</li>
+<li>Read <strong>learning curves</strong> and recognise <strong>overfitting</strong>.</li>
+<li>Turn first-layer <strong>filters into motif logos</strong> and match them to JASPAR.</li>
+</ul>
+</section>
+<section id="background" class="level2">
+<h2 class="anchored" data-anchor-id="background">Background</h2>
+<p><strong>From PWM to filter.</strong> A PWM scores a window as the sum of the weights of its bases (<em>Gene regulation</em>). A convolutional filter is a 4 × <span class="math inline">\(k\)</span> weight matrix that does the same at every position of a one-hot encoded sequence; a bias and ReLU, <span class="math inline">\(\max(0, \text{score} + b)\)</span>, keep only good matches, and max pooling keeps the best one. With 32 filters this gives 32 numbers per sequence.</p>
+<p><strong>From features to prediction.</strong> A dense layer computes <span class="math inline">\(z = b + \sum_j w_j x_j\)</span> from those 32 numbers and the sigmoid turns <span class="math inline">\(z\)</span> into <span class="math inline">\(p = 1/(1 + e^{-z})\)</span>: logistic regression (<em>Machine learning from scratch</em>), whose features are learned.</p>
+<p><strong>Training.</strong> The loss of one sequence with label <span class="math inline">\(y\)</span> is <span class="math inline">\(-[y \log p + (1-y) \log(1-p)]\)</span>. For the dense layer the gradient is simple: <span class="math inline">\(\partial \text{loss} / \partial z = p - y\)</span>, so <span class="math inline">\(\partial \text{loss} / \partial w_j = (p - y)\,x_j\)</span>. Gradient descent updates <span class="math inline">\(w_j \leftarrow w_j - \eta \, \partial \text{loss}/\partial w_j\)</span> with learning rate <span class="math inline">\(\eta\)</span>. Backpropagation applies the chain rule to get the gradients of all the filter weights as well.</p>
+<p><strong>Evaluation.</strong> Train on 20 chromosomes, choose when to stop on chr7 (validation), report once on chr8 + chr9 (test), as in <em>Machine learning from scratch</em> and <em>What people try to predict, and how to tell if it works</em>.</p>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<p>GM12878 CTCF ChIP-seq peaks (ENCODE, IDR conservative, narrowPeak), the ENCODE blacklist and the hg38 genome as a bgzipped, indexed FASTA (<code>hg38.fa.bgz</code> with <code>.fai</code> and <code>.gzi</code>). From the course repository:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">data/download.sh</span> ml-cnn-dna</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/epi/ml-cnn <span class="kw">&amp;&amp;</span> <span class="bu">cd</span> ~/epi/ml-cnn</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Work in this folder: the files you save here (<code>ctcf_dataset.rds</code>, <code>ctcf_cnn.pt</code>) are the starting point of the next exercise, <em>What did the model learn? Variant effects</em>.</p>
+<p>You need, in R, the Bioconductor packages <code>GenomicRanges</code>, <code>rtracklayer</code>, <code>Rsamtools</code>, <code>Biostrings</code>, <code>JASPAR2024</code>, <code>TFBSTools</code>, <code>motifmatchr</code>, <code>universalmotif</code>, and the CRAN package <code>torch</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"torch"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>torch<span class="sc">::</span><span class="fu">install_torch</span>()        <span class="co"># downloads libtorch (~200 MB, CPU version is enough)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If <code>install_torch()</code> stops with an unsupported CUDA version (a GPU driver on the machine), run <code>Sys.setenv(CUDA = "cpu")</code> first. The whole R part takes about 10 minutes on a laptop with four cores; training (R5) takes about 5 of them.</p>
+<p><em>Simplifications.</em> One TF, one cell line and one experiment; 200-bp windows; a single convolutional layer; background matched for GC content only. Your numbers may differ from the solutions in the third decimal on another computer (floating-point arithmetic with several threads is not exactly reproducible across machines), but not more.</p>
+</section>
+<section id="by-hand" class="level2">
+<h2 class="anchored" data-anchor-id="by-hand">By hand</h2>
+<p><strong>B1. One-hot encoding.</strong></p>
+<ol type="a">
+<li><p>Write the one-hot matrix (rows A, C, G, T) of <code>GATTC</code>.</p></li>
+<li><p>Why not encode the bases as one number each, A = 1, C = 2, G = 3, T = 4?</p></li>
+<li><p>How large is the input array for a batch of 128 sequences of 200 bp?</p></li>
+</ol>
+<p><strong>B2. A filter scans a sequence.</strong> A filter of width 4 has these weights (rows A, C, G, T; columns positions 1–4) and bias −5:</p>
+<pre><code>      1    2    3    4
+A    -1   -1   +2   -1
+C    +2   +2   -1   -1
+G    -1   -1   -1   +2
+T    -1   -1   -1   -1</code></pre>
+<ol type="a">
+<li><p>Which 4-mer gets the highest score, and what is that score?</p></li>
+<li><p>Slide the filter along <code>TCCAGACTGGA</code> and write down the score of each window (how many windows are there?).</p></li>
+<li><p>Add the bias and apply ReLU. What does global max pooling return?</p></li>
+<li><p>With a bias of −4 instead, what changes? What does the bias control?</p></li>
+</ol>
+<p><strong>B3. The other strand.</strong> The sequence in B2 also contains <code>CTGG</code> (positions 7–10).</p>
+<ol type="a">
+<li><p>What is the reverse complement of <code>CCAG</code>? Does the filter of B2 detect the site on the other strand?</p></li>
+<li><p>Write the weight matrix of a filter that detects the reverse complement. (Reverse the columns, then swap the rows A↔︎T and C↔︎G.) What is its maximum activation (bias −5) on <code>TCCAGACTGGA</code>?</p></li>
+<li><p>CTCF sites occur in both orientations. What do you expect to see among the filters of a network trained on CTCF peaks?</p></li>
+</ol>
+<p><strong>B4. The dense layer.</strong> A network has the two filters of B2 and B3 (biases −5), global max pooling, and a dense layer with weights <span class="math inline">\(w_1 = 1.2\)</span>, <span class="math inline">\(w_2 = 0.8\)</span> and bias <span class="math inline">\(b = -2\)</span>.</p>
+<ol type="a">
+<li><p>Compute <span class="math inline">\(z\)</span> and <span class="math inline">\(p\)</span> for <code>TCCAGACTGGA</code>.</p></li>
+<li><p>Compute <span class="math inline">\(z\)</span> and <span class="math inline">\(p\)</span> for a sequence in which only filter 1 fires, with activation 3, and for one in which neither fires.</p></li>
+<li><p>The sequence of (b) with only filter 1 firing is a background sequence (<span class="math inline">\(y = 0\)</span>). What is its log loss? What would it be if it were bound (<span class="math inline">\(y = 1\)</span>)?</p></li>
+</ol>
+<p><strong>B5. One step of gradient descent.</strong> Use the background sequence of B4c (<span class="math inline">\(x_1 = 3\)</span>, <span class="math inline">\(x_2 = 0\)</span>, <span class="math inline">\(y = 0\)</span>).</p>
+<ol type="a">
+<li><p>Compute <span class="math inline">\(\partial \text{loss} / \partial w_1\)</span> and <span class="math inline">\(\partial \text{loss} / \partial w_2\)</span>.</p></li>
+<li><p>Update <span class="math inline">\(w_1\)</span> and <span class="math inline">\(w_2\)</span> with learning rate <span class="math inline">\(\eta = 0.1\)</span>. In words: what does the update do, and why does <span class="math inline">\(w_2\)</span> not change?</p></li>
+<li><p>Repeat (a) and (b) for <span class="math inline">\(y = 1\)</span>.</p></li>
+</ol>
+<p><strong>B6. Count the parameters.</strong></p>
+<ol type="a">
+<li><p>The exercise model has 32 filters of width 19 on 4 input channels and a dense layer from 32 inputs to 1 output. Count weights and biases.</p></li>
+<li><p>A larger model has 64 filters of width 15, then a second convolutional layer with 32 filters of width 5 (reading the 64 activation tracks), global max pooling and a dense layer to 1 output. How many parameters?</p></li>
+<li><p>You have 500 labelled sequences. Which of the two models are you more worried about, and why?</p></li>
+</ol>
+<p><strong>B7. Read the learning curves.</strong> A network gives these losses:</p>
+<pre><code>epoch        1     2     3     4     5     6     7     8     9    10
+training   0.52  0.38  0.30  0.25  0.21  0.17  0.14  0.11  0.09  0.07
+validation 0.55  0.42  0.36  0.34  0.33  0.34  0.36  0.39  0.42  0.45</code></pre>
+<ol type="a">
+<li><p>Which epoch’s model would you keep with early stopping, and with a patience of 3 epochs, after which epoch does training stop?</p></li>
+<li><p>What happens after epoch 5? Give two things you could change to reduce it.</p></li>
+<li><p>A colleague instead picks the epoch with the best <strong>test</strong> AUC. What is wrong with that?</p></li>
+</ol>
+<p><strong>B8. Judge the claims.</strong></p>
+<ol type="a">
+<li><p>“Our CNN classifies CTCF peaks against random genomic windows with AUC 0.99, far better than the PWM.” What should you ask before believing that the network learned something about CTCF?</p></li>
+<li><p>“We split the peaks randomly into 80% training and 20% test. Each peak contributes five overlapping 200-bp windows shifted by 20 bp.” What is the problem?</p></li>
+<li><p>“Filter 7 matches the ZIC4 motif in JASPAR (p = <span class="math inline">\(10^{-4}\)</span>), so ZIC4 cooperates with CTCF in B cells.” Give two reasons to be sceptical.</p></li>
+<li><p>“With a test AUC of 0.97, we can use the model to annotate CTCF binding genome-wide.” What changes when you scan every 200-bp window of the genome?</p></li>
+</ol>
+<p><strong>B9. Read a filter.</strong> A first-layer filter’s activation logo has the consensus <code>GCGCCCCCTGGTGGC</code>. The JASPAR CTCF consensus is <code>GCCACCAGGGGGCGC</code>. Is this filter a CTCF filter? On which strand?</p>
+</section>
+<section id="in-r" class="level2">
+<h2 class="anchored" data-anchor-id="in-r">In R</h2>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GenomicRanges); <span class="fu">library</span>(rtracklayer); <span class="fu">library</span>(Rsamtools); <span class="fu">library</span>(Biostrings)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(JASPAR2024); <span class="fu">library</span>(TFBSTools); <span class="fu">library</span>(RSQLite); <span class="fu">library</span>(motifmatchr); <span class="fu">library</span>(universalmotif)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(torch)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>D <span class="ot">&lt;-</span> <span class="st">"/path/to/course/data"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="r1-positives-gc-matched-negatives-and-a-chromosome-split" class="level3">
+<h3 class="anchored" data-anchor-id="r1-positives-gc-matched-negatives-and-a-chromosome-split">R1 — Positives, GC-matched negatives and a chromosome split</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>genome <span class="ot">&lt;-</span> <span class="fu">FaFile</span>(<span class="fu">file.path</span>(D, <span class="st">"hg38.fa.bgz"</span>))</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>chroms <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"chr"</span>, <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">22</span>, <span class="st">"X"</span>))</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>ctcf  <span class="ot">&lt;-</span> <span class="fu">import</span>(<span class="fu">file.path</span>(D, <span class="st">"gm12878_ctcf_peaks.bed.gz"</span>), <span class="at">format =</span> <span class="st">"narrowPeak"</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>ctcf  <span class="ot">&lt;-</span> ctcf[<span class="fu">seqnames</span>(ctcf) <span class="sc">%in%</span> chroms]</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>black <span class="ot">&lt;-</span> <span class="fu">import</span>(<span class="fu">file.path</span>(D, <span class="st">"hg38_blacklist.bed.gz"</span>))</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>avoid <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">granges</span>(ctcf) <span class="sc">+</span> <span class="dv">1000</span>, black)          <span class="co"># background stays &gt;1 kb from any CTCF peak</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>gc_content <span class="ot">&lt;-</span> <span class="cf">function</span>(s) <span class="fu">letterFrequency</span>(s, <span class="st">"GC"</span>, <span class="at">as.prob =</span> <span class="cn">TRUE</span>)[, <span class="dv">1</span>]</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>one_chrom <span class="ot">&lt;-</span> <span class="cf">function</span>(chr) {</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  chrseq <span class="ot">&lt;-</span> <span class="fu">getSeq</span>(genome, <span class="fu">GRanges</span>(chr, <span class="fu">IRanges</span>(<span class="dv">1</span>, <span class="fu">seqlengths</span>(genome)[chr])))[[<span class="dv">1</span>]]</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># positives: 200 bp centred on each summit</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  p   <span class="ot">&lt;-</span> ctcf[<span class="fu">seqnames</span>(ctcf) <span class="sc">==</span> chr]</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  pos <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">GRanges</span>(chr, <span class="fu">IRanges</span>(<span class="fu">start</span>(p) <span class="sc">+</span> p<span class="sc">$</span>peak <span class="sc">-</span> <span class="dv">99</span>, <span class="at">width =</span> <span class="dv">200</span>)))</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  pos <span class="ot">&lt;-</span> pos[<span class="sc">!</span><span class="fu">overlapsAny</span>(pos, black)]</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  ps  <span class="ot">&lt;-</span> <span class="fu">DNAStringSet</span>(<span class="fu">Views</span>(chrseq, <span class="fu">ranges</span>(pos)))</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  ok  <span class="ot">&lt;-</span> <span class="fu">letterFrequency</span>(ps, <span class="st">"N"</span>)[, <span class="dv">1</span>] <span class="sc">==</span> <span class="dv">0</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  pos <span class="ot">&lt;-</span> pos[ok]; ps <span class="ot">&lt;-</span> ps[ok]</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  <span class="co"># candidate negatives: 20 random windows per positive, same chromosome</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  cand <span class="ot">&lt;-</span> <span class="fu">GRanges</span>(chr, <span class="fu">IRanges</span>(<span class="fu">sample</span>(<span class="fu">length</span>(chrseq) <span class="sc">-</span> <span class="dv">200</span>, <span class="dv">20</span> <span class="sc">*</span> <span class="fu">length</span>(pos)), <span class="at">width =</span> <span class="dv">200</span>))</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  cand <span class="ot">&lt;-</span> cand[<span class="sc">!</span><span class="fu">overlapsAny</span>(cand, avoid)]</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>  cs   <span class="ot">&lt;-</span> <span class="fu">DNAStringSet</span>(<span class="fu">Views</span>(chrseq, <span class="fu">ranges</span>(cand)))</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>  ok   <span class="ot">&lt;-</span> <span class="fu">letterFrequency</span>(cs, <span class="st">"N"</span>)[, <span class="dv">1</span>] <span class="sc">==</span> <span class="dv">0</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>  cand <span class="ot">&lt;-</span> cand[ok]; cs <span class="ot">&lt;-</span> cs[ok]</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>  <span class="co"># GC matching: for each 2% GC bin, draw as many candidates as there are positives</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>  bins <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.02</span>)</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>  pb <span class="ot">&lt;-</span> <span class="fu">findInterval</span>(<span class="fu">gc_content</span>(ps), bins); cb <span class="ot">&lt;-</span> <span class="fu">findInterval</span>(<span class="fu">gc_content</span>(cs), bins)</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>  chosen <span class="ot">&lt;-</span> <span class="fu">unlist</span>(<span class="fu">lapply</span>(<span class="fu">sort</span>(<span class="fu">unique</span>(pb)), <span class="cf">function</span>(b) {</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    have <span class="ot">&lt;-</span> <span class="fu">which</span>(cb <span class="sc">==</span> b); need <span class="ot">&lt;-</span> <span class="fu">sum</span>(pb <span class="sc">==</span> b)</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>    have[<span class="fu">sample.int</span>(<span class="fu">length</span>(have), <span class="fu">min</span>(need, <span class="fu">length</span>(have)))]</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>  }))</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">chr =</span> chr, <span class="at">start =</span> <span class="fu">c</span>(<span class="fu">start</span>(pos), <span class="fu">start</span>(cand[chosen])),</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>             <span class="at">label =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">1</span>L, <span class="dv">0</span>L), <span class="fu">c</span>(<span class="fu">length</span>(pos), <span class="fu">length</span>(chosen))),</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>             <span class="at">seq =</span> <span class="fu">c</span>(<span class="fu">as.character</span>(ps), <span class="fu">as.character</span>(cs[chosen])))</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>ds <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(chroms, one_chrom))</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>ds<span class="sc">$</span>gc <span class="ot">&lt;-</span> <span class="fu">gc_content</span>(<span class="fu">DNAStringSet</span>(ds<span class="sc">$</span>seq))</span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>ds<span class="sc">$</span>split <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(ds<span class="sc">$</span>chr <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"chr8"</span>, <span class="st">"chr9"</span>), <span class="st">"test"</span>,</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">ifelse</span>(ds<span class="sc">$</span>chr <span class="sc">==</span> <span class="st">"chr7"</span>, <span class="st">"valid"</span>, <span class="st">"train"</span>))</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ds<span class="sc">$</span>split, ds<span class="sc">$</span>label)</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a><span class="fu">tapply</span>(ds<span class="sc">$</span>gc, ds<span class="sc">$</span>label, mean)</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(ds, <span class="st">"ctcf_dataset.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>How many positives and negatives are in each split? Why are there slightly fewer negatives than positives?</p></li>
+<li><p>Compare the mean GC content of the two classes. What would the mean GC of random genomic windows be, and why does that matter?</p></li>
+<li><p>Why are the negatives drawn per chromosome rather than from the whole genome? Why stay 1 kb away from any CTCF peak?</p></li>
+</ol>
+</section>
+<section id="r2-one-hot-encoding-and-tensors" class="level3">
+<h3 class="anchored" data-anchor-id="r2-one-hot-encoding-and-tensors">R2 — One-hot encoding and tensors</h3>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>one_hot <span class="ot">&lt;-</span> <span class="cf">function</span>(s) {</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  m <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">strsplit</span>(s, <span class="st">""</span>))              <span class="co"># one row per sequence, one column per base</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="dv">0</span>, <span class="fu">c</span>(<span class="fu">length</span>(s), <span class="dv">4</span>, <span class="fu">ncol</span>(m)))           <span class="co"># sequences x 4 bases x positions</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>) x[, k, ] <span class="ot">&lt;-</span> m <span class="sc">==</span> <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"C"</span>, <span class="st">"G"</span>, <span class="st">"T"</span>)[k]</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  x</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">one_hot</span>(<span class="st">"GCCACTAGG"</span>)[<span class="dv">1</span>, , ]</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>sets <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">split</span>(ds, ds<span class="sc">$</span>split), <span class="cf">function</span>(d)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">x =</span> <span class="fu">torch_tensor</span>(<span class="fu">one_hot</span>(d<span class="sc">$</span>seq), <span class="at">dtype =</span> <span class="fu">torch_float</span>()),</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">torch_tensor</span>(d<span class="sc">$</span>label, <span class="at">dtype =</span> <span class="fu">torch_float</span>())))</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>sets<span class="sc">$</span>train<span class="sc">$</span>x<span class="sc">$</span>shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>Check <code>one_hot("GCCACTAGG")</code> against the one-hot slide. Which row is G?</p></li>
+<li><p>What are the three dimensions of <code>sets$train$x</code>?</p></li>
+</ol>
+</section>
+<section id="r3-baselines-gc-content-and-the-ctcf-pwm" class="level3">
+<h3 class="anchored" data-anchor-id="r3-baselines-gc-content-and-the-ctcf-pwm">R3 — Baselines: GC content and the CTCF PWM</h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>auc <span class="ot">&lt;-</span> <span class="cf">function</span>(score, y) {                         <span class="co"># area under the ROC curve, from ranks</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  r <span class="ot">&lt;-</span> <span class="fu">rank</span>(score); n1 <span class="ot">&lt;-</span> <span class="fu">sum</span>(y <span class="sc">==</span> <span class="dv">1</span>); n0 <span class="ot">&lt;-</span> <span class="fu">sum</span>(y <span class="sc">==</span> <span class="dv">0</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  (<span class="fu">sum</span>(r[y <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> n1 <span class="sc">*</span> (n1 <span class="sc">+</span> <span class="dv">1</span>) <span class="sc">/</span> <span class="dv">2</span>) <span class="sc">/</span> (n1 <span class="sc">*</span> n0)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> ds[ds<span class="sc">$</span>split <span class="sc">==</span> <span class="st">"test"</span>, ]</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>jaspar <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(<span class="fu">SQLite</span>(), <span class="fu">db</span>(<span class="fu">JASPAR2024</span>()))</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>ctcf_m <span class="ot">&lt;-</span> <span class="fu">getMatrixByID</span>(jaspar, <span class="st">"MA0139.2"</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># best log-odds score of each window; p.cutoff = 1 so that every window gets a score,</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co"># not only those with a match above the default p-value threshold</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span>pwm <span class="ot">&lt;-</span> <span class="fu">motifScores</span>(<span class="fu">matchMotifs</span>(ctcf_m, <span class="fu">DNAStringSet</span>(test<span class="sc">$</span>seq), <span class="at">out =</span> <span class="st">"scores"</span>, <span class="at">bg =</span> <span class="st">"even"</span>, <span class="at">p.cutoff =</span> <span class="dv">1</span>))[, <span class="dv">1</span>]</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">gc =</span> <span class="fu">auc</span>(test<span class="sc">$</span>gc, test<span class="sc">$</span>label), <span class="at">pwm =</span> <span class="fu">auc</span>(test<span class="sc">$</span>pwm, test<span class="sc">$</span>label))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>What test AUC do GC content and the best PWM score reach? Explain the GC result.</p></li>
+<li><p><code>auc()</code> computes the probability that a random positive scores higher than a random negative (ties count ½). Why is that the area under the ROC curve? (Compare with <code>auc_roc()</code> in <em>Machine learning from scratch</em>.)</p></li>
+<li><p>Run the PWM line again without <code>p.cutoff = 1</code>. What happens to the AUC, and why? (Look at <code>mean(test$pwm == 0)</code>.)</p></li>
+</ol>
+</section>
+<section id="r4-the-network" class="level3">
+<h3 class="anchored" data-anchor-id="r4-the-network">R4 — The network</h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>cnn <span class="ot">&lt;-</span> <span class="fu">nn_module</span>(<span class="st">"cnn"</span>,</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">initialize =</span> <span class="cf">function</span>(<span class="at">n_filters =</span> <span class="dv">32</span>, <span class="at">width =</span> <span class="dv">19</span>) {</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    self<span class="sc">$</span>conv  <span class="ot">&lt;-</span> <span class="fu">nn_conv1d</span>(<span class="dv">4</span>, n_filters, <span class="at">kernel_size =</span> width)   <span class="co"># the filters (motif scanners)</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    self<span class="sc">$</span>dense <span class="ot">&lt;-</span> <span class="fu">nn_linear</span>(n_filters, <span class="dv">1</span>)                          <span class="co"># logistic regression on top</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  },</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">forward =</span> <span class="cf">function</span>(x) {</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    h <span class="ot">&lt;-</span> <span class="fu">nnf_relu</span>(self<span class="sc">$</span><span class="fu">conv</span>(x))        <span class="co"># sequences x filters x 182 positions</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    h <span class="ot">&lt;-</span> <span class="fu">torch_amax</span>(h, <span class="at">dim =</span> <span class="dv">3</span>)        <span class="co"># global max pooling: sequences x filters</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    self<span class="sc">$</span><span class="fu">dense</span>(h)<span class="sc">$</span><span class="fu">squeeze</span>(<span class="dv">2</span>)           <span class="co"># one logit (log-odds of "bound") per sequence</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="fu">torch_manual_seed</span>(<span class="dv">1</span>)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">cnn</span>()</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>model</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(model<span class="sc">$</span>parameters, <span class="cf">function</span>(p) p<span class="sc">$</span><span class="fu">numel</span>())</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>x1 <span class="ot">&lt;-</span> sets<span class="sc">$</span>test<span class="sc">$</span>x[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, , ]</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="fu">torch_sigmoid</span>(<span class="fu">model</span>(x1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>Match the four parameter tensors to your count in B6a.</p></li>
+<li><p>Why is 182 the length of each activation track?</p></li>
+<li><p>The untrained model predicts about 0.42–0.44 for every sequence. Why close to 0.5, and why all similar?</p></li>
+</ol>
+</section>
+<section id="r5-training-with-early-stopping" class="level3">
+<h3 class="anchored" data-anchor-id="r5-training-with-early-stopping">R5 — Training with early stopping</h3>
+<p>This takes about 5 minutes. Watch the losses as they are printed.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">torch_set_num_threads</span>(<span class="dv">4</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>); <span class="fu">torch_manual_seed</span>(<span class="dv">1</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>model   <span class="ot">&lt;-</span> <span class="fu">cnn</span>()</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>opt     <span class="ot">&lt;-</span> <span class="fu">optim_adam</span>(model<span class="sc">$</span>parameters, <span class="at">lr =</span> <span class="fl">1e-3</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>loss_fn <span class="ot">&lt;-</span> <span class="fu">nn_bce_with_logits_loss</span>()                <span class="co"># sigmoid + binary cross-entropy in one step</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>predict_logit <span class="ot">&lt;-</span> <span class="cf">function</span>(model, x) { model<span class="sc">$</span><span class="fu">eval</span>(); <span class="fu">with_no_grad</span>(<span class="fu">as.numeric</span>(<span class="fu">model</span>(x))) }</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>bce <span class="ot">&lt;-</span> <span class="cf">function</span>(z, y) <span class="fu">mean</span>(y <span class="sc">*</span> <span class="fu">log1p</span>(<span class="fu">exp</span>(<span class="sc">-</span>z)) <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">-</span> y) <span class="sc">*</span> <span class="fu">log1p</span>(<span class="fu">exp</span>(z)))</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>history <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(); best <span class="ot">&lt;-</span> <span class="cn">Inf</span>; patience <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(sets<span class="sc">$</span>train<span class="sc">$</span>y)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (epoch <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>) {</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  model<span class="sc">$</span><span class="fu">train</span>()</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (b <span class="cf">in</span> <span class="fu">split</span>(<span class="fu">sample</span>(n), <span class="fu">ceiling</span>(<span class="fu">seq_len</span>(n) <span class="sc">/</span> <span class="dv">128</span>))) {   <span class="co"># shuffled mini-batches of 128</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    opt<span class="sc">$</span><span class="fu">zero_grad</span>()</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    loss <span class="ot">&lt;-</span> <span class="fu">loss_fn</span>(<span class="fu">model</span>(sets<span class="sc">$</span>train<span class="sc">$</span>x[b, , ]), sets<span class="sc">$</span>train<span class="sc">$</span>y[b])</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    loss<span class="sc">$</span><span class="fu">backward</span>()                                         <span class="co"># gradients by backpropagation</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    opt<span class="sc">$</span><span class="fu">step</span>()                                              <span class="co"># one gradient-descent step</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>  ztr <span class="ot">&lt;-</span> <span class="fu">predict_logit</span>(model, sets<span class="sc">$</span>train<span class="sc">$</span>x); zva <span class="ot">&lt;-</span> <span class="fu">predict_logit</span>(model, sets<span class="sc">$</span>valid<span class="sc">$</span>x)</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>  ytr <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(sets<span class="sc">$</span>train<span class="sc">$</span>y);           yva <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(sets<span class="sc">$</span>valid<span class="sc">$</span>y)</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>  history <span class="ot">&lt;-</span> <span class="fu">rbind</span>(history, <span class="fu">data.frame</span>(epoch,</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">train_loss =</span> <span class="fu">bce</span>(ztr, ytr), <span class="at">valid_loss =</span> <span class="fu">bce</span>(zva, yva),</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">train_auc =</span> <span class="fu">auc</span>(ztr, ytr),  <span class="at">valid_auc =</span> <span class="fu">auc</span>(zva, yva)))</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">round</span>(<span class="fu">tail</span>(history, <span class="dv">1</span>), <span class="dv">4</span>))</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">tail</span>(history<span class="sc">$</span>valid_loss, <span class="dv">1</span>) <span class="sc">&lt;</span> best) {                 <span class="co"># keep the best model so far</span></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>    best <span class="ot">&lt;-</span> <span class="fu">tail</span>(history<span class="sc">$</span>valid_loss, <span class="dv">1</span>); patience <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">torch_save</span>(model, <span class="st">"ctcf_cnn.pt"</span>)</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>    patience <span class="ot">&lt;-</span> patience <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (patience <span class="sc">==</span> <span class="dv">3</span>) <span class="cf">break</span>                                <span class="co"># early stopping</span></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(history, <span class="st">"ctcf_cnn_history.tsv"</span>, <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">quote =</span> <span class="cn">FALSE</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a><span class="fu">matplot</span>(history<span class="sc">$</span>epoch, history[, <span class="fu">c</span>(<span class="st">"train_loss"</span>, <span class="st">"valid_loss"</span>)], <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">pch =</span> <span class="dv">19</span>,</span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>        <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"grey40"</span>, <span class="st">"#2a6f97"</span>), <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">xlab =</span> <span class="st">"epoch"</span>, <span class="at">ylab =</span> <span class="st">"loss (binary cross-entropy)"</span>)</span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="fu">c</span>(<span class="st">"training"</span>, <span class="st">"validation (chr7)"</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"grey40"</span>, <span class="st">"#2a6f97"</span>), <span class="at">pch =</span> <span class="dv">19</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>How many gradient steps are there per epoch? After how many epochs did training stop, and which epoch’s model is saved?</p></li>
+<li><p>What are the training and validation loss and AUC of the saved model? Is the model overfitting?</p></li>
+<li><p>Point to the lines that do the forward pass, the loss, the backward pass and the update (the four boxes of the training-loop slide).</p></li>
+<li><p>Why is the model set to <code>model$eval()</code> and wrapped in <code>with_no_grad()</code> for predictions?</p></li>
+</ol>
+</section>
+<section id="r6-test-performance" class="level3">
+<h3 class="anchored" data-anchor-id="r6-test-performance">R6 — Test performance</h3>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">torch_load</span>(<span class="st">"ctcf_cnn.pt"</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span>cnn <span class="ot">&lt;-</span> <span class="fu">predict_logit</span>(model, sets<span class="sc">$</span>test<span class="sc">$</span>x)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">gc =</span> <span class="fu">auc</span>(test<span class="sc">$</span>gc, test<span class="sc">$</span>label), <span class="at">pwm =</span> <span class="fu">auc</span>(test<span class="sc">$</span>pwm, test<span class="sc">$</span>label), <span class="at">cnn =</span> <span class="fu">auc</span>(test<span class="sc">$</span>cnn, test<span class="sc">$</span>label))</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>roc <span class="ot">&lt;-</span> <span class="cf">function</span>(score, y) {                         <span class="co"># ties move up and right together</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  o <span class="ot">&lt;-</span> <span class="fu">order</span>(score, <span class="at">decreasing =</span> <span class="cn">TRUE</span>); s <span class="ot">&lt;-</span> score[o]; y <span class="ot">&lt;-</span> y[o]</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  k <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">diff</span>(s) <span class="sc">!=</span> <span class="dv">0</span>, <span class="cn">TRUE</span>)                         <span class="co"># last sequence of each tied group</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">fpr =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">cumsum</span>(y <span class="sc">==</span> <span class="dv">0</span>)[k] <span class="sc">/</span> <span class="fu">sum</span>(y <span class="sc">==</span> <span class="dv">0</span>)), <span class="at">tpr =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">cumsum</span>(y <span class="sc">==</span> <span class="dv">1</span>)[k] <span class="sc">/</span> <span class="fu">sum</span>(y <span class="sc">==</span> <span class="dv">1</span>)))</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="cn">NULL</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">xlab =</span> <span class="st">"false positive rate"</span>, <span class="at">ylab =</span> <span class="st">"true positive rate"</span>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (m <span class="cf">in</span> <span class="fu">c</span>(<span class="st">"gc"</span>, <span class="st">"pwm"</span>, <span class="st">"cnn"</span>))</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(<span class="fu">roc</span>(test[[m]], test<span class="sc">$</span>label), <span class="at">col =</span> <span class="fu">c</span>(<span class="at">gc =</span> <span class="st">"grey60"</span>, <span class="at">pwm =</span> <span class="st">"#8c564b"</span>, <span class="at">cnn =</span> <span class="st">"#2a6f97"</span>)[m], <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"bottomright"</span>, <span class="fu">c</span>(<span class="st">"GC content"</span>, <span class="st">"CTCF PWM (JASPAR)"</span>, <span class="st">"CNN"</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"grey60"</span>, <span class="st">"#8c564b"</span>, <span class="st">"#2a6f97"</span>), <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">roc</span>(test<span class="sc">$</span>cnn, test<span class="sc">$</span>label); r<span class="sc">$</span>tpr[<span class="fu">which.max</span>(r<span class="sc">$</span>fpr <span class="sc">&gt;=</span> <span class="fl">0.05</span>)]</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">roc</span>(test<span class="sc">$</span>pwm, test<span class="sc">$</span>label); r<span class="sc">$</span>tpr[<span class="fu">which.max</span>(r<span class="sc">$</span>fpr <span class="sc">&gt;=</span> <span class="fl">0.05</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>What is the test AUC of the CNN, compared with the baselines of R3 and with the validation AUC of R5?</p></li>
+<li><p>What fraction of test peaks does each model find at a 5% false positive rate? Where on the ROC curve does the CNN gain most over the PWM?</p></li>
+</ol>
+</section>
+<section id="r7-too-little-data-overfitting" class="level3">
+<h3 class="anchored" data-anchor-id="r7-too-little-data-overfitting">R7 — Too little data: overfitting</h3>
+<p>The same network, trained on only 500 sequences for 150 epochs (about one minute).</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>); <span class="fu">torch_manual_seed</span>(<span class="dv">1</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>small <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">length</span>(sets<span class="sc">$</span>train<span class="sc">$</span>y), <span class="dv">500</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>xs <span class="ot">&lt;-</span> sets<span class="sc">$</span>train<span class="sc">$</span>x[small, , ]; ys <span class="ot">&lt;-</span> sets<span class="sc">$</span>train<span class="sc">$</span>y[small]</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>m_small <span class="ot">&lt;-</span> <span class="fu">cnn</span>(); opt <span class="ot">&lt;-</span> <span class="fu">optim_adam</span>(m_small<span class="sc">$</span>parameters, <span class="at">lr =</span> <span class="fl">1e-3</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>curve <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (epoch <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">150</span>) {</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  m_small<span class="sc">$</span><span class="fu">train</span>()</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (b <span class="cf">in</span> <span class="fu">split</span>(<span class="fu">sample</span>(<span class="dv">500</span>), <span class="fu">ceiling</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">500</span> <span class="sc">/</span> <span class="dv">32</span>))) {</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    opt<span class="sc">$</span><span class="fu">zero_grad</span>(); <span class="fu">loss_fn</span>(<span class="fu">m_small</span>(xs[b, , ]), ys[b])<span class="sc">$</span><span class="fu">backward</span>(); opt<span class="sc">$</span><span class="fu">step</span>()</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (epoch <span class="sc">%%</span> <span class="dv">10</span> <span class="sc">==</span> <span class="dv">0</span>)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    curve <span class="ot">&lt;-</span> <span class="fu">rbind</span>(curve, <span class="fu">data.frame</span>(epoch,</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">train =</span> <span class="fu">bce</span>(<span class="fu">predict_logit</span>(m_small, xs), <span class="fu">as.numeric</span>(ys)),</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">valid =</span> <span class="fu">bce</span>(<span class="fu">predict_logit</span>(m_small, sets<span class="sc">$</span>valid<span class="sc">$</span>x), <span class="fu">as.numeric</span>(sets<span class="sc">$</span>valid<span class="sc">$</span>y))))</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(curve, <span class="dv">3</span>)</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="fu">auc</span>(<span class="fu">predict_logit</span>(m_small, sets<span class="sc">$</span>test<span class="sc">$</span>x), <span class="fu">as.numeric</span>(sets<span class="sc">$</span>test<span class="sc">$</span>y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>Describe the two curves. At which epoch would early stopping have stopped?</p></li>
+<li><p>What is the test AUC, compared with R6? How many training sequences per parameter are there here, and in R5?</p></li>
+</ol>
+</section>
+<section id="r8-what-did-the-filters-learn" class="level3">
+<h3 class="anchored" data-anchor-id="r8-what-did-the-filters-learn">R8 — What did the filters learn?</h3>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>act <span class="ot">&lt;-</span> <span class="fu">with_no_grad</span>(<span class="fu">as.array</span>(<span class="fu">nnf_relu</span>(model<span class="sc">$</span><span class="fu">conv</span>(sets<span class="sc">$</span>test<span class="sc">$</span>x))))   <span class="co"># sequences x 32 x 182</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>w_out <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(model<span class="sc">$</span>dense<span class="sc">$</span>weight)                             <span class="co"># output weight of each filter</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>filter_motif <span class="ot">&lt;-</span> <span class="cf">function</span>(k) {</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  a  <span class="ot">&lt;-</span> act[, k, ]</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  mx <span class="ot">&lt;-</span> <span class="fu">apply</span>(a, <span class="dv">1</span>, max); at <span class="ot">&lt;-</span> <span class="fu">apply</span>(a, <span class="dv">1</span>, which.max)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  keep <span class="ot">&lt;-</span> mx <span class="sc">&gt;</span> <span class="fl">0.5</span> <span class="sc">*</span> <span class="fu">max</span>(mx)                                        <span class="co"># sequences where filter k fires</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  sites <span class="ot">&lt;-</span> <span class="fu">DNAStringSet</span>(<span class="fu">substring</span>(test<span class="sc">$</span>seq[keep], at[keep], at[keep] <span class="sc">+</span> <span class="dv">18</span>))</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">create_motif</span>(<span class="fu">consensusMatrix</span>(sites)[<span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"C"</span>, <span class="st">"G"</span>, <span class="st">"T"</span>), ], <span class="at">type =</span> <span class="st">"PCM"</span>,</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">name =</span> <span class="fu">paste0</span>(<span class="st">"filter"</span>, k), <span class="at">nsites =</span> <span class="fu">sum</span>(keep))</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>fm <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">32</span>, filter_motif)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">filter =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">32</span>, <span class="at">w_out =</span> <span class="fu">round</span>(w_out, <span class="dv">2</span>), <span class="at">sites =</span> <span class="fu">sapply</span>(fm, <span class="cf">function</span>(m) m<span class="sc">@</span>nsites),</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>           <span class="at">consensus =</span> <span class="fu">sapply</span>(fm, <span class="cf">function</span>(m) m<span class="sc">@</span>consensus))[<span class="fu">order</span>(<span class="sc">-</span>w_out), ][<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, ]</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>top <span class="ot">&lt;-</span> <span class="fu">order</span>(<span class="sc">-</span>w_out)[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="fu">view_motifs</span>(fm[top], <span class="at">use.type =</span> <span class="st">"ICM"</span>)</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>pfms <span class="ot">&lt;-</span> <span class="fu">getMatrixSet</span>(jaspar, <span class="fu">list</span>(<span class="at">collection =</span> <span class="st">"CORE"</span>, <span class="at">tax_group =</span> <span class="st">"vertebrates"</span>))</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>jas  <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">seq_along</span>(pfms), <span class="cf">function</span>(i) {</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>  m <span class="ot">&lt;-</span> <span class="fu">convert_motifs</span>(pfms[[i]], <span class="st">"universalmotif"</span>); m<span class="sc">@</span>name <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="fu">ID</span>(pfms[[i]]), <span class="fu">name</span>(pfms[[i]])); m })</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>best_match <span class="ot">&lt;-</span> <span class="cf">function</span>(k) {</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>  r <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">compare_motifs</span>(<span class="fu">c</span>(fm[k], jas), <span class="at">compare.to =</span> <span class="dv">1</span>, <span class="at">method =</span> <span class="st">"PCC"</span>,</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">min.mean.ic =</span> <span class="dv">0</span>, <span class="at">max.p =</span> <span class="dv">1</span>, <span class="at">tryRC =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">filter =</span> k, <span class="at">w_out =</span> <span class="fu">round</span>(w_out[k], <span class="dv">2</span>), <span class="at">match =</span> r<span class="sc">$</span>target[<span class="dv">1</span>],</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>             <span class="at">PCC =</span> <span class="fu">round</span>(r<span class="sc">$</span>score[<span class="dv">1</span>], <span class="dv">2</span>), <span class="at">p =</span> <span class="fu">signif</span>(r<span class="sc">$</span>Pval[<span class="dv">1</span>], <span class="dv">2</span>))</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a><span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(<span class="fu">order</span>(<span class="sc">-</span>w_out), best_match))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>Explain in words how <code>filter_motif()</code> turns a filter into a motif. Why not draw the weights directly?</p></li>
+<li><p>Which filters have the largest output weights, and what are their best JASPAR matches? Why are several of them the same motif, some as the reverse complement (compare B3 and B9)?</p></li>
+<li><p>What do the filters with negative output weights look like, and what are their matches? Do you believe these matches? (B8c)</p></li>
+</ol>
+</section>
+</section>
+<section id="hints" class="level2">
+<h2 class="anchored" data-anchor-id="hints">Hints</h2>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 1 — filters, ReLU and pooling (B1–B3)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 1 — filters, ReLU and pooling (B1–B3)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A window’s score is the sum, over its positions, of the weight in the row of the base that is present. A sequence of length <span class="math inline">\(L\)</span> has <span class="math inline">\(L - k + 1\)</span> windows for a filter of width <span class="math inline">\(k\)</span> (no padding). ReLU is <span class="math inline">\(\max(0, x)\)</span>. For the reverse complement of a filter, the last column becomes the first and A↔︎T, C↔︎G swap rows. The torch functions: <a href="https://torch.mlverse.org/docs/reference/nn_conv1d.html"><code>nn_conv1d</code></a>, <a href="https://torch.mlverse.org/docs/reference/nnf_relu.html"><code>nnf_relu</code></a>, <a href="https://torch.mlverse.org/docs/reference/torch_amax.html"><code>torch_amax</code></a>. For the idea of a filter as a motif detector, see <a href="https://doi.org/10.1038/nbt.3300">Alipanahi et al.&nbsp;2015</a> and <a href="https://doi.org/10.1371/journal.pcbi.1007560">Koo &amp; Eddy 2019</a>.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 2 — sigmoid, loss and gradient (B4, B5)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 2 — sigmoid, loss and gradient (B4, B5)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><span class="math inline">\(p = 1/(1 + e^{-z})\)</span>; useful values: <span class="math inline">\(e^{-1.6} = 0.202\)</span>, <span class="math inline">\(e^{-4} = 0.018\)</span>, <span class="math inline">\(e^{2} = 7.39\)</span>. Log loss: <span class="math inline">\(-\ln p\)</span> if <span class="math inline">\(y = 1\)</span>, <span class="math inline">\(-\ln(1 - p)\)</span> if <span class="math inline">\(y = 0\)</span> (<span class="math inline">\(\ln 0.832 = -0.184\)</span>, <span class="math inline">\(\ln 0.168 = -1.784\)</span>). Gradient of the loss with respect to a dense weight: <span class="math inline">\((p - y)\,x_j\)</span>; with respect to the bias: <span class="math inline">\(p - y\)</span>. torch computes the same with <a href="https://torch.mlverse.org/docs/articles/getting-started/autograd.html"><code>loss$backward()</code></a> and updates with an <a href="https://torch.mlverse.org/docs/reference/optim_adam.html">optimizer</a>.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 3 — parameters and learning curves (B6, B7)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 3 — parameters and learning curves (B6, B7)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A convolutional layer with <span class="math inline">\(C_{in}\)</span> input channels, <span class="math inline">\(F\)</span> filters of width <span class="math inline">\(k\)</span> has <span class="math inline">\(F \times C_{in} \times k\)</span> weights and <span class="math inline">\(F\)</span> biases. A dense layer from <span class="math inline">\(n\)</span> inputs to <span class="math inline">\(m\)</span> outputs has <span class="math inline">\(n \times m\)</span> weights and <span class="math inline">\(m\)</span> biases. Early stopping keeps the model with the lowest validation loss; with patience <span class="math inline">\(P\)</span>, training stops <span class="math inline">\(P\)</span> epochs after the last improvement. The three data sets and their jobs are on the <em>Three sets, three jobs</em> slide of <em>Machine learning from scratch</em>.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 4 — judging claims (B8, B9)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 4 — judging claims (B8, B9)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Ask what the negatives are (GC content and composition), whether test sequences overlap training sequences (overlapping windows, whole chromosomes), how many comparisons were made (motif matching against hundreds of matrices), and what the class balance is in the intended use (genome-wide, almost every window is unbound). <em>What people try to predict, and how to tell if it works</em> has worked examples of each trap. For B9, write the reverse complement of the consensus.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 5 — torch in R (R2–R8)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 5 — torch in R (R2–R8)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><a href="https://torch.mlverse.org/">torch for R</a> mirrors PyTorch. A tensor is created with <a href="https://torch.mlverse.org/docs/reference/torch_tensor.html"><code>torch_tensor()</code></a>; indexing is 1-based like R (<code>x[b, , ]</code>); <code>$shape</code> gives the dimensions. A model is an <a href="https://torch.mlverse.org/docs/reference/nn_module.html"><code>nn_module</code></a> with <code>initialize</code> (the layers) and <code>forward</code> (what happens to an input). <a href="https://torch.mlverse.org/docs/reference/nn_bce_with_logits_loss.html"><code>nn_bce_with_logits_loss</code></a> takes logits, not probabilities. <a href="https://torch.mlverse.org/docs/reference/torch_save.html"><code>torch_save</code></a> and <code>torch_load</code> store a model in a file. <a href="https://torch.mlverse.org/docs/reference/torch_manual_seed.html"><code>torch_manual_seed</code></a> fixes the random initial weights; <code>set.seed</code> fixes R’s shuffling of the mini-batches.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 6 — motifs and JASPAR (R3, R8)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 6 — motifs and JASPAR (R3, R8)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><a href="https://bioconductor.org/packages/motifmatchr"><code>motifmatchr::matchMotifs</code></a> with <code>out = "scores"</code> returns the best score per sequence (<code>motifScores</code>). <a href="https://bioconductor.org/packages/universalmotif"><code>universalmotif</code></a>: <code>create_motif()</code> builds a motif from a count matrix, <code>view_motifs()</code> draws logos, <a href="https://bioconductor.org/packages/release/bioc/vignettes/universalmotif/inst/doc/MotifComparisonAndPvalues.pdf"><code>compare_motifs()</code></a> compares motifs by Pearson correlation of their columns over all offsets and both strands, like <a href="https://meme-suite.org/meme/doc/tomtom.html">TOMTOM</a>. The CTCF matrix is <a href="https://jaspar.elixir.no/matrix/MA0139.2/">MA0139.2</a>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="solutions" class="level2">
+<h2 class="anchored" data-anchor-id="solutions">Solutions</h2>
+<div class="callout callout-style-default callout-note callout-titled" title="Solutions — by hand">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions — by hand
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>B1.</strong> (a)</p>
+<pre><code>    G  A  T  T  C
+A   0  1  0  0  0
+C   0  0  0  0  1
+G   1  0  0  0  0
+T   0  0  1  1  0</code></pre>
+<ol start="2" type="a">
+<li>One number per base invents an order and distances (G would be “between” C and T, and “3 times” A); a weight multiplied by it would make G count three times as much as A. One-hot treats the four bases as unrelated categories, like dummy variables for a factor.</li>
+<li>128 × 4 × 200 = 102 400 numbers.</li>
+</ol>
+<p><strong>B2.</strong> (a) <code>CCAG</code>, score 2 + 2 + 2 + 2 = <strong>8</strong>. (b) 11 − 4 + 1 = <strong>8 windows</strong>: TCCA −1, <strong>CCAG 8</strong>, CAGA −1, AGAC −1, GACT −4, ACTG 2, CTGG 2, TGGA −4. (c) After the bias: −6, 3, −6, −6, −9, −3, −3, −9; ReLU: 0, <strong>3</strong>, 0, 0, 0, 0, 0, 0; max pool = <strong>3</strong>. (d) With −4, CCAG gives 4 and nothing else passes (the next best windows score 2). The bias is the threshold: how good a match must be to count. A less negative bias lets imperfect matches through.</p>
+<p><strong>B3.</strong> (a) The reverse complement of <code>CCAG</code> is <strong><code>CTGG</code></strong>. The B2 filter scores <code>CTGG</code> only 2 (−1 after the bias, 0 after ReLU): it does not see the site on the other strand. (b) Reverse-complement filter:</p>
+<pre><code>      1    2    3    4
+A    -1   -1   -1   -1
+C    +2   -1   -1   -1
+G    -1   -1   +2   +2
+T    -1   +2   -1   -1</code></pre>
+<p>Scores on <code>TCCAGACTGGA</code>: −4, 2, 2, −4, −4, −1, <strong>8</strong>, −1; after bias −5 and ReLU the maximum is <strong>3</strong> (window 7, <code>CTGG</code>). (c) Pairs of filters that are reverse complements of each other: the CTCF motif learned once per orientation (and often several shifted copies).</p>
+<p><strong>B4.</strong> (a) <span class="math inline">\(x_1 = 3\)</span>, <span class="math inline">\(x_2 = 3\)</span>: <span class="math inline">\(z = -2 + 1.2 \times 3 + 0.8 \times 3 = 4.0\)</span>, <span class="math inline">\(p = 1/(1 + e^{-4}) = 0.982\)</span>. (b) Only filter 1: <span class="math inline">\(z = -2 + 3.6 = 1.6\)</span>, <span class="math inline">\(p = 0.832\)</span>. Neither: <span class="math inline">\(z = -2\)</span>, <span class="math inline">\(p = 0.119\)</span>. (c) <span class="math inline">\(y = 0\)</span>: loss <span class="math inline">\(= -\ln(1 - 0.832) = 1.78\)</span>. <span class="math inline">\(y = 1\)</span>: loss <span class="math inline">\(= -\ln 0.832 = 0.18\)</span>. A confident wrong prediction costs ten times more than a moderately confident right one.</p>
+<p><strong>B5.</strong> (a) <span class="math inline">\(p - y = 0.832\)</span>; <span class="math inline">\(\partial \text{loss}/\partial w_1 = 0.832 \times 3 = 2.50\)</span>; <span class="math inline">\(\partial \text{loss}/\partial w_2 = 0.832 \times 0 = 0\)</span>. (b) <span class="math inline">\(w_1 \leftarrow 1.2 - 0.1 \times 2.50 = 0.95\)</span>; <span class="math inline">\(w_2\)</span> stays 0.8. The network predicted “bound” for a background sequence because filter 1 fired; the update lowers the weight of filter 1, so that its motif counts a little less. Filter 2 did not fire, so it did not contribute to the error and its weight is not changed. (c) <span class="math inline">\(y = 1\)</span>: <span class="math inline">\(p - y = -0.168\)</span>, gradient <span class="math inline">\(-0.504\)</span>, <span class="math inline">\(w_1 \leftarrow 1.2 + 0.05 = 1.25\)</span>: the filter’s weight goes up, because it fired in a bound sequence and the prediction was not yet confident enough. Over many sequences these small pushes add up to the filter weights that best separate the classes.</p>
+<p><strong>B6.</strong> (a) Filters: 32 × 4 × 19 = 2432 weights + 32 biases = 2464. Dense: 32 + 1 = 33. Total <strong>2497</strong>. (b) Layer 1: 64 × 4 × 15 + 64 = 3904. Layer 2: 32 × 64 × 5 + 32 = 10 272. Dense: 32 + 1 = 33. Total <strong>14 209</strong>. (c) Both have more parameters than there are training sequences, but the larger one has 28 parameters per sequence and can memorise the training set much more easily. With 500 sequences use a small model, strong regularisation and early stopping, or get more data (R7).</p>
+<p><strong>B7.</strong> (a) Keep epoch <strong>5</strong> (validation loss 0.33, the lowest); with patience 3 training stops after epoch <strong>8</strong> (epochs 6, 7, 8 without improvement). (b) Overfitting: the training loss keeps falling while the validation loss rises: the network memorises the training sequences. Reduce it with more training data, fewer parameters (fewer or narrower filters), dropout or weight decay, or simply by early stopping. (c) The test set then takes part in a choice, so its AUC is no longer an unbiased estimate for new data; with enough such choices the test set is overfitted too. Choose on validation, report test once.</p>
+<p><strong>B8.</strong> (a) Random genomic windows are AT-rich (about 41% GC) and CTCF peaks GC-rich (51%), so a model can reach a high AUC by learning GC content or CpG density. Ask for the AUC of GC content alone on the same data, for GC-matched (or accessible-but-unbound) negatives, and for a PWM baseline. (b) Leakage: shifted windows of the same peak share up to 180 of 200 bp; with a random split, copies of almost every test peak are in the training set, and the network can recognise them. Split by peak at least, better by chromosome. (c) Correlation of 0.8 to some matrix among 879 is expected by chance for a short, GC-rich, low-information pattern (multiple testing); a filter used with a negative weight is evidence <em>against</em> binding, so it says nothing about cooperation; and a filter may reflect how the negatives were chosen (GC-rich background) rather than biology. Evidence for cooperation would need ZIC ChIP-seq or a perturbation. (d) The class balance. Genome-wide there are about 15 million 200-bp windows and some 44 000 peaks, so even 1% false positives would be 150 000 false calls, three times the number of true sites: precision collapses although the AUC is unchanged. Use precision–recall, a realistic background, and accessibility.</p>
+<p><strong>B9.</strong> The reverse complement of <code>GCGCCCCCTGGTGGC</code> is <code>GCCACCAGGGGGCGC</code>, the CTCF consensus. It is a CTCF filter for sites on the <strong>minus strand</strong> (the motif read on the reverse complement), the partner of a plus-strand filter.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Solutions — R">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions — R
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>R1.</strong> (a) Training 38 270 positives and 37 745 negatives, validation (chr7) 2169 and 2141, test (chr8, chr9) 3778 and 3700: 44 217 positives and 43 586 negatives in total. In a few GC bins (very GC-rich peaks) there are fewer candidate windows than peaks, so fewer negatives are drawn there. (b) Mean GC 0.514 in peaks and 0.510 in background. Random windows would be about 0.41 (the genome average); a model could then separate the classes by GC content alone. (c) Per chromosome so that each split (train, validation, test) has its own balanced positives and negatives, and no negative of a test chromosome comes from a training chromosome. The 1-kb distance keeps background windows out of the flanks of peaks, where weaker binding and shared sequence would blur the labels.</p>
+<p><strong>R2.</strong> (a) It matches the slide; row 3 is G (G at positions 1, 8 and 9). (b) 76 015 sequences × 4 bases × 200 positions: the (batch, channels, length) layout that <code>nn_conv1d</code> expects.</p>
+<p><strong>R3.</strong> (a) GC content <strong>0.511</strong> (chance, because the negatives were matched on GC), PWM <strong>0.929</strong>. (b) The ROC curve plots TPR against FPR as the threshold moves; its area equals the fraction of (positive, negative) pairs ranked correctly, which is the Mann–Whitney statistic computed from ranks. <code>auc_roc()</code> (trapezoids, ties as diagonal steps) gives the same value. (c) Without <code>p.cutoff = 1</code>, <code>motifScores</code> reports a score only for windows with a match above the default threshold (<span class="math inline">\(p &lt; 5 \times 10^{-5}\)</span>) and 0 for all others: 62.5% of the test windows get 0, all tied, and the AUC drops to <strong>0.838</strong>. A thresholded score throws away the ranking among weak matches; check what a function returns before using it as a score.</p>
+<p><strong>R4.</strong> (a) <code>conv.weight</code> 2432 (32 × 4 × 19), <code>conv.bias</code> 32, <code>dense.weight</code> 32, <code>dense.bias</code> 1: 2497. (b) 200 − 19 + 1 = 182 positions without padding. (c) The initial weights are small random numbers, so all logits are close to 0 and <span class="math inline">\(p\)</span> close to 0.5 (0.42–0.44 here, set by the random initial bias). Training starts from “no idea” (loss ≈ 0.69).</p>
+<p><strong>R5.</strong> (a) 76 015 / 128 = <strong>594</strong> steps per epoch (the last batch is smaller). Training ran <strong>16</strong> epochs; the best validation loss was at epoch <strong>13</strong>, whose model is saved (epochs 14–16 did not improve). (b) Epoch 13: training loss 0.189, validation loss 0.197; training AUC 0.978, validation AUC 0.977. The two are very close: no overfitting worth mentioning, because 2497 parameters are few compared with 76 015 sequences. (c) <code>model(sets$train$x[b, , ])</code> is the forward pass, <code>loss_fn(...)</code> the loss, <code>loss$backward()</code> the backward pass, <code>opt$step()</code> the update. <code>opt$zero_grad()</code> clears the gradients of the previous step. (d) <code>eval()</code> switches off training-only behaviour (none in this model, but dropout layers would otherwise stay active), and <code>with_no_grad()</code> stops torch from recording operations for backpropagation, which saves memory and time.</p>
+<p><strong>R6.</strong> (a) Test AUC: CNN <strong>0.972</strong>, PWM 0.929, GC 0.511. Close to the validation AUC (0.977): the model generalises to unseen chromosomes. (b) At 5% FPR the CNN finds <strong>87.3%</strong> of the test peaks and the PWM <strong>73.7%</strong>. The CNN curve lies above the PWM curve everywhere, and the gap is largest at low false positive rates, where it matters in practice: among the peaks the PWM ranks below many background windows (weak or partial matches), the CNN still finds evidence from its nine CTCF-like filters (motif variants, both strands) and from the absence of the GC-rich patterns it associates with background.</p>
+<p><strong>R7.</strong> (a) The training loss falls steadily to <strong>0.016</strong> at epoch 150: the network memorises the 500 sequences. The validation loss falls to about <strong>0.355</strong> at epochs 80–100 and then rises slowly (0.372 at epoch 150). Early stopping (on these 10-epoch checkpoints) would keep the model of epoch 80. (b) Test AUC <strong>0.919</strong>, against 0.972 with all the training data. Here there are 500 sequences for 2497 parameters (0.2 per parameter); in R5, 76 015 (30 per parameter). The same architecture overfits or not depending on how much data it is given.</p>
+<p><strong>R8.</strong> (a) For each filter, find the test sequences in which it fires strongly (maximum activation above half of its overall maximum), cut out the 19 bases where it fires, and count the bases at each position: a position count matrix, like building a PWM from aligned sites in <em>Gene regulation</em>. The raw weights are on an arbitrary scale (any constant can be shifted into the bias, and negative weights have no frequency interpretation), so a logo of the sequences that activate the filter is easier to compare with a database. (b) The ten filters with the largest output weights (18, 22, 32, 28, 9, 25, 31, 6, 1, 2; weights 1.51 to 0.68) are all CTCF-like; nine have CTCF or CTCFL (MA0139.2, MA1929.2, MA1930.2, MA1102.3) as best match with PCC 0.91–0.99, and filter 28 (<code>YGCCCHCTRGDGG</code>, a shifted partial CTCF core) matches SP9 best (0.87). Several filters learn the same motif because nothing forces them to differ: shifted copies, partial motifs, and both orientations (B3, B9): compare the consensus of filter 18 (<code>CCASYAGRKGGCRS</code>, plus strand) with filter 22 (<code>RSYGCCMYCTRSTGG</code>, its reverse complement). (c) The 20 filters with negative weights (−0.27 to −0.46) are short, GC-rich, low-information patterns; their best matches (PLAGL2, KLF4, ZIC4, SP2, E2F8 …) have PCC 0.75–0.91 and p-values of <span class="math inline">\(10^{-5}\)</span> to <span class="math inline">\(10^{-3}\)</span> before correction for 879 comparisons. Not credible as specific TFs: they describe GC-rich sequence without a CTCF site, which the network uses as evidence for background because the negatives were matched on GC content. Two AT-rich filters (26, 20) have small positive weights.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="where-this-leads" class="level2">
+<h2 class="anchored" data-anchor-id="where-this-leads">Where this leads</h2>
+<ul>
+<li><em>What did the model learn? Variant effects</em> loads <code>ctcf_cnn.pt</code>, asks which bases of a sequence drive its prediction (in-silico mutagenesis) and scores real SNPs in CTCF sites.</li>
+<li><em>What people try to predict, and how to tell if it works</em> shows how the choice of negatives and splits changes what such a model learns.</li>
+<li>Deeper models (DeepSEA, Basset, BPNet, chromBPNet) use the same building blocks: more layers, longer inputs, more outputs.</li>
+</ul>
+</section>
+<section id="key-papers-optional-further-reading" class="level2">
+<h2 class="anchored" data-anchor-id="key-papers-optional-further-reading">Key papers (optional further reading)</h2>
+<p><em>Not required reading and not examined.</em></p>
+<ul>
+<li>Alipanahi et al.&nbsp;2015, <em>Nat Biotechnol</em>. <a href="https://doi.org/10.1038/nbt.3300">Predicting the sequence specificities of DNA- and RNA-binding proteins by deep learning</a>. DeepBind: CNNs as learned motif scanners.</li>
+<li>Zhou &amp; Troyanskaya 2015, <em>Nat Methods</em>. <a href="https://doi.org/10.1038/nmeth.3547">Predicting effects of noncoding variants with deep learning–based sequence model</a>. DeepSEA: one network, 919 chromatin profiles, variant effects.</li>
+<li>Kelley, Snoek &amp; Rinn 2016, <em>Genome Res</em>. <a href="https://doi.org/10.1101/gr.200535.115">Basset: learning the regulatory code of the accessible genome with deep convolutional neural networks</a>. Accessibility in 164 cell types from sequence.</li>
+<li>Avsec et al.&nbsp;2021, <em>Nat Genet</em>. <a href="https://doi.org/10.1038/s41588-021-00782-6">Base-resolution models of transcription-factor binding reveal soft motif syntax</a>. BPNet.</li>
+<li>Koo &amp; Eddy 2019, <em>PLoS Comput Biol</em>. <a href="https://doi.org/10.1371/journal.pcbi.1007560">Representation learning of genomic sequence motifs with convolutional neural networks</a>. When first-layer filters are interpretable as motifs.</li>
+<li>Eraslan et al.&nbsp;2019, <em>Nat Rev Genet</em>. <a href="https://doi.org/10.1038/s41576-019-0122-6">Deep learning: new computational modelling techniques for genomics</a>. Review.</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

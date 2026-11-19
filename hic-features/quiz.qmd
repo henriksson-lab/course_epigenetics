@@ -1,0 +1,95 @@
+---
+title: "Quiz: calling compartments, TADs and loops"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+Short questions on eigenvectors, saddle plots, insulation, dot calling and APA. Try each on paper first, then open the answer.
+
+---
+
+**Q1.** Why is the eigenvector computed on observed/expected values (or their correlation) rather than on the balanced matrix itself?
+
+::: {.callout-note collapse="true" title="Answer"}
+The balanced matrix is dominated by distance decay: every row looks like a peak around the diagonal, so the main pattern of variation would be distance, not compartment type. Dividing by the expected value at each distance removes that, leaving the preference of A for A and B for B; correlating rows sharpens it into a checkerboard.
+:::
+
+---
+
+**Q2.** An analysis of 23 chromosomes reports that compartment A is gene-poor on 11 of them and gene-rich on 12. What went wrong?
+
+::: {.callout-note collapse="true" title="Answer"}
+The sign of the eigenvector was not fixed. It is arbitrary for each chromosome (or arm); it must be oriented with a phasing track such as GC content, gene density or an active mark, so that A (E1 > 0) is the gene-rich, active compartment everywhere.
+:::
+
+---
+
+**Q3.** A saddle plot gives mean O/E of 2.0 for B–B, 1.6 for A–A and 0.4 for both A–B corners. Compute the compartment strength. After a treatment, the values are 1.6, 1.4 and 0.6. What happened?
+
+::: {.callout-note collapse="true" title="Answer"}
+Before: (2.0 + 1.6) / (0.4 + 0.4) = 4.5. After: (1.6 + 1.4) / (0.6 + 0.6) = 2.5. Compartmentalisation is weaker: A and B mix more (as after WAPL loss, when cohesin stays longer on DNA and extrudes larger loops). Check that the two maps had similar depth and were analysed with the same E1 groups.
+:::
+
+---
+
+**Q4.** An insulation profile has window sums 120, 118, 30, 115 and 125 at five consecutive positions. Compute the insulation score at the third position. Is it a boundary?
+
+::: {.callout-tip collapse="true" title="Hint"}
+Score = log2(sum / mean of the sums); a boundary is a local minimum.
+:::
+
+::: {.callout-note collapse="true" title="Answer"}
+Mean = 508 / 5 = 101.6. Score = log2(30 / 101.6) = −1.76, a deep local minimum (neighbours at +0.22 and +0.18): a strong boundary.
+:::
+
+---
+
+**Q5.** Insulation with a 100-kb window finds 261 boundaries on chr19 + chr21; with a 500-kb window, 98. Which is correct?
+
+::: {.callout-note collapse="true" title="Answer"}
+Both. Domains are nested; a small window finds sub-domain boundaries, a large window only the boundaries of large domains. Report the window and resolution, and compare conditions with the same parameters, preferably using boundary strength rather than presence or absence.
+:::
+
+---
+
+**Q6.** A pixel has 70 contacts; the distance-expected value is 40, but its donut neighbourhood has 1 120 observed against 700 expected. Is it a loop?
+
+::: {.callout-note collapse="true" title="Answer"}
+Local expected = 40 × 1 120/700 = 64; O/E = 70/64 ≈ 1.1. No: it is enriched only because its whole neighbourhood (a domain) is enriched. A loop must stand out against its local background.
+:::
+
+---
+
+**Q7.** Why does HiCCUPS use a "lower-left" background in addition to the donut?
+
+::: {.callout-note collapse="true" title="Answer"}
+Pixels towards the lower left of a candidate loop pixel are closer to the diagonal, where contacts are higher. A pixel must also beat that stronger neighbourhood, which protects against calling a point on the edge of a domain or a stripe as a loop.
+:::
+
+---
+
+**Q8.** At 5 716 loops with a CTCF motif at both anchors, 84% are convergent and 1% divergent. What would you expect if orientation did not matter? Which model explains the result?
+
+::: {.callout-note collapse="true" title="Answer"}
+Random strands: 25% convergent (+−), 25% divergent (−+), 50% tandem. The strong excess of convergent pairs is explained by loop extrusion: cohesin is stopped by CTCF whose N-terminus faces the loop, i.e. motifs pointing into the loop.
+:::
+
+---
+
+**Q9.** An APA pileup gives a centre O/E of 3.9 and a lower-left mean of 1.4. The same loops shifted by 500 kb give 1.07 and 1.05. Compute both APA scores and interpret.
+
+::: {.callout-note collapse="true" title="Answer"}
+3.9 / 1.4 = 2.8 at the loops; 1.07 / 1.05 = 1.0 for the shifted control. The enrichment is specific to the anchor positions, not a property of the distance between them.
+:::
+
+---
+
+**Q10.** A paper compares a knockout and wild type: "the knockout loses 2 000 loops". The knockout map has 300 M contacts, the wild type 1 B; one replicate each. What would you ask for?
+
+::: {.callout-note collapse="true" title="Answer"}
+Equal depth (downsample the wild type) before calling loops; replicates for each condition; a quantitative comparison at a common set of loop positions (APA or per-loop counts with a count model, e.g. diffHic/multiHiCcompare) instead of differences in the number of calls; and a check that P(s) is similar, or a distance-aware normalisation.
+:::

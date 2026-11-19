@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 380" width="1120" height="380" font-family="Helvetica, Arial, sans-serif">
+<rect width="1120" height="380" fill="white"/>
+<rect x="200" y="32" width="290" height="268" fill="#eaf1f7"/>
+<rect x="610" y="32" width="210" height="268" fill="#f4f6f8"/>
+<text x="345" y="50" font-size="16" font-weight="bold" text-anchor="middle" fill="#1b2a3a">wave 1: early embryo</text>
+<text x="715" y="50" font-size="16" font-weight="bold" text-anchor="middle" fill="#1b2a3a">wave 2: germ line</text>
+<line x1="110" y1="300" x2="1090" y2="300" stroke="#1b2a3a" stroke-width="1.5"/>
+<line x1="110" y1="300" x2="110" y2="60" stroke="#1b2a3a" stroke-width="1.5"/>
+<line x1="104" y1="300.0" x2="110" y2="300.0" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="100" y="305.0" font-size="15" text-anchor="end" fill="#1b2a3a">0</text>
+<line x1="104" y1="240.0" x2="110" y2="240.0" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="100" y="245.0" font-size="15" text-anchor="end" fill="#1b2a3a">25</text>
+<line x1="104" y1="180.0" x2="110" y2="180.0" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="100" y="185.0" font-size="15" text-anchor="end" fill="#1b2a3a">50</text>
+<line x1="104" y1="120.0" x2="110" y2="120.0" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="100" y="125.0" font-size="15" text-anchor="end" fill="#1b2a3a">75</text>
+<line x1="104" y1="60.0" x2="110" y2="60.0" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="100" y="65.0" font-size="15" text-anchor="end" fill="#1b2a3a">100</text>
+<text x="38" y="180.0" font-size="15" text-anchor="middle" fill="#1b2a3a" transform="rotate(-90 38 180.0)">% of CpGs methylated</text>
+<text x="150" y="324" font-size="15" text-anchor="middle" fill="#1b2a3a">sperm,</text>
+<text x="150" y="343" font-size="15" text-anchor="middle" fill="#1b2a3a">oocyte</text>
+<text x="250" y="324" font-size="15" text-anchor="middle" fill="#1b2a3a">zygote</text>
+<text x="345" y="324" font-size="15" text-anchor="middle" fill="#1b2a3a">cleavage</text>
+<text x="440" y="324" font-size="15" text-anchor="middle" fill="#1b2a3a">blastocyst</text>
+<text x="440" y="343" font-size="15" text-anchor="middle" fill="#1b2a3a">(E3.5)</text>
+<text x="545" y="324" font-size="15" text-anchor="middle" fill="#1b2a3a">epiblast</text>
+<text x="545" y="343" font-size="15" text-anchor="middle" fill="#1b2a3a">(E6.5)</text>
+<text x="650" y="324" font-size="15" text-anchor="middle" fill="#1b2a3a">PGCs</text>
+<text x="650" y="343" font-size="15" text-anchor="middle" fill="#1b2a3a">(E7.5)</text>
+<text x="770" y="324" font-size="15" text-anchor="middle" fill="#1b2a3a">PGCs</text>
+<text x="770" y="343" font-size="15" text-anchor="middle" fill="#1b2a3a">(E13.5)</text>
+<text x="905" y="324" font-size="15" text-anchor="middle" fill="#1b2a3a">new gametes</text>
+<text x="1060" y="324" font-size="15" text-anchor="middle" fill="#1b2a3a">body</text>
+<path d="M150,96.0 L250,192.0 L345,228.0 L440,252.0" fill="none" stroke="#2a6f97" stroke-width="3" stroke-linejoin="round"/>
+<path d="M150,204.0 L250,208.8 L345,228.0 L440,252.0" fill="none" stroke="#a8324a" stroke-width="3" stroke-linejoin="round"/>
+<path d="M440,252.0 L545,120.0 L650,132.0 L770,288.0" fill="none" stroke="#1b2a3a" stroke-width="3" stroke-linejoin="round"/>
+<path d="M545,120.0 L1060,120.0" fill="none" stroke="#5b6b7a" stroke-width="2.5" stroke-dasharray="7,5" stroke-linejoin="round"/>
+<path d="M770,288.0 L905,96.0" fill="none" stroke="#2a6f97" stroke-width="3" stroke-linejoin="round"/>
+<path d="M770,288.0 L905,204.0" fill="none" stroke="#a8324a" stroke-width="3" stroke-linejoin="round"/>
+<path d="M150,180.0 L545,180.0 L650,180.0 L770,288.0" fill="none" stroke="#e67e22" stroke-width="2.5" stroke-dasharray="3,4" stroke-linejoin="round"/>
+<circle cx="150" cy="96.0" r="5" fill="#2a6f97"/>
+<circle cx="150" cy="204.0" r="5" fill="#a8324a"/>
+<circle cx="440" cy="252.0" r="5" fill="#1b2a3a"/>
+<circle cx="545" cy="120.0" r="5" fill="#1b2a3a"/>
+<circle cx="770" cy="288.0" r="5" fill="#1b2a3a"/>
+<circle cx="905" cy="96.0" r="5" fill="#2a6f97"/>
+<circle cx="905" cy="204.0" r="5" fill="#a8324a"/>
+<text x="164" y="88.0" font-size="15" fill="#2a6f97" font-weight="bold">paternal</text>
+<text x="162" y="226.0" font-size="15" fill="#a8324a" font-weight="bold">maternal</text>
+<text x="917" y="101.0" font-size="15" fill="#2a6f97" font-weight="bold">sperm</text>
+<text x="917" y="209.0" font-size="15" fill="#a8324a" font-weight="bold">oocyte</text>
+<text x="1060" y="110.0" font-size="15" fill="#5b6b7a" text-anchor="middle">soma</text>
+<text x="345" y="172.0" font-size="15" fill="#e67e22" text-anchor="middle">imprints kept</text>
+<text x="715" y="163.2" font-size="15" fill="#e67e22" text-anchor="middle">imprints erased</text>
+<text x="110" y="372" font-size="14" fill="#5b6b7a">Mouse, approximate levels (after Smith &amp; Meissner 2013). Human embryos show the same two waves, with somewhat different levels and timing.</text>
+</svg>

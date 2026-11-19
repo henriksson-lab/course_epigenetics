@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 410" width="1120" height="410" font-family="Helvetica, Arial, sans-serif">
+  <rect width="1120" height="410" fill="white"/>
+  <!-- scale: 0.384 px per amino acid, bars start at x = 170 -->
+  <text x="170" y="28" font-size="15" fill="#5b6b7a">domains drawn to scale (human proteins, approximate positions)</text>
+
+  <!-- DNMT1, 1616 aa -->
+  <text x="30" y="88" font-size="18" font-weight="bold" fill="#1b2a3a">DNMT1</text>
+  <text x="30" y="108" font-size="14" fill="#5b6b7a">1616 aa</text>
+  <rect x="170" y="74" width="620" height="16" fill="#f4f6f8" stroke="#1b2a3a" stroke-width="1.5"/>
+  <rect x="304" y="66" width="96" height="32" fill="#e9c46a" stroke="#1b2a3a" stroke-width="1.5"/>
+  <text x="352" y="88" font-size="15" text-anchor="middle" fill="#1b2a3a">RFTS</text>
+  <rect x="418" y="66" width="18" height="32" fill="#8ab17d" stroke="#1b2a3a" stroke-width="1.5"/>
+  <text x="427" y="58" font-size="14" text-anchor="middle" fill="#1b2a3a">CXXC</text>
+  <rect x="460" y="66" width="48" height="32" fill="#f4a261" stroke="#1b2a3a" stroke-width="1.5"/>
+  <text x="484" y="88" font-size="14" text-anchor="middle" fill="#1b2a3a">BAH1</text>
+  <rect x="543" y="66" width="49" height="32" fill="#f4a261" stroke="#1b2a3a" stroke-width="1.5"/>
+  <text x="567" y="88" font-size="14" text-anchor="middle" fill="#1b2a3a">BAH2</text>
+  <rect x="607" y="66" width="183" height="32" fill="#2a6f97" stroke="#1b2a3a" stroke-width="1.5"/>
+  <text x="698" y="88" font-size="15" text-anchor="middle" fill="white" font-weight="bold">MTase</text>
+  <text x="815" y="80" font-size="15" fill="#1b2a3a">maintenance: copies the</text>
+  <text x="815" y="100" font-size="15" fill="#1b2a3a">pattern after replication</text>
+
+  <!-- DNMT3A, 912 aa -->
+  <text x="30" y="168" font-size="18" font-weight="bold" fill="#1b2a3a">DNMT3A</text>
+  <text x="30" y="188" font-size="14" fill="#5b6b7a">912 aa</text>
+  <rect x="170" y="154" width="350" height="16" fill="#f4f6f8" stroke="#1b2a3a" stroke-width="1.5"/>
+  <rect x="282" y="146" width="40" height="32" fill="#e67e22" stroke="#1b2a3a" stroke-width="1.5"/>
+  <text x="302" y="138" font-size="14" text-anchor="middle" fill="#1b2a3a">PWWP</text>
+  <rect x="353" y="146" width="53" height="32" fill="#d4a017" stroke="#1b2a3a" stroke-width="1.5"/>
+  <text x="380" y="168" font-size="14" text-anchor="middle" fill="#1b2a3a">ADD</text>
+  <rect x="413" y="146" width="107" height="32" fill="#2a6f97" stroke="#1b2a3a" stroke-width="1.5"/>
+  <text x="466" y="168" font-size="15" text-anchor="middle" fill="white" font-weight="bold">MTase</text>
+  <text x="815" y="160" font-size="15" fill="#1b2a3a">de novo; reads H3K36me2</text>
+  <text x="815" y="180" font-size="15" fill="#1b2a3a">and unmethylated H3K4</text>
+
+  <!-- DNMT3B, 853 aa -->
+  <text x="30" y="248" font-size="18" font-weight="bold" fill="#1b2a3a">DNMT3B</text>
+  <text x="30" y="268" font-size="14" fill="#5b6b7a">853 aa</text>
+  <rect x="170" y="234" width="328" height="16" fill="#f4f6f8" stroke="#1b2a3a" stroke-width="1.5"/>
+  <rect x="256" y="226" width="22" height="32" fill="#e67e22" stroke="#1b2a3a" stroke-width="1.5"/>
+  <text x="267" y="218" font-size="14" text-anchor="middle" fill="#1b2a3a">PWWP</text>
+  <rect x="331" y="226" width="51" height="32" fill="#d4a017" stroke="#1b2a3a" stroke-width="1.5"/>
+  <text x="356" y="248" font-size="14" text-anchor="middle" fill="#1b2a3a">ADD</text>
+  <rect x="391" y="226" width="107" height="32" fill="#2a6f97" stroke="#1b2a3a" stroke-width="1.5"/>
+  <text x="444" y="248" font-size="15" text-anchor="middle" fill="white" font-weight="bold">MTase</text>
+  <text x="815" y="240" font-size="15" fill="#1b2a3a">de novo; gene bodies</text>
+  <text x="815" y="260" font-size="15" fill="#1b2a3a">(H3K36me3), repeats</text>
+
+  <!-- DNMT3L, 386 aa -->
+  <text x="30" y="328" font-size="18" font-weight="bold" fill="#1b2a3a">DNMT3L</text>
+  <text x="30" y="348" font-size="14" fill="#5b6b7a">386 aa</text>
+  <rect x="170" y="314" width="148" height="16" fill="#f4f6f8" stroke="#1b2a3a" stroke-width="1.5"/>
+  <rect x="185" y="306" width="50" height="32" fill="#d4a017" stroke="#1b2a3a" stroke-width="1.5"/>
+  <text x="210" y="328" font-size="14" text-anchor="middle" fill="#1b2a3a">ADD</text>
+  <rect x="245" y="306" width="73" height="32" fill="#dfe6ec" stroke="#5b6b7a" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="281" y="328" font-size="14" text-anchor="middle" fill="#5b6b7a">inactive</text>
+  <text x="815" y="320" font-size="15" fill="#1b2a3a">inactive cofactor of 3A/3B</text>
+  <text x="815" y="340" font-size="15" fill="#1b2a3a">in germ cells and embryo</text>
+
+  <!-- footnote -->
+  <line x1="30" y1="365" x2="1090" y2="365" stroke="#dfe6ec" stroke-width="1.5"/>
+  <text x="30" y="390" font-size="15" fill="#5b6b7a">Also: DNMT3C (rodents only) silences young transposons in the male germ line. DNMT2 (TRDMT1) methylates a tRNA, not DNA.</text>
+</svg>

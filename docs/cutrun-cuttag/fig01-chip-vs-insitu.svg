@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 450" width="1120" height="450" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/>
+    </marker>
+    <g id="nuc"><circle r="13" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.5"/></g>
+    <g id="mnuc"><circle r="13" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.5"/><circle cy="-15" r="5" fill="#c0392b"/></g>
+    <g id="ab"><path d="M0,0 L0,-14 M0,-14 L-9,-26 M0,-14 L9,-26" stroke="#2a6f97" stroke-width="3" fill="none" stroke-linecap="round"/></g>
+  </defs>
+  <rect width="1120" height="450" fill="#ffffff"/>
+  <line x1="560" y1="15" x2="560" y2="435" stroke="#d0d7de" stroke-width="1.5"/>
+
+  <!-- ================= LEFT: ChIP ================= -->
+  <text x="280" y="28" font-size="18" font-weight="bold" fill="#1b2a3a" text-anchor="middle">ChIP-seq: fragment everything, then enrich</text>
+
+  <text x="30" y="56" font-size="15" fill="#1b2a3a">1. Crosslink and sonicate all the chromatin</text>
+  <line x1="40" y1="100" x2="520" y2="100" stroke="#1b2a3a" stroke-width="2"/>
+  <use href="#nuc" x="60" y="100"/><use href="#nuc" x="100" y="100"/><use href="#nuc" x="140" y="100"/>
+  <use href="#nuc" x="180" y="100"/><use href="#mnuc" x="220" y="100"/><use href="#mnuc" x="260" y="100"/>
+  <use href="#nuc" x="300" y="100"/><use href="#nuc" x="340" y="100"/><use href="#nuc" x="380" y="100"/>
+  <use href="#nuc" x="420" y="100"/><use href="#nuc" x="460" y="100"/><use href="#nuc" x="500" y="100"/>
+  <g stroke="#c0392b" stroke-width="2.2" fill="none">
+    <path d="M80,80 l5,8 l-6,6 l6,8 l-5,8"/><path d="M160,80 l5,8 l-6,6 l6,8 l-5,8"/>
+    <path d="M240,80 l5,8 l-6,6 l6,8 l-5,8"/><path d="M320,80 l5,8 l-6,6 l6,8 l-5,8"/>
+    <path d="M400,80 l5,8 l-6,6 l6,8 l-5,8"/><path d="M480,80 l5,8 l-6,6 l6,8 l-5,8"/>
+  </g>
+
+  <text x="30" y="140" font-size="15" fill="#1b2a3a">2. Antibody on beads pulls down marked fragments</text>
+  <g transform="translate(0,14)">
+  <!-- bead with two antibodies, each holding a marked fragment -->
+  <circle cx="120" cy="225" r="26" fill="#d0d7de" stroke="#5b6b7a" stroke-width="1.5"/>
+  <text x="120" y="230" font-size="13" fill="#1b2a3a" text-anchor="middle">bead</text>
+  <path d="M146,225 L162,225 M162,225 L174,214 M162,225 L174,236" stroke="#2a6f97" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <line x1="186" y1="225" x2="244" y2="225" stroke="#1b2a3a" stroke-width="2"/>
+  <circle cx="200" cy="225" r="13" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.5"/><circle cx="182" cy="225" r="5" fill="#c0392b"/>
+  <circle cx="226" cy="225" r="0" fill="none"/>
+  <path d="M120,199 L120,186 M120,186 L109,175 M120,186 L131,175" stroke="#2a6f97" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <line x1="94" y1="152" x2="146" y2="152" stroke="#1b2a3a" stroke-width="2"/>
+  <circle cx="120" cy="152" r="13" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.5"/><circle cx="120" cy="170" r="5" fill="#c0392b"/>
+  <circle cx="120" cy="170" r="0" fill="none"/>
+  <circle cx="134" cy="170" r="0" fill="none"/>
+  <!-- nonspecific fragment stuck to the bead -->
+  <line x1="40" y1="236" x2="92" y2="236" stroke="#5b6b7a" stroke-width="2" stroke-dasharray="4 3"/>
+  <circle cx="66" cy="236" r="12" fill="#ffffff" stroke="#5b6b7a" stroke-width="1.5" stroke-dasharray="4 3"/>
+  </g>
+  <text x="270" y="210" font-size="14" fill="#1b2a3a">marked fragments, plus</text>
+  <text x="270" y="232" font-size="14" fill="#5b6b7a">unmarked DNA that sticks to</text>
+  <text x="270" y="250" font-size="14" fill="#5b6b7a">beads and tubes (dashed)</text>
+
+  <text x="30" y="292" font-size="15" fill="#1b2a3a">3. Reads: peaks on a carpet of background</text>
+  <line x1="40" y1="400" x2="520" y2="400" stroke="#1b2a3a" stroke-width="1.5"/>
+  <g fill="#5b6b7a">
+    <rect x="44" y="388" width="6" height="12"/><rect x="58" y="392" width="6" height="8"/><rect x="72" y="384" width="6" height="16"/>
+    <rect x="86" y="390" width="6" height="10"/><rect x="100" y="386" width="6" height="14"/><rect x="114" y="391" width="6" height="9"/>
+    <rect x="128" y="385" width="6" height="15"/><rect x="142" y="389" width="6" height="11"/><rect x="156" y="387" width="6" height="13"/>
+    <rect x="170" y="392" width="6" height="8"/><rect x="184" y="383" width="6" height="17"/>
+    <rect x="296" y="388" width="6" height="12"/><rect x="310" y="390" width="6" height="10"/><rect x="324" y="385" width="6" height="15"/>
+    <rect x="338" y="391" width="6" height="9"/><rect x="352" y="387" width="6" height="13"/><rect x="366" y="389" width="6" height="11"/>
+    <rect x="380" y="384" width="6" height="16"/><rect x="394" y="392" width="6" height="8"/><rect x="408" y="386" width="6" height="14"/>
+    <rect x="422" y="390" width="6" height="10"/><rect x="436" y="388" width="6" height="12"/><rect x="450" y="385" width="6" height="15"/>
+    <rect x="464" y="391" width="6" height="9"/><rect x="478" y="387" width="6" height="13"/><rect x="492" y="389" width="6" height="11"/>
+    <rect x="506" y="386" width="6" height="14"/>
+  </g>
+  <g fill="#c0392b">
+    <rect x="198" y="365" width="6" height="35"/><rect x="212" y="335" width="6" height="65"/><rect x="226" y="318" width="6" height="82"/>
+    <rect x="240" y="322" width="6" height="78"/><rect x="254" y="338" width="6" height="62"/><rect x="268" y="360" width="6" height="40"/>
+    <rect x="282" y="380" width="6" height="20"/>
+  </g>
+  <text x="175" y="430" font-size="15" fill="#1b2a3a">10<tspan dy="-6" font-size="11">6</tspan><tspan dy="6">–10</tspan><tspan dy="-6" font-size="11">7</tspan><tspan dy="6"> cells · 20–40 M reads</tspan></text>
+
+  <!-- ================= RIGHT: CUT&RUN / CUT&Tag ================= -->
+  <text x="840" y="28" font-size="18" font-weight="bold" fill="#1b2a3a" text-anchor="middle">CUT&amp;RUN / CUT&amp;Tag: cut only at the target</text>
+
+  <text x="590" y="52" font-size="15" fill="#1b2a3a">1. Antibody + pA–enzyme bind in intact nuclei</text>
+  <line x1="600" y1="122" x2="1080" y2="122" stroke="#1b2a3a" stroke-width="2"/>
+  <use href="#nuc" x="620" y="122"/><use href="#nuc" x="660" y="122"/><use href="#nuc" x="700" y="122"/>
+  <use href="#nuc" x="740" y="122"/><use href="#mnuc" x="780" y="122"/><use href="#mnuc" x="820" y="122"/>
+  <use href="#nuc" x="860" y="122"/><use href="#nuc" x="900" y="122"/><use href="#nuc" x="940" y="122"/>
+  <use href="#nuc" x="980" y="122"/><use href="#nuc" x="1020" y="122"/><use href="#nuc" x="1060" y="122"/>
+  <path d="M784,100 L800,86 L816,100 M800,86 L800,72" stroke="#2a6f97" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="812" y="58" width="92" height="24" rx="8" fill="#f4a261" stroke="#1b2a3a" stroke-width="1.2"/>
+  <text x="858" y="75" font-size="13" fill="#1b2a3a" text-anchor="middle">pA–enzyme</text>
+  <line x1="800" y1="72" x2="812" y2="72" stroke="#1b2a3a" stroke-width="1.5"/>
+
+  <text x="590" y="160" font-size="15" fill="#1b2a3a">2. Activate the enzyme (Ca<tspan dy="-6" font-size="11">2+</tspan><tspan dy="6"> or Mg</tspan><tspan dy="-6" font-size="11">2+</tspan><tspan dy="6">): it cuts next to itself</tspan></text>
+  <line x1="600" y1="205" x2="1080" y2="205" stroke="#1b2a3a" stroke-width="2"/>
+  <use href="#nuc" x="620" y="205"/><use href="#nuc" x="660" y="205"/><use href="#nuc" x="700" y="205"/>
+  <use href="#nuc" x="740" y="205"/>
+  <use href="#nuc" x="860" y="205"/><use href="#nuc" x="900" y="205"/><use href="#nuc" x="940" y="205"/>
+  <use href="#nuc" x="980" y="205"/><use href="#nuc" x="1020" y="205"/><use href="#nuc" x="1060" y="205"/>
+  <rect x="756" y="190" width="88" height="30" fill="#ffffff"/>
+  <g stroke="#c0392b" stroke-width="2.5"><line x1="760" y1="192" x2="760" y2="218"/><line x1="840" y1="192" x2="840" y2="218"/></g>
+  <!-- released fragment -->
+  <line x1="770" y1="258" x2="830" y2="258" stroke="#1b2a3a" stroke-width="2"/>
+  <use href="#mnuc" x="785" y="258"/><use href="#mnuc" x="815" y="258"/>
+  <line x1="800" y1="222" x2="800" y2="236" stroke="#1b2a3a" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="850" y="255" font-size="14" fill="#5b6b7a">released (CUT&amp;RUN) or</text>
+  <text x="850" y="273" font-size="14" fill="#5b6b7a">adapters attached (CUT&amp;Tag)</text>
+  <text x="1080" y="236" font-size="14" fill="#5b6b7a" text-anchor="end">the rest is never cut</text>
+
+  <text x="590" y="302" font-size="15" fill="#1b2a3a">3. Reads: peaks on almost nothing</text>
+  <line x1="600" y1="400" x2="1080" y2="400" stroke="#1b2a3a" stroke-width="1.5"/>
+  <g fill="#5b6b7a">
+    <rect x="660" y="396" width="6" height="4"/><rect x="940" y="397" width="6" height="3"/><rect x="1010" y="396" width="6" height="4"/>
+  </g>
+  <g fill="#c0392b">
+    <rect x="758" y="375" width="6" height="25"/><rect x="772" y="330" width="6" height="70"/><rect x="786" y="312" width="6" height="88"/>
+    <rect x="800" y="316" width="6" height="84"/><rect x="814" y="334" width="6" height="66"/><rect x="828" y="370" width="6" height="30"/>
+  </g>
+  <text x="740" y="430" font-size="15" fill="#1b2a3a">10<tspan dy="-6" font-size="11">3</tspan><tspan dy="6">–10</tspan><tspan dy="-6" font-size="11">5</tspan><tspan dy="6"> cells · 3–8 M reads</tspan></text>
+</svg>

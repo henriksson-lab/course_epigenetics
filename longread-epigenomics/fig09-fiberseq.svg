@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 420" width="1120" height="420" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker></defs>
+<rect width="1120" height="420" fill="#ffffff"/>
+<text x="560" y="28" text-anchor="middle" font-size="18" font-weight="bold" fill="#1b2a3a">1. Methylate accessible adenines in nuclei (Hia5 or EcoGII → m6A)</text>
+<!-- DNA line -->
+<line x1="40" y1="110" x2="1080" y2="110" stroke="#1b2a3a" stroke-width="2.5"/>
+<!-- nucleosomes -->
+<g>
+<ellipse cx="140" cy="110" rx="52" ry="30" fill="#2a9d8f" fill-opacity="0.85"/>
+<ellipse cx="300" cy="110" rx="52" ry="30" fill="#2a9d8f" fill-opacity="0.85"/>
+<ellipse cx="460" cy="110" rx="52" ry="30" fill="#2a9d8f" fill-opacity="0.85"/>
+<ellipse cx="800" cy="110" rx="52" ry="30" fill="#2a9d8f" fill-opacity="0.85"/>
+<ellipse cx="960" cy="110" rx="52" ry="30" fill="#2a9d8f" fill-opacity="0.85"/>
+</g>
+<text x="140" y="116" text-anchor="middle" font-size="14" fill="#ffffff">nucleosome</text>
+<!-- TF -->
+<rect x="610" y="88" width="34" height="44" rx="8" fill="#e67e22"/>
+<text x="627" y="152" text-anchor="middle" font-size="14" fill="#e67e22">TF</text>
+<text x="630" y="68" text-anchor="middle" font-size="14" fill="#5b6b7a">nucleosome-depleted region</text>
+<!-- m6A marks on accessible DNA (red ticks above line) -->
+<g fill="#c0392b">
+<circle cx="210" cy="98" r="4.5"/><circle cx="226" cy="98" r="4.5"/>
+<circle cx="370" cy="98" r="4.5"/><circle cx="384" cy="98" r="4.5"/>
+<circle cx="530" cy="98" r="4.5"/><circle cx="546" cy="98" r="4.5"/><circle cx="562" cy="98" r="4.5"/><circle cx="578" cy="98" r="4.5"/><circle cx="594" cy="98" r="4.5"/>
+<circle cx="660" cy="98" r="4.5"/><circle cx="676" cy="98" r="4.5"/><circle cx="692" cy="98" r="4.5"/><circle cx="708" cy="98" r="4.5"/><circle cx="724" cy="98" r="4.5"/>
+<circle cx="870" cy="98" r="4.5"/><circle cx="886" cy="98" r="4.5"/>
+<circle cx="1030" cy="98" r="4.5"/><circle cx="1046" cy="98" r="4.5"/>
+</g>
+<text x="300" y="168" text-anchor="middle" font-size="14" fill="#c0392b">m6A only where the enzyme can reach the DNA</text>
+<!-- arrow -->
+<line x1="560" y1="182" x2="560" y2="214" stroke="#5b6b7a" stroke-width="2.5" marker-end="url(#ah)"/>
+<text x="580" y="204" font-size="15" fill="#5b6b7a">strip proteins, sequence the native molecule (PacBio or nanopore)</text>
+<text x="560" y="246" text-anchor="middle" font-size="18" font-weight="bold" fill="#1b2a3a">2. One read = one chromatin fibre</text>
+<line x1="40" y1="290" x2="1080" y2="290" stroke="#5b6b7a" stroke-width="5" stroke-linecap="round"/>
+<g fill="#c0392b">
+<circle cx="210" cy="290" r="5"/><circle cx="226" cy="290" r="5"/>
+<circle cx="370" cy="290" r="5"/><circle cx="384" cy="290" r="5"/>
+<circle cx="530" cy="290" r="5"/><circle cx="546" cy="290" r="5"/><circle cx="562" cy="290" r="5"/><circle cx="578" cy="290" r="5"/><circle cx="594" cy="290" r="5"/>
+<circle cx="660" cy="290" r="5"/><circle cx="676" cy="290" r="5"/><circle cx="692" cy="290" r="5"/><circle cx="708" cy="290" r="5"/><circle cx="724" cy="290" r="5"/>
+<circle cx="870" cy="290" r="5"/><circle cx="886" cy="290" r="5"/>
+<circle cx="1030" cy="290" r="5"/><circle cx="1046" cy="290" r="5"/>
+</g>
+<!-- brackets for footprints -->
+<g stroke="#2a9d8f" stroke-width="2" fill="none">
+<path d="M90,306 L90,314 L190,314 L190,306"/><path d="M250,306 L250,314 L350,314 L350,306"/><path d="M410,306 L410,314 L510,314 L510,306"/>
+<path d="M750,306 L750,314 L850,314 L850,306"/><path d="M910,306 L910,314 L1010,314 L1010,306"/>
+</g>
+<path d="M608,306 L608,314 L646,314 L646,306" stroke="#e67e22" stroke-width="2" fill="none"/>
+<text x="300" y="336" text-anchor="middle" font-size="14" fill="#2a9d8f">~147-bp gaps: nucleosome footprints</text>
+<text x="627" y="336" text-anchor="middle" font-size="14" fill="#e67e22">short gap: TF footprint</text>
+<text x="880" y="336" text-anchor="middle" font-size="14" fill="#2a9d8f">regularly spaced (~200 bp)</text>
+<rect x="40" y="356" width="1040" height="50" rx="8" fill="#f4f6f8"/>
+<text x="560" y="377" text-anchor="middle" font-size="15" fill="#1b2a3a">Human DNA has essentially no m6A of its own, so every call is a footprint signal; the same read also carries</text>
+<text x="560" y="397" text-anchor="middle" font-size="15" fill="#1b2a3a">its own 5mC calls and SNP alleles. Bulk ATAC-seq averages this; here each molecule is seen separately.</text>
+</svg>

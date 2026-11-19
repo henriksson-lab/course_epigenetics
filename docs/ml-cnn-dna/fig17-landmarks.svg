@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 360" width="1120" height="360" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker><marker id="ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker><marker id="ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker><marker id="ahgr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker><marker id="ahb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a6f97"/></marker><marker id="aho" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e67e22"/></marker><marker id="ahp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b4fa0"/></marker></defs>
+<rect width="1120" height="360" fill="#ffffff"/>
+<rect x="20.0" y="20.0" width="262.0" height="262.0" rx="10" fill="#ffffff" stroke="#2a6f97" stroke-width="2.2"/>
+<rect x="20.0" y="20.0" width="262.0" height="46.0" rx="10" fill="#2a6f97" stroke="none" stroke-width="0" fill-opacity="0.15"/>
+<text x="36.0" y="51.0" font-size="19" fill="#2a6f97" text-anchor="start" font-weight="bold">DeepBind</text>
+<text x="266.0" y="51.0" font-size="16" fill="#5b6b7a" text-anchor="end">2015</text>
+<text x="36.0" y="96.0" font-size="14" fill="#5b6b7a" text-anchor="start">input</text>
+<text x="102.0" y="96.0" font-size="15" fill="#1b2a3a" text-anchor="start">short sequences</text>
+<text x="36.0" y="122.0" font-size="14" fill="#5b6b7a" text-anchor="start">model</text>
+<text x="102.0" y="122.0" font-size="15" fill="#1b2a3a" text-anchor="start">1 conv layer + dense</text>
+<text x="36.0" y="148.0" font-size="14" fill="#5b6b7a" text-anchor="start">output</text>
+<text x="102.0" y="148.0" font-size="15" fill="#1b2a3a" text-anchor="start">binding score, one</text>
+<text x="102.0" y="174.0" font-size="15" fill="#1b2a3a" text-anchor="start">model per protein</text>
+<line x1="36.0" y1="194.0" x2="266.0" y2="194.0" stroke="#eaf1f7" stroke-width="1.5"/>
+<text x="36.0" y="222.0" font-size="15" fill="#1b2a3a" text-anchor="start">in vitro (PBM, SELEX) and</text>
+<text x="36.0" y="244.0" font-size="15" fill="#1b2a3a" text-anchor="start">ChIP/CLIP data; first</text>
+<text x="36.0" y="266.0" font-size="15" fill="#1b2a3a" text-anchor="start">"mutation maps"</text>
+<rect x="293.0" y="20.0" width="262.0" height="262.0" rx="10" fill="#ffffff" stroke="#2e8b57" stroke-width="2.2"/>
+<rect x="293.0" y="20.0" width="262.0" height="46.0" rx="10" fill="#2e8b57" stroke="none" stroke-width="0" fill-opacity="0.15"/>
+<text x="309.0" y="51.0" font-size="19" fill="#2e8b57" text-anchor="start" font-weight="bold">DeepSEA</text>
+<text x="539.0" y="51.0" font-size="16" fill="#5b6b7a" text-anchor="end">2015</text>
+<text x="309.0" y="96.0" font-size="14" fill="#5b6b7a" text-anchor="start">input</text>
+<text x="375.0" y="96.0" font-size="15" fill="#1b2a3a" text-anchor="start">1 000 bp</text>
+<text x="309.0" y="122.0" font-size="14" fill="#5b6b7a" text-anchor="start">model</text>
+<text x="375.0" y="122.0" font-size="15" fill="#1b2a3a" text-anchor="start">3 conv layers</text>
+<text x="309.0" y="148.0" font-size="14" fill="#5b6b7a" text-anchor="start">output</text>
+<text x="375.0" y="148.0" font-size="15" fill="#1b2a3a" text-anchor="start">919 chromatin profiles</text>
+<text x="375.0" y="174.0" font-size="15" fill="#1b2a3a" text-anchor="start">at once (multi-task)</text>
+<line x1="309.0" y1="194.0" x2="539.0" y2="194.0" stroke="#eaf1f7" stroke-width="1.5"/>
+<text x="309.0" y="222.0" font-size="15" fill="#1b2a3a" text-anchor="start">TF ChIP, DNase, histone</text>
+<text x="309.0" y="244.0" font-size="15" fill="#1b2a3a" text-anchor="start">marks (ENCODE, Roadmap);</text>
+<text x="309.0" y="266.0" font-size="15" fill="#1b2a3a" text-anchor="start">scores non-coding variants</text>
+<rect x="566.0" y="20.0" width="262.0" height="262.0" rx="10" fill="#ffffff" stroke="#e67e22" stroke-width="2.2"/>
+<rect x="566.0" y="20.0" width="262.0" height="46.0" rx="10" fill="#e67e22" stroke="none" stroke-width="0" fill-opacity="0.15"/>
+<text x="582.0" y="51.0" font-size="19" fill="#e67e22" text-anchor="start" font-weight="bold">Basset</text>
+<text x="812.0" y="51.0" font-size="16" fill="#5b6b7a" text-anchor="end">2016</text>
+<text x="582.0" y="96.0" font-size="14" fill="#5b6b7a" text-anchor="start">input</text>
+<text x="648.0" y="96.0" font-size="15" fill="#1b2a3a" text-anchor="start">600 bp</text>
+<text x="582.0" y="122.0" font-size="14" fill="#5b6b7a" text-anchor="start">model</text>
+<text x="648.0" y="122.0" font-size="15" fill="#1b2a3a" text-anchor="start">3 conv layers</text>
+<text x="582.0" y="148.0" font-size="14" fill="#5b6b7a" text-anchor="start">output</text>
+<text x="648.0" y="148.0" font-size="15" fill="#1b2a3a" text-anchor="start">accessible or not,</text>
+<text x="648.0" y="174.0" font-size="15" fill="#1b2a3a" text-anchor="start">in 164 cell types</text>
+<line x1="582.0" y1="194.0" x2="812.0" y2="194.0" stroke="#eaf1f7" stroke-width="1.5"/>
+<text x="582.0" y="222.0" font-size="15" fill="#1b2a3a" text-anchor="start">DNase-seq peaks; likely</text>
+<text x="582.0" y="244.0" font-size="15" fill="#1b2a3a" text-anchor="start">causal GWAS SNPs score</text>
+<text x="582.0" y="266.0" font-size="15" fill="#1b2a3a" text-anchor="start">higher than their LD partners</text>
+<rect x="839.0" y="20.0" width="262.0" height="262.0" rx="10" fill="#ffffff" stroke="#6b4fa0" stroke-width="2.2"/>
+<rect x="839.0" y="20.0" width="262.0" height="46.0" rx="10" fill="#6b4fa0" stroke="none" stroke-width="0" fill-opacity="0.15"/>
+<text x="855.0" y="51.0" font-size="19" fill="#6b4fa0" text-anchor="start" font-weight="bold">BPNet</text>
+<text x="1085.0" y="51.0" font-size="16" fill="#5b6b7a" text-anchor="end">2021</text>
+<text x="855.0" y="96.0" font-size="14" fill="#5b6b7a" text-anchor="start">input</text>
+<text x="921.0" y="96.0" font-size="15" fill="#1b2a3a" text-anchor="start">1 000 bp</text>
+<text x="855.0" y="122.0" font-size="14" fill="#5b6b7a" text-anchor="start">model</text>
+<text x="921.0" y="122.0" font-size="15" fill="#1b2a3a" text-anchor="start">dilated convolutions</text>
+<text x="855.0" y="148.0" font-size="14" fill="#5b6b7a" text-anchor="start">output</text>
+<text x="921.0" y="148.0" font-size="15" fill="#1b2a3a" text-anchor="start">base-resolution ChIP-</text>
+<text x="921.0" y="174.0" font-size="15" fill="#1b2a3a" text-anchor="start">nexus profile per TF</text>
+<line x1="855.0" y1="194.0" x2="1085.0" y2="194.0" stroke="#eaf1f7" stroke-width="1.5"/>
+<text x="855.0" y="222.0" font-size="15" fill="#1b2a3a" text-anchor="start">Oct4, Sox2, Nanog, Klf4</text>
+<text x="855.0" y="244.0" font-size="15" fill="#1b2a3a" text-anchor="start">in mouse ES cells; soft</text>
+<text x="855.0" y="266.0" font-size="15" fill="#1b2a3a" text-anchor="start">motif syntax, CRISPR-tested</text>
+<text x="20.0" y="318.0" font-size="16" fill="#1b2a3a" text-anchor="start">All four start like our model: one-hot DNA → convolutional filters that learn motifs → a prediction.</text>
+<text x="20.0" y="345.0" font-size="16" fill="#5b6b7a" text-anchor="start">They differ in how much sequence they see, how deep they are, and what they predict.</text>
+</svg>

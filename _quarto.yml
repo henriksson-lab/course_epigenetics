@@ -130,6 +130,176 @@ website:
                 href: motifs-footprinting/quiz.qmd
               - text: "Exercise"
                 href: motifs-footprinting/exercise.qmd
+      - section: "Protein–DNA binding and histone marks (ChIP-seq)"
+        contents:
+          - section: "ChIP-seq: the assay"
+            contents:
+              - text: "Lecture (slides)"
+                href: chipseq-intro/lec.qmd
+              - text: "Quiz"
+                href: chipseq-intro/quiz.qmd
+              - text: "Exercise"
+                href: chipseq-intro/exercise.qmd
+          - section: "Peak calling"
+            contents:
+              - text: "Lecture (slides)"
+                href: chipseq-peaks/lec.qmd
+              - text: "Quiz"
+                href: chipseq-peaks/quiz.qmd
+              - text: "Exercise"
+                href: chipseq-peaks/exercise.qmd
+          - section: "CUT&RUN and CUT&Tag"
+            contents:
+              - text: "Lecture (slides)"
+                href: cutrun-cuttag/lec.qmd
+              - text: "Quiz"
+                href: cutrun-cuttag/quiz.qmd
+              - text: "Exercise"
+                href: cutrun-cuttag/exercise.qmd
+          - section: "Annotation and differential binding"
+            contents:
+              - text: "Lecture (slides)"
+                href: chipseq-downstream/lec.qmd
+              - text: "Quiz"
+                href: chipseq-downstream/quiz.qmd
+              - text: "Exercise"
+                href: chipseq-downstream/exercise.qmd
+          - section: "Combining marks into chromatin states"
+            contents:
+              - text: "Lecture (slides)"
+                href: chromatin-states/lec.qmd
+              - text: "Quiz"
+                href: chromatin-states/quiz.qmd
+              - text: "Exercise"
+                href: chromatin-states/exercise.qmd
+      - section: "DNA methylation"
+        contents:
+          - section: "DNA methylation biology"
+            contents:
+              - text: "Lecture (slides)"
+                href: methylation-biology/lec.qmd
+              - text: "Quiz"
+                href: methylation-biology/quiz.qmd
+              - text: "Exercise"
+                href: methylation-biology/exercise.qmd
+          - section: "Bisulfite and enzymatic sequencing"
+            contents:
+              - text: "Lecture (slides)"
+                href: methylation-bisulfite/lec.qmd
+              - text: "Quiz"
+                href: methylation-bisulfite/quiz.qmd
+              - text: "Exercise"
+                href: methylation-bisulfite/exercise.qmd
+          - section: "Differential methylation"
+            contents:
+              - text: "Lecture (slides)"
+                href: methylation-differential/lec.qmd
+              - text: "Quiz"
+                href: methylation-differential/quiz.qmd
+              - text: "Exercise"
+                href: methylation-differential/exercise.qmd
+          - section: "Methylation arrays (Illumina EPIC)"
+            contents:
+              - text: "Lecture (slides)"
+                href: methylation-arrays/lec.qmd
+              - text: "Quiz"
+                href: methylation-arrays/quiz.qmd
+              - text: "Exercise"
+                href: methylation-arrays/exercise.qmd
+          - section: "Epigenetic clocks and biomarkers"
+            contents:
+              - text: "Lecture (slides)"
+                href: epigenetic-clocks/lec.qmd
+              - text: "Quiz"
+                href: epigenetic-clocks/quiz.qmd
+              - text: "Exercise"
+                href: epigenetic-clocks/exercise.qmd
+          - section: "Methylation and chromatin from long reads"
+            contents:
+              - text: "Lecture (slides)"
+                href: longread-epigenomics/lec.qmd
+              - text: "Quiz"
+                href: longread-epigenomics/quiz.qmd
+              - text: "Exercise"
+                href: longread-epigenomics/exercise.qmd
+      - section: "3D genome"
+        contents:
+          - section: "3D genome organisation"
+            contents:
+              - text: "Lecture (slides)"
+                href: genome-3d-intro/lec.qmd
+              - text: "Quiz"
+                href: genome-3d-intro/quiz.qmd
+              - text: "Exercise"
+                href: genome-3d-intro/exercise.qmd
+          - section: "Hi-C: from reads to contact matrices"
+            contents:
+              - text: "Lecture (slides)"
+                href: hic-processing/lec.qmd
+              - text: "Quiz"
+                href: hic-processing/quiz.qmd
+              - text: "Exercise"
+                href: hic-processing/exercise.qmd
+          - section: "Calling compartments, TADs and loops"
+            contents:
+              - text: "Lecture (slides)"
+                href: hic-features/lec.qmd
+              - text: "Quiz"
+                href: hic-features/quiz.qmd
+              - text: "Exercise"
+                href: hic-features/exercise.qmd
+      - section: "Integration and interpretation"
+        contents:
+          - section: "Linking regulatory elements to genes"
+            contents:
+              - text: "Lecture (slides)"
+                href: integration-rnaseq/lec.qmd
+              - text: "Quiz"
+                href: integration-rnaseq/quiz.qmd
+              - text: "Exercise"
+                href: integration-rnaseq/exercise.qmd
+          - section: "Epigenomics and genetic variation"
+            contents:
+              - text: "Lecture (slides)"
+                href: noncoding-variants/lec.qmd
+              - text: "Quiz"
+                href: noncoding-variants/quiz.qmd
+              - text: "Exercise"
+                href: noncoding-variants/exercise.qmd
+      - section: "Machine learning for prediction"
+        contents:
+          - section: "Machine learning from scratch"
+            contents:
+              - text: "Lecture (slides)"
+                href: ml-basics/lec.qmd
+              - text: "Quiz"
+                href: ml-basics/quiz.qmd
+              - text: "Exercise"
+                href: ml-basics/exercise.qmd
+          - section: "What people try to predict"
+            contents:
+              - text: "Lecture (slides)"
+                href: ml-prediction-tasks/lec.qmd
+              - text: "Quiz"
+                href: ml-prediction-tasks/quiz.qmd
+              - text: "Exercise"
+                href: ml-prediction-tasks/exercise.qmd
+          - section: "How a CNN reads DNA"
+            contents:
+              - text: "Lecture (slides)"
+                href: ml-cnn-dna/lec.qmd
+              - text: "Quiz"
+                href: ml-cnn-dna/quiz.qmd
+              - text: "Exercise"
+                href: ml-cnn-dna/exercise.qmd
+          - section: "What did the model learn? Variant effects"
+            contents:
+              - text: "Lecture (slides)"
+                href: ml-interpretation-variants/lec.qmd
+              - text: "Quiz"
+                href: ml-interpretation-variants/quiz.qmd
+              - text: "Exercise"
+                href: ml-interpretation-variants/exercise.qmd
       # ----------------------------------------------------------------------
       # Order is defined HERE, not in folder names. To reorder a unit, move its
       # block; never rename its folder. Folders are named by topic, never by

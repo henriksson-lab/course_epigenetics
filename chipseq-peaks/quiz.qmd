@@ -1,0 +1,95 @@
+---
+title: "Quiz: Peak calling"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+Short questions on calling ChIP-seq peaks and on replicate reproducibility. Try each on paper first, then open the answer.
+
+---
+
+**Q1.** An input has 20 M reads; d = 200 bp; effective genome size 2.7 × 10⁹. Around a candidate summit the input has 3 reads in 200 bp, 15 reads in 1 kb and 80 reads in 10 kb. Compute λ<sub>BG</sub>, λ<sub>d</sub>, λ<sub>1k</sub>, λ<sub>10k</sub> and λ<sub>local</sub>.
+
+::: {.callout-tip collapse="true" title="Hint"}
+λ<sub>w</sub> = reads in the window × d / w. λ<sub>local</sub> is the maximum.
+:::
+
+::: {.callout-note collapse="true" title="Answer"}
+λ<sub>BG</sub> = 20 × 10⁶ × 200 / 2.7 × 10⁹ = 1.48; λ<sub>d</sub> = 3 × 200/200 = 3; λ<sub>1k</sub> = 15 × 200/1000 = 3; λ<sub>10k</sub> = 80 × 200/10 000 = 1.6. λ<sub>local</sub> = 3.
+:::
+
+---
+
+**Q2.** A ChIP has 40 M reads and its input 10 M. Which library does MACS scale by default, and by what factor? A summit has a raw ChIP pileup of 48: what k enters the Poisson test?
+
+::: {.callout-note collapse="true" title="Answer"}
+The larger library, the ChIP, is scaled down to the input: factor 10/40 = 0.25, so k = 12.
+:::
+
+---
+
+**Q3.** Why does MACS take the maximum of the λ estimates rather than their mean?
+
+::: {.callout-note collapse="true" title="Answer"}
+To be conservative: if any scale shows a high background (an input pile-up, an open or amplified region), the candidate must exceed it. A mean would let local artefacts through as peaks.
+:::
+
+---
+
+**Q4.** With λ<sub>local</sub> = 2, a summit has k = 12 and P(X ≥ 12) = 1.4 × 10⁻⁶. What fold enrichment does MACS report? Would the same summit be more or less significant if the input were 10 times deeper (same λ in expectation)?
+
+::: {.callout-note collapse="true" title="Answer"}
+(12 + 1)/(2 + 1) = 4.3. Same expected λ, so the same p-value in expectation; but λ would be estimated far more precisely, with fewer summits whose λ is set by a single stray input read.
+:::
+
+---
+
+**Q5.** MACS without an input uses λ<sub>BG</sub> and the 10-kb window of the ChIP. Why not the 1-kb window? What kinds of false peaks appear without an input?
+
+::: {.callout-note collapse="true" title="Answer"}
+A 1-kb window of the ChIP contains the peak itself and would raise λ to the peak's level. False peaks: open promoters (sonication bias), amplified regions (copy number), hyper-ChIPable highly expressed genes, collapsed repeats not in the blacklist.
+:::
+
+---
+
+**Q6.** Why does a narrow peak caller find very few peaks in H3K36me3 data, even when the domains are obvious in a 1-kb-bin coverage track? What does SICER/epic2 do instead?
+
+::: {.callout-note collapse="true" title="Answer"}
+Each base in a broad domain is only slightly enriched (the reads are spread over tens of kb), so few bases pass a strict per-base test. SICER/epic2 count reads in 200-bp bins, keep bins above a lenient threshold, join them across small gaps into islands and test each island as a whole: many slightly enriched bins add up to strong evidence.
+:::
+
+---
+
+**Q7.** Why is IDR run on peaks called with `-p 0.01` and not on the final peak set?
+
+::: {.callout-note collapse="true" title="Answer"}
+IDR estimates where rank agreement breaks down by fitting a reproducible and an irreproducible (noise) component. It needs noise peaks in its input; a thresholded set has almost none and the model cannot be fitted properly.
+:::
+
+---
+
+**Q8.** An experiment has N<sub>t</sub> = 12 000, N<sub>p</sub> = 14 000, N<sub>1</sub> = 15 000, N<sub>2</sub> = 5 000. Compute the rescue and self-consistency ratios. Does it pass ENCODE's criteria, and what is the problem?
+
+::: {.callout-note collapse="true" title="Answer"}
+Rescue 14 000/12 000 = 1.17 (passes); self-consistency 15 000/5 000 = 3.0 (fails, > 2). Replicate 2 supports far fewer peaks than replicate 1: shallower, less complex or less enriched. Resequence or replace replicate 2.
+:::
+
+---
+
+**Q9.** A study reports "18 000 peaks in the control and 11 000 in the treated cells, so the factor loses 7 000 binding sites". What is wrong with this inference?
+
+::: {.callout-note collapse="true" title="Answer"}
+Peak numbers depend on depth, signal-to-noise, thresholds and the input; a site can weaken without disappearing, or fall just below a threshold by chance. Without replicates and a statistical test on read counts in a common set of regions (differential binding), and without considering a global change (spike-ins), the numbers say little.
+:::
+
+---
+
+**Q10.** In the course data, MACS's λ<sub>local</sub> at most CTCF summits was set by the 100-bp window of the input, not by λ<sub>BG</sub>. Why, and is that a problem?
+
+::: {.callout-note collapse="true" title="Answer"}
+The input is shallow (about 3 reads per kb): λ<sub>BG</sub> = 0.29, so a single input read within 50 bp of a summit gives λ<sub>d</sub> = 1, already higher. The background estimate is then driven by single reads, which is noisy and makes MACS conservative near any stray input read. A deeper input would make λ<sub>d</sub> a real estimate.
+:::

@@ -1,0 +1,19 @@
+# id	url	description	used_by
+gse42861_samples.tsv	prepare-meth2.sh	GSE42861 (Liu et al. 2013, 450k, blood, rheumatoid arthritis vs controls): sample table of the 151 samples on the 14 BeadChips holding both groups (status, age, sex, smoking, slide, array)	methylation-arrays, epigenetic-clocks
+gse42861_idat/	prepare-meth2.sh	GSE42861 IDAT files (Grn + Red, gzipped) of the 151 samples, from GEO per-sample supplementary files; 1.3 GB	methylation-arrays, epigenetic-clocks
+hm450_hg38_manifest.tsv.gz	https://github.com/zhou-lab/InfiniumAnnotationV1/raw/main/Anno/HM450/HM450.hg38.manifest.tsv.gz	450k probe annotation on GRCh38 (Zhou, Laird & Shen 2017)	methylation-arrays
+hm450_hg38_mask.tsv.gz	https://github.com/zhou-lab/InfiniumAnnotationV1/raw/main/Anno/HM450/HM450.hg38.mask.tsv.gz	450k probe masks (Zhou et al. 2017); M_general = recommended general mask	methylation-arrays
+horvath2013_coefficients.csv	https://static-content.springer.com/esm/art%3A10.1186%2Fgb-2013-14-10-r115/MediaObjects/13059_2013_3156_MOESM3_ESM.csv	Horvath 2013 Additional file 3: intercept and 353 CpG coefficients of the pan-tissue clock	epigenetic-clocks
+moss2018_reference_atlas.csv	https://raw.githubusercontent.com/nloyfer/meth_atlas/master/reference_atlas.csv	Moss et al. 2018 methylation atlas: beta of marker CpGs (6105 unique, 7890 rows) in 25 cell types/tissues	epigenetic-clocks
+hannum_gse40279_samples.tsv	prepare-meth2.sh	Hannum et al. 2013 (GSE40279, 656 whole-blood 450k): sample table (age, sex, ethnicity, source, plate) from the GEO series matrix	epigenetic-clocks
+hannum_gse40279_beta_subset.tsv.gz	prepare-meth2.sh	Hannum GSE40279 average beta (GEO suppl., 1.1 GB, temporary) reduced to 26 127 CpGs x 656 samples: 20 000 most variable + Horvath + Moss atlas CpGs + ELOVL2/FHL2	epigenetic-clocks
+longread_regions.bed	prepare-meth2.sh	the 5 regions of the long-read unit (H19, KvDMR, SNRPN, chrX KDM5C, chr21 33-34 Mb)	longread-epigenomics
+hg001_ont_regions.bam	prepare-meth2.sh	HG001 (NA12878/GM12878) nanopore R10.4.1 reads with 5mC+5hmC MM/ML tags, ONT open data giab_2023.05 (4 sup pass CRAMs), cut to the 5 regions by indexed remote access; 123 MB (+ .bai)	longread-epigenomics
+hg001_trio_regions.vcf.gz	prepare-meth2.sh	NA12878, NA12891 (father), NA12892 (mother) biallelic SNP genotypes in the regions, 1000 Genomes 30x phased panel (2022) (+ .tbi)	longread-epigenomics
+gm12878_wgbs_regions.bed.gz	prepare-meth2.sh	ENCODE GM12878 WGBS rep 1 (ENCFF570TIL, bed9+, GRCh38) rows in the 5 regions	longread-epigenomics
+gm12878_wgbs_rep2_regions.bed.gz	prepare-meth2.sh	ENCODE GM12878 WGBS rep 2 (ENCFF614QHA, bed9+, GRCh38) rows in the 5 regions	longread-epigenomics
+hg001_hp1_chrX_chr20_5mc.bed.gz	prepare-meth2.sh	ONT giab_2025.01 wf-human-variation HG001 haplotype-1 bedMethyl (PAW79146, sup), 5mC rows on chrX and chr20: chrom, start, end, valid, 5mC	longread-epigenomics
+hg001_hp2_chrX_chr20_5mc.bed.gz	prepare-meth2.sh	as above, haplotype 2	longread-epigenomics
+hg38_cpgIslandExt.txt.gz	https://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/cpgIslandExt.txt.gz	UCSC CpG islands, hg38	longread-epigenomics
+hg002_ecogii_regions.bam	prepare-meth2.sh	HG002 nanopore reads from EcoGII-treated nuclei (5mC, 5hmC, 6mA calls), ONT chrom_acc_2025.06 flow cell PAY22766, chr21:33-34 Mb (+ .bai)	longread-epigenomics
+hg002_native_regions.bam	prepare-meth2.sh	HG002 untreated (native) nanopore reads, ONT chrom_acc_2025.06 flow cell PBA15131, chr21:33-34 Mb (+ .bai)	longread-epigenomics

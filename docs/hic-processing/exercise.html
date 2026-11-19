@@ -1,0 +1,2149 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.30">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Exercise: Hi-C, from reads to contact matrices – Epigenetics</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-662ae1889177880cb371f83234c0a158.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-d37fb74fd9c61f52627c5754f4dbd5bd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Epigenetics</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-course-info" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Course info</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-course-info">    
+        <li>
+    <a class="dropdown-item" href="../courseplan.html">
+ <span class="dropdown-text">Course plan</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">3D genome</li><li class="breadcrumb-item"><a href="../hic-processing/lec.html">Hi-C: from reads to contact matrices</a></li><li class="breadcrumb-item"><a href="../hic-processing/exercise.html">Exercise</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Course info</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../courseplan.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Course plan</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../elo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Learning outcomes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../intro/install.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Install software</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dictionary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Glossary</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Foundations</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">What is epigenetics?</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chromatin-intro/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chromatin-intro/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chromatin-intro/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Genomic intervals</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../genomic-intervals/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../genomic-intervals/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../genomic-intervals/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text">Gene regulation</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../gene-regulation/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../gene-regulation/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../gene-regulation/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false">
+ <span class="menu-text">From reads to coverage</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../enrichment-alignment/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../enrichment-alignment/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../enrichment-alignment/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false">
+ <span class="menu-text">Experimental design and QC</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epigenomics-design/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epigenomics-design/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epigenomics-design/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
+ <span class="menu-text">Chromatin accessibility (ATAC-seq)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="false">
+ <span class="menu-text">ATAC-seq: Tn5, fragment sizes, nucleosome ladder</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atacseq-intro/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atacseq-intro/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atacseq-intro/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false">
+ <span class="menu-text">ATAC-seq processing and peak calling</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atacseq-analysis/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atacseq-analysis/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atacseq-analysis/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="false">
+ <span class="menu-text">Differential accessibility</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../differential-accessibility/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../differential-accessibility/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../differential-accessibility/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="false">
+ <span class="menu-text">Motifs, motif enrichment and TF footprinting</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../motifs-footprinting/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../motifs-footprinting/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../motifs-footprinting/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="true">
+ <span class="menu-text">Protein–DNA binding and histone marks (ChIP-seq)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" role="navigation" aria-expanded="false">
+ <span class="menu-text">ChIP-seq: the assay</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-14" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-intro/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-intro/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-intro/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-15" role="navigation" aria-expanded="false">
+ <span class="menu-text">Peak calling</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-15" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-15" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-peaks/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-peaks/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-peaks/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" role="navigation" aria-expanded="false">
+ <span class="menu-text">CUT&amp;RUN and CUT&amp;Tag</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-16" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cutrun-cuttag/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cutrun-cuttag/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cutrun-cuttag/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-17" role="navigation" aria-expanded="false">
+ <span class="menu-text">Annotation and differential binding</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-17" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-17" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-downstream/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-downstream/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-downstream/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-18" role="navigation" aria-expanded="false">
+ <span class="menu-text">Combining marks into chromatin states</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-18" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-18" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chromatin-states/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chromatin-states/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chromatin-states/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-19" role="navigation" aria-expanded="true">
+ <span class="menu-text">DNA methylation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-19" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-19" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-20" role="navigation" aria-expanded="false">
+ <span class="menu-text">DNA methylation biology</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-20" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-20" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-biology/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-biology/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-biology/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-21" role="navigation" aria-expanded="false">
+ <span class="menu-text">Bisulfite and enzymatic sequencing</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-21" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-21" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-bisulfite/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-bisulfite/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-bisulfite/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-22" role="navigation" aria-expanded="false">
+ <span class="menu-text">Differential methylation</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-22" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-22" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-differential/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-differential/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-differential/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-23" role="navigation" aria-expanded="false">
+ <span class="menu-text">Methylation arrays (Illumina EPIC)</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-23" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-23" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-arrays/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-arrays/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-arrays/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-24" role="navigation" aria-expanded="false">
+ <span class="menu-text">Epigenetic clocks and biomarkers</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-24" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-24" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epigenetic-clocks/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epigenetic-clocks/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epigenetic-clocks/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-25" role="navigation" aria-expanded="false">
+ <span class="menu-text">Methylation and chromatin from long reads</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-25" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-25" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../longread-epigenomics/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../longread-epigenomics/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../longread-epigenomics/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-26" role="navigation" aria-expanded="true">
+ <span class="menu-text">3D genome</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-26" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-26" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-27" role="navigation" aria-expanded="false">
+ <span class="menu-text">3D genome organisation</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-27" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-27" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../genome-3d-intro/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../genome-3d-intro/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../genome-3d-intro/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-28" role="navigation" aria-expanded="true">
+ <span class="menu-text">Hi-C: from reads to contact matrices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-28" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-28" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hic-processing/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hic-processing/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hic-processing/exercise.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-29" role="navigation" aria-expanded="false">
+ <span class="menu-text">Calling compartments, TADs and loops</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-29" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-29" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hic-features/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hic-features/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hic-features/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-30" role="navigation" aria-expanded="true">
+ <span class="menu-text">Integration and interpretation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-30" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-30" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-31" role="navigation" aria-expanded="false">
+ <span class="menu-text">Linking regulatory elements to genes</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-31" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-31" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../integration-rnaseq/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../integration-rnaseq/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../integration-rnaseq/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-32" role="navigation" aria-expanded="false">
+ <span class="menu-text">Epigenomics and genetic variation</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-32" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-32" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../noncoding-variants/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../noncoding-variants/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../noncoding-variants/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-33" role="navigation" aria-expanded="true">
+ <span class="menu-text">Machine learning for prediction</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-33" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-33" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-34" role="navigation" aria-expanded="false">
+ <span class="menu-text">Machine learning from scratch</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-34" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-34" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-basics/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-basics/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-basics/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-35" role="navigation" aria-expanded="false">
+ <span class="menu-text">What people try to predict</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-35" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-35" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-prediction-tasks/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-prediction-tasks/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-prediction-tasks/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-36" role="navigation" aria-expanded="false">
+ <span class="menu-text">How a CNN reads DNA</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-36" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-36" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-cnn-dna/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-cnn-dna/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-cnn-dna/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-37" role="navigation" aria-expanded="false">
+ <span class="menu-text">What did the model learn? Variant effects</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-37" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-37" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-interpretation-variants/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-interpretation-variants/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-interpretation-variants/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#goal" id="toc-goal" class="nav-link active" data-scroll-target="#goal">Goal</a></li>
+  <li><a href="#background" id="toc-background" class="nav-link" data-scroll-target="#background">Background</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
+  <li><a href="#by-hand" id="toc-by-hand" class="nav-link" data-scroll-target="#by-hand">By hand</a></li>
+  <li><a href="#on-the-command-line" id="toc-on-the-command-line" class="nav-link" data-scroll-target="#on-the-command-line">On the command line</a>
+  <ul class="collapse">
+  <li><a href="#c1-the-reference-the-reads-and-the-junction" id="toc-c1-the-reference-the-reads-and-the-junction" class="nav-link" data-scroll-target="#c1-the-reference-the-reads-and-the-junction">C1 — The reference, the reads and the junction</a></li>
+  <li><a href="#c2-align-and-parse" id="toc-c2-align-and-parse" class="nav-link" data-scroll-target="#c2-align-and-parse">C2 — Align and parse</a></li>
+  <li><a href="#c3-sort-deduplicate-select" id="toc-c3-sort-deduplicate-select" class="nav-link" data-scroll-target="#c3-sort-deduplicate-select">C3 — Sort, deduplicate, select</a></li>
+  <li><a href="#c4-whole-genome-qc-from-the-prepared-statistics" id="toc-c4-whole-genome-qc-from-the-prepared-statistics" class="nav-link" data-scroll-target="#c4-whole-genome-qc-from-the-prepared-statistics">C4 — Whole-genome QC from the prepared statistics</a></li>
+  <li><a href="#c5-bin-into-a-matrix-and-balance" id="toc-c5-bin-into-a-matrix-and-balance" class="nav-link" data-scroll-target="#c5-bin-into-a-matrix-and-balance">C5 — Bin into a matrix and balance</a></li>
+  <li><a href="#c6-compare-with-the-published-map" id="toc-c6-compare-with-the-published-map" class="nav-link" data-scroll-target="#c6-compare-with-the-published-map">C6 — Compare with the published map</a></li>
+  </ul></li>
+  <li><a href="#in-python" id="toc-in-python" class="nav-link" data-scroll-target="#in-python">In Python</a>
+  <ul class="collapse">
+  <li><a href="#p1-the-orientation-plot" id="toc-p1-the-orientation-plot" class="nav-link" data-scroll-target="#p1-the-orientation-plot">P1 — The orientation plot</a></li>
+  <li><a href="#p2-raw-and-balanced" id="toc-p2-raw-and-balanced" class="nav-link" data-scroll-target="#p2-raw-and-balanced">P2 — Raw and balanced</a></li>
+  <li><a href="#p3-distance-decay-ours-against-encodes" id="toc-p3-distance-decay-ours-against-encodes" class="nav-link" data-scroll-target="#p3-distance-decay-ours-against-encodes">P3 — Distance decay: ours against ENCODE’s</a></li>
+  <li><a href="#p4-resolution-against-depth" id="toc-p4-resolution-against-depth" class="nav-link" data-scroll-target="#p4-resolution-against-depth">P4 — Resolution against depth</a></li>
+  <li><a href="#p5-observedexpected-on-our-map" id="toc-p5-observedexpected-on-our-map" class="nav-link" data-scroll-target="#p5-observedexpected-on-our-map">P5 — Observed/expected on our map</a></li>
+  </ul></li>
+  <li><a href="#hints" id="toc-hints" class="nav-link" data-scroll-target="#hints">Hints</a></li>
+  <li><a href="#solutions" id="toc-solutions" class="nav-link" data-scroll-target="#solutions">Solutions</a></li>
+  <li><a href="#where-this-leads" id="toc-where-this-leads" class="nav-link" data-scroll-target="#where-this-leads">Where this leads</a></li>
+  <li><a href="#key-papers-optional-further-reading" id="toc-key-papers-optional-further-reading" class="nav-link" data-scroll-target="#key-papers-optional-further-reading">Key papers (optional further reading)</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">3D genome</li><li class="breadcrumb-item"><a href="../hic-processing/lec.html">Hi-C: from reads to contact matrices</a></li><li class="breadcrumb-item"><a href="../hic-processing/exercise.html">Exercise</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Exercise: Hi-C, from reads to contact matrices</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="goal" class="level2">
+<h2 class="anchored" data-anchor-id="goal">Goal</h2>
+<p>After this exercise you will be able to:</p>
+<ul>
+<li>Write the ligation junction of a restriction enzyme, classify read pairs as valid contacts or artefacts, and bin pairs into a matrix, by hand.</li>
+<li>Run one iteration of matrix balancing (ICE) and compute expected values and observed/expected on a small matrix.</li>
+<li>Process real Hi-C reads on the command line: align the two ends separately with <code>bwa mem -SP5M</code>, parse pairs with <code>pairtools</code>, remove duplicates, and build and balance a <code>.cool</code> matrix with <code>cooler</code>.</li>
+<li>Read Hi-C QC statistics, and compare your map with a published one in Python: balancing, <span class="math inline">\(P(s)\)</span>, and resolution against depth.</li>
+</ul>
+</section>
+<section id="background" class="level2">
+<h2 class="anchored" data-anchor-id="background">Background</h2>
+<p><strong>Junction.</strong> A restriction enzyme with a 5′ overhang (MboI: ^GATC) leaves ends that are filled in and ligated blunt; the overhang is duplicated: GATC + GATC = <strong>GATCGATC</strong>.</p>
+<p><strong>Pairs.</strong> Each side of a read pair is placed by the 5′ end of its 5′-most alignment. A side is <strong>U</strong>nique (MAPQ ≥ 30), <strong>M</strong>ulti-mapped, <strong>N</strong>ull (unmapped), <strong>R</strong>escued (part of a chimeric read explained by one ligation) or part of a <strong>W</strong>alk. Pair types UU, UR and RU are kept.</p>
+<p><strong>Artefacts.</strong> Pairs within one restriction fragment with reads pointing <strong>inward</strong> (+ −) are dangling ends; pointing <strong>outward</strong> (− +) are self-circles. At large distances the four orientations (+ −, − +, + +, − −) each make up 25%. <strong>Duplicates</strong> share both 5′ positions and strands.</p>
+<p><strong>Matrix.</strong> bin = ⌊position / bin size⌋; pixel (i, j) counts pairs with one side in bin i and one in bin j.</p>
+<p><strong>Balancing (ICE).</strong> Model <span class="math inline">\(O_{ij} = b_i b_j T_{ij}\)</span>; iterate <span class="math inline">\(b_i \leftarrow\)</span> row sum<span class="math inline">\(_i\)</span> / mean row sum, divide pixel (i, j) by <span class="math inline">\(b_i b_j\)</span>, until row sums are equal. <strong>Expected</strong> <span class="math inline">\(E(s)\)</span> = mean of the balanced diagonal at distance <span class="math inline">\(s\)</span>; O/E = pixel / <span class="math inline">\(E(s)\)</span>.</p>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>file</th>
+<th>what</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>gm12878_hic_R1.fastq.gz</code>, <code>gm12878_hic_R2.fastq.gz</code></td>
+<td>GM12878 in situ Hi-C (Rao et al.&nbsp;2014), run SRR1658570 (library HIC001, MboI, 2 × 101 bp): the read pairs from the first 30 M of the run whose sides map to chr21</td>
+</tr>
+<tr class="even">
+<td><code>gm12878_hic_fullgenome_stats.txt</code></td>
+<td><code>pairtools</code> statistics of all 30 M read pairs aligned to the whole genome</td>
+</tr>
+<tr class="odd">
+<td><code>hg38_chr21.fa.gz</code></td>
+<td>the chr21 sequence (UCSC hg38)</td>
+</tr>
+<tr class="even">
+<td><code>gm12878_hic_chr19_chr21.mcool</code></td>
+<td>ENCODE’s map of the same experiment (all replicates, 4.6 billion contacts), chr19 and chr21</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">data/download.sh</span> hic-processing      <span class="co"># the reads are made by data/prepare-hic.sh (see data/README.md)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/epi/hic <span class="kw">&amp;&amp;</span> <span class="bu">cd</span> ~/epi/hic</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="va">D</span><span class="op">=</span>/path/to/course/data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You need <code>bwa</code>, <code>samtools</code>, <code>pairtools</code> (1.1), <code>cooler</code> (0.10) and, in Python, <code>cooler</code>, <code>cooltools</code>, <code>numpy</code>, <code>pandas</code> and <code>matplotlib</code> (one conda line: <code>conda create -n hic -c conda-forge -c bioconda python=3.11 cooler=0.10 cooltools=0.7 pairtools=1.1 bwa samtools bedtools pybigwig pyfaidx bioframe matplotlib</code>). The command-line part takes about 10 minutes with 8 threads; on a cluster, wrap C2 in a SLURM job (<code>sbatch -c 8 --mem 8G --wrap "..."</code>).</p>
+<p><em>Simplification:</em> the reads were selected by aligning 30 million read pairs to the whole genome and keeping those with a side on chr21 (the other side on chr21 or unplaced), so you can align to chr21 only. Contacts with other chromosomes are absent, and a few reads that are multi-mapped in the whole genome look unique on chr21 alone. The whole-genome statistics are in <code>gm12878_hic_fullgenome_stats.txt</code>.</p>
+</section>
+<section id="by-hand" class="level2">
+<h2 class="anchored" data-anchor-id="by-hand">By hand</h2>
+<p><strong>B1. Junctions and fragments.</strong></p>
+<ol type="a">
+<li><p>HindIII cuts A^AGCTT, leaving a 5′ overhang AGCT. Write the junction after fill-in and blunt ligation. Do the same for NcoI (C^CATGG).</p></li>
+<li><p>In random sequence with equal base frequencies, how often does a 4-bp site occur? A 6-bp site? How many MboI sites do you expect on chr21 (40.1 Mb of sequence)?</p></li>
+<li><p>Why can a 6-cutter map not reach 1-kb resolution, whatever the depth?</p></li>
+</ol>
+<p><strong>B2. A chimeric read.</strong> A 101-bp read 1 has the junction GATCGATC starting at position 41 (1-based). Its first 44 bases align to chr21:20 000 000 (+ strand), the rest to chr21:34 500 120 (+ strand). Read 2 aligns to chr21:34 500 600 on the − strand.</p>
+<ol type="a">
+<li><p>Which positions represent the two sides of the pair?</p></li>
+<li><p>Why is the pair “rescued” (UR) rather than a walk?</p></li>
+<li><p>What would a normal paired-end aligner (without <code>-SP</code>) have done with this pair?</p></li>
+</ol>
+<p><strong>B3. Classify pairs.</strong> MboI sites near the loci are at chr21:1 000 000, 1 000 310, 1 000 650 and 1 001 020. Classify each pair (side 1 always the leftmost):</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>pair</th>
+<th>pos1</th>
+<th>strand1</th>
+<th>pos2</th>
+<th>strand2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>p1</td>
+<td>1 000 020</td>
+<td>+</td>
+<td>1 000 290</td>
+<td>−</td>
+</tr>
+<tr class="even">
+<td>p2</td>
+<td>1 000 030</td>
+<td>−</td>
+<td>1 000 280</td>
+<td>+</td>
+</tr>
+<tr class="odd">
+<td>p3</td>
+<td>1 000 100</td>
+<td>+</td>
+<td>1 000 600</td>
+<td>−</td>
+</tr>
+<tr class="even">
+<td>p4</td>
+<td>1 000 400</td>
+<td>−</td>
+<td>1 250 000</td>
+<td>−</td>
+</tr>
+<tr class="odd">
+<td>p5</td>
+<td>1 000 400</td>
+<td>−</td>
+<td>1 250 000</td>
+<td>−</td>
+</tr>
+<tr class="even">
+<td>p6</td>
+<td>1 000 700</td>
+<td>+</td>
+<td>(chr19) 2 000 000</td>
+<td>+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>B4. Bin and count.</strong> With 100-kb bins, fill the upper triangle of a 4 × 4 matrix for chr21:0–400 kb from these pairs: (15 000, 80 000), (120 000, 390 000), (210 000, 260 000), (230 000, 280 000), (50 000, 330 000), (305 000, 395 000), (110 000, 190 000), (99 999, 100 000).</p>
+<p><strong>B5. One ICE iteration.</strong> A balanced map must have equal row sums. Raw matrix:</p>
+<pre><code>      a    b    c
+a    10    8    2
+b     8   20    6
+c     2    6    4</code></pre>
+<ol type="a">
+<li><p>Compute the row sums and their mean, the bias <span class="math inline">\(b_i\)</span> of each bin, and the matrix after one iteration (divide pixel (i, j) by <span class="math inline">\(b_i b_j\)</span>).</p></li>
+<li><p>Compute the new row sums. Are they closer to equal?</p></li>
+<li><p>Bin c had 4 % of the reads in the previous library and 12 % in this one, which has the same cell type. What could cause that, and does balancing fix it?</p></li>
+</ol>
+<p><strong>B6. Expected and O/E.</strong> A balanced 5-bin map (upper triangle, diagonal excluded):</p>
+<pre><code>      1     2     3     4     5
+1     –   0.20  0.08  0.05  0.06
+2           –   0.22  0.07  0.03
+3                 –   0.18  0.09
+4                       –   0.20</code></pre>
+<ol type="a">
+<li>Compute <span class="math inline">\(E(s)\)</span> for <span class="math inline">\(s\)</span> = 1, 2 and 3 bins. (b) Compute O/E for pixels (1, 3), (3, 5), (1, 4) and (1, 5). Which pixel is most enriched? (c) Is the pixel with the highest balanced value the most interesting?</li>
+</ol>
+<p><strong>B7. Read the QC.</strong> Two libraries from the same cells, 50 M read pairs each:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th>library A</th>
+<th>library B</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>UU + UR + RU</td>
+<td>78%</td>
+<td>74%</td>
+</tr>
+<tr class="even">
+<td>duplicates (of mapped)</td>
+<td>4%</td>
+<td>38%</td>
+</tr>
+<tr class="odd">
+<td>cis among unique pairs</td>
+<td>84%</td>
+<td>52%</td>
+</tr>
+<tr class="even">
+<td>cis &gt; 20 kb among unique pairs</td>
+<td>55%</td>
+<td>21%</td>
+</tr>
+<tr class="odd">
+<td>orientations converge at</td>
+<td>1.5 kb</td>
+<td>2 kb</td>
+</tr>
+</tbody>
+</table>
+<ol type="a">
+<li>Which library would you sequence deeper? (b) What do B’s duplicate rate and cis fraction suggest about what went wrong?</li>
+</ol>
+<p><strong>B8. Depth for resolution.</strong> A Hi-C library gives 400 million valid contacts genome-wide (3.1 Gb), 75% cis.</p>
+<ol type="a">
+<li><p>How many 5-kb bins are there in the genome? On average, how many contacts touch each bin? (Each contact counts for two bins.)</p></li>
+<li><p>Rao et al.’s criterion asks for ≥ 1 000 contacts in 80% of bins. Is 5 kb realistic? 25 kb?</p></li>
+</ol>
+</section>
+<section id="on-the-command-line" class="level2">
+<h2 class="anchored" data-anchor-id="on-the-command-line">On the command line</h2>
+<section id="c1-the-reference-the-reads-and-the-junction" class="level3">
+<h3 class="anchored" data-anchor-id="c1-the-reference-the-reads-and-the-junction">C1 — The reference, the reads and the junction</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="va">$D</span>/hg38_chr21.fa.gz <span class="op">&gt;</span> chr21.fa</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">bwa</span> index chr21.fa <span class="dv">2</span><span class="op">&gt;</span> bwa_index.log</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> faidx chr21.fa</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cut</span> <span class="at">-f1,2</span> chr21.fa.fai <span class="op">&gt;</span> chr21.sizes</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> chr21.sizes</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="va">$D</span>/gm12878_hic_R1.fastq.gz <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'NR % 4 == 2'</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="va">$D</span>/gm12878_hic_R1.fastq.gz <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'NR % 4 == 2'</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-200000</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-c</span> GATCGATC</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">'&gt;'</span> chr21.fa <span class="kw">|</span> <span class="fu">tr</span> <span class="at">-d</span> <span class="st">'\n'</span> <span class="kw">|</span> <span class="fu">tr</span> acgtn ACGTN <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-o</span> GATC <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">'&gt;'</span> chr21.fa <span class="kw">|</span> <span class="fu">tr</span> <span class="at">-d</span> <span class="st">'\n'</span> <span class="kw">|</span> <span class="fu">tr</span> acgtn ACGTN <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-o</span> AAGCTT <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>How many read pairs are there? What fraction of read 1 contains the MboI junction?</p></li>
+<li><p>How many MboI and HindIII sites does chr21 have? Compare with B1(b). (chr21 has 46.7 Mb including 6.6 Mb of N.)</p></li>
+</ol>
+</section>
+<section id="c2-align-and-parse" class="level3">
+<h3 class="anchored" data-anchor-id="c2-align-and-parse">C2 — Align and parse</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bwa</span> mem <span class="at">-SP5M</span> <span class="at">-t</span> 8 chr21.fa <span class="va">$D</span>/gm12878_hic_R1.fastq.gz <span class="va">$D</span>/gm12878_hic_R2.fastq.gz <span class="dv">2</span><span class="op">&gt;</span> bwa.log <span class="dt">\</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="ex">pairtools</span> parse <span class="at">--min-mapq</span> 30 <span class="at">--walks-policy</span> 5unique <span class="at">--max-inter-align-gap</span> 30 <span class="at">--drop-sam</span> <span class="at">--drop-seq</span> <span class="dt">\</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">-c</span> chr21.sizes <span class="at">--output-stats</span> parse.stats <span class="at">-o</span> chr21.pairs.gz</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> chr21.pairs.gz <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-v</span> <span class="st">'^#'</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-5</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> chr21.pairs.gz <span class="kw">|</span> <span class="fu">grep</span> <span class="st">'^#columns'</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-E</span> <span class="st">'^(total|total_unmapped|total_single_sided_mapped|total_mapped|cis_1kb\+)\s'</span> parse.stats</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">'^pair_types'</span> parse.stats</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>What are the columns of the <code>.pairs</code> file? Which column holds the pair type?</p></li>
+<li><p>How many pairs have both sides mapped? Which pair types are most common?</p></li>
+<li><p>How long did the alignment take? (<code>time</code> in front of the command, or the timestamps in <code>bwa.log</code>.)</p></li>
+</ol>
+</section>
+<section id="c3-sort-deduplicate-select" class="level3">
+<h3 class="anchored" data-anchor-id="c3-sort-deduplicate-select">C3 — Sort, deduplicate, select</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pairtools</span> sort <span class="at">--nproc</span> 4 <span class="at">-o</span> chr21.sorted.pairs.gz chr21.pairs.gz</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">pairtools</span> dedup <span class="at">--max-mismatch</span> 3 <span class="at">--output-stats</span> dedup.stats <span class="at">--output-dups</span> chr21.dups.pairs.gz <span class="dt">\</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-o</span> chr21.nodups.pairs.gz chr21.sorted.pairs.gz</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="ex">pairtools</span> select <span class="st">'(pair_type == "UU") or (pair_type == "UR") or (pair_type == "RU")'</span> <span class="dt">\</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">-o</span> chr21.valid.pairs.gz chr21.nodups.pairs.gz</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-E</span> <span class="st">'^(total_mapped|total_dups|total_nodups|cis|cis_1kb\+|cis_20kb\+)\s'</span> dedup.stats</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> chr21.valid.pairs.gz <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-vc</span> <span class="st">'^#'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li>What fraction of mapped pairs are duplicates? (b) How many valid contacts remain? What fraction are more than 1 kb and more than 20 kb apart?</li>
+</ol>
+</section>
+<section id="c4-whole-genome-qc-from-the-prepared-statistics" class="level3">
+<h3 class="anchored" data-anchor-id="c4-whole-genome-qc-from-the-prepared-statistics">C4 — Whole-genome QC from the prepared statistics</h3>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="va">S</span><span class="op">=</span><span class="va">$D</span>/gm12878_hic_fullgenome_stats.txt</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-E</span> <span class="st">'^(total|total_mapped|total_dups|total_nodups|cis|trans|cis_1kb\+|cis_20kb\+)\s'</span> <span class="va">$S</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">awk</span> <span class="st">'$1 == "cis" { c = $2 } $1 == "trans" { t = $2 } $1 == "cis_20kb+" { l = $2 } $1 == "total_nodups" { n = $2 }</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="st">     END { printf "cis %.3f  trans %.3f  cis&gt;20kb %.3f\n", c / n, t / n, l / n }'</span> <span class="va">$S</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">'^pair_types'</span> <span class="va">$S</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-k2,2nr</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-6</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-E</span> <span class="st">'^dist_freq/(178-237|316-422|1778-2371|31623-42170)/'</span> <span class="va">$S</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>Compute the cis and trans fractions and the fraction of long-range cis contacts. Does the library pass the QC thresholds of the lecture?</p></li>
+<li><p>In the <code>dist_freq</code> lines, compare the four orientations at short distances (178–237 bp, 316–422 bp) and at 1.8–2.4 kb and 32–42 kb. Where do they become equal?</p></li>
+</ol>
+</section>
+<section id="c5-bin-into-a-matrix-and-balance" class="level3">
+<h3 class="anchored" data-anchor-id="c5-bin-into-a-matrix-and-balance">C5 — Bin into a matrix and balance</h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">cooler</span> cload pairs <span class="at">-c1</span> 2 <span class="at">-p1</span> 3 <span class="at">-c2</span> 4 <span class="at">-p2</span> 5 chr21.sizes:10000 chr21.valid.pairs.gz chr21_10kb.cool</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">cooler</span> info chr21_10kb.cool <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-E</span> <span class="st">'nbins|nnz|sum'</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ex">cooler</span> zoomify <span class="at">-r</span> 10000,50000,100000,250000,500000 <span class="at">--balance</span> <span class="at">--balance-args</span> <span class="st">'--cis-only'</span> <span class="dt">\</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-o</span> chr21.mcool chr21_10kb.cool</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="ex">cooler</span> ls chr21.mcool</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="ex">cooler</span> dump <span class="at">-t</span> bins chr21.mcool::resolutions/250000 <span class="kw">|</span> <span class="fu">head</span> <span class="at">-60</span> <span class="kw">|</span> <span class="fu">tail</span> <span class="at">-5</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="ex">cooler</span> dump <span class="at">-t</span> bins chr21.mcool::resolutions/250000 <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'$4 == "" || $4 == "nan"'</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>How many bins, non-zero pixels and contacts does the 10-kb matrix have?</p></li>
+<li><p>What is the fourth column of the bins table, and why is it empty (NaN) for some bins?</p></li>
+</ol>
+</section>
+<section id="c6-compare-with-the-published-map" class="level3">
+<h3 class="anchored" data-anchor-id="c6-compare-with-the-published-map">C6 — Compare with the published map</h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">cooler</span> dump <span class="at">--join</span> <span class="at">-r</span> chr21:35,000,000-35,500,000 chr21.mcool::resolutions/100000 <span class="kw">|</span> <span class="fu">head</span> <span class="at">-3</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">cooler</span> dump <span class="at">--join</span> <span class="at">-r</span> chr21:35,000,000-35,500,000 <span class="va">$D</span>/gm12878_hic_chr19_chr21.mcool::resolutions/100000 <span class="kw">|</span> <span class="fu">head</span> <span class="at">-3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>How many times more contacts does ENCODE’s map have in the same pixels? Compare with the total numbers of contacts.</p>
+</section>
+</section>
+<section id="in-python" class="level2">
+<h2 class="anchored" data-anchor-id="in-python">In Python</h2>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re, numpy <span class="im">as</span> np, pandas <span class="im">as</span> pd, matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.colors <span class="im">import</span> LogNorm</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> cooler, cooltools</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>D <span class="op">=</span> <span class="st">"/path/to/course/data"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="p1-the-orientation-plot" class="level3">
+<h3 class="anchored" data-anchor-id="p1-the-orientation-plot">P1 — The orientation plot</h3>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>st <span class="op">=</span> pd.read_csv(<span class="ss">f"</span><span class="sc">{</span>D<span class="sc">}</span><span class="ss">/gm12878_hic_fullgenome_stats.txt"</span>, sep<span class="op">=</span><span class="st">"</span><span class="ch">\t</span><span class="st">"</span>, header<span class="op">=</span><span class="va">None</span>, index_col<span class="op">=</span><span class="dv">0</span>)[<span class="dv">1</span>]</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> [(<span class="bu">int</span>(m.group(<span class="dv">1</span>)), m.group(<span class="dv">2</span>), <span class="bu">float</span>(v)) <span class="cf">for</span> k, v <span class="kw">in</span> st.items()</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (m <span class="op">:=</span> re.match(<span class="vs">r"dist_freq/</span><span class="kw">(</span><span class="dv">\d</span><span class="op">+</span><span class="kw">)</span><span class="vs">-</span><span class="op">?</span>(?:<span class="dv">\d</span><span class="op">+</span><span class="cf">|</span><span class="ch">\+</span>)<span class="op">?</span><span class="vs">/</span><span class="kw">(</span><span class="dv">..</span><span class="kw">)</span><span class="dv">$</span><span class="vs">"</span>, k))]</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>dfq <span class="op">=</span> pd.DataFrame(rows, columns<span class="op">=</span>[<span class="st">"lo"</span>, <span class="st">"strand"</span>, <span class="st">"n"</span>]).pivot(index<span class="op">=</span><span class="st">"lo"</span>, columns<span class="op">=</span><span class="st">"strand"</span>, values<span class="op">=</span><span class="st">"n"</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>dfq <span class="op">=</span> dfq[(dfq.index <span class="op">&gt;=</span> <span class="dv">1</span>) <span class="op">&amp;</span> (dfq.index <span class="op">&lt;</span> <span class="fl">1e6</span>)]</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>frac <span class="op">=</span> dfq.div(dfq.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>), axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>((frac <span class="op">*</span> <span class="dv">100</span>).<span class="bu">round</span>(<span class="dv">1</span>).iloc[::<span class="dv">3</span>])</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>frac.plot(logx<span class="op">=</span><span class="va">True</span>, marker<span class="op">=</span><span class="st">"o"</span>, ms<span class="op">=</span><span class="dv">3</span>)<span class="op">;</span> plt.axhline(<span class="fl">0.25</span>, ls<span class="op">=</span><span class="st">"--"</span>, color<span class="op">=</span><span class="st">"grey"</span>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"distance (bp)"</span>)<span class="op">;</span> plt.ylabel(<span class="st">"fraction"</span>)<span class="op">;</span> plt.savefig(<span class="st">"p1_orientation.png"</span>, dpi<span class="op">=</span><span class="dv">120</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li>Which orientation dominates below 1 kb, and which artefact is it? Above which distance are all four within 0.03 of 0.25?</li>
+</ol>
+</section>
+<section id="p2-raw-and-balanced" class="level3">
+<h3 class="anchored" data-anchor-id="p2-raw-and-balanced">P2 — Raw and balanced</h3>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> cooler.Cooler(<span class="st">"chr21.mcool::resolutions/250000"</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> c.matrix(balance<span class="op">=</span><span class="va">False</span>).fetch(<span class="st">"chr21"</span>).astype(<span class="bu">float</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>bal <span class="op">=</span> c.matrix(balance<span class="op">=</span><span class="va">True</span>).fetch(<span class="st">"chr21"</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> c.bins().fetch(<span class="st">"chr21"</span>)[<span class="st">"weight"</span>]</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(w), <span class="st">"bins;"</span>, w.isna().<span class="bu">sum</span>(), <span class="st">"masked"</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>cov <span class="op">=</span> raw.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"raw row sums of unmasked bins: min"</span>, cov[w.notna()].<span class="bu">min</span>(), <span class="st">"max"</span>, cov[w.notna()].<span class="bu">max</span>())</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>far <span class="op">=</span> np.<span class="bu">abs</span>(np.subtract.outer(np.arange(<span class="bu">len</span>(w)), np.arange(<span class="bu">len</span>(w)))) <span class="op">&gt;=</span> <span class="dv">2</span>   <span class="co"># balancing ignores 2 diagonals</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"balanced row sums:"</span>, np.<span class="bu">round</span>(np.nansum(np.where(far, bal, <span class="dv">0</span>), axis<span class="op">=</span><span class="dv">0</span>)[w.notna()][:<span class="dv">5</span>], <span class="dv">3</span>))</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>fig, axs <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="dv">5</span>))</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, M, t <span class="kw">in</span> <span class="bu">zip</span>(axs, [raw, bal], [<span class="st">"raw"</span>, <span class="st">"balanced"</span>]):</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    M <span class="op">=</span> np.where(M <span class="op">&gt;</span> <span class="dv">0</span>, M, np.nan)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    ax.imshow(M, cmap<span class="op">=</span><span class="st">"Reds"</span>, norm<span class="op">=</span>LogNorm(vmin<span class="op">=</span>np.nanpercentile(M, <span class="dv">5</span>), vmax<span class="op">=</span>np.nanpercentile(M, <span class="fl">99.5</span>)))<span class="op">;</span> ax.set_title(t)</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">"p2_balance.png"</span>, dpi<span class="op">=</span><span class="dv">120</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li>How many bins are masked, and where are they? (b) How much do raw row sums vary? What are the balanced row sums?</li>
+</ol>
+</section>
+<section id="p3-distance-decay-ours-against-encodes" class="level3">
+<h3 class="anchored" data-anchor-id="p3-distance-decay-ours-against-encodes">P3 — Distance decay: ours against ENCODE’s</h3>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>v <span class="op">=</span> pd.DataFrame({<span class="st">"chrom"</span>: [<span class="st">"chr21"</span>], <span class="st">"start"</span>: [<span class="dv">0</span>], <span class="st">"end"</span>: [<span class="dv">46_709_983</span>], <span class="st">"name"</span>: [<span class="st">"chr21"</span>]})</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> lab, fn <span class="kw">in</span> [(<span class="st">"ours"</span>, <span class="st">"chr21.mcool::resolutions/10000"</span>),</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                (<span class="st">"ENCODE"</span>, <span class="ss">f"</span><span class="sc">{</span>D<span class="sc">}</span><span class="ss">/gm12878_hic_chr19_chr21.mcool::resolutions/10000"</span>)]:</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    c <span class="op">=</span> cooler.Cooler(fn)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    e <span class="op">=</span> cooltools.expected_cis(c, view_df<span class="op">=</span>v, nproc<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    e[<span class="st">"s"</span>] <span class="op">=</span> e.dist <span class="op">*</span> <span class="dv">10000</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    e <span class="op">=</span> e[(e.dist <span class="op">&gt;=</span> <span class="dv">2</span>) <span class="op">&amp;</span> (e.s <span class="op">&lt;=</span> <span class="fl">2e7</span>)]</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    plt.loglog(e.s, e[<span class="st">"balanced.avg"</span>] <span class="op">/</span> e[<span class="st">"balanced.avg"</span>].<span class="bu">sum</span>(), label<span class="op">=</span>lab)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    sel <span class="op">=</span> (e.s <span class="op">&gt;=</span> <span class="fl">1e5</span>) <span class="op">&amp;</span> (e.s <span class="op">&lt;=</span> <span class="fl">1e6</span>)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(lab, <span class="st">"slope 100 kb-1 Mb:"</span>, <span class="bu">round</span>(np.polyfit(np.log10(e.s[sel]), np.log10(e[<span class="st">"balanced.avg"</span>][sel]), <span class="dv">1</span>)[<span class="dv">0</span>], <span class="dv">2</span>))</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>plt.legend()<span class="op">;</span> plt.xlabel(<span class="st">"s (bp)"</span>)<span class="op">;</span> plt.ylabel(<span class="st">"P(s)"</span>)<span class="op">;</span> plt.savefig(<span class="st">"p3_ps.png"</span>, dpi<span class="op">=</span><span class="dv">120</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li>Compare the two slopes. (b) Why does <span class="math inline">\(P(s)\)</span> need so few reads while loops need billions?</li>
+</ol>
+</section>
+<section id="p4-resolution-against-depth" class="level3">
+<h3 class="anchored" data-anchor-id="p4-resolution-against-depth">P4 — Resolution against depth</h3>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> res <span class="kw">in</span> [<span class="dv">10000</span>, <span class="dv">50000</span>, <span class="dv">100000</span>, <span class="dv">250000</span>]:</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> []</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> fn <span class="kw">in</span> [<span class="ss">f"chr21.mcool::resolutions/</span><span class="sc">{</span>res<span class="sc">}</span><span class="ss">"</span>, <span class="ss">f"</span><span class="sc">{</span>D<span class="sc">}</span><span class="ss">/gm12878_hic_chr19_chr21.mcool::resolutions/</span><span class="sc">{</span>res<span class="sc">}</span><span class="ss">"</span>]:</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>        m <span class="op">=</span> cooler.Cooler(fn).matrix(balance<span class="op">=</span><span class="va">False</span>, sparse<span class="op">=</span><span class="va">True</span>).fetch(<span class="st">"chr21"</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>        cov <span class="op">=</span> np.asarray(m.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>)).ravel()          <span class="co"># symmetric matrix: row sum = contacts of the bin</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>        cov <span class="op">=</span> cov[cov <span class="op">&gt;</span> <span class="dv">0</span>]</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>        out.append(<span class="bu">round</span>(np.mean(cov <span class="op">&gt;=</span> <span class="dv">1000</span>) <span class="op">*</span> <span class="dv">100</span>, <span class="dv">1</span>))</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>res <span class="op">//</span> <span class="dv">1000</span><span class="sc">:&gt;4}</span><span class="ss"> kb: ours </span><span class="sc">{</span>out[<span class="dv">0</span>]<span class="sc">:5.1f}</span><span class="ss">%  ENCODE </span><span class="sc">{</span>out[<span class="dv">1</span>]<span class="sc">:5.1f}</span><span class="ss">% of bins with &gt;= 1000 contacts"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li>What is the resolution of our map, and of ENCODE’s, by Rao et al.’s 80% criterion? (b) What does this mean for which features you can analyse with our map?</li>
+</ol>
+</section>
+<section id="p5-observedexpected-on-our-map" class="level3">
+<h3 class="anchored" data-anchor-id="p5-observedexpected-on-our-map">P5 — Observed/expected on our map</h3>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> cooler.Cooler(<span class="st">"chr21.mcool::resolutions/250000"</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>e <span class="op">=</span> cooltools.expected_cis(c, view_df<span class="op">=</span>v, nproc<span class="op">=</span><span class="dv">1</span>).set_index(<span class="st">"dist"</span>)[<span class="st">"balanced.avg"</span>]</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> c.matrix(balance<span class="op">=</span><span class="va">True</span>).fetch(<span class="st">"chr21"</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> m.shape[<span class="dv">0</span>]</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> np.<span class="bu">abs</span>(np.subtract.outer(np.arange(n), np.arange(n)))</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>oe <span class="op">=</span> m <span class="op">/</span> e.reindex(np.arange(n)).values[d]</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="fl">5.5</span>))</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>plt.imshow(np.log2(oe), cmap<span class="op">=</span><span class="st">"coolwarm"</span>, vmin<span class="op">=-</span><span class="fl">1.5</span>, vmax<span class="op">=</span><span class="fl">1.5</span>)<span class="op">;</span> plt.colorbar(label<span class="op">=</span><span class="st">"log2 O/E"</span>)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"our chr21, 250 kb, O/E"</span>)<span class="op">;</span> plt.savefig(<span class="st">"p5_oe.png"</span>, dpi<span class="op">=</span><span class="dv">120</span>)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"mean O/E 2, 10 and 40 bins from the diagonal:"</span>, [<span class="bu">round</span>(np.nanmean(np.diag(oe, k)), <span class="dv">2</span>) <span class="cf">for</span> k <span class="kw">in</span> (<span class="dv">2</span>, <span class="dv">10</span>, <span class="dv">40</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li>Why is the mean O/E along each diagonal 1? (b) Can you see compartments in our 250-kb map? Compare with <em>Calling compartments, TADs and loops</em>.</li>
+</ol>
+</section>
+</section>
+<section id="hints" class="level2">
+<h2 class="anchored" data-anchor-id="hints">Hints</h2>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 1 — junctions, pairs and artefacts (B1–B3)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 1 — junctions, pairs and artefacts (B1–B3)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Fill-in copies the 4-nt overhang onto the other end, so the junction is site-up-to-cut + overhang + overhang + rest of site. Probability of a <span class="math inline">\(k\)</span>-mer at a position is <span class="math inline">\(4^{-k}\)</span> (count one strand for a palindromic site). The two sides of a pair are the 5′ ends of the 5′-most alignment of each read. A pair is an artefact if both sides fall between the same two restriction sites (or adjacent fragments) with inward (+ −) or outward (− +) reads. Duplicates match at both sides and strands. See <a href="https://doi.org/10.1016/j.ymeth.2014.10.031">Lajoie et al.&nbsp;2015</a> and the <a href="https://pairtools.readthedocs.io/en/latest/parsing.html">pairtools documentation on pair types</a>.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 2 — binning, ICE and O/E (B4–B6, B8)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 2 — binning, ICE and O/E (B4–B6, B8)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>bin = ⌊pos / 100 000⌋; order the two bins so i ≤ j. For ICE: <span class="math inline">\(b_i\)</span> = row sum<span class="math inline">\(_i\)</span> / mean of the row sums, new pixel = old pixel / (<span class="math inline">\(b_i b_j\)</span>). <span class="math inline">\(E(s)\)</span> = mean of one diagonal. <a href="https://doi.org/10.1038/nmeth.2148">Imakaev et al.&nbsp;2012</a> for ICE; for resolution, <a href="https://doi.org/10.1016/j.cell.2014.11.021">Rao et al.&nbsp;2014</a>.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 3 — command line (C1–C6)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 3 — command line (C1–C6)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><a href="https://bio-bwa.sourceforge.net/bwa.shtml"><code>bwa mem</code></a> options <code>-S</code> (skip mate rescue), <code>-P</code> (skip pairing), <code>-5</code> (5′-most split alignment primary), <code>-M</code> (mark shorter splits secondary). <a href="https://pairtools.readthedocs.io/en/latest/cli_tools.html"><code>pairtools parse</code>, <code>sort</code>, <code>dedup</code>, <code>select</code></a>; the <a href="https://github.com/4dn-dcic/pairix/blob/master/pairs_format_specification.md">.pairs format</a>; <a href="https://pairtools.readthedocs.io/en/latest/stats.html"><code>pairtools stats</code> output</a>. <a href="https://cooler.readthedocs.io/en/latest/cli.html"><code>cooler cload pairs</code>, <code>zoomify</code>, <code>balance</code>, <code>dump</code></a>. A <code>.mcool</code> resolution is addressed as <code>file.mcool::resolutions/10000</code>.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 4 — Python (P1–P5)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 4 — Python (P1–P5)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The stats file is two columns, key and value. <a href="https://cooler.readthedocs.io/en/latest/api.html">cooler API</a>: <code>matrix(balance=False)</code> raw counts, <code>balance=True</code> balanced, <code>sparse=True</code> a SciPy sparse matrix; <code>bins()</code> the bin table with <code>weight</code>. <a href="https://cooltools.readthedocs.io/en/latest/cooltools.api.html#cooltools.api.expected.expected_cis"><code>cooltools.expected_cis</code></a>: <code>dist</code> in bins, <code>balanced.avg</code> is <span class="math inline">\(E(s)\)</span>. <code>np.subtract.outer</code> gives the distance of every pixel from the diagonal.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="solutions" class="level2">
+<h2 class="anchored" data-anchor-id="solutions">Solutions</h2>
+<div class="callout callout-style-default callout-note callout-titled" title="Solutions — by hand">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions — by hand
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>B1.</strong> (a) HindIII: A + AGCT (filled in) + AGCT + T → <strong>AAGCTAGCTT</strong>. NcoI: C + CATG + CATG + G → <strong>CCATGCATGG</strong>. (b) <span class="math inline">\(4^{-4}\)</span>: once every <strong>256 bp</strong>; <span class="math inline">\(4^{-6}\)</span>: once every <strong>4 096 bp</strong> (both sites are palindromes, so count one strand). chr21: 40.1 × 10⁶ / 256 ≈ <strong>157 000</strong> MboI sites expected (C1 counts the real number). (c) A contact is only resolved to the restriction fragments it joins; with fragments of ~4 kb on average (and many much longer), contacts within or between neighbouring fragments are blurred over several kb, and bins of 1 kb would often contain no cut site at all.</p>
+<p><strong>B2.</strong> (a) Side 1: the 5′ end of read 1’s first alignment, chr21:20 000 000 (+). Side 2: the 5′ end of read 2, which on the − strand is its rightmost base, near chr21:34 500 700 (the reported position is the 5′ end). (b) The 3′ part of read 1 and read 2 both map near 34.5 Mb, on the same fragment and consistent with one molecule: one ligation explains everything, so the chimeric part adds no new contact. A walk would need a third locus. (c) It would expect the mates to face each other a few hundred bp apart: it might rescue read 2 by forcing a local alignment near 20 Mb, mark the pair improper, or choose a poor alignment of the 3′ part, losing or corrupting the contact.</p>
+<p><strong>B3.</strong> p1: both sides in the fragment 1 000 000–1 000 310, inward (+ −): <strong>dangling end</strong>. p2: same fragment, outward (− +): <strong>self-circle</strong>. p3: + − inward across one site (1 000 310) into the next fragment, 500 bp: <strong>re-ligation</strong> of neighbours (or a dangling end over an uncut site), not a useful contact. p4: different fragments 250 kb apart: <strong>valid cis contact</strong>. p5: identical to p4 at both sides and strands: <strong>duplicate</strong> of p4, removed. p6: <strong>valid trans contact</strong> (chr21–chr19).</p>
+<p><strong>B4.</strong> Bins (i, j): (0, 0), (1, 3), (2, 2), (2, 2), (0, 3), (3, 3), (1, 1), (0, 1) — the last one because 99 999 is in bin 0 and 100 000 in bin 1. Upper triangle:</p>
+<pre><code>      0   1   2   3
+0     1   1   0   1
+1         1   0   1
+2             2   0
+3                 1</code></pre>
+<p><strong>B5.</strong> (a) Row sums 20, 34, 12; mean 22. Biases <span class="math inline">\(b\)</span> = 0.909, 1.545, 0.545. New matrix: (a, a) = 10/0.826 = 12.1; (a, b) = 8/1.405 = 5.69; (a, c) = 2/0.496 = 4.03; (b, b) = 20/2.388 = 8.38; (b, c) = 6/0.843 = 7.12; (c, c) = 4/0.298 = 13.4. (b) New row sums: a 12.1 + 5.69 + 4.03 = <strong>21.8</strong>; b 5.69 + 8.38 + 7.12 = <strong>21.2</strong>; c 4.03 + 7.12 + 13.4 = <strong>24.6</strong>. Much closer than 20, 34, 12; further iterations converge. (c) A copy-number gain (a duplicated region in this cell population), a change in mappability (different read length or aligner), or a GC/PCR bias difference between libraries. Balancing removes it as if it were a visibility bias; for a real copy-number gain that is wrong, because the extra copies really make extra contacts.</p>
+<p><strong>B6.</strong> (a) <span class="math inline">\(E(1)\)</span> = (0.20 + 0.22 + 0.18 + 0.20)/4 = <strong>0.20</strong>; <span class="math inline">\(E(2)\)</span> = (0.08 + 0.07 + 0.09)/3 = <strong>0.08</strong>; <span class="math inline">\(E(3)\)</span> = (0.05 + 0.03)/2 = <strong>0.04</strong>. (b) (1, 3) = 0.08/0.08 = <strong>1.0</strong>; (3, 5) = 0.09/0.08 = <strong>1.13</strong>; (1, 4) = 0.05/0.04 = <strong>1.25</strong>; (1, 5): <span class="math inline">\(E(4)\)</span> = 0.06 (one pixel), O/E = <strong>1.0</strong> by definition. (1, 4) is the most enriched. (c) No: the highest balanced values are always at short distances (the diagonal +1: 0.20–0.22). Only O/E compares a pixel with what its distance predicts. Note also that <span class="math inline">\(E(4)\)</span> from a single pixel is meaningless: real maps average thousands of pixels per diagonal.</p>
+<p><strong>B7.</strong> (a) Library A: low duplicates (complex library, deeper sequencing will give new contacts), high cis and long-range cis fractions. (b) B’s 38% duplicates mean low complexity: few distinct ligation products (little input material, over-amplification); sequencing deeper would mostly give more duplicates. Its low cis fraction (52%) and low long-range cis (21%) point to many random ligations (nuclei lysed, poor crosslinking, ligation in solution) and many short-range artefacts.</p>
+<p><strong>B8.</strong> (a) 3.1 × 10⁹ / 5 000 = <strong>620 000</strong> bins; 400 M contacts × 2 sides / 620 000 ≈ <strong>1 290</strong> contacts per bin on average. (b) The average is barely above 1 000, so far fewer than 80% of bins pass (coverage varies a lot): 5 kb is not realistic. At 25 kb: 124 000 bins, about 6 450 contacts per bin, so 80% passing is plausible: <strong>25 kb</strong> resolution, good for domains and strong loops (with APA), not for fine loops.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Solutions — command line">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions — command line
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>C1.</strong> (a) <strong>273 200</strong> read pairs; <strong>30 023</strong> of the first 200 000 read-1 sequences (<strong>15%</strong>) contain GATCGATC. (b) <strong>91 397</strong> MboI sites (157 000 expected for random sequence with equal base frequencies: GATC is under-represented in the human genome, about 0.6 of the random expectation) and <strong>11 263</strong> HindIII sites (expected 40.1 × 10⁶ / 4 096 ≈ 9 800). Building the bwa index takes about a minute.</p>
+<p><strong>C2.</strong> (a) <code>readID chrom1 pos1 chrom2 pos2 strand1 strand2 pair_type</code>; the 8th column is the pair type. Positions are the 5′ ends of the reported alignments; the side with the smaller position is side 1 (pairs are “flipped” into genomic order). (b) <strong>221 776</strong> of <strong>273 200</strong> pairs (<strong>81%</strong>) have both sides uniquely mapped; the most common types are UU (194 256), MU (24 656), NU (17 572), UR (14 014) and RU (13 506). (c) About <strong>20 seconds</strong> (wall clock) with 8 threads; the whole genome would take hours.</p>
+<p><strong>C3.</strong> (a) <strong>4 277</strong> duplicates among <strong>221 776</strong> mapped pairs (<strong>1.9%</strong>). (b) <strong>217 499</strong> valid contacts (UU/UR/RU, deduplicated); <strong>184 958</strong> (85%) are &gt; 1 kb apart and <strong>140 644</strong> (65%) &gt; 20 kb apart. (These fractions are higher than genome-wide because there are no trans pairs here.)</p>
+<p><strong>C4.</strong> (a) <code>cis 0.837  trans 0.163  cis&gt;20kb 0.561</code>; 23.8 M of 30 M pairs (79%) have both sides uniquely mapped (UU 20.7 M, RU 1.30 M, UR 1.29 M) and 1.9% of them are duplicates. The library passes easily: most pairs map uniquely, cis dominates, and long-range cis is well above 40%. (b) At 178–237 bp the counts are small and mixed; at 316–422 bp <strong>+ −</strong> dominates (620 797 against about 8 000–10 000 for each other orientation: 96%): dangling ends. At 1.8–2.4 kb the four are within 6% of each other (72 171, 68 167, 68 043, 68 028) and at 32–42 kb equal (117 061–117 736): from about 1–2 kb on, pairs are genuine ligation products.</p>
+<p><strong>C5.</strong> (a) <strong>4 671</strong> bins, <strong>123 129</strong> non-zero pixels, <strong>217 499</strong> contacts. (b) The balancing weight (1/bias). It is NaN for masked bins: too few contacts (the short arm and centromere of chr21, 0–14 Mb, and repeat-rich bins), so no reliable weight can be estimated; <strong>50</strong> of 187 bins at 250 kb.</p>
+<p><strong>C6.</strong> The three pixels have 324, 104 and 54 contacts in our map and 55 048, 16 576 and 10 102 in ENCODE’s: 160–190 times more, close to the ratio of the totals on chr21 (35.2 M / 217 499 = 162).</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Solutions — Python">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions — Python
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>P1.</strong> Between about 250 and 600 bp the inward orientation (+ −) dominates (96% at 316–422 bp): dangling ends and re-ligated neighbours. Below 200 bp other artefacts of very short molecules appear (outward pairs at &lt; 20 bp, tandem pairs at 20–200 bp). From the 1–1.3 kb bin on, all four are within 0.03 of 0.25 (24.8, 27.8, 22.9, 24.6%), and within 0.01 from about 2–4 kb.</p>
+<p><strong>P2.</strong> (a) <strong>50</strong> of <strong>187</strong> bins are masked: the short arm and centromere (0–14 Mb) and a few bins near 43–44 Mb (segmental duplications). (b) Raw row sums of unmasked bins range from <strong>399</strong> to <strong>3 587</strong> contacts, a ninefold range; balanced row sums are all <strong>1.0</strong> (cooler scales them to 1), counted without the first two diagonals, which balancing ignores.</p>
+<p><strong>P3.</strong> (a) Ours <strong>−1.02</strong>, ENCODE <strong>−0.97</strong>: practically the same curve. (b) <span class="math inline">\(P(s)\)</span> averages all pixels on a diagonal (thousands at each distance), so even a few hundred thousand contacts give a precise estimate; a loop is a single pixel and needs hundreds of contacts in that one pixel to stand out from its neighbours.</p>
+<p><strong>P4.</strong> (a) Ours: 81.5% of bins at 250 kb, 42.9% at 100 kb, 0% at 50 and 10 kb: a <strong>250-kb</strong> map. ENCODE: 92.8% even at 10 kb (it reaches 5 kb and finer). (b) With our map: <span class="math inline">\(P(s)\)</span>, QC and coarse compartments; not domains or loops. Those need ENCODE’s map (<em>Calling compartments, TADs and loops</em>).</p>
+<p><strong>P5.</strong> (a) <span class="math inline">\(E(s)\)</span> is defined as the mean of each diagonal, so dividing by it makes the mean O/E 1 on every diagonal (1.0 at 2, 10 and 40 bins; distances 0 and 1 are not used). (b) Yes, noisily: a checkerboard of red and blue blocks from about 14 Mb on, the same pattern as the chr21 eigenvector in <em>Calling compartments, TADs and loops</em> (mostly B from 16 to 32 Mb, A from 32 to 37 and 41 to 46 Mb). Compartments need few reads; this is why they were discovered first, with 1-Mb maps.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="where-this-leads" class="level2">
+<h2 class="anchored" data-anchor-id="where-this-leads">Where this leads</h2>
+<ul>
+<li><em>Calling compartments, TADs and loops</em> starts from a balanced map and its expected values, as built here, and uses ENCODE’s deep map to call features.</li>
+<li>The full pipeline for a whole Hi-C or Micro-C experiment is run with distiller, nf-core/hic or Juicer on a cluster; the steps are the ones of C1–C5.</li>
+<li>Pairs files are also the input for single-cell Hi-C and for multi-way contact methods (Pore-C), which keep walks rather than reducing them to pairs.</li>
+</ul>
+</section>
+<section id="key-papers-optional-further-reading" class="level2">
+<h2 class="anchored" data-anchor-id="key-papers-optional-further-reading">Key papers (optional further reading)</h2>
+<p><em>Not required reading and not examined.</em></p>
+<ul>
+<li>Lieberman-Aiden et al.&nbsp;2009, <em>Science</em>. <a href="https://doi.org/10.1126/science.1181369">Comprehensive mapping of long-range interactions reveals folding principles of the human genome</a>.</li>
+<li>Rao et al.&nbsp;2014, <em>Cell</em>. <a href="https://doi.org/10.1016/j.cell.2014.11.021">A 3D map of the human genome at kilobase resolution reveals principles of chromatin looping</a>.</li>
+<li>Imakaev et al.&nbsp;2012, <em>Nat Methods</em>. <a href="https://doi.org/10.1038/nmeth.2148">Iterative correction of Hi-C data reveals hallmarks of chromosome organization</a>.</li>
+<li>Lajoie, Dekker &amp; Kaplan 2015, <em>Methods</em>. <a href="https://doi.org/10.1016/j.ymeth.2014.10.031">The Hitchhiker’s guide to Hi-C analysis: practical guidelines</a>.</li>
+<li>Open2C et al.&nbsp;2024, <em>PLoS Comput Biol</em>. <a href="https://doi.org/10.1371/journal.pcbi.1012164">Pairtools: from sequencing data to chromosome contacts</a>.</li>
+<li>Abdennur &amp; Mirny 2020, <em>Bioinformatics</em>. <a href="https://doi.org/10.1093/bioinformatics/btz540">Cooler: scalable storage for Hi-C data and other genomically labeled arrays</a>.</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

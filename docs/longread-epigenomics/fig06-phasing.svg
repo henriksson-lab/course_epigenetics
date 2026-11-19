@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 430" width="1120" height="430" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker></defs>
+<rect width="1120" height="430" fill="#ffffff"/>
+<!-- Panel A: trio -->
+<text x="190" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1b2a3a">1. Phase SNPs (here: from parents)</text>
+<g font-size="15" fill="#1b2a3a">
+<text x="40" y="70" font-weight="bold">SNP</text><text x="120" y="70" font-weight="bold">father</text><text x="200" y="70" font-weight="bold">mother</text><text x="285" y="70" font-weight="bold">child</text>
+<text x="40" y="100">s1 C/T</text><text x="130" y="100">C C</text><text x="210" y="100">C T</text><text x="290" y="100">C T</text>
+<text x="40" y="128">s2 A/G</text><text x="130" y="128">G G</text><text x="210" y="128">A A</text><text x="290" y="128">A G</text>
+<text x="40" y="156">s3 G/A</text><text x="130" y="156">G A</text><text x="210" y="156">G A</text><text x="290" y="156">G A</text>
+</g>
+<line x1="34" y1="78" x2="346" y2="78" stroke="#5b6b7a" stroke-width="1"/>
+<text x="190" y="190" text-anchor="middle" font-size="14" fill="#1b2a3a">s1: father has no T, so the child's T is maternal</text>
+<text x="190" y="210" text-anchor="middle" font-size="14" fill="#1b2a3a">s2: father has only G, so the child's G is paternal</text>
+<text x="190" y="230" text-anchor="middle" font-size="14" fill="#5b6b7a">s3: both parents G/A: not informative</text>
+<rect x="56" y="248" width="268" height="60" rx="8" fill="#f4f6f8"/>
+<text x="190" y="272" text-anchor="middle" font-size="15" fill="#e67e22">paternal haplotype: C · G</text>
+<text x="190" y="296" text-anchor="middle" font-size="15" fill="#2a6f97">maternal haplotype: T · A</text>
+<!-- arrow -->
+<line x1="372" y1="200" x2="412" y2="200" stroke="#5b6b7a" stroke-width="2.5" marker-end="url(#ah)"/>
+<!-- Panel B: haplotag reads -->
+<text x="760" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1b2a3a">2. Tag each read by its alleles (HP:i:1 / HP:i:2)</text>
+<line x1="440" y1="80" x2="1090" y2="80" stroke="#1b2a3a" stroke-width="2"/>
+<text x="434" y="85" text-anchor="end" font-size="14" fill="#5b6b7a">genome</text>
+<g font-size="14" text-anchor="middle" fill="#1b2a3a"><text x="520" y="70">s1</text><text x="660" y="70">s2</text></g>
+<line x1="520" y1="74" x2="520" y2="86" stroke="#1b2a3a" stroke-width="2"/><line x1="660" y1="74" x2="660" y2="86" stroke="#1b2a3a" stroke-width="2"/>
+<rect x="840" y="72" width="120" height="16" rx="3" fill="#2e8b57" fill-opacity="0.3"/>
+<text x="900" y="66" text-anchor="middle" font-size="14" fill="#2e8b57">imprinting control region</text>
+<!-- reads -->
+<g stroke-width="5" stroke-linecap="round">
+<line x1="470" y1="120" x2="1060" y2="120" stroke="#e67e22"/>
+<line x1="500" y1="150" x2="1000" y2="150" stroke="#2a6f97"/>
+<line x1="610" y1="180" x2="1080" y2="180" stroke="#e67e22"/>
+<line x1="450" y1="210" x2="980" y2="210" stroke="#2a6f97"/>
+<line x1="760" y1="240" x2="1080" y2="240" stroke="#8a97a3"/>
+</g>
+<g font-size="14" font-weight="bold" text-anchor="middle">
+<text x="520" y="114" fill="#1b2a3a">C</text><text x="660" y="114" fill="#1b2a3a">G</text>
+<text x="520" y="144" fill="#1b2a3a">T</text><text x="660" y="144" fill="#1b2a3a">A</text>
+<text x="660" y="174" fill="#1b2a3a">G</text>
+<text x="520" y="204" fill="#1b2a3a">T</text><text x="660" y="204" fill="#1b2a3a">A</text>
+</g>
+<!-- CpG calls in ICR -->
+<g fill="#1b2a3a"><circle cx="860" cy="120" r="5"/><circle cx="890" cy="120" r="5"/><circle cx="920" cy="120" r="5"/><circle cx="950" cy="120" r="5"/>
+<circle cx="860" cy="180" r="5"/><circle cx="890" cy="180" r="5"/><circle cx="920" cy="180" r="5"/><circle cx="950" cy="180" r="5"/></g>
+<g fill="#ffffff" stroke="#1b2a3a" stroke-width="1.8"><circle cx="860" cy="150" r="5"/><circle cx="890" cy="150" r="5"/><circle cx="920" cy="150" r="5"/><circle cx="950" cy="150" r="5"/>
+<circle cx="860" cy="210" r="5"/><circle cx="890" cy="210" r="5"/><circle cx="920" cy="210" r="5"/><circle cx="950" cy="210" r="5"/>
+<circle cx="890" cy="240" r="5"/><circle cx="920" cy="240" r="5"/></g>
+<circle cx="860" cy="240" r="5" fill="#1b2a3a"/><circle cx="950" cy="240" r="5" fill="#1b2a3a"/>
+<g font-size="14" fill="#1b2a3a"><text x="1068" y="125">HP 1</text><text x="1008" y="155">HP 2</text><text x="988" y="215">HP 2</text></g>
+<text x="598" y="185" text-anchor="end" font-size="14" fill="#1b2a3a">HP 1</text>
+<text x="770" y="268" font-size="14" fill="#5b6b7a">no informative SNP: untagged (used only in the total)</text>
+<!-- bottom -->
+<rect x="440" y="296" width="650" height="112" rx="8" fill="#f4f6f8"/>
+<text x="456" y="322" font-size="15" fill="#1b2a3a">3. Pile up each haplotype separately (modkit pileup --phased):</text>
+<text x="476" y="348" font-size="15" fill="#e67e22">paternal (HP 1): 8/8 CpG calls methylated, β = 1.0</text>
+<text x="476" y="372" font-size="15" fill="#2a6f97">maternal (HP 2): 0/8 methylated, β = 0</text>
+<text x="476" y="396" font-size="15" fill="#5b6b7a">all reads together: 10/20 = 0.5, which looks "half methylated"</text>
+<text x="190" y="350" text-anchor="middle" font-size="14" fill="#5b6b7a">Without parents: phase SNPs from the</text>
+<text x="190" y="370" text-anchor="middle" font-size="14" fill="#5b6b7a">long reads themselves (WhatsHap); the</text>
+<text x="190" y="390" text-anchor="middle" font-size="14" fill="#5b6b7a">haplotypes are then unlabelled 1 and 2</text>
+</svg>

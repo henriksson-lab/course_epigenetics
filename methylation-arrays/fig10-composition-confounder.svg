@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 400" width="1120" height="400" font-family="Helvetica, Arial, sans-serif">
+<defs>
+<marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker>
+<marker id="ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker>
+</defs>
+<rect width="1120" height="400" fill="#ffffff"/>
+<!-- Panel A: DAG -->
+<text x="260" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1b2a3a">A. Two paths from disease to a bulk β</text>
+<rect x="30" y="150" width="140" height="56" rx="10" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="2"/>
+<text x="100" y="183" text-anchor="middle" font-size="16" font-weight="bold" fill="#1b2a3a">disease</text>
+<rect x="190" y="60" width="160" height="56" rx="10" fill="#f4f6f8" stroke="#c0392b" stroke-width="2"/>
+<text x="270" y="84" text-anchor="middle" font-size="15" fill="#1b2a3a">cell composition</text>
+<text x="270" y="104" text-anchor="middle" font-size="14" fill="#5b6b7a">more neutrophils</text>
+<rect x="360" y="150" width="140" height="56" rx="10" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="2"/>
+<text x="430" y="175" text-anchor="middle" font-size="15" fill="#1b2a3a">bulk β</text>
+<text x="430" y="194" text-anchor="middle" font-size="14" fill="#5b6b7a">of whole blood</text>
+<line x1="170" y1="178" x2="356" y2="178" stroke="#1b2a3a" stroke-width="2.5" marker-end="url(#ah)"/>
+<text x="263" y="198" text-anchor="middle" font-size="14" fill="#1b2a3a">change inside cells?</text>
+<text x="263" y="216" text-anchor="middle" font-size="14" fill="#5b6b7a">(usually the question)</text>
+<line x1="130" y1="150" x2="200" y2="118" stroke="#c0392b" stroke-width="2.5" marker-end="url(#ahr)"/>
+<line x1="340" y1="118" x2="400" y2="148" stroke="#c0392b" stroke-width="2.5" marker-end="url(#ahr)"/>
+<rect x="190" y="250" width="160" height="56" rx="10" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="270" y="274" text-anchor="middle" font-size="15" fill="#1b2a3a">age, sex, smoking,</text>
+<text x="270" y="294" text-anchor="middle" font-size="15" fill="#1b2a3a">batch (chip)</text>
+<line x1="200" y1="252" x2="140" y2="210" stroke="#5b6b7a" stroke-width="2" marker-end="url(#ah)"/>
+<line x1="340" y1="252" x2="400" y2="210" stroke="#5b6b7a" stroke-width="2" marker-end="url(#ah)"/>
+<text x="260" y="346" text-anchor="middle" font-size="15" fill="#1b2a3a">Red path: a real association with disease,</text>
+<text x="260" y="366" text-anchor="middle" font-size="15" fill="#1b2a3a">but no cell has changed its methylation.</text>
+<!-- Panel B: numbers -->
+<line x1="540" y1="20" x2="540" y2="380" stroke="#dfe6ec" stroke-width="2"/>
+<text x="830" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1b2a3a">B. One CpG, no change in any cell</text>
+<text x="830" y="56" text-anchor="middle" font-size="15" fill="#5b6b7a">β = 0.90 in neutrophils, 0.10 in lymphocytes, in everyone</text>
+<!-- control bar -->
+<text x="620" y="110" text-anchor="end" font-size="15" fill="#1b2a3a">control</text>
+<rect x="630" y="90" width="240" height="30" fill="#e67e22" fill-opacity="0.75"/>
+<rect x="870" y="90" width="160" height="30" fill="#2a6f97" fill-opacity="0.75"/>
+<text x="750" y="110" text-anchor="middle" font-size="14" fill="#1b2a3a">neutrophils 60%</text>
+<text x="950" y="110" text-anchor="middle" font-size="14" fill="#ffffff">lymphocytes 40%</text>
+<text x="830" y="148" text-anchor="middle" font-size="15" fill="#1b2a3a">β = 0.6 × 0.9 + 0.4 × 0.1 = 0.58</text>
+<!-- patient bar -->
+<text x="620" y="200" text-anchor="end" font-size="15" fill="#1b2a3a">patient</text>
+<rect x="630" y="180" width="280" height="30" fill="#e67e22" fill-opacity="0.75"/>
+<rect x="910" y="180" width="120" height="30" fill="#2a6f97" fill-opacity="0.75"/>
+<text x="770" y="200" text-anchor="middle" font-size="14" fill="#1b2a3a">neutrophils 70%</text>
+<text x="970" y="200" text-anchor="middle" font-size="14" fill="#ffffff">30%</text>
+<text x="830" y="238" text-anchor="middle" font-size="15" fill="#1b2a3a">β = 0.7 × 0.9 + 0.3 × 0.1 = 0.66</text>
+<rect x="640" y="268" width="380" height="72" rx="8" fill="#f4f6f8"/>
+<text x="830" y="296" text-anchor="middle" font-size="16" fill="#c0392b" font-weight="bold">Δβ = 0.08: a typical EWAS "hit"</text>
+<text x="830" y="322" text-anchor="middle" font-size="15" fill="#1b2a3a">at every CpG that differs between cell types</text>
+<text x="830" y="366" text-anchor="middle" font-size="15" fill="#1b2a3a">Fix: estimate the fractions, put them in the model.</text>
+</svg>

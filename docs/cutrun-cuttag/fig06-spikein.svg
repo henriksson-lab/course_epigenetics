@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 352" width="1120" height="352" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/>
+    </marker>
+    <marker id="arrg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/>
+    </marker>
+    <marker id="arrr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/>
+    </marker>
+  </defs>
+  <rect width="1120" height="352" fill="#ffffff"/>
+  <text x="20" y="28" font-size="17" fill="#1b2a3a" font-weight="bold">1. In the tube</text>
+  <text x="20" y="50" font-size="14" fill="#5b6b7a">same pA–Tn5 → same E. coli DNA</text>
+  <text x="20" y="88" font-size="15" fill="#1b2a3a" font-weight="bold">control</text>
+  <rect x="20" y="100" width="300" height="90" rx="10" fill="#f4f6f8" stroke="#d0d7de" stroke-width="1"/>
+  <rect x="36" y="118" width="16" height="8" rx="2" fill="#2a6f97"/>
+  <rect x="58" y="118" width="16" height="8" rx="2" fill="#2a6f97"/>
+  <rect x="80" y="118" width="16" height="8" rx="2" fill="#2a6f97"/>
+  <rect x="102" y="118" width="16" height="8" rx="2" fill="#2a6f97"/>
+  <rect x="124" y="118" width="16" height="8" rx="2" fill="#2a6f97"/>
+  <rect x="146" y="118" width="16" height="8" rx="2" fill="#2a6f97"/>
+  <rect x="168" y="118" width="16" height="8" rx="2" fill="#2a6f97"/>
+  <rect x="190" y="118" width="16" height="8" rx="2" fill="#2a6f97"/>
+  <rect x="212" y="118" width="16" height="8" rx="2" fill="#2a6f97"/>
+  <rect x="234" y="118" width="16" height="8" rx="2" fill="#2a6f97"/>
+  <rect x="36" y="140" width="16" height="8" rx="2" fill="#2a6f97"/>
+  <rect x="58" y="140" width="16" height="8" rx="2" fill="#2a6f97"/>
+  <rect x="80" y="140" width="16" height="8" rx="2" fill="#2a6f97"/>
+  <rect x="102" y="140" width="16" height="8" rx="2" fill="#2a6f97"/>
+  <rect x="124" y="140" width="16" height="8" rx="2" fill="#2a6f97"/>
+  <rect x="146" y="140" width="16" height="8" rx="2" fill="#2a6f97"/>
+  <rect x="168" y="140" width="16" height="8" rx="2" fill="#2a6f97"/>
+  <rect x="190" y="140" width="16" height="8" rx="2" fill="#2a6f97"/>
+  <rect x="212" y="140" width="16" height="8" rx="2" fill="#2a6f97"/>
+  <rect x="234" y="140" width="16" height="8" rx="2" fill="#2a6f97"/>
+  <rect x="270" y="118" width="16" height="8" rx="2" fill="#e67e22"/>
+  <rect x="270" y="140" width="16" height="8" rx="2" fill="#e67e22"/>
+  <text x="36" y="180" font-size="13" fill="#2a6f97">20 H3K27me3 fragments</text>
+  <text x="306" y="180" font-size="13" fill="#b35f12" text-anchor="end">2 E. coli</text>
+  <text x="20" y="228" font-size="15" fill="#1b2a3a" font-weight="bold">EZH2 inhibitor</text>
+  <rect x="20" y="240" width="300" height="90" rx="10" fill="#f4f6f8" stroke="#d0d7de" stroke-width="1"/>
+  <rect x="36" y="258" width="16" height="8" rx="2" fill="#2a6f97"/>
+  <rect x="58" y="258" width="16" height="8" rx="2" fill="#2a6f97"/>
+  <rect x="80" y="258" width="16" height="8" rx="2" fill="#2a6f97"/>
+  <rect x="102" y="258" width="16" height="8" rx="2" fill="#2a6f97"/>
+  <rect x="124" y="258" width="16" height="8" rx="2" fill="#2a6f97"/>
+  <rect x="146" y="258" width="16" height="8" rx="2" fill="#2a6f97"/>
+  <rect x="168" y="258" width="16" height="8" rx="2" fill="#2a6f97"/>
+  <rect x="190" y="258" width="16" height="8" rx="2" fill="#2a6f97"/>
+  <rect x="270" y="258" width="16" height="8" rx="2" fill="#e67e22"/>
+  <rect x="270" y="280" width="16" height="8" rx="2" fill="#e67e22"/>
+  <text x="36" y="320" font-size="13" fill="#2a6f97">8 H3K27me3 fragments</text>
+  <text x="306" y="320" font-size="13" fill="#b35f12" text-anchor="end">2 E. coli</text>
+  <text x="390" y="28" font-size="17" fill="#1b2a3a" font-weight="bold">2. Sequenced to the same depth</text>
+  <text x="390" y="50" font-size="14" fill="#5b6b7a">1 M read pairs each</text>
+  <rect x="390" y="120" width="272.7272727272727" height="34" rx="0" fill="#2a6f97"/>
+  <rect x="662.7272727272727" y="120" width="27.27272727272728" height="34" rx="0" fill="#e67e22"/>
+  <text x="396" y="143" font-size="14" fill="#ffffff">909 k human</text>
+  <text x="696" y="143" font-size="14" fill="#b35f12">91 k</text>
+  <text x="390" y="180" font-size="14" fill="#5b6b7a">control</text>
+  <rect x="390" y="260" width="240.0" height="34" rx="0" fill="#2a6f97"/>
+  <rect x="630.0" y="260" width="59.999999999999986" height="34" rx="0" fill="#e67e22"/>
+  <text x="396" y="283" font-size="14" fill="#ffffff">800 k human</text>
+  <text x="696" y="283" font-size="14" fill="#b35f12">200 k</text>
+  <text x="390" y="320" font-size="14" fill="#5b6b7a">EZH2 inhibitor</text>
+  <text x="790" y="28" font-size="17" fill="#1b2a3a" font-weight="bold">3. Normalise</text>
+  <text x="790" y="90" font-size="15" fill="#1b2a3a" font-weight="bold">per million reads (CPM)</text>
+  <rect x="900" y="104" width="163.62" height="22" rx="0" fill="#2a6f97"/>
+  <text x="894" y="120" font-size="14" fill="#1b2a3a" text-anchor="end">control</text>
+  <rect x="900" y="134" width="144.0" height="22" rx="0" fill="#2a6f97"/>
+  <text x="894" y="150" font-size="14" fill="#1b2a3a" text-anchor="end">inhibitor</text>
+  <text x="790" y="178" font-size="14" fill="#5b6b7a">909 vs 800: looks like −12%</text>
+  <text x="790" y="250" font-size="15" fill="#1b2a3a" font-weight="bold">per E. coli read (spike-in)</text>
+  <rect x="900" y="264" width="180.0" height="22" rx="0" fill="#2a6f97"/>
+  <text x="894" y="280" font-size="14" fill="#1b2a3a" text-anchor="end">control</text>
+  <rect x="900" y="294" width="72.0" height="22" rx="0" fill="#2a6f97"/>
+  <text x="894" y="310" font-size="14" fill="#1b2a3a" text-anchor="end">inhibitor</text>
+  <text x="790" y="338" font-size="14" fill="#5b6b7a">10 vs 4: the real −60%</text>
+  <line x1="360" y1="60" x2="360" y2="340" stroke="#d0d7de" stroke-width="1.5"/>
+  <line x1="760" y1="60" x2="760" y2="340" stroke="#d0d7de" stroke-width="1.5"/>
+</svg>

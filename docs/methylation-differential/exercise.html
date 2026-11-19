@@ -1,0 +1,2025 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.30">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Exercise: Differential methylation – Epigenetics</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-662ae1889177880cb371f83234c0a158.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-d37fb74fd9c61f52627c5754f4dbd5bd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Epigenetics</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-course-info" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Course info</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-course-info">    
+        <li>
+    <a class="dropdown-item" href="../courseplan.html">
+ <span class="dropdown-text">Course plan</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">DNA methylation</li><li class="breadcrumb-item"><a href="../methylation-differential/lec.html">Differential methylation</a></li><li class="breadcrumb-item"><a href="../methylation-differential/exercise.html">Exercise</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Course info</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../courseplan.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Course plan</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../elo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Learning outcomes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../intro/install.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Install software</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dictionary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Glossary</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Foundations</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">What is epigenetics?</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chromatin-intro/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chromatin-intro/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chromatin-intro/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Genomic intervals</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../genomic-intervals/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../genomic-intervals/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../genomic-intervals/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text">Gene regulation</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../gene-regulation/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../gene-regulation/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../gene-regulation/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false">
+ <span class="menu-text">From reads to coverage</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../enrichment-alignment/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../enrichment-alignment/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../enrichment-alignment/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false">
+ <span class="menu-text">Experimental design and QC</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epigenomics-design/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epigenomics-design/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epigenomics-design/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
+ <span class="menu-text">Chromatin accessibility (ATAC-seq)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="false">
+ <span class="menu-text">ATAC-seq: Tn5, fragment sizes, nucleosome ladder</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atacseq-intro/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atacseq-intro/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atacseq-intro/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false">
+ <span class="menu-text">ATAC-seq processing and peak calling</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atacseq-analysis/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atacseq-analysis/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atacseq-analysis/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="false">
+ <span class="menu-text">Differential accessibility</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../differential-accessibility/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../differential-accessibility/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../differential-accessibility/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="false">
+ <span class="menu-text">Motifs, motif enrichment and TF footprinting</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../motifs-footprinting/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../motifs-footprinting/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../motifs-footprinting/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="true">
+ <span class="menu-text">Protein–DNA binding and histone marks (ChIP-seq)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" role="navigation" aria-expanded="false">
+ <span class="menu-text">ChIP-seq: the assay</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-14" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-intro/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-intro/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-intro/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-15" role="navigation" aria-expanded="false">
+ <span class="menu-text">Peak calling</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-15" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-15" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-peaks/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-peaks/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-peaks/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" role="navigation" aria-expanded="false">
+ <span class="menu-text">CUT&amp;RUN and CUT&amp;Tag</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-16" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cutrun-cuttag/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cutrun-cuttag/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cutrun-cuttag/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-17" role="navigation" aria-expanded="false">
+ <span class="menu-text">Annotation and differential binding</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-17" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-17" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-downstream/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-downstream/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-downstream/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-18" role="navigation" aria-expanded="false">
+ <span class="menu-text">Combining marks into chromatin states</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-18" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-18" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chromatin-states/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chromatin-states/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chromatin-states/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-19" role="navigation" aria-expanded="true">
+ <span class="menu-text">DNA methylation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-19" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-19" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-20" role="navigation" aria-expanded="false">
+ <span class="menu-text">DNA methylation biology</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-20" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-20" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-biology/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-biology/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-biology/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-21" role="navigation" aria-expanded="false">
+ <span class="menu-text">Bisulfite and enzymatic sequencing</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-21" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-21" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-bisulfite/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-bisulfite/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-bisulfite/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-22" role="navigation" aria-expanded="true">
+ <span class="menu-text">Differential methylation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-22" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-22" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-differential/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-differential/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-differential/exercise.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-23" role="navigation" aria-expanded="false">
+ <span class="menu-text">Methylation arrays (Illumina EPIC)</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-23" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-23" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-arrays/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-arrays/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-arrays/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-24" role="navigation" aria-expanded="false">
+ <span class="menu-text">Epigenetic clocks and biomarkers</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-24" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-24" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epigenetic-clocks/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epigenetic-clocks/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epigenetic-clocks/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-25" role="navigation" aria-expanded="false">
+ <span class="menu-text">Methylation and chromatin from long reads</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-25" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-25" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../longread-epigenomics/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../longread-epigenomics/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../longread-epigenomics/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-26" role="navigation" aria-expanded="true">
+ <span class="menu-text">3D genome</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-26" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-26" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-27" role="navigation" aria-expanded="false">
+ <span class="menu-text">3D genome organisation</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-27" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-27" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../genome-3d-intro/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../genome-3d-intro/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../genome-3d-intro/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-28" role="navigation" aria-expanded="false">
+ <span class="menu-text">Hi-C: from reads to contact matrices</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-28" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-28" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hic-processing/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hic-processing/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hic-processing/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-29" role="navigation" aria-expanded="false">
+ <span class="menu-text">Calling compartments, TADs and loops</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-29" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-29" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hic-features/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hic-features/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hic-features/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-30" role="navigation" aria-expanded="true">
+ <span class="menu-text">Integration and interpretation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-30" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-30" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-31" role="navigation" aria-expanded="false">
+ <span class="menu-text">Linking regulatory elements to genes</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-31" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-31" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../integration-rnaseq/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../integration-rnaseq/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../integration-rnaseq/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-32" role="navigation" aria-expanded="false">
+ <span class="menu-text">Epigenomics and genetic variation</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-32" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-32" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../noncoding-variants/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../noncoding-variants/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../noncoding-variants/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-33" role="navigation" aria-expanded="true">
+ <span class="menu-text">Machine learning for prediction</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-33" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-33" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-34" role="navigation" aria-expanded="false">
+ <span class="menu-text">Machine learning from scratch</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-34" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-34" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-basics/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-basics/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-basics/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-35" role="navigation" aria-expanded="false">
+ <span class="menu-text">What people try to predict</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-35" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-35" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-prediction-tasks/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-prediction-tasks/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-prediction-tasks/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-36" role="navigation" aria-expanded="false">
+ <span class="menu-text">How a CNN reads DNA</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-36" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-36" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-cnn-dna/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-cnn-dna/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-cnn-dna/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-37" role="navigation" aria-expanded="false">
+ <span class="menu-text">What did the model learn? Variant effects</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-37" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-37" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-interpretation-variants/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-interpretation-variants/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-interpretation-variants/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#goal" id="toc-goal" class="nav-link active" data-scroll-target="#goal">Goal</a></li>
+  <li><a href="#background" id="toc-background" class="nav-link" data-scroll-target="#background">Background</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
+  <li><a href="#by-hand" id="toc-by-hand" class="nav-link" data-scroll-target="#by-hand">By hand</a></li>
+  <li><a href="#on-the-command-line" id="toc-on-the-command-line" class="nav-link" data-scroll-target="#on-the-command-line">On the command line</a>
+  <ul class="collapse">
+  <li><a href="#c1-input-tables-for-dss" id="toc-c1-input-tables-for-dss" class="nav-link" data-scroll-target="#c1-input-tables-for-dss">C1 — Input tables for DSS</a></li>
+  <li><a href="#c2-how-many-cpgs-are-well-covered-in-all-samples" id="toc-c2-how-many-cpgs-are-well-covered-in-all-samples" class="nav-link" data-scroll-target="#c2-how-many-cpgs-are-well-covered-in-all-samples">C2 — How many CpGs are well covered in all samples?</a></li>
+  </ul></li>
+  <li><a href="#in-r" id="toc-in-r" class="nav-link" data-scroll-target="#in-r">In R</a>
+  <ul class="collapse">
+  <li><a href="#r1-read-the-samples" id="toc-r1-read-the-samples" class="nav-link" data-scroll-target="#r1-read-the-samples">R1 — Read the samples</a></li>
+  <li><a href="#r2-are-the-replicates-overdispersed" id="toc-r2-are-the-replicates-overdispersed" class="nav-link" data-scroll-target="#r2-are-the-replicates-overdispersed">R2 — Are the replicates overdispersed?</a></li>
+  <li><a href="#r3-the-price-of-pooling-reads" id="toc-r3-the-price-of-pooling-reads" class="nav-link" data-scroll-target="#r3-the-price-of-pooling-reads">R3 — The price of pooling reads</a></li>
+  <li><a href="#r4-dss-differential-cpgs" id="toc-r4-dss-differential-cpgs" class="nav-link" data-scroll-target="#r4-dss-differential-cpgs">R4 — DSS: differential CpGs</a></li>
+  <li><a href="#r5-dss-differential-regions" id="toc-r5-dss-differential-regions" class="nav-link" data-scroll-target="#r5-dss-differential-regions">R5 — DSS: differential regions</a></li>
+  <li><a href="#r6-where-are-the-dmrs" id="toc-r6-where-are-the-dmrs" class="nav-link" data-scroll-target="#r6-where-are-the-dmrs">R6 — Where are the DMRs?</a></li>
+  <li><a href="#r7-promoter-dmrs-and-expression" id="toc-r7-promoter-dmrs-and-expression" class="nav-link" data-scroll-target="#r7-promoter-dmrs-and-expression">R7 — Promoter DMRs and expression</a></li>
+  <li><a href="#r8-how-much-do-the-choices-matter" id="toc-r8-how-much-do-the-choices-matter" class="nav-link" data-scroll-target="#r8-how-much-do-the-choices-matter">R8 — How much do the choices matter?</a></li>
+  </ul></li>
+  <li><a href="#hints" id="toc-hints" class="nav-link" data-scroll-target="#hints">Hints</a></li>
+  <li><a href="#solutions" id="toc-solutions" class="nav-link" data-scroll-target="#solutions">Solutions</a></li>
+  <li><a href="#where-this-leads" id="toc-where-this-leads" class="nav-link" data-scroll-target="#where-this-leads">Where this leads</a></li>
+  <li><a href="#key-papers-optional-further-reading" id="toc-key-papers-optional-further-reading" class="nav-link" data-scroll-target="#key-papers-optional-further-reading">Key papers (optional further reading)</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">DNA methylation</li><li class="breadcrumb-item"><a href="../methylation-differential/lec.html">Differential methylation</a></li><li class="breadcrumb-item"><a href="../methylation-differential/exercise.html">Exercise</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Exercise: Differential methylation</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="goal" class="level2">
+<h2 class="anchored" data-anchor-id="goal">Goal</h2>
+<p>After this exercise you will be able to:</p>
+<ul>
+<li>Compute binomial and <strong>beta-binomial</strong> variances by hand, and explain why biological replicates, not more reads, limit power.</li>
+<li>Test a difference in methylation at one CpG, and explain why <strong>pooling reads</strong> across replicates is wrong.</li>
+<li>Turn a list of differential CpGs into <strong>DMRs</strong> with explicit merging rules, and judge a DMR table (Δβ, length, direction, multiple testing).</li>
+<li>Run a differential methylation analysis with <a href="https://bioconductor.org/packages/release/bioc/html/DSS.html">DSS</a> on real WGBS data (GM12878 vs K562, two replicates each, chr21), annotate the DMRs and relate them to expression.</li>
+<li>Judge the design of a methylation study: what do the replicates represent, and what else could explain a difference?</li>
+</ul>
+</section>
+<section id="background" class="level2">
+<h2 class="anchored" data-anchor-id="background">Background</h2>
+<p><strong>Data.</strong> For CpG <span class="math inline">\(i\)</span> and sample <span class="math inline">\(j\)</span>: <span class="math inline">\(X_{ij}\)</span> methylated reads out of <span class="math inline">\(N_{ij}\)</span> reads. The level is <span class="math inline">\(\beta_{ij} = X_{ij}/N_{ij}\)</span>; Δβ = mean β of group 2 − mean β of group 1.</p>
+<p><strong>Binomial</strong> (sampling only): <span class="math inline">\(\text{Var}(X) = N p (1-p)\)</span>. <strong>Beta-binomial</strong> (sampling + biological variation between samples with overdispersion <span class="math inline">\(\varphi\)</span>):</p>
+<p><span class="math display">\[ \text{Var}(X) = N p (1-p)\,[1 + (N-1)\varphi], \qquad \text{SD}(\hat\beta) = \sqrt{p(1-p)\,[1 + (N-1)\varphi]/N}. \]</span></p>
+<p>This is the methylation counterpart of the negative binomial of RNA-seq (Poisson + gamma).</p>
+<p><strong>Comparing two replicates.</strong> With pooled level <span class="math inline">\(p\)</span>, <span class="math inline">\(z = (\hat\beta_1 - \hat\beta_2)\,/\,\sqrt{p(1-p)(1/N_1 + 1/N_2)}\)</span> has variance about 1 if the replicates differ only by sampling.</p>
+<p><strong>DSS</strong> fits a beta-binomial per CpG, shrinks <span class="math inline">\(\varphi\)</span> across CpGs (empirical Bayes, like DESeq2’s dispersions), optionally smooths each sample over neighbouring CpGs (500-bp window), and uses a Wald test. <code>callDML</code> reports differential CpGs (DMLs); <code>callDMR</code> merges significant CpGs less than 100 bp apart into regions of at least 3 CpGs and 50 bp in which at least 50% of CpGs are significant.</p>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<p>From the course repository:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">data/download.sh</span> methylation-differential     <span class="co"># about 80 MB (plus the GTF if not yet present)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/epi/diffmeth <span class="kw">&amp;&amp;</span> <span class="bu">cd</span> ~/epi/diffmeth</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="va">D</span><span class="op">=</span>/path/to/course/data                        <span class="co"># where download.sh put the files</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><code>gm12878_wgbs_rep{1,2}_chr21.bed.gz</code>, <code>k562_wgbs_rep{1,2}_chr21.bed.gz</code>: ENCODE WGBS per-CpG calls, chr21, two replicates per cell line (GM12878 <a href="https://www.encodeproject.org/experiments/ENCSR890UQO/">ENCSR890UQO</a>, K562 <a href="https://www.encodeproject.org/experiments/ENCSR765JPC/">ENCSR765JPC</a>). Format as in <em>DNA methylation biology</em> (column 10 coverage, 11 % methylated rounded down, 13 called genotype).</li>
+<li><code>hg38_cpgIslandExt.txt.gz</code>, <code>gencode.v46.basic.annotation.gtf.gz</code>: CpG islands and genes.</li>
+<li><code>gm12878_rna_rep{1,2}_genes.tsv</code>, <code>k562_rna_rep{1,2}_genes.tsv</code>: ENCODE total RNA-seq gene quantifications (TPM).</li>
+</ul>
+<p><strong>Shortcuts, said plainly.</strong> One chromosome; per-CpG calls from ENCODE’s pipeline rather than our own alignment (<em>Bisulfite and enzymatic sequencing</em> shows they agree closely). The “replicates” are independent cultures of two cell lines from two different people, so this is a demonstration of the method, not a comparison of B cells and erythroid cells in a population (B7).</p>
+<p>Install DSS with <code>BiocManager::install("DSS")</code> (it brings bsseq). The R part runs in about 3 minutes and needs about 4 GB of memory.</p>
+</section>
+<section id="by-hand" class="level2">
+<h2 class="anchored" data-anchor-id="by-hand">By hand</h2>
+<p>Do these on paper.</p>
+<p><strong>B1. Sampling vs biology.</strong> A CpG has true mean level <span class="math inline">\(p = 0.5\)</span>.</p>
+<ol type="a">
+<li><p>With <span class="math inline">\(N = 20\)</span> reads, what is the SD of <span class="math inline">\(\hat\beta\)</span> under the binomial? Under the beta-binomial with <span class="math inline">\(\varphi = 0.1\)</span>?</p></li>
+<li><p>Repeat for <span class="math inline">\(N = 200\)</span>. By what factor did the SD fall in each model?</p></li>
+<li><p>You can afford 400 reads per CpG in total for each group. Is it better to sequence 2 samples at 200x or 20 samples at 20x? Why?</p></li>
+</ol>
+<p><strong>B2. One CpG, two groups.</strong> Group A (GM12878): replicate 1 has 9/10 methylated reads, replicate 2 has 16/20. Group B (K562): 2/10 and 5/20.</p>
+<ol type="a">
+<li><p>Compute β per sample, the mean β per group (average of the samples), and Δβ (B − A).</p></li>
+<li><p>Pool the reads per group and write the 2 × 2 table that Fisher’s exact test would use. What does this test assume about the reads?</p></li>
+<li><p>Use the <span class="math inline">\(z\)</span> formula of the Background to compare the two A replicates. Is their difference compatible with sampling noise alone?</p></li>
+</ol>
+<p><strong>B3. Overdispersion in real data.</strong> For CpGs with ≥ 10 reads in both replicates, the variance of <span class="math inline">\(z\)</span> is 1.05 for the two K562 replicates and 3.44 for the two GM12878 replicates.</p>
+<ol type="a">
+<li>What would you expect under pure binomial sampling? (b) Which pair behaves like two sequencing runs of one sample? (c) Give two biological reasons why two cultures of the same cell line can differ. (d) Pooled-read Fisher tests on GM12878 rep1 vs rep2 give <span class="math inline">\(p &lt; 0.05\)</span> for 17% of CpGs. What should that fraction be?</li>
+</ol>
+<p><strong>B4. Merge DMLs into DMRs.</strong> Significant CpGs (all with Δβ of the same sign) at positions: 5000, 5060, 5110, 5150, 5400, 5430, 5470, 5900, 6000, 6080, 6150, 6230, 6260, 6290. Non-significant CpGs lie between 5150 and 5400 (at 5200, 5250, 5300, 5350) and nowhere else.</p>
+<ol type="a">
+<li><p>Apply: merge significant CpGs less than 100 bp apart; keep regions with ≥ 3 CpGs and ≥ 50 bp. Which regions do you get?</p></li>
+<li><p>Would the first two regions merge if the gap rule were 300 bp? What would the “fraction significant” of that merged region be, counting the four non-significant CpGs?</p></li>
+</ol>
+<p><strong>B5. Multiple testing.</strong> (a) A WGBS study tests 25 million CpGs. How many have <span class="math inline">\(p &lt; 10^{-3}\)</span> by chance if nothing differs? (b) DSS calls 5 061 DMRs at a CpG-level threshold. Why is “5 061 DMRs at FDR 5%” not a correct statement? (c) What does dmrseq do differently, and why can it not help with 2 vs 2 samples?</p>
+<p><strong>B6. Read the results.</strong> Use the lecture figures.</p>
+<p><img src="fig10-dmrs.png" class="img-fluid" style="width:100.0%"></p>
+<ol type="a">
+<li>How many DMRs are lower and how many higher in K562? (b) Where are the losses, and where are the gains enriched, relative to all tested CpGs (CGI 7.1%, promoter 4.9%, K562 low domain 46.5%)? (c) Why might counting DMRs overstate the number of “events” for the losses?</li>
+</ol>
+<p><strong>B7. Judge the design.</strong> (a) In our data, what population do the two groups represent? What does a significant DMR tell you? (b) A study compares blood WGBS of 4 smokers and 4 non-smokers and reports DMRs at genes of the immune response. Name four confounders or artefacts to rule out. (c) Methylation differences between cell types are often Δβ 0.3–1, between exposed and unexposed people often 0.01–0.05. What does that mean for the number of samples and for the choice of platform?</p>
+<p><strong>B8. Expression.</strong> Of 11 chr21 genes whose promoter is more methylated in K562, 5 are expressed more than 2-fold lower in K562 and 1 higher. Of 63 genes whose promoter is less methylated in K562, 7 are higher and 7 lower. Explain the asymmetry, and say what experiment would test whether methylation of the <em>ITGB2</em> promoter silences it in K562.</p>
+</section>
+<section id="on-the-command-line" class="level2">
+<h2 class="anchored" data-anchor-id="on-the-command-line">On the command line</h2>
+<section id="c1-input-tables-for-dss" class="level3">
+<h3 class="anchored" data-anchor-id="c1-input-tables-for-dss">C1 — Input tables for DSS</h3>
+<p>DSS wants, per sample, a table with columns <code>chr pos N X</code> (position of the CpG, reads, methylated reads). Combine the two strands as in <em>DNA methylation biology</em> and drop CpGs with a SNP:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> gm12878_wgbs_rep1 gm12878_wgbs_rep2 k562_wgbs_rep1 k562_wgbs_rep2<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">zcat</span> <span class="va">$D</span>/<span class="va">${s}</span>_chr21.bed.gz <span class="dt">\</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">|</span> <span class="fu">awk</span> <span class="at">-F</span><span class="st">'\t'</span> <span class="at">-v</span> OFS=<span class="st">'\t'</span> <span class="st">'$13 == "CG" { p = ($6 == "+") ? $2 + 1 : $2</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="st">          N[p] += $10; X[p] += int($10 * $11 / 100 + 0.5) }</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="st">        END { print "chr", "pos", "N", "X"; for (p in N) print "chr21", p, N[p], X[p] }'</span> <span class="dt">\</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">|</span> <span class="kw">(</span><span class="bu">read</span> <span class="va">h</span><span class="kw">;</span> <span class="bu">echo</span> <span class="st">"</span><span class="va">$h</span><span class="st">"</span><span class="kw">;</span> <span class="fu">sort</span> <span class="at">-k2,2n</span><span class="kw">)</span> <span class="op">&gt;</span> <span class="va">$s</span>.dss.txt</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"</span><span class="va">$s</span><span class="st"> </span><span class="va">$(</span><span class="fu">tail</span> <span class="at">-n</span> +2 <span class="va">$s</span>.dss.txt <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span><span class="va">)</span><span class="st"> CpGs, methylation </span><span class="va">$(</span><span class="fu">awk</span> <span class="st">'NR &gt; 1 { n += $3; x += $4 } END { printf "%.3f", x / n }'</span> <span class="va">$s</span>.dss.txt<span class="va">)</span><span class="st">"</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-3</span> gm12878_wgbs_rep1.dss.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li>Why is <code>pos</code> the start + 1 for the + strand line and the start for the − strand line? (b) Compare the overall methylation of the four samples. What stands out?</li>
+</ol>
+</section>
+<section id="c2-how-many-cpgs-are-well-covered-in-all-samples" class="level3">
+<h3 class="anchored" data-anchor-id="c2-how-many-cpgs-are-well-covered-in-all-samples">C2 — How many CpGs are well covered in all samples?</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> gm12878_wgbs_rep1 gm12878_wgbs_rep2 k562_wgbs_rep1 k562_wgbs_rep2<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">awk</span> <span class="st">'NR &gt; 1 &amp;&amp; $3 &gt;= 10 { print $2 }'</span> <span class="va">$s</span>.dss.txt <span class="op">&gt;</span> <span class="va">$s</span>.cov10</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span> gm12878_wgbs_rep1.cov10 gm12878_wgbs_rep2.cov10 k562_wgbs_rep1.cov10 k562_wgbs_rep2.cov10 <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span> <span class="dt">\</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'{ n[$1]++ } END { for (k = 1; k &lt;= 4; k++) print k, "samples:", n[k] }'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>How many CpGs have at least 10 reads in all four samples? Why would a per-CpG test that requires 10 reads everywhere lose many CpGs, and how does smoothing help?</p>
+</section>
+</section>
+<section id="in-r" class="level2">
+<h2 class="anchored" data-anchor-id="in-r">In R</h2>
+<p>You need data.table, GenomicRanges, rtracklayer, DSS and ggplot2 (see <em>Install the software you need</em>). Run R in the folder where C1 wrote the <code>.dss.txt</code> files.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressPackageStartupMessages</span>({</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(data.table); <span class="fu">library</span>(GenomicRanges); <span class="fu">library</span>(rtracklayer); <span class="fu">library</span>(DSS); <span class="fu">library</span>(ggplot2)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>D <span class="ot">&lt;-</span> <span class="st">"/path/to/course/data"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="r1-read-the-samples" class="level3">
+<h3 class="anchored" data-anchor-id="r1-read-the-samples">R1 — Read the samples</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">gm1 =</span> <span class="st">"gm12878_wgbs_rep1"</span>, <span class="at">gm2 =</span> <span class="st">"gm12878_wgbs_rep2"</span>, <span class="at">k1 =</span> <span class="st">"k562_wgbs_rep1"</span>, <span class="at">k2 =</span> <span class="st">"k562_wgbs_rep2"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">lapply</span>(samples, <span class="cf">function</span>(s) <span class="fu">fread</span>(<span class="fu">paste0</span>(s, <span class="st">".dss.txt"</span>)))</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(dat, <span class="cf">function</span>(x) <span class="fu">c</span>(<span class="at">CpGs =</span> <span class="fu">nrow</span>(x), <span class="at">median_N =</span> <span class="fu">median</span>(x<span class="sc">$</span>N), <span class="at">meth =</span> <span class="fu">sum</span>(x<span class="sc">$</span>X) <span class="sc">/</span> <span class="fu">sum</span>(x<span class="sc">$</span>N)))</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>bs <span class="ot">&lt;-</span> <span class="fu">makeBSseqData</span>(<span class="fu">lapply</span>(dat, as.data.frame), <span class="fu">names</span>(samples))</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>bs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>How many CpGs does the <code>BSseq</code> object contain, and why more than any single sample?</p>
+</section>
+<section id="r2-are-the-replicates-overdispersed" class="level3">
+<h3 class="anchored" data-anchor-id="r2-are-the-replicates-overdispersed">R2 — Are the replicates overdispersed?</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>zrep <span class="ot">&lt;-</span> <span class="cf">function</span>(a, b, <span class="at">minN =</span> <span class="dv">10</span>) {</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  m <span class="ot">&lt;-</span> <span class="fu">merge</span>(a, b, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"chr"</span>, <span class="st">"pos"</span>))[N.x <span class="sc">&gt;=</span> minN <span class="sc">&amp;</span> N.y <span class="sc">&gt;=</span> minN]</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">&lt;-</span> (m<span class="sc">$</span>X.x <span class="sc">+</span> m<span class="sc">$</span>X.y) <span class="sc">/</span> (m<span class="sc">$</span>N.x <span class="sc">+</span> m<span class="sc">$</span>N.y)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  m <span class="ot">&lt;-</span> m[p <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> p <span class="sc">&lt;</span> <span class="dv">1</span>]; p <span class="ot">&lt;-</span> p[p <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> p <span class="sc">&lt;</span> <span class="dv">1</span>]</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  m[, z <span class="sc">:</span><span class="er">=</span> (X.x <span class="sc">/</span> N.x <span class="sc">-</span> X.y <span class="sc">/</span> N.y) <span class="sc">/</span> <span class="fu">sqrt</span>(p <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> p) <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">/</span> N.x <span class="sc">+</span> <span class="dv">1</span> <span class="sc">/</span> N.y))][]</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>zg <span class="ot">&lt;-</span> <span class="fu">zrep</span>(dat<span class="sc">$</span>gm1, dat<span class="sc">$</span>gm2); zk <span class="ot">&lt;-</span> <span class="fu">zrep</span>(dat<span class="sc">$</span>k1, dat<span class="sc">$</span>k2)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">GM12878 =</span> <span class="fu">var</span>(zg<span class="sc">$</span>z), <span class="at">K562 =</span> <span class="fu">var</span>(zk<span class="sc">$</span>z))</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">GM12878 =</span> <span class="fu">mean</span>(<span class="fu">abs</span>(zg<span class="sc">$</span>z) <span class="sc">&gt;</span> <span class="fl">1.96</span>), <span class="at">K562 =</span> <span class="fu">mean</span>(<span class="fu">abs</span>(zk<span class="sc">$</span>z) <span class="sc">&gt;</span> <span class="fl">1.96</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li>Compare the variances with 1. (b) What fraction of CpGs has <span class="math inline">\(|z| &gt; 1.96\)</span> in each pair, and what would you expect without overdispersion?</li>
+</ol>
+</section>
+<section id="r3-the-price-of-pooling-reads" class="level3">
+<h3 class="anchored" data-anchor-id="r3-the-price-of-pooling-reads">R3 — The price of pooling reads</h3>
+<p>Fisher’s exact test between the two GM12878 replicates, on 50 000 random CpGs with ≥ 5 reads in both (there is no group difference here):</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>nul <span class="ot">&lt;-</span> <span class="fu">merge</span>(dat<span class="sc">$</span>gm1, dat<span class="sc">$</span>gm2, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"chr"</span>, <span class="st">"pos"</span>))[N.x <span class="sc">&gt;=</span> <span class="dv">5</span> <span class="sc">&amp;</span> N.y <span class="sc">&gt;=</span> <span class="dv">5</span>][<span class="fu">sample</span>(.N, <span class="dv">50000</span>)]</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>nul[, p <span class="sc">:</span><span class="er">=</span> <span class="fu">mapply</span>(<span class="cf">function</span>(a, n1, b, n2) <span class="fu">fisher.test</span>(<span class="fu">matrix</span>(<span class="fu">c</span>(a, n1 <span class="sc">-</span> a, b, n2 <span class="sc">-</span> b), <span class="dv">2</span>))<span class="sc">$</span>p.value, X.x, N.x, X.y, N.y)]</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">p.adjust</span>(nul<span class="sc">$</span>p, <span class="st">"BH"</span>) <span class="sc">&lt;</span> <span class="fl">0.05</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(nul<span class="sc">$</span>p <span class="sc">&lt;</span> <span class="fl">0.05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>How many “significant” CpGs at FDR &lt; 0.05? What fraction has <span class="math inline">\(p &lt; 0.05\)</span>? What does this say about tests that pool reads over replicates?</p>
+</section>
+<section id="r4-dss-differential-cpgs" class="level3">
+<h3 class="anchored" data-anchor-id="r4-dss-differential-cpgs">R4 — DSS: differential CpGs</h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>dml <span class="ot">&lt;-</span> <span class="fu">DMLtest</span>(bs, <span class="at">group1 =</span> <span class="fu">c</span>(<span class="st">"gm1"</span>, <span class="st">"gm2"</span>), <span class="at">group2 =</span> <span class="fu">c</span>(<span class="st">"k1"</span>, <span class="st">"k2"</span>), <span class="at">smoothing =</span> <span class="cn">TRUE</span>, <span class="at">ncores =</span> <span class="dv">4</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dml, <span class="dv">3</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(dml<span class="sc">$</span>phi1); <span class="fu">summary</span>(dml<span class="sc">$</span>phi2)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>dmls <span class="ot">&lt;-</span> <span class="fu">callDML</span>(dml, <span class="at">delta =</span> <span class="fl">0.2</span>, <span class="at">p.threshold =</span> <span class="fl">1e-5</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(dmls); <span class="fu">table</span>(dmls<span class="sc">$</span>diff <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dml[<span class="fu">sample</span>(<span class="fu">nrow</span>(dml), <span class="dv">50000</span>), ], <span class="fu">aes</span>(<span class="sc">-</span>diff, <span class="sc">-</span><span class="fu">log10</span>(pval))) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">0.4</span>, <span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.2</span>, <span class="fl">0.2</span>), <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Δβ (K562 − GM12878)"</span>, <span class="at">y =</span> <span class="st">"−log10 p"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li>What are <code>mu1</code>, <code>mu2</code>, <code>diff</code> and <code>phi1</code>/<code>phi2</code>? (b) Compare the median dispersion of the two groups with your answer to R2. (c) How many DMLs, and in which direction? (On 4 cores about 1 minute.)</li>
+</ol>
+</section>
+<section id="r5-dss-differential-regions" class="level3">
+<h3 class="anchored" data-anchor-id="r5-dss-differential-regions">R5 — DSS: differential regions</h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>dmrs <span class="ot">&lt;-</span> <span class="fu">as.data.table</span>(<span class="fu">callDMR</span>(dml, <span class="at">delta =</span> <span class="fl">0.2</span>, <span class="at">p.threshold =</span> <span class="fl">1e-5</span>))</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(dmrs)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>dmrs[, dir <span class="sc">:</span><span class="er">=</span> <span class="fu">ifelse</span>(diff.Methy <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="st">"lower in K562"</span>, <span class="st">"higher in K562"</span>)]</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>dmrs[, .(<span class="at">n =</span> .N, <span class="at">median_bp =</span> <span class="fu">median</span>(length), <span class="at">median_CpGs =</span> <span class="fu">median</span>(nCG), <span class="at">total_kb =</span> <span class="fu">sum</span>(length) <span class="sc">/</span> <span class="fl">1e3</span>), by <span class="ot">=</span> dir]</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dmrs[, .(chr, start, end, length, nCG, meanMethy1, meanMethy2, diff.Methy, areaStat)], <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li>How many DMRs in each direction, how long, and how much of chr21 do they cover? (b) What do the top five by <code>areaStat</code> have in common? Look up their positions in the PMD plot of <em>DNA methylation biology</em>.</li>
+</ol>
+</section>
+<section id="r6-where-are-the-dmrs" class="level3">
+<h3 class="anchored" data-anchor-id="r6-where-are-the-dmrs">R6 — Where are the DMRs?</h3>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>cgi <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="fu">file.path</span>(D, <span class="st">"hg38_cpgIslandExt.txt.gz"</span>), <span class="at">header =</span> <span class="cn">FALSE</span>)[V2 <span class="sc">==</span> <span class="st">"chr21"</span>]</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>cgi <span class="ot">&lt;-</span> <span class="fu">GRanges</span>(cgi<span class="sc">$</span>V2, <span class="fu">IRanges</span>(cgi<span class="sc">$</span>V3 <span class="sc">+</span> <span class="dv">1</span>, cgi<span class="sc">$</span>V4))</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>gtf <span class="ot">&lt;-</span> <span class="fu">import</span>(<span class="fu">file.path</span>(D, <span class="st">"gencode.v46.basic.annotation.gtf.gz"</span>))</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>genes <span class="ot">&lt;-</span> gtf[gtf<span class="sc">$</span>type <span class="sc">==</span> <span class="st">"gene"</span> <span class="sc">&amp;</span> gtf<span class="sc">$</span>gene_type <span class="sc">==</span> <span class="st">"protein_coding"</span> <span class="sc">&amp;</span> <span class="fu">seqnames</span>(gtf) <span class="sc">==</span> <span class="st">"chr21"</span>]</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>prom <span class="ot">&lt;-</span> <span class="fu">promoters</span>(genes, <span class="dv">1000</span>, <span class="dv">1000</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>kb <span class="ot">&lt;-</span> dat<span class="sc">$</span>k1[, .(<span class="at">m =</span> <span class="fu">sum</span>(X) <span class="sc">/</span> <span class="fu">sum</span>(N), <span class="at">n =</span> .N), by <span class="ot">=</span> .(<span class="at">bin =</span> pos <span class="sc">%/%</span> <span class="fl">1e5</span>)][n <span class="sc">&gt;=</span> <span class="dv">50</span>]</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>low <span class="ot">&lt;-</span> <span class="fu">reduce</span>(<span class="fu">GRanges</span>(<span class="st">"chr21"</span>, <span class="fu">IRanges</span>(kb[m <span class="sc">&lt;</span> <span class="fl">0.1</span>]<span class="sc">$</span>bin <span class="sc">*</span> <span class="fl">1e5</span> <span class="sc">+</span> <span class="dv">1</span>, <span class="at">width =</span> <span class="fl">1e5</span>)))</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>dg <span class="ot">&lt;-</span> <span class="fu">GRanges</span>(dmrs<span class="sc">$</span>chr, <span class="fu">IRanges</span>(dmrs<span class="sc">$</span>start, dmrs<span class="sc">$</span>end))</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>dmrs[, <span class="st">`</span><span class="at">:=</span><span class="st">`</span>(<span class="at">cgi =</span> <span class="fu">overlapsAny</span>(dg, cgi), <span class="at">promoter =</span> <span class="fu">overlapsAny</span>(dg, prom), <span class="at">k562_low =</span> <span class="fu">overlapsAny</span>(dg, low))]</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>dmrs[, .(<span class="at">n =</span> .N, <span class="at">cgi =</span> <span class="fu">mean</span>(cgi), <span class="at">promoter =</span> <span class="fu">mean</span>(promoter), <span class="at">k562_low =</span> <span class="fu">mean</span>(k562_low)), by <span class="ot">=</span> dir]</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>bg <span class="ot">&lt;-</span> <span class="fu">GRanges</span>(<span class="st">"chr21"</span>, <span class="fu">IRanges</span>(dml<span class="sc">$</span>pos, <span class="at">width =</span> <span class="dv">1</span>))</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">cgi =</span> <span class="fu">mean</span>(<span class="fu">overlapsAny</span>(bg, cgi)), <span class="at">promoter =</span> <span class="fu">mean</span>(<span class="fu">overlapsAny</span>(bg, prom)), <span class="at">k562_low =</span> <span class="fu">mean</span>(<span class="fu">overlapsAny</span>(bg, low)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li>Compare each direction with the background of tested CpGs. Which features are enriched for losses, which for gains? (b) Why do we compare with all tested CpGs rather than with the whole chromosome?</li>
+</ol>
+</section>
+<section id="r7-promoter-dmrs-and-expression" class="level3">
+<h3 class="anchored" data-anchor-id="r7-promoter-dmrs-and-expression">R7 — Promoter DMRs and expression</h3>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>tpm <span class="ot">&lt;-</span> <span class="cf">function</span>(f) { x <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="fu">file.path</span>(D, f))[<span class="fu">grepl</span>(<span class="st">"^ENSG"</span>, gene_id)]; <span class="fu">setNames</span>(x<span class="sc">$</span>TPM, <span class="fu">sub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">..*"</span>, <span class="st">""</span>, x<span class="sc">$</span>gene_id)) }</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>id <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">..*"</span>, <span class="st">""</span>, genes<span class="sc">$</span>gene_id)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>ex <span class="ot">&lt;-</span> <span class="fu">data.table</span>(id, <span class="at">gene =</span> genes<span class="sc">$</span>gene_name,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">gm =</span> (<span class="fu">tpm</span>(<span class="st">"gm12878_rna_rep1_genes.tsv"</span>)[id] <span class="sc">+</span> <span class="fu">tpm</span>(<span class="st">"gm12878_rna_rep2_genes.tsv"</span>)[id]) <span class="sc">/</span> <span class="dv">2</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">k5 =</span> (<span class="fu">tpm</span>(<span class="st">"k562_rna_rep1_genes.tsv"</span>)[id] <span class="sc">+</span> <span class="fu">tpm</span>(<span class="st">"k562_rna_rep2_genes.tsv"</span>)[id]) <span class="sc">/</span> <span class="dv">2</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>ex[, lfc <span class="sc">:</span><span class="er">=</span> <span class="fu">log2</span>((k5 <span class="sc">+</span> <span class="dv">1</span>) <span class="sc">/</span> (gm <span class="sc">+</span> <span class="dv">1</span>))]</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>po <span class="ot">&lt;-</span> <span class="fu">findOverlaps</span>(prom, dg)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>pd <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">id =</span> id[<span class="fu">queryHits</span>(po)], <span class="at">dB =</span> <span class="sc">-</span>dmrs<span class="sc">$</span>diff.Methy[<span class="fu">subjectHits</span>(po)], <span class="at">cgi =</span> dmrs<span class="sc">$</span>cgi[<span class="fu">subjectHits</span>(po)])</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>pd <span class="ot">&lt;-</span> pd[, .SD[<span class="fu">which.max</span>(<span class="fu">abs</span>(dB))], by <span class="ot">=</span> id]</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>ex <span class="ot">&lt;-</span> <span class="fu">merge</span>(ex, pd, <span class="at">by =</span> <span class="st">"id"</span>, <span class="at">all.x =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>ex[, cls <span class="sc">:</span><span class="er">=</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(dB), <span class="st">"none"</span>, <span class="fu">ifelse</span>(dB <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="st">"higher in K562"</span>, <span class="st">"lower in K562"</span>))]</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>ex[<span class="sc">!</span><span class="fu">is.na</span>(lfc), .(<span class="at">genes =</span> .N, <span class="at">median_lfc =</span> <span class="fu">median</span>(lfc), <span class="at">down =</span> <span class="fu">sum</span>(lfc <span class="sc">&lt;</span> <span class="sc">-</span><span class="dv">1</span>), <span class="at">up =</span> <span class="fu">sum</span>(lfc <span class="sc">&gt;</span> <span class="dv">1</span>)), by <span class="ot">=</span> cls]</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>ex[cls <span class="sc">==</span> <span class="st">"higher in K562"</span>][<span class="fu">order</span>(lfc), .(gene, <span class="at">gm =</span> <span class="fu">round</span>(gm, <span class="dv">1</span>), <span class="at">k5 =</span> <span class="fu">round</span>(k5, <span class="dv">1</span>), <span class="at">lfc =</span> <span class="fu">round</span>(lfc, <span class="dv">2</span>), <span class="at">dB =</span> <span class="fu">round</span>(dB, <span class="dv">2</span>), cgi)]</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(ex<span class="sc">$</span>dB, ex<span class="sc">$</span>lfc, <span class="at">method =</span> <span class="st">"spearman"</span>, <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li>Fill in the table of B8 from the output. (b) Which genes lose expression with a promoter gain? Are they plausible B-cell genes? (c) What is the overall correlation, and why is it weak?</li>
+</ol>
+</section>
+<section id="r8-how-much-do-the-choices-matter" class="level3">
+<h3 class="anchored" data-anchor-id="r8-how-much-do-the-choices-matter">R8 — How much do the choices matter?</h3>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>dml0 <span class="ot">&lt;-</span> <span class="fu">DMLtest</span>(bs, <span class="at">group1 =</span> <span class="fu">c</span>(<span class="st">"gm1"</span>, <span class="st">"gm2"</span>), <span class="at">group2 =</span> <span class="fu">c</span>(<span class="st">"k1"</span>, <span class="st">"k2"</span>), <span class="at">smoothing =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">smoothed =</span> <span class="fu">sum</span>(dml<span class="sc">$</span>fdr <span class="sc">&lt;</span> <span class="fl">0.05</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">not_smoothed =</span> <span class="fu">sum</span>(dml0<span class="sc">$</span>fdr <span class="sc">&lt;</span> <span class="fl">0.05</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(<span class="fu">callDMR</span>(dml0, <span class="at">delta =</span> <span class="fl">0.2</span>, <span class="at">p.threshold =</span> <span class="fl">1e-5</span>))</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(<span class="fu">callDMR</span>(dml, <span class="at">delta =</span> <span class="fl">0.4</span>, <span class="at">p.threshold =</span> <span class="fl">1e-5</span>))</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(dmrs[, .(chr, <span class="at">start =</span> start <span class="sc">-</span> <span class="dv">1</span>, end, <span class="at">name =</span> dir, <span class="at">score =</span> <span class="fu">round</span>(<span class="dv">1000</span> <span class="sc">*</span> <span class="fu">abs</span>(diff.Methy)))],</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>       <span class="st">"dmrs_gm12878_vs_k562.bed"</span>, <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">col.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li>How do smoothing and the delta threshold change the results? (b) Why do we subtract 1 from <code>start</code> when writing BED?</li>
+</ol>
+</section>
+</section>
+<section id="hints" class="level2">
+<h2 class="anchored" data-anchor-id="hints">Hints</h2>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 1 — variances (B1, B3, R2)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 1 — variances (B1, B3, R2)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Plug into <span class="math inline">\(\text{SD}(\hat\beta) = \sqrt{p(1-p)[1+(N-1)\varphi]/N}\)</span>. As <span class="math inline">\(N \to \infty\)</span> the beta-binomial SD tends to <span class="math inline">\(\sqrt{p(1-p)\varphi}\)</span>. Under the binomial, about 5% of <span class="math inline">\(|z|\)</span> exceed 1.96. The DSS model is in <a href="https://doi.org/10.1093/nar/gku154">Feng, Conneely &amp; Wu 2014</a>.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 2 — tests and pooling (B2, R3)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 2 — tests and pooling (B2, R3)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><a href="https://rdrr.io/r/stats/fisher.test.html"><code>fisher.test</code></a> takes a 2 × 2 table of methylated and unmethylated reads in two groups. Pooling makes every read an independent observation; replicates disappear. Compare with pseudo-replication in <em>Differential accessibility</em>.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 3 — DSS (R1, R4, R5, R8)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 3 — DSS (R1, R4, R5, R8)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The <a href="https://bioconductor.org/packages/release/bioc/vignettes/DSS/inst/doc/DSS.html">DSS vignette</a> explains <code>makeBSseqData</code>, <code>DMLtest</code>, <code>callDML</code>, <code>callDMR</code> and their columns (<code>mu1</code>, <code>mu2</code>, <code>diff</code>, <code>phi1</code>, <code>phi2</code>, <code>areaStat</code>). <code>diff</code> is group 1 − group 2, here GM12878 − K562.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 4 — regions and multiple testing (B4, B5)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 4 — regions and multiple testing (B4, B5)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Walk along the positions and start a new region whenever the gap is ≥ 100 bp. Expected false positives = number of tests × threshold. Region-level FDR: <a href="https://doi.org/10.1093/biostatistics/kxy007">dmrseq (Korthauer et al.&nbsp;2019)</a> permutes sample labels; with 2 + 2 samples there are only 3 distinct splits.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 5 — annotation and expression (B6, B8, R6, R7)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 5 — annotation and expression (B6, B8, R6, R7)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><a href="https://rdrr.io/bioc/GenomicRanges/man/findOverlaps-methods.html"><code>overlapsAny</code>, <code>findOverlaps</code></a> and <a href="https://rdrr.io/bioc/GenomicRanges/man/intra-range-methods.html"><code>promoters</code></a> are as in <em>Genomic intervals</em>. A DMR in a domain that is silent in both cell lines cannot change expression. dCas9 fused to TET1 or DNMT3A edits methylation at one locus.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 6 — design (B7)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 6 — design (B7)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Think of everything that differs between the groups besides the variable of interest: cell-type composition, age, sex, genotype, batch, conversion, coverage. <em>Methylation arrays</em> covers composition in blood (<a href="https://doi.org/10.1186/gb-2014-15-2-r31">Jaffe &amp; Irizarry 2014</a>).</p>
+</div>
+</div>
+</div>
+</section>
+<section id="solutions" class="level2">
+<h2 class="anchored" data-anchor-id="solutions">Solutions</h2>
+<div class="callout callout-style-default callout-note callout-titled" title="Solutions — by hand">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions — by hand
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>B1.</strong> (a) Binomial: <span class="math inline">\(\sqrt{0.25/20} = 0.112\)</span>. Beta-binomial: <span class="math inline">\(\sqrt{0.25 \times (1 + 19 \times 0.1)/20} = \sqrt{0.25 \times 2.9/20} = 0.190\)</span>. (b) <span class="math inline">\(N = 200\)</span>: binomial <span class="math inline">\(\sqrt{0.25/200} = 0.035\)</span> (3.2-fold lower); beta-binomial <span class="math inline">\(\sqrt{0.25 \times 20.9/200} = 0.162\)</span> (only 1.2-fold lower). (c) 20 samples at 20x: the biological variance (<span class="math inline">\(\approx p(1-p)\varphi = 0.025\)</span> per sample) shrinks only with the number of samples. The SD of a group mean is about <span class="math inline">\(0.19/\sqrt{20} = 0.042\)</span> with 20 samples at 20x versus <span class="math inline">\(0.16/\sqrt{2} = 0.11\)</span> with 2 samples at 200x; and with 2 samples φ itself can hardly be estimated.</p>
+<p><strong>B2.</strong> (a) A: 0.90 and 0.80, mean <strong>0.85</strong>. B: 0.20 and 0.25, mean <strong>0.225</strong>. Δβ $= 0.225 - 0.85 = $ <strong>−0.625</strong>. (b) Pooled: A 25 methylated, 5 unmethylated; B 7 methylated, 23 unmethylated. Fisher assumes all 60 reads are independent draws from two binomial populations, one per group: it ignores that reads come in samples with their own levels. (c) Pooled <span class="math inline">\(p = 25/30 = 0.833\)</span>; <span class="math inline">\(z = (0.90 - 0.80)/\sqrt{0.833 \times 0.167 \times (1/10 + 1/20)} = 0.10/\sqrt{0.0208} = 0.10/0.144 = 0.69\)</span>: compatible with sampling noise.</p>
+<p><strong>B3.</strong> (a) 1. (b) K562. (c) The two cultures had different numbers of divisions since thawing (methylation in partially methylated domains drifts with divisions), and subclones can take over a culture (different epialleles, copy-number changes); EBV-transformed lines are oligoclonal. (Different handling and DNA extraction add technical variation.) (d) 5% (by definition of a valid test under the null); 17% means the test is badly anticonservative.</p>
+<p><strong>B4.</strong> (a) Gaps: 60, 50, 40, | 250 |, 30, 40, | 430 |, | 100 |, 80, 70, 80, 30, 30. Regions: {5000–5150}: 4 CpGs, 150 bp → <strong>DMR</strong>; {5400–5470}: 3 CpGs, 70 bp → <strong>DMR</strong>; {5900}: 1 CpG → rejected (the gap to 6000 is exactly 100, not less than 100); {6000–6290}: 6 CpGs, 290 bp → <strong>DMR</strong>. (b) Yes: with a 300-bp rule 5150 and 5400 (gap 250) merge into 5000–5470 with 7 significant and 4 non-significant CpGs: 7/11 = 64% significant, above DSS’s 50% rule, so one region. The rules decide whether one long or two short regions are reported.</p>
+<p><strong>B5.</strong> (a) <span class="math inline">\(25 \times 10^6 \times 10^{-3} = 25\,000\)</span>. (b) DSS’s threshold is applied to CpGs; DMRs are built afterwards from the significant CpGs, so the proportion of false DMRs is not controlled (one false region can contain many correlated false CpGs, and region boundaries are chosen after seeing the data). (c) dmrseq scores candidate regions and computes region-level p-values by permuting sample labels, which gives a valid region-level FDR; with 2 vs 2 samples there are only 3 distinct ways to split the samples, far too few permutations.</p>
+<p><strong>B6.</strong> (a) 4 803 lower, 258 higher in K562. (b) Losses: 68% overlap K562 low domains (background 46.5%); depleted at CGIs (2.0% vs 7.1%) and promoters (1.8% vs 4.9%). Gains: enriched at CGIs (9.7%) and promoters (6.6%), almost absent from low domains (3.1%). (c) A low domain of several hundred kb is one event (one region that lost methylation), but the merging rule cuts it into many DMRs wherever two significant CpGs are 100 bp or more apart.</p>
+<p><strong>B7.</strong> (a) Each group is one cell line; the replicates are cultures of the same cells. A significant DMR means that the two cultures differ more than replicate cultures do; it says nothing about B cells vs erythroid cells in general, or about which of the many differences between the lines (donor, lineage, EBV, leukaemia, karyotype) causes it. (b) Blood cell-type composition (smoking raises neutrophils), age, sex, genotype at CpG-SNPs/meQTLs, batch/processing day, conversion and coverage differences, and with 4 vs 4 the weak region-level error control. (c) Small effects need many samples (hundreds) for power, which favours cheap per-sample platforms (arrays, targeted methods) over WGBS; large cell-type effects are found with a few samples.</p>
+<p><strong>B8.</strong> Gains of methylation at CpG-island promoters go with silencing: once a CGI promoter is methylated it is stably off (or it was silenced first and then methylated). Most losses of promoter methylation lie in large domains that lost methylation in K562 at genes silent in both lines; losing methylation does not activate a gene without the right transcription factors. To test <em>ITGB2</em> in K562: demethylate its promoter with dCas9-TET1 (or treat with decitabine, less specific) and measure expression; conversely methylate it in GM12878 with dCas9-DNMT3A(-3L) and see if expression drops.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Solutions — command line">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions — command line
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>C1.</strong> (a) The file is BED (0-based start) and lists each strand’s C. The + strand C at 0-based start <span class="math inline">\(s\)</span> is at 1-based position <span class="math inline">\(s+1\)</span>; the − strand C of the same CpG is one base to the right, at 0-based <span class="math inline">\(s+1\)</span>, so its start is already the 1-based position of the + strand C. Both get the same <code>pos</code>. (b) GM12878 rep1 350 466 CpGs, 0.458; rep2 349 682, 0.511; K562 rep1 346 903, 0.230; rep2 350 620, 0.256. K562 is half as methylated as GM12878; the GM12878 replicates differ by 0.05 overall, the K562 replicates by 0.03. (17 s.)</p>
+<p><strong>C2.</strong> 168 666 CpGs have ≥ 10 reads in all four samples (31 710 in only one, 44 932 in two, 68 990 in three). A per-CpG test requiring 10 reads everywhere discards about half of the CpGs. Smoothing uses the reads of neighbouring CpGs, so CpGs with few reads still contribute to a regional estimate.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Solutions — R">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions — R
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>R1.</strong> 366 640 CpGs: the union of all CpGs covered in at least one sample (samples with 0 reads at a CpG get N = 0).</p>
+<p><strong>R2.</strong> (a) GM12878 <strong>3.44</strong>, K562 <strong>1.05</strong>. (b) <span class="math inline">\(|z| &gt; 1.96\)</span>: GM12878 30%, K562 3% (expected 5%; slightly below because small integer counts make the test conservative).</p>
+<p><strong>R3.</strong> <strong>3 569</strong> of 50 000 CpGs at FDR &lt; 0.05 (7%), and 17% with <span class="math inline">\(p &lt; 0.05\)</span>, between two replicates of the same cell line. Pooling turns sample-to-sample variation into “significance”; a model with a dispersion parameter and samples as replicates is needed.</p>
+<p><strong>R4.</strong> (a) <code>mu1</code>, <code>mu2</code>: smoothed mean levels of group 1 (GM12878) and 2 (K562); <code>diff</code> = <code>mu1 − mu2</code>; <code>phi1</code>, <code>phi2</code>: estimated (shrunken) dispersions per group. (b) Median φ 0.15 for GM12878 and 0.05 for K562: GM12878’s replicates are more variable, as in R2. (c) <strong>87 108</strong> DMLs (|Δβ| &gt; 0.2, p &lt; <span class="math inline">\(10^{-5}\)</span>); 82 788 lower in K562 (<code>diff &gt; 0</code>), 4 320 higher. About 1 minute on 4 cores.</p>
+<p><strong>R5.</strong> (a) <strong>5 061</strong> DMRs: 4 803 lower in K562 (median 416 bp, 10 CpGs, 3.25 Mb in total) and 258 higher (median 495 bp, 7 CpGs, 0.19 Mb). (b) All five are long (9–25 kb, 187–337 CpGs) and lower in K562 (≈ 0.9 in GM12878 vs 0.03–0.14 in K562): stretches near 36.2 Mb and 41.4 Mb, in domains that K562 lost almost completely.</p>
+<p><strong>R6.</strong> (a) Losses: CGI 2.0%, promoter 1.8%, low domain 68% vs background 7.1%, 4.9%, 46.5%: enriched in low domains, depleted at islands and promoters. Gains: CGI 9.7%, promoter 6.6%, low domain 3.1%: enriched at islands and promoters, nearly absent from low domains. (b) Only tested CpGs could become DMRs; the tested set is not uniform over the chromosome (coverage, CpG density), so the fair comparison is with what could have been found.</p>
+<p><strong>R7.</strong> (a) No DMR: 143 genes, median log2 FC 0.02, 2 down and 26 up. Lower in K562: 63 genes, median 0, 7 down and 7 up. Higher in K562: 11 genes, median 0, <strong>5 down</strong> and 1 up. (b) <em>ITGB2</em> (16.8 → 0.2 TPM; CD18, a leukocyte integrin expressed in B cells), <em>IFNGR2</em>, <em>CBR3</em>, <em>CBR1</em>, <em>MAP3K7CL</em>; <em>ITGB2</em>, <em>CBR1</em> and <em>CBR3</em> have CGI promoters. Five other genes with promoter gains (e.g.&nbsp;<em>OLIG1</em>, <em>RIPK4</em>) are silent in both lines. (c) Spearman 0.14 between promoter Δβ and expression change: most promoter DMRs are at genes silent in both lines, and expression has many other determinants.</p>
+<p><strong>R8.</strong> (a) FDR &lt; 0.05: 255 128 CpGs with smoothing vs 125 863 without; DMRs without smoothing: 2 127 (instead of 5 061); with delta 0.4: 1 880. Smoothing roughly doubles the power on 10–20x data; a stricter delta keeps the large differences. The direction and location of the main changes do not depend on these choices. (b) DSS reports 1-based positions; BED starts are 0-based.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="where-this-leads" class="level2">
+<h2 class="anchored" data-anchor-id="where-this-leads">Where this leads</h2>
+<ul>
+<li><em>Methylation arrays</em> uses the same ideas with a linear model on M-values (limma) and region finders such as DMRcate; cell-type composition is handled there.</li>
+<li><em>Epigenetic clocks and biomarkers</em> uses many small, consistent differences (age, disease) rather than DMRs.</li>
+<li><em>Epigenetics in disease and therapy</em> returns to CpG-island hypermethylation and domain hypomethylation in cancer.</li>
+<li><em>Linking regulatory elements to genes</em> asks which distal DMRs (enhancers) regulate which genes.</li>
+</ul>
+</section>
+<section id="key-papers-optional-further-reading" class="level2">
+<h2 class="anchored" data-anchor-id="key-papers-optional-further-reading">Key papers (optional further reading)</h2>
+<p><em>Not required reading and not examined.</em></p>
+<ul>
+<li>Hansen, Langmead &amp; Irizarry 2012, <em>Genome Biol</em>. <a href="https://doi.org/10.1186/gb-2012-13-10-r83">BSmooth: from whole genome bisulfite sequencing reads to differentially methylated regions</a>.</li>
+<li>Feng, Conneely &amp; Wu 2014, <em>Nucleic Acids Res</em>. <a href="https://doi.org/10.1093/nar/gku154">A Bayesian hierarchical model to detect differentially methylated loci from single nucleotide resolution sequencing data</a>.</li>
+<li>Akalin et al.&nbsp;2012, <em>Genome Biol</em>. <a href="https://doi.org/10.1186/gb-2012-13-10-r87">methylKit: a comprehensive R package for the analysis of genome-wide DNA methylation profiles</a>.</li>
+<li>Korthauer et al.&nbsp;2019, <em>Biostatistics</em>. <a href="https://doi.org/10.1093/biostatistics/kxy007">Detection and accurate false discovery rate control of differentially methylated regions from whole genome bisulfite sequencing</a>.</li>
+<li>Hansen et al.&nbsp;2011, <em>Nat Genet</em>. <a href="https://doi.org/10.1038/ng.865">Increased methylation variation in epigenetic domains across cancer types</a>.</li>
+<li>Ziller et al.&nbsp;2015, <em>Nat Methods</em>. <a href="https://doi.org/10.1038/nmeth.3152">Coverage recommendations for methylation analysis by whole-genome bisulfite sequencing</a>.</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

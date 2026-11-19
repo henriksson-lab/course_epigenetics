@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 420" width="1120" height="420" font-family="Helvetica, Arial, sans-serif">
+  <rect width="1120" height="420" fill="#ffffff"/>
+  <!-- annotation row -->
+  <text x="20" y="40" font-size="15" font-weight="bold" fill="#1b2a3a">elements</text>
+  <rect x="190" y="26" width="50" height="20" rx="4" fill="#d4a017" fill-opacity="0.25" stroke="#d4a017"/>
+  <text x="215" y="62" font-size="14" fill="#8a6d00" text-anchor="middle">enhancer</text>
+  <line x1="300" y1="36" x2="760" y2="36" stroke="#1b2a3a" stroke-width="1.5"/>
+  <rect x="300" y="28" width="26" height="16" fill="#1b2a3a"/><rect x="420" y="28" width="18" height="16" fill="#1b2a3a"/><rect x="540" y="28" width="18" height="16" fill="#1b2a3a"/><rect x="730" y="28" width="30" height="16" fill="#1b2a3a"/>
+  <path d="M300,28 L300,14 L326,14" fill="none" stroke="#1b2a3a" stroke-width="1.8"/><path d="M322,9 L332,14 L322,19 z" fill="#1b2a3a"/>
+  <text x="530" y="62" font-size="14" fill="#2e8b57" text-anchor="middle">active gene (transcribed)</text>
+  <rect x="806" y="28" width="12" height="16" fill="#8c564b"/>
+  <text x="812" y="62" font-size="14" fill="#8c564b" text-anchor="middle">insulator</text>
+  <line x1="880" y1="36" x2="1020" y2="36" stroke="#1b2a3a" stroke-width="1.5"/>
+  <rect x="880" y="28" width="20" height="16" fill="#1b2a3a"/><rect x="1000" y="28" width="20" height="16" fill="#1b2a3a"/>
+  <path d="M880,28 L880,14 L904,14" fill="none" stroke="#1b2a3a" stroke-width="1.8"/><path d="M900,9 L910,14 L900,19 z" fill="#1b2a3a"/>
+  <text x="950" y="62" font-size="14" fill="#a8324a" text-anchor="middle">silent developmental gene</text>
+
+  <!-- tracks: baseline y, height 40 -->
+  <g font-size="15" font-weight="bold">
+    <text x="20" y="112" fill="#c0392b">H3K4me3</text>
+    <text x="20" y="162" fill="#e67e22">H3K27ac</text>
+    <text x="20" y="212" fill="#d4a017">H3K4me1</text>
+    <text x="20" y="262" fill="#2e8b57">H3K36me3</text>
+    <text x="20" y="312" fill="#2a6f97">H3K27me3</text>
+    <text x="20" y="362" fill="#8c564b">CTCF</text>
+  </g>
+  <g stroke="#cfd8e0" stroke-width="1">
+    <line x1="140" y1="118" x2="1100" y2="118"/><line x1="140" y1="168" x2="1100" y2="168"/><line x1="140" y1="218" x2="1100" y2="218"/>
+    <line x1="140" y1="268" x2="1100" y2="268"/><line x1="140" y1="318" x2="1100" y2="318"/><line x1="140" y1="368" x2="1100" y2="368"/>
+  </g>
+  <!-- H3K4me3: promoter, with a dip at the TSS (nucleosome-free region) -->
+  <path d="M260,118 C270,118 276,86 286,84 C292,83 296,104 300,104 C304,104 308,80 320,80 C336,80 344,118 360,118 Z" fill="#c0392b" fill-opacity="0.7"/>
+  <path d="M866,118 C870,118 874,108 880,108 C886,108 890,118 896,118 Z" fill="#c0392b" fill-opacity="0.7"/>
+  <!-- H3K27ac: promoter and enhancer -->
+  <path d="M180,168 C190,168 196,140 215,138 C234,140 240,168 250,168 Z" fill="#e67e22" fill-opacity="0.7"/>
+  <path d="M266,168 C276,168 280,142 288,140 C294,139 296,156 300,156 C304,156 308,136 318,136 C332,136 338,168 350,168 Z" fill="#e67e22" fill-opacity="0.7"/>
+  <!-- H3K4me1: enhancer flanks, promoter flanks -->
+  <path d="M160,218 C170,218 176,192 190,192 C202,192 206,212 215,212 C224,212 228,192 240,192 C254,192 260,218 270,218 Z" fill="#d4a017" fill-opacity="0.7"/>
+  <path d="M330,218 C340,218 346,198 360,198 C380,198 390,218 410,218 Z" fill="#d4a017" fill-opacity="0.7"/>
+  <!-- H3K36me3: gene body rising to 3' -->
+  <path d="M330,268 L400,262 L480,254 L560,246 L640,240 L720,236 L760,238 L780,268 Z" fill="#2e8b57" fill-opacity="0.7"/>
+  <!-- H3K27me3: broad over silent gene -->
+  <path d="M836,318 L846,296 L900,290 L960,288 L1020,292 L1064,298 L1074,318 Z" fill="#2a6f97" fill-opacity="0.7"/>
+  <!-- CTCF: sharp at insulator, plus one at the enhancer side -->
+  <path d="M800,368 C806,368 808,330 812,330 C816,330 818,368 824,368 Z" fill="#8c564b" fill-opacity="0.85"/>
+  <path d="M146,368 C150,368 152,350 155,350 C158,350 160,368 164,368 Z" fill="#8c564b" fill-opacity="0.85"/>
+  <!-- annotations -->
+  <text x="372" y="96" font-size="13" fill="#5b6b7a">dip = nucleosome-free TSS</text>
+  <text x="866" y="100" font-size="13" fill="#5b6b7a" text-anchor="end">bivalent: weak K4me3</text>
+  <text x="150" y="258" font-size="13" fill="#5b6b7a">gene body, rising to the 3' end</text>
+  <text x="1074" y="282" font-size="13" fill="#5b6b7a" text-anchor="end">tens of kb</text>
+  <text x="20" y="404" font-size="15" fill="#5b6b7a">H3K9me3 (not drawn) covers constitutive heterochromatin: repeats, ZNF gene clusters, pericentromeres. Shapes are schematic.</text>
+</svg>

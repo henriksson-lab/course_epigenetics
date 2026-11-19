@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 345" width="1120" height="345" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker></defs>
+<rect width="1120" height="345" fill="white"/>
+<text x="150" y="26" font-size="17" font-weight="bold" text-anchor="middle" fill="#1b2a3a">intergenic</text>
+<text x="390" y="26" font-size="17" font-weight="bold" text-anchor="middle" fill="#1b2a3a">CpG-island promoter</text>
+<text x="760" y="26" font-size="17" font-weight="bold" text-anchor="middle" fill="#1b2a3a">gene body (transcribed)</text>
+<rect x="85" y="42" width="130" height="44" rx="10" fill="#2a6f97" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="150" y="70" font-size="16" text-anchor="middle" font-weight="bold" fill="white">DNMT3A</text>
+<rect x="695" y="42" width="130" height="44" rx="10" fill="#2a6f97" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="760" y="70" font-size="16" text-anchor="middle" font-weight="bold" fill="white">DNMT3B</text>
+<rect x="325" y="42" width="130" height="44" rx="10" fill="#dfe6ec" stroke="#5b6b7a" stroke-width="1.5" stroke-dasharray="5,3"/>
+<text x="390" y="70" font-size="16" text-anchor="middle" font-weight="bold" fill="#5b6b7a">DNMT3A/B</text>
+<line x1="390" y1="88" x2="390" y2="103" stroke="#c0392b" stroke-width="3"/>
+<line x1="374" y1="103" x2="406" y2="103" stroke="#c0392b" stroke-width="4"/>
+<line x1="150" y1="88" x2="150" y2="112" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<line x1="760" y1="88" x2="760" y2="112" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M40,160 C70,160 80,122 150,122 C220,122 230,160 260,160 Z" fill="#8ab17d"/>
+<text x="150" y="146" font-size="15" text-anchor="middle" fill="#1b2a3a">H3K36me2</text>
+<path d="M330,160 C355,160 365,112 390,112 C415,112 425,160 450,160 Z" fill="#c0392b"/>
+<text x="480" y="128" font-size="15" text-anchor="start" fill="#c0392b">H3K4me3</text>
+<path d="M520,160 L520,150 C650,140 800,124 1000,118 L1000,160 Z" fill="#2e8b57"/>
+<text x="880" y="146" font-size="15" text-anchor="middle" fill="white">H3K36me3</text>
+<line x1="30" y1="160" x2="1090" y2="160" stroke="#dfe6ec" stroke-width="1.5"/>
+<line x1="390" y1="195" x2="1000" y2="195" stroke="#1b2a3a" stroke-width="2"/>
+<rect x="390" y="184" width="40" height="22" fill="#1b2a3a"/>
+<rect x="520" y="184" width="25" height="22" fill="#1b2a3a"/>
+<rect x="640" y="184" width="22" height="22" fill="#1b2a3a"/>
+<rect x="760" y="184" width="25" height="22" fill="#1b2a3a"/>
+<rect x="880" y="184" width="25" height="22" fill="#1b2a3a"/>
+<rect x="975" y="184" width="25" height="22" fill="#1b2a3a"/>
+<path d="M390,184 L390,167 L418,167" fill="none" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<rect x="330" y="270" width="110" height="9" fill="#2e8b57" opacity="0.6"/>
+<text x="448" y="280" font-size="14" text-anchor="start" fill="#2e8b57">CpG island</text>
+<line x1="30" y1="262" x2="1090" y2="262" stroke="#1b2a3a" stroke-width="3"/>
+<line x1="60" y1="262" x2="60" y2="244" stroke="#1b2a3a" stroke-width="2"/><circle cx="60" cy="238" r="6.5" fill="#1b2a3a"/>
+<line x1="95" y1="262" x2="95" y2="244" stroke="#1b2a3a" stroke-width="2"/><circle cx="95" cy="238" r="6.5" fill="#1b2a3a"/>
+<line x1="130" y1="262" x2="130" y2="244" stroke="#1b2a3a" stroke-width="2"/><circle cx="130" cy="238" r="6.5" fill="#1b2a3a"/>
+<line x1="165" y1="262" x2="165" y2="244" stroke="#1b2a3a" stroke-width="2"/><circle cx="165" cy="238" r="6.5" fill="#1b2a3a"/>
+<line x1="200" y1="262" x2="200" y2="244" stroke="#1b2a3a" stroke-width="2"/><circle cx="200" cy="238" r="6.5" fill="#1b2a3a"/>
+<line x1="240" y1="262" x2="240" y2="244" stroke="#1b2a3a" stroke-width="2"/><circle cx="240" cy="238" r="6.5" fill="#1b2a3a"/>
+<line x1="540" y1="262" x2="540" y2="244" stroke="#1b2a3a" stroke-width="2"/><circle cx="540" cy="238" r="6.5" fill="#1b2a3a"/>
+<line x1="590" y1="262" x2="590" y2="244" stroke="#1b2a3a" stroke-width="2"/><circle cx="590" cy="238" r="6.5" fill="#1b2a3a"/>
+<line x1="630" y1="262" x2="630" y2="244" stroke="#1b2a3a" stroke-width="2"/><circle cx="630" cy="238" r="6.5" fill="#1b2a3a"/>
+<line x1="680" y1="262" x2="680" y2="244" stroke="#1b2a3a" stroke-width="2"/><circle cx="680" cy="238" r="6.5" fill="#1b2a3a"/>
+<line x1="720" y1="262" x2="720" y2="244" stroke="#1b2a3a" stroke-width="2"/><circle cx="720" cy="238" r="6.5" fill="#1b2a3a"/>
+<line x1="780" y1="262" x2="780" y2="244" stroke="#1b2a3a" stroke-width="2"/><circle cx="780" cy="238" r="6.5" fill="#1b2a3a"/>
+<line x1="830" y1="262" x2="830" y2="244" stroke="#1b2a3a" stroke-width="2"/><circle cx="830" cy="238" r="6.5" fill="#1b2a3a"/>
+<line x1="870" y1="262" x2="870" y2="244" stroke="#1b2a3a" stroke-width="2"/><circle cx="870" cy="238" r="6.5" fill="#1b2a3a"/>
+<line x1="920" y1="262" x2="920" y2="244" stroke="#1b2a3a" stroke-width="2"/><circle cx="920" cy="238" r="6.5" fill="#1b2a3a"/>
+<line x1="960" y1="262" x2="960" y2="244" stroke="#1b2a3a" stroke-width="2"/><circle cx="960" cy="238" r="6.5" fill="#1b2a3a"/>
+<line x1="1010" y1="262" x2="1010" y2="244" stroke="#1b2a3a" stroke-width="2"/><circle cx="1010" cy="238" r="6.5" fill="#1b2a3a"/>
+<line x1="1060" y1="262" x2="1060" y2="244" stroke="#1b2a3a" stroke-width="2"/><circle cx="1060" cy="238" r="6.5" fill="#1b2a3a"/>
+<line x1="338" y1="262" x2="338" y2="244" stroke="#1b2a3a" stroke-width="2"/><circle cx="338" cy="238" r="6.5" fill="white" stroke="#1b2a3a" stroke-width="2"/>
+<line x1="356" y1="262" x2="356" y2="244" stroke="#1b2a3a" stroke-width="2"/><circle cx="356" cy="238" r="6.5" fill="white" stroke="#1b2a3a" stroke-width="2"/>
+<line x1="374" y1="262" x2="374" y2="244" stroke="#1b2a3a" stroke-width="2"/><circle cx="374" cy="238" r="6.5" fill="white" stroke="#1b2a3a" stroke-width="2"/>
+<line x1="392" y1="262" x2="392" y2="244" stroke="#1b2a3a" stroke-width="2"/><circle cx="392" cy="238" r="6.5" fill="white" stroke="#1b2a3a" stroke-width="2"/>
+<line x1="410" y1="262" x2="410" y2="244" stroke="#1b2a3a" stroke-width="2"/><circle cx="410" cy="238" r="6.5" fill="white" stroke="#1b2a3a" stroke-width="2"/>
+<line x1="428" y1="262" x2="428" y2="244" stroke="#1b2a3a" stroke-width="2"/><circle cx="428" cy="238" r="6.5" fill="white" stroke="#1b2a3a" stroke-width="2"/>
+<text x="150" y="312" font-size="15" text-anchor="middle" fill="#1b2a3a">DNMT3A's PWWP domain</text>
+<text x="150" y="333" font-size="15" text-anchor="middle" fill="#1b2a3a">reads H3K36me2 (from NSD1/2)</text>
+<text x="390" y="312" font-size="15" text-anchor="middle" fill="#1b2a3a">H3K4me3 blocks the ADD domain:</text>
+<text x="390" y="333" font-size="15" text-anchor="middle" fill="#1b2a3a">the island stays unmethylated</text>
+<text x="760" y="312" font-size="15" text-anchor="middle" fill="#1b2a3a">DNMT3B's PWWP domain reads H3K36me3</text>
+<text x="760" y="333" font-size="15" text-anchor="middle" fill="#1b2a3a">laid down by SETD2 behind elongating Pol II</text>
+</svg>

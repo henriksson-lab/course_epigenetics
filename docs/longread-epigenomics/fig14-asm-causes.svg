@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 400" width="1120" height="400" font-family="Helvetica, Arial, sans-serif">
+<rect width="1120" height="400" fill="#ffffff"/>
+<line x1="373" y1="20" x2="373" y2="380" stroke="#dfe6ec" stroke-width="2"/>
+<line x1="746" y1="20" x2="746" y2="380" stroke="#dfe6ec" stroke-width="2"/>
+<!-- Panel A imprinting -->
+<text x="186" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1b2a3a">A. Imprinting</text>
+<text x="186" y="54" text-anchor="middle" font-size="15" fill="#5b6b7a">the parent decides</text>
+<g font-size="14" fill="#1b2a3a">
+<text x="30" y="100">person 1</text><text x="30" y="170">person 2</text>
+</g>
+<g stroke-width="5" stroke-linecap="round">
+<line x1="110" y1="86" x2="330" y2="86" stroke="#e67e22"/><line x1="110" y1="110" x2="330" y2="110" stroke="#2a6f97"/>
+<line x1="110" y1="156" x2="330" y2="156" stroke="#e67e22"/><line x1="110" y1="180" x2="330" y2="180" stroke="#2a6f97"/>
+</g>
+<g fill="#1b2a3a"><circle cx="230" cy="86" r="7"/><circle cx="252" cy="86" r="7"/><circle cx="230" cy="156" r="7"/><circle cx="252" cy="156" r="7"/></g>
+<g fill="#ffffff" stroke="#1b2a3a" stroke-width="2"><circle cx="230" cy="110" r="7"/><circle cx="252" cy="110" r="7"/><circle cx="230" cy="180" r="7"/><circle cx="252" cy="180" r="7"/></g>
+<text x="150" y="80" font-size="13" fill="#5b6b7a">A</text><text x="150" y="128" font-size="13" fill="#5b6b7a">G</text>
+<text x="150" y="150" font-size="13" fill="#5b6b7a">G</text><text x="150" y="198" font-size="13" fill="#5b6b7a">A</text>
+<text x="186" y="236" text-anchor="middle" font-size="14" fill="#e67e22">paternal</text>
+<text x="186" y="254" text-anchor="middle" font-size="14" fill="#2a6f97">maternal</text>
+<text x="186" y="300" text-anchor="middle" font-size="15" fill="#1b2a3a">Same allele methylated in every</text>
+<text x="186" y="320" text-anchor="middle" font-size="15" fill="#1b2a3a">cell and every person, whatever</text>
+<text x="186" y="340" text-anchor="middle" font-size="15" fill="#1b2a3a">the SNP alleles. Labelling needs</text>
+<text x="186" y="360" text-anchor="middle" font-size="15" fill="#1b2a3a">parents (or a known ICR).</text>
+<!-- Panel B XCI -->
+<text x="560" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1b2a3a">B. X inactivation</text>
+<text x="560" y="54" text-anchor="middle" font-size="15" fill="#5b6b7a">each cell chose one X, at random</text>
+<text x="420" y="80" font-size="14" fill="#1b2a3a">tissue (mosaic)</text>
+<g stroke-width="4" stroke-linecap="round">
+<line x1="420" y1="96" x2="480" y2="96" stroke="#e67e22"/><line x1="420" y1="110" x2="480" y2="110" stroke="#2a6f97"/>
+<line x1="500" y1="96" x2="560" y2="96" stroke="#e67e22"/><line x1="500" y1="110" x2="560" y2="110" stroke="#2a6f97"/>
+<line x1="580" y1="96" x2="640" y2="96" stroke="#e67e22"/><line x1="580" y1="110" x2="640" y2="110" stroke="#2a6f97"/>
+<line x1="660" y1="96" x2="720" y2="96" stroke="#e67e22"/><line x1="660" y1="110" x2="720" y2="110" stroke="#2a6f97"/>
+</g>
+<g fill="#1b2a3a"><circle cx="450" cy="96" r="5"/><circle cx="530" cy="110" r="5"/><circle cx="610" cy="96" r="5"/><circle cx="690" cy="110" r="5"/></g>
+<g fill="#ffffff" stroke="#1b2a3a" stroke-width="1.6"><circle cx="450" cy="110" r="5"/><circle cx="530" cy="96" r="5"/><circle cx="610" cy="110" r="5"/><circle cx="690" cy="96" r="5"/></g>
+<text x="570" y="136" text-anchor="middle" font-size="14" fill="#5b6b7a">each haplotype ≈ 0.5 methylated</text>
+<text x="420" y="176" font-size="14" fill="#1b2a3a">clonal cell line (GM12878)</text>
+<g stroke-width="4" stroke-linecap="round">
+<line x1="420" y1="192" x2="480" y2="192" stroke="#e67e22"/><line x1="420" y1="206" x2="480" y2="206" stroke="#2a6f97"/>
+<line x1="500" y1="192" x2="560" y2="192" stroke="#e67e22"/><line x1="500" y1="206" x2="560" y2="206" stroke="#2a6f97"/>
+<line x1="580" y1="192" x2="640" y2="192" stroke="#e67e22"/><line x1="580" y1="206" x2="640" y2="206" stroke="#2a6f97"/>
+<line x1="660" y1="192" x2="720" y2="192" stroke="#e67e22"/><line x1="660" y1="206" x2="720" y2="206" stroke="#2a6f97"/>
+</g>
+<g fill="#ffffff" stroke="#1b2a3a" stroke-width="1.6"><circle cx="450" cy="192" r="5"/><circle cx="530" cy="192" r="5"/><circle cx="610" cy="192" r="5"/><circle cx="690" cy="192" r="5"/></g>
+<g fill="#1b2a3a"><circle cx="450" cy="206" r="5"/><circle cx="530" cy="206" r="5"/><circle cx="610" cy="206" r="5"/><circle cx="690" cy="206" r="5"/></g>
+<text x="570" y="232" text-anchor="middle" font-size="14" fill="#5b6b7a">one haplotype 1, the other 0</text>
+<text x="560" y="300" text-anchor="middle" font-size="15" fill="#1b2a3a">Promoter CGIs on the inactive X</text>
+<text x="560" y="320" text-anchor="middle" font-size="15" fill="#1b2a3a">are methylated; escape genes</text>
+<text x="560" y="340" text-anchor="middle" font-size="15" fill="#1b2a3a">are not. Allelic only when the</text>
+<text x="560" y="360" text-anchor="middle" font-size="15" fill="#1b2a3a">cells share the same choice.</text>
+<!-- Panel C genotype -->
+<text x="933" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1b2a3a">C. Sequence (meQTL)</text>
+<text x="933" y="54" text-anchor="middle" font-size="15" fill="#5b6b7a">the allele decides</text>
+<g font-size="14" fill="#1b2a3a"><text x="770" y="100">person 1</text><text x="770" y="170">person 2</text></g>
+<g stroke-width="5" stroke-linecap="round">
+<line x1="850" y1="86" x2="1080" y2="86" stroke="#e67e22"/><line x1="850" y1="110" x2="1080" y2="110" stroke="#2a6f97"/>
+<line x1="850" y1="156" x2="1080" y2="156" stroke="#e67e22"/><line x1="850" y1="180" x2="1080" y2="180" stroke="#2a6f97"/>
+</g>
+<text x="890" y="80" font-size="13" fill="#5b6b7a">A</text><text x="890" y="128" font-size="13" fill="#5b6b7a">G</text>
+<text x="890" y="150" font-size="13" fill="#5b6b7a">G</text><text x="890" y="198" font-size="13" fill="#5b6b7a">A</text>
+<g fill="#1b2a3a"><circle cx="970" cy="86" r="7"/><circle cx="992" cy="86" r="7"/><circle cx="970" cy="180" r="7"/><circle cx="992" cy="180" r="7"/></g>
+<g fill="#ffffff" stroke="#1b2a3a" stroke-width="2"><circle cx="970" cy="110" r="7"/><circle cx="992" cy="110" r="7"/><circle cx="970" cy="156" r="7"/><circle cx="992" cy="156" r="7"/></g>
+<text x="933" y="236" text-anchor="middle" font-size="14" fill="#5b6b7a">allele A methylated, G not,</text>
+<text x="933" y="254" text-anchor="middle" font-size="14" fill="#5b6b7a">whichever parent gave it</text>
+<text x="933" y="300" text-anchor="middle" font-size="15" fill="#1b2a3a">E.g. a SNP that destroys a TF</text>
+<text x="933" y="320" text-anchor="middle" font-size="15" fill="#1b2a3a">site or the CpG itself. The most</text>
+<text x="933" y="340" text-anchor="middle" font-size="15" fill="#1b2a3a">common kind of allele-specific</text>
+<text x="933" y="360" text-anchor="middle" font-size="15" fill="#1b2a3a">methylation genome-wide.</text>
+</svg>

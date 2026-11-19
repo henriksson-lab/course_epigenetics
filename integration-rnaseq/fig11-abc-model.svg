@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 360" width="1120" height="360" font-family="Helvetica, Arial, sans-serif">
+<defs>
+<marker id="aink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker>
+</defs>
+<rect width="1120" height="360" fill="#ffffff"/>
+<!-- formula -->
+<text x="20" y="34" font-size="18" font-weight="bold" fill="#1b2a3a">ABC(E, G) = A(E) × C(E, G) / Σ<tspan baseline-shift="sub" font-size="13">e</tspan> A(e) × C(e, G)</text>
+<text x="20" y="60" font-size="15" fill="#5b6b7a">A = √(ATAC × H3K27ac) in the element;  C = contact, here ≈ 1/distance (floor 5 kb);  Σ over all elements within 5 Mb of G</text>
+
+<!-- locus panel -->
+<line x1="30" y1="250" x2="560" y2="250" stroke="#5b6b7a" stroke-width="1.5"/>
+<!-- gene G at right, TSS at 500, pointing left -->
+<line x1="500" y1="250" x2="556" y2="250" stroke="#1b2a3a" stroke-width="2"/>
+<rect x="488" y="242" width="16" height="16" fill="#1b2a3a"/><rect x="540" y="242" width="16" height="16" fill="#1b2a3a"/>
+<path d="M504,242 L504,226 L490,226" stroke="#1b2a3a" stroke-width="2" fill="none" marker-end="url(#aink)"/>
+<text x="530" y="280" font-size="15" font-style="italic" fill="#1b2a3a" text-anchor="middle">gene G</text>
+<!-- activity bars: scale 10 px per unit -->
+<rect x="468" y="170" width="12" height="80" fill="#e67e22"/>
+<text x="474" y="162" font-size="15" fill="#1b2a3a" text-anchor="middle">P</text>
+<rect x="424" y="210" width="12" height="40" fill="#e67e22"/>
+<text x="430" y="202" font-size="15" fill="#1b2a3a" text-anchor="middle">E1</text>
+<rect x="274" y="150" width="12" height="100" fill="#e67e22"/>
+<text x="280" y="142" font-size="15" fill="#1b2a3a" text-anchor="middle">E2</text>
+<rect x="64" y="230" width="12" height="20" fill="#e67e22"/>
+<text x="70" y="222" font-size="15" fill="#1b2a3a" text-anchor="middle">E3</text>
+<text x="30" y="110" font-size="15" fill="#e67e22" font-weight="bold">bar height = activity A</text>
+<text x="30" y="290" font-size="13" fill="#5b6b7a">distances not to scale</text>
+<!-- distance labels -->
+<g stroke="#5b6b7a" stroke-width="1" stroke-dasharray="3,3">
+<line x1="430" y1="300" x2="496" y2="300"/><line x1="280" y1="320" x2="496" y2="320"/><line x1="70" y1="340" x2="496" y2="340"/>
+</g>
+<g font-size="14" fill="#5b6b7a">
+<text x="424" y="304" text-anchor="end">10 kb</text>
+<text x="274" y="324" text-anchor="end">50 kb</text>
+<text x="64" y="344" text-anchor="end">200 kb</text>
+</g>
+
+<!-- table panel -->
+<g font-size="15" fill="#1b2a3a">
+<text x="620" y="110" font-weight="bold">element</text>
+<text x="780" y="110" font-weight="bold" text-anchor="end">A</text>
+<text x="862" y="110" font-weight="bold" text-anchor="end">distance</text>
+<text x="932" y="110" font-weight="bold" text-anchor="end">C</text>
+<text x="1010" y="110" font-weight="bold" text-anchor="end">A × C</text>
+<text x="1090" y="110" font-weight="bold" text-anchor="end">ABC</text>
+<line x1="620" y1="120" x2="1095" y2="120" stroke="#1b2a3a" stroke-width="1.2"/>
+<text x="620" y="146">P (promoter of G)</text><text x="780" y="146" text-anchor="end">8</text><text x="862" y="146" text-anchor="end">0</text><text x="932" y="146" text-anchor="end">1/5</text><text x="1010" y="146" text-anchor="end">1.60</text><text x="1090" y="146" text-anchor="end">0.72</text>
+<text x="620" y="174">E1</text><text x="780" y="174" text-anchor="end">4</text><text x="862" y="174" text-anchor="end">10 kb</text><text x="932" y="174" text-anchor="end">1/10</text><text x="1010" y="174" text-anchor="end">0.40</text><text x="1090" y="174" text-anchor="end" font-weight="bold" fill="#2e8b57">0.18</text>
+<text x="620" y="202">E2</text><text x="780" y="202" text-anchor="end">10</text><text x="862" y="202" text-anchor="end">50 kb</text><text x="932" y="202" text-anchor="end">1/50</text><text x="1010" y="202" text-anchor="end">0.20</text><text x="1090" y="202" text-anchor="end" font-weight="bold" fill="#2e8b57">0.09</text>
+<text x="620" y="230">E3</text><text x="780" y="230" text-anchor="end">2</text><text x="862" y="230" text-anchor="end">200 kb</text><text x="932" y="230" text-anchor="end">1/200</text><text x="1010" y="230" text-anchor="end">0.01</text><text x="1090" y="230" text-anchor="end" fill="#a8324a">0.005</text>
+<line x1="620" y1="242" x2="1095" y2="242" stroke="#1b2a3a" stroke-width="1.2"/>
+<text x="620" y="266">sum</text><text x="1010" y="266" text-anchor="end">2.21</text><text x="1090" y="266" text-anchor="end">1.00</text>
+</g>
+<text x="620" y="306" font-size="15" fill="#2e8b57">E1 and E2 pass a threshold of 0.02: predicted to regulate G.</text>
+<text x="620" y="330" font-size="15" fill="#a8324a">E3 does not: weak and far away.</text>
+</svg>

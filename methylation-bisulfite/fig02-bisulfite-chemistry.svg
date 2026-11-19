@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 330" width="1120" height="330" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker><marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker></defs>
+<rect width="1120" height="330" fill="white"/>
+<text x="235.0" y="30" font-size="15" text-anchor="middle" fill="#5b6b7a">add bisulfite</text>
+<text x="495.0" y="30" font-size="15" text-anchor="middle" fill="#5b6b7a">deaminate</text>
+<text x="755.0" y="30" font-size="15" text-anchor="middle" fill="#5b6b7a">desulfonate (alkali)</text>
+<text x="980.0" y="30" font-size="15" text-anchor="middle" fill="#5b6b7a">PCR</text>
+<rect x="30" y="50" width="150" height="56" rx="10" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="105.0" y="74" font-size="18" text-anchor="middle" font-weight="bold" fill="#1b2a3a">C</text>
+<text x="105.0" y="95" font-size="14" text-anchor="middle" fill="#1b2a3a">cytosine</text>
+<line x1="186" y1="78" x2="284" y2="78" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<rect x="290" y="50" width="150" height="56" rx="10" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="365.0" y="84" font-size="18" text-anchor="middle" font-weight="bold" fill="#1b2a3a">C-sulfonate</text>
+<line x1="446" y1="78" x2="544" y2="78" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<rect x="550" y="50" width="150" height="56" rx="10" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="625.0" y="84" font-size="18" text-anchor="middle" font-weight="bold" fill="#1b2a3a">U-sulfonate</text>
+<line x1="706" y1="78" x2="804" y2="78" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<rect x="810" y="50" width="150" height="56" rx="10" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="885.0" y="74" font-size="18" text-anchor="middle" font-weight="bold" fill="#1b2a3a">U</text>
+<text x="885.0" y="95" font-size="14" text-anchor="middle" fill="#1b2a3a">uracil</text>
+<line x1="966" y1="78" x2="994" y2="78" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<rect x="1000" y="50" width="90" height="56" rx="10" fill="#fdebd3" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="1045.0" y="74" font-size="18" text-anchor="middle" font-weight="bold" fill="#c0392b">T</text>
+<text x="1045.0" y="95" font-size="14" text-anchor="middle" fill="#1b2a3a">read as T</text>
+<rect x="30" y="140" width="150" height="56" rx="10" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="105.0" y="174" font-size="18" text-anchor="middle" font-weight="bold" fill="#1b2a3a">5mC</text>
+<line x1="186" y1="168" x2="284" y2="168" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<rect x="290" y="140" width="150" height="56" rx="10" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="365.0" y="164" font-size="18" text-anchor="middle" font-weight="bold" fill="#1b2a3a">5mC</text>
+<text x="365.0" y="185" font-size="14" text-anchor="middle" fill="#1b2a3a">reacts ~100x slower</text>
+<line x1="446" y1="168" x2="544" y2="168" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<rect x="550" y="140" width="150" height="56" rx="10" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="625.0" y="174" font-size="18" text-anchor="middle" font-weight="bold" fill="#1b2a3a">5mC</text>
+<line x1="706" y1="168" x2="804" y2="168" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<rect x="810" y="140" width="150" height="56" rx="10" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="885.0" y="174" font-size="18" text-anchor="middle" font-weight="bold" fill="#1b2a3a">5mC</text>
+<line x1="966" y1="168" x2="994" y2="168" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<rect x="1000" y="140" width="90" height="56" rx="10" fill="#f4f6f8" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="1045.0" y="164" font-size="18" text-anchor="middle" font-weight="bold" fill="#1b2a3a">C</text>
+<text x="1045.0" y="185" font-size="14" text-anchor="middle" fill="#1b2a3a">read as C</text>
+<rect x="30" y="230" width="150" height="56" rx="10" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="105.0" y="264" font-size="18" text-anchor="middle" font-weight="bold" fill="#1b2a3a">5hmC</text>
+<line x1="186" y1="258" x2="284" y2="258" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<rect x="290" y="230" width="150" height="56" rx="10" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="365.0" y="254" font-size="18" text-anchor="middle" font-weight="bold" fill="#1b2a3a">CMS</text>
+<text x="365.0" y="275" font-size="14" text-anchor="middle" fill="#1b2a3a">methylene-sulfonate</text>
+<line x1="446" y1="258" x2="544" y2="258" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<rect x="550" y="230" width="150" height="56" rx="10" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="625.0" y="254" font-size="18" text-anchor="middle" font-weight="bold" fill="#1b2a3a">CMS</text>
+<text x="625.0" y="275" font-size="14" text-anchor="middle" fill="#1b2a3a">not deaminated</text>
+<line x1="706" y1="258" x2="804" y2="258" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<rect x="810" y="230" width="150" height="56" rx="10" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="885.0" y="264" font-size="18" text-anchor="middle" font-weight="bold" fill="#1b2a3a">CMS</text>
+<line x1="966" y1="258" x2="994" y2="258" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<rect x="1000" y="230" width="90" height="56" rx="10" fill="#f4f6f8" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="1045.0" y="254" font-size="18" text-anchor="middle" font-weight="bold" fill="#1b2a3a">C</text>
+<text x="1045.0" y="275" font-size="14" text-anchor="middle" fill="#1b2a3a">read as C</text>
+<text x="30" y="318" font-size="15" fill="#5b6b7a">5fC and 5caC are deaminated like C (read as T). CMS = cytosine-5-methylenesulfonate.</text>
+</svg>

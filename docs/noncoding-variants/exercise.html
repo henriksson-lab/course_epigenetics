@@ -1,0 +1,2270 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.30">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Exercise: Epigenomics and genetic variation – Epigenetics</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-662ae1889177880cb371f83234c0a158.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-d37fb74fd9c61f52627c5754f4dbd5bd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Epigenetics</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-course-info" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Course info</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-course-info">    
+        <li>
+    <a class="dropdown-item" href="../courseplan.html">
+ <span class="dropdown-text">Course plan</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Integration and interpretation</li><li class="breadcrumb-item"><a href="../noncoding-variants/lec.html">Epigenomics and genetic variation</a></li><li class="breadcrumb-item"><a href="../noncoding-variants/exercise.html">Exercise</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Course info</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../courseplan.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Course plan</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../elo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Learning outcomes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../intro/install.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Install software</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dictionary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Glossary</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Foundations</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">What is epigenetics?</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chromatin-intro/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chromatin-intro/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chromatin-intro/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Genomic intervals</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../genomic-intervals/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../genomic-intervals/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../genomic-intervals/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text">Gene regulation</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../gene-regulation/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../gene-regulation/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../gene-regulation/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false">
+ <span class="menu-text">From reads to coverage</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../enrichment-alignment/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../enrichment-alignment/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../enrichment-alignment/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false">
+ <span class="menu-text">Experimental design and QC</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epigenomics-design/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epigenomics-design/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epigenomics-design/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
+ <span class="menu-text">Chromatin accessibility (ATAC-seq)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="false">
+ <span class="menu-text">ATAC-seq: Tn5, fragment sizes, nucleosome ladder</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atacseq-intro/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atacseq-intro/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atacseq-intro/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false">
+ <span class="menu-text">ATAC-seq processing and peak calling</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atacseq-analysis/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atacseq-analysis/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atacseq-analysis/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="false">
+ <span class="menu-text">Differential accessibility</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../differential-accessibility/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../differential-accessibility/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../differential-accessibility/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="false">
+ <span class="menu-text">Motifs, motif enrichment and TF footprinting</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../motifs-footprinting/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../motifs-footprinting/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../motifs-footprinting/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="true">
+ <span class="menu-text">Protein–DNA binding and histone marks (ChIP-seq)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" role="navigation" aria-expanded="false">
+ <span class="menu-text">ChIP-seq: the assay</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-14" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-intro/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-intro/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-intro/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-15" role="navigation" aria-expanded="false">
+ <span class="menu-text">Peak calling</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-15" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-15" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-peaks/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-peaks/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-peaks/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" role="navigation" aria-expanded="false">
+ <span class="menu-text">CUT&amp;RUN and CUT&amp;Tag</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-16" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cutrun-cuttag/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cutrun-cuttag/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cutrun-cuttag/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-17" role="navigation" aria-expanded="false">
+ <span class="menu-text">Annotation and differential binding</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-17" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-17" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-downstream/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-downstream/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-downstream/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-18" role="navigation" aria-expanded="false">
+ <span class="menu-text">Combining marks into chromatin states</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-18" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-18" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chromatin-states/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chromatin-states/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chromatin-states/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-19" role="navigation" aria-expanded="true">
+ <span class="menu-text">DNA methylation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-19" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-19" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-20" role="navigation" aria-expanded="false">
+ <span class="menu-text">DNA methylation biology</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-20" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-20" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-biology/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-biology/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-biology/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-21" role="navigation" aria-expanded="false">
+ <span class="menu-text">Bisulfite and enzymatic sequencing</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-21" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-21" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-bisulfite/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-bisulfite/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-bisulfite/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-22" role="navigation" aria-expanded="false">
+ <span class="menu-text">Differential methylation</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-22" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-22" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-differential/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-differential/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-differential/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-23" role="navigation" aria-expanded="false">
+ <span class="menu-text">Methylation arrays (Illumina EPIC)</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-23" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-23" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-arrays/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-arrays/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-arrays/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-24" role="navigation" aria-expanded="false">
+ <span class="menu-text">Epigenetic clocks and biomarkers</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-24" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-24" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epigenetic-clocks/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epigenetic-clocks/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epigenetic-clocks/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-25" role="navigation" aria-expanded="false">
+ <span class="menu-text">Methylation and chromatin from long reads</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-25" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-25" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../longread-epigenomics/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../longread-epigenomics/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../longread-epigenomics/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-26" role="navigation" aria-expanded="true">
+ <span class="menu-text">3D genome</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-26" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-26" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-27" role="navigation" aria-expanded="false">
+ <span class="menu-text">3D genome organisation</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-27" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-27" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../genome-3d-intro/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../genome-3d-intro/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../genome-3d-intro/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-28" role="navigation" aria-expanded="false">
+ <span class="menu-text">Hi-C: from reads to contact matrices</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-28" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-28" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hic-processing/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hic-processing/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hic-processing/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-29" role="navigation" aria-expanded="false">
+ <span class="menu-text">Calling compartments, TADs and loops</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-29" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-29" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hic-features/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hic-features/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hic-features/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-30" role="navigation" aria-expanded="true">
+ <span class="menu-text">Integration and interpretation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-30" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-30" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-31" role="navigation" aria-expanded="false">
+ <span class="menu-text">Linking regulatory elements to genes</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-31" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-31" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../integration-rnaseq/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../integration-rnaseq/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../integration-rnaseq/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-32" role="navigation" aria-expanded="true">
+ <span class="menu-text">Epigenomics and genetic variation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-32" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-32" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../noncoding-variants/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../noncoding-variants/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../noncoding-variants/exercise.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-33" role="navigation" aria-expanded="true">
+ <span class="menu-text">Machine learning for prediction</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-33" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-33" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-34" role="navigation" aria-expanded="false">
+ <span class="menu-text">Machine learning from scratch</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-34" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-34" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-basics/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-basics/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-basics/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-35" role="navigation" aria-expanded="false">
+ <span class="menu-text">What people try to predict</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-35" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-35" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-prediction-tasks/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-prediction-tasks/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-prediction-tasks/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-36" role="navigation" aria-expanded="false">
+ <span class="menu-text">How a CNN reads DNA</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-36" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-36" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-cnn-dna/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-cnn-dna/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-cnn-dna/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-37" role="navigation" aria-expanded="false">
+ <span class="menu-text">What did the model learn? Variant effects</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-37" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-37" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-interpretation-variants/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-interpretation-variants/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-interpretation-variants/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#goal" id="toc-goal" class="nav-link active" data-scroll-target="#goal">Goal</a></li>
+  <li><a href="#background" id="toc-background" class="nav-link" data-scroll-target="#background">Background</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
+  <li><a href="#by-hand" id="toc-by-hand" class="nav-link" data-scroll-target="#by-hand">By hand</a></li>
+  <li><a href="#on-the-command-line" id="toc-on-the-command-line" class="nav-link" data-scroll-target="#on-the-command-line">On the command line</a>
+  <ul class="collapse">
+  <li><a href="#c1-the-gwas-catalog-with-awk" id="toc-c1-the-gwas-catalog-with-awk" class="nav-link" data-scroll-target="#c1-the-gwas-catalog-with-awk">C1 — The GWAS Catalog with awk</a></li>
+  <li><a href="#c2-overlap-with-peaks-of-three-cell-lines" id="toc-c2-overlap-with-peaks-of-three-cell-lines" class="nav-link" data-scroll-target="#c2-overlap-with-peaks-of-three-cell-lines">C2 — Overlap with peaks of three cell lines</a></li>
+  <li><a href="#c3-allele-counts-at-heterozygous-snps" id="toc-c3-allele-counts-at-heterozygous-snps" class="nav-link" data-scroll-target="#c3-allele-counts-at-heterozygous-snps">C3 — Allele counts at heterozygous SNPs</a></li>
+  </ul></li>
+  <li><a href="#in-r" id="toc-in-r" class="nav-link" data-scroll-target="#in-r">In R</a>
+  <ul class="collapse">
+  <li><a href="#r1-traits-loci-and-the-share-of-non-coding-hits" id="toc-r1-traits-loci-and-the-share-of-non-coding-hits" class="nav-link" data-scroll-target="#r1-traits-loci-and-the-share-of-non-coding-hits">R1 — Traits, loci and the share of non-coding hits</a></li>
+  <li><a href="#r2-enrichment-in-cell-type-specific-peaks" id="toc-r2-enrichment-in-cell-type-specific-peaks" class="nav-link" data-scroll-target="#r2-enrichment-in-cell-type-specific-peaks">R2 — Enrichment in cell-type-specific peaks</a></li>
+  <li><a href="#r3-thirteen-blood-cell-types" id="toc-r3-thirteen-blood-cell-types" class="nav-link" data-scroll-target="#r3-thirteen-blood-cell-types">R3 — Thirteen blood cell types</a></li>
+  <li><a href="#r4-window-size" id="toc-r4-window-size" class="nav-link" data-scroll-target="#r4-window-size">R4 — Window size</a></li>
+  <li><a href="#r5-motif-changes" id="toc-r5-motif-changes" class="nav-link" data-scroll-target="#r5-motif-changes">R5 — Motif changes</a></li>
+  <li><a href="#r6-allelic-imbalance" id="toc-r6-allelic-imbalance" class="nav-link" data-scroll-target="#r6-allelic-imbalance">R6 — Allelic imbalance</a></li>
+  </ul></li>
+  <li><a href="#hints" id="toc-hints" class="nav-link" data-scroll-target="#hints">Hints</a></li>
+  <li><a href="#solutions" id="toc-solutions" class="nav-link" data-scroll-target="#solutions">Solutions</a></li>
+  <li><a href="#where-this-leads" id="toc-where-this-leads" class="nav-link" data-scroll-target="#where-this-leads">Where this leads</a></li>
+  <li><a href="#key-papers-optional-further-reading" id="toc-key-papers-optional-further-reading" class="nav-link" data-scroll-target="#key-papers-optional-further-reading">Key papers (optional further reading)</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Integration and interpretation</li><li class="breadcrumb-item"><a href="../noncoding-variants/lec.html">Epigenomics and genetic variation</a></li><li class="breadcrumb-item"><a href="../noncoding-variants/exercise.html">Exercise</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Exercise: Epigenomics and genetic variation</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="goal" class="level2">
+<h2 class="anchored" data-anchor-id="goal">Goal</h2>
+<p>After this exercise you will be able to:</p>
+<ul>
+<li>Compute <strong>linkage disequilibrium</strong> (<span class="math inline">\(r^2\)</span>) from haplotype frequencies and explain why a lead SNP is a tag.</li>
+<li>Set up an <strong>enrichment</strong> test of disease loci in a chromatin annotation as a 2×2 table, choose a background, and see what the background and the window size do to the answer.</li>
+<li>Compute <strong>posterior inclusion probabilities</strong> and a <strong>credible set</strong> from Bayes factors, with and without a functional prior.</li>
+<li>Score both alleles of a variant with a <strong>PWM</strong> and judge what a motif change means.</li>
+<li>Test <strong>allele-specific accessibility</strong> at heterozygous SNPs and recognise reference mapping bias.</li>
+<li>In R and on the command line: take GWAS Catalog associations for autoimmune diseases and LDL cholesterol, test their enrichment in GM12878, K562, HepG2 and 13 blood cell types, scan the alleles of autoimmune SNPs for motif changes, and measure allelic imbalance in your own GM12878 ATAC-seq alignments.</li>
+</ul>
+</section>
+<section id="background" class="level2">
+<h2 class="anchored" data-anchor-id="background">Background</h2>
+<p><strong>GWAS Catalog.</strong> Published genome-wide significant associations (p ≤ 5 × 10⁻⁸): one row per SNP–trait–study, with the reported SNP, its GRCh38 position, the risk allele, the functional context and the mapped (EFO) trait.</p>
+<p><strong>Loci.</strong> Many rows describe the same signal (several studies, several SNPs in LD). To count each signal once we <strong>prune</strong>: sort SNPs by p-value, keep the strongest, drop any SNP within 250 kb of a kept one. A proper analysis uses LD from a reference panel (<code>plink --clump</code>).</p>
+<p><strong>LD.</strong> For two biallelic SNPs with allele frequencies <span class="math inline">\(p_A\)</span>, <span class="math inline">\(p_B\)</span> and haplotype frequency <span class="math inline">\(p_{AB}\)</span>: <span class="math inline">\(D = p_{AB} - p_A p_B\)</span> and <span class="math inline">\(r^2 = D^2 / \left(p_A(1-p_A)p_B(1-p_B)\right)\)</span>. If SNP B is causal, the association statistic at SNP A is expected to be about <span class="math inline">\(r^2\)</span> times that at B.</p>
+<p><strong>Enrichment.</strong> Of <span class="math inline">\(n\)</span> loci, <span class="math inline">\(k\)</span> are near the annotation; in the background a fraction <span class="math inline">\(p_0\)</span> is. Enrichment <span class="math inline">\(= (k/n)/p_0\)</span>; under no enrichment <span class="math inline">\(k \sim \text{Binomial}(n, p_0)\)</span>.</p>
+<p><strong>Fine-mapping with one causal variant.</strong> With Bayes factors <span class="math inline">\(BF_i\)</span> and prior probabilities <span class="math inline">\(\pi_i\)</span>, the posterior inclusion probability is <span class="math inline">\(\text{PIP}_i = \pi_i BF_i / \sum_j \pi_j BF_j\)</span>. A 95% credible set is the smallest set of SNPs (highest PIP first) whose PIPs sum to ≥ 0.95.</p>
+<p><strong>Motif change.</strong> The score of a window is the sum of the log-odds weights of its bases (<em>Gene regulation and the cis-regulatory code</em>). For a variant, compute the best score over all windows containing it, on both strands, for each allele: <span class="math inline">\(\Delta = \text{score}_{alt} - \text{score}_{ref}\)</span> (bits; <span class="math inline">\(2^{|\Delta|}\)</span> is the fold change in odds).</p>
+<p><strong>Allelic imbalance.</strong> At a heterozygous SNP, reads with the reference allele <span class="math inline">\(k\)</span> out of <span class="math inline">\(n\)</span>; without a cis effect <span class="math inline">\(k \sim \text{Binomial}(n, 0.5)\)</span>, or <span class="math inline">\(\text{Binomial}(n, \hat{p})\)</span> with <span class="math inline">\(\hat{p}\)</span> the genome-wide reference fraction, which absorbs mapping bias.</p>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<p>From the course data folder (<code>data/download.sh noncoding-variants</code>; the GWAS, allele and VCF files are made by <code>data/prepare-integ.sh</code>):</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/epi/variants <span class="kw">&amp;&amp;</span> <span class="bu">cd</span> ~/epi/variants</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="va">D</span><span class="op">=</span>/path/to/course/data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><code>gwas_catalog_gws.tsv.gz</code>: all genome-wide significant associations of the <a href="https://www.ebi.ac.uk/gwas/">GWAS Catalog</a> (release of 2026-10-29), 10 columns: <code>snp chr pos risk_allele context trait trait_uri mlog10p study pubmed</code> (GRCh38, 1-based positions).</li>
+<li><code>gwas_autoimmune_gm12878_alleles.tsv</code>: dbSNP reference and alternative alleles of the autoimmune GWAS SNPs that lie in GM12878 ATAC peaks (plus rs12740374), from the <a href="https://api.ncbi.nlm.nih.gov/variation/v0/">NCBI Variation API</a>.</li>
+<li><code>gm12878_atac_peaks.bed.gz</code>, <code>k562_atac_peaks.bed.gz</code>, <code>hepg2_atac_peaks.bed.gz</code>: ENCODE ATAC-seq IDR peaks (narrowPeak) of a B-lymphoblastoid, an erythroleukaemia and a liver cancer cell line, same lab and pipeline.</li>
+<li><code>na12878_chr21_het_snps.vcf.gz</code>: heterozygous SNVs of GM12878 (individual NA12878) on chr21 from the <a href="https://www.nist.gov/programs-projects/genome-bottle">Genome in a Bottle</a> v4.2.1 benchmark.</li>
+<li>From earlier units: <code>corces2016_atac_counts.txt.gz</code>, <code>hg19ToHg38.over.chain.gz</code>, <code>hg38.chrom.sizes</code>, <code>hg38.fa.bgz</code> (+ index), <code>hg38_chr21_chrM.fa</code>, and <strong>your</strong> <code>rep1.dedup.bam</code> and <code>rep2.dedup.bam</code> from the exercise of <em>ATAC-seq processing and peak calling</em> (chr21, filtered, duplicates removed).</li>
+</ul>
+<p><strong>Shortcuts, said plainly.</strong> We use reported lead SNPs and a window (±1 kb) instead of LD proxies or fine-mapped credible sets; loci are pruned by distance, not by LD; the background is “all GWAS SNPs”, not SNPs matched for allele frequency and LD; annotations are the 50 000 strongest peaks of three cell lines. The proper tools (S-LDSC, GREGOR, fine-mapping with SuSiE) need full summary statistics and an LD reference panel, which we do not use here. Allelic imbalance is measured on chr21 only, without WASP correction. The GWAS Catalog grows every week: a newer release gives slightly different counts.</p>
+<p>The R part runs in about 4 minutes and needs about 4 GB of memory.</p>
+</section>
+<section id="by-hand" class="level2">
+<h2 class="anchored" data-anchor-id="by-hand">By hand</h2>
+<p><strong>B1. Linkage disequilibrium.</strong> Two SNPs with alleles A/a and B/b. In a population the haplotype frequencies are AB 0.4, Ab 0.1, aB 0.1, ab 0.4.</p>
+<ol type="a">
+<li><p>Compute <span class="math inline">\(p_A\)</span>, <span class="math inline">\(p_B\)</span>, <span class="math inline">\(D\)</span> and <span class="math inline">\(r^2\)</span>.</p></li>
+<li><p>What would the haplotype frequencies be for <span class="math inline">\(r^2 = 1\)</span> (with the same allele frequencies)?</p></li>
+<li><p>SNP B is causal and its association chi-square is 100. About what chi-square do you expect at SNP A in (a)? Would A be genome-wide significant (chi-square ≈ 30 for p = 5 × 10⁻⁸)?</p></li>
+</ol>
+<p><strong>B2. An enrichment test.</strong> Of 774 LDL-cholesterol loci, 39 lie within 1 kb of a HepG2-specific ATAC peak. Of all GWAS SNPs, 2.8% do.</p>
+<ol type="a">
+<li><p>How many loci would you expect without enrichment? What is the enrichment?</p></li>
+<li><p>Approximate the binomial by a normal distribution (mean <span class="math inline">\(np_0\)</span>, variance <span class="math inline">\(np_0(1-p_0)\)</span>): what is the z-score?</p></li>
+<li><p>Suppose that, of random genomic positions, only 1.2% lie within 1 kb of such a peak. What enrichment would you report against this background? Which number is more honest, and why?</p></li>
+<li><p>Why must the loci be pruned before the test? What would happen if all 3636 LDL SNPs (many in LD with each other) were counted?</p></li>
+</ol>
+<p><strong>B3. Fine-mapping.</strong> A locus has four SNPs in strong LD, with approximate Bayes factors 50, 30, 15 and 5 (one causal variant assumed).</p>
+<ol type="a">
+<li><p>With equal priors, compute the PIPs and the 95% credible set.</p></li>
+<li><p>SNP 3 is the only one inside an ATAC peak of the relevant cell type. Give it a prior 10 times higher than the others. Recompute the PIPs and the credible set.</p></li>
+<li><p>A paper then states: “the fine-mapped causal variant lies in an enhancer”. What would you want to know about how the prior was chosen?</p></li>
+</ol>
+<p><strong>B4. Score both alleles.</strong> A 5-bp log-odds matrix (bits):</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: right;">1</th>
+<th style="text-align: right;">2</th>
+<th style="text-align: right;">3</th>
+<th style="text-align: right;">4</th>
+<th style="text-align: right;">5</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A</td>
+<td style="text-align: right;">+1.2</td>
+<td style="text-align: right;">−2.0</td>
+<td style="text-align: right;">+1.5</td>
+<td style="text-align: right;">+1.8</td>
+<td style="text-align: right;">−1.0</td>
+</tr>
+<tr class="even">
+<td>C</td>
+<td style="text-align: right;">−1.5</td>
+<td style="text-align: right;">−2.0</td>
+<td style="text-align: right;">−1.0</td>
+<td style="text-align: right;">−2.0</td>
+<td style="text-align: right;">+1.6</td>
+</tr>
+<tr class="odd">
+<td>G</td>
+<td style="text-align: right;">−1.5</td>
+<td style="text-align: right;">+1.9</td>
+<td style="text-align: right;">−1.0</td>
+<td style="text-align: right;">−2.0</td>
+<td style="text-align: right;">−1.0</td>
+</tr>
+<tr class="even">
+<td>T</td>
+<td style="text-align: right;">+0.2</td>
+<td style="text-align: right;">−2.0</td>
+<td style="text-align: right;">−1.0</td>
+<td style="text-align: right;">−0.5</td>
+<td style="text-align: right;">−1.0</td>
+</tr>
+</tbody>
+</table>
+<p>The reference sequence is <code>AGAAC</code>; a SNP changes position 4 from A to G.</p>
+<ol type="a">
+<li><p>Score the reference and the alternative window. What is Δ, and by what factor does the match weaken?</p></li>
+<li><p>A match is called at a score ≥ 6 bits. Is the site “lost”?</p></li>
+<li><p>Why must the minus strand and all windows that overlap the SNP be scored too?</p></li>
+<li><p>In the lecture, 85% of autoimmune SNPs in GM12878 peaks gained or lost some JASPAR match, and so did 81% of random positions in the same peaks. What does this imply for a paper that reports “the risk allele disrupts a motif”?</p></li>
+</ol>
+<p><strong>B5. Allelic imbalance.</strong> At a heterozygous SNP in an ATAC peak of one individual, 30 reads carry the reference allele and 10 the alternative.</p>
+<ol type="a">
+<li><p>Test against 0.5 with the normal approximation. Is it significant at 5%?</p></li>
+<li><p>Over all heterozygous SNPs, 51.6% of reads carry the reference allele. Repeat the test against 0.516. Why does this matter more for highly covered sites?</p></li>
+<li><p>A neighbouring SNP 50 bp away in the same peak shows 28 reference and 9 alternative reads. Does this strengthen or weaken the case? What would you check?</p></li>
+<li><p>Another SNP shows 79 reference and 0 alternative reads, although the genotype is heterozygous. Give two explanations other than a regulatory variant.</p></li>
+</ol>
+<p><strong>B6. Read the heatmap.</strong> Use the figure from the lecture:</p>
+<p><img src="fig08-corces-heatmap.png" class="img-fluid" style="width:100.0%"></p>
+<ol type="a">
+<li><p>In which cell types are MS loci most enriched? SLE loci?</p></li>
+<li><p>Why are LDL, schizophrenia and height loci not enriched in any blood cell type?</p></li>
+<li><p>A student concludes “SLE starts in B cells”. What does the heatmap show, and what does it not show?</p></li>
+</ol>
+<p><strong>B7. Judge the claims.</strong></p>
+<ol type="a">
+<li><p>“The lead SNP rs123 lies in a GM12878 enhancer and changes an IRF4 motif; it is the causal variant for lupus at this locus.”</p></li>
+<li><p>“Height loci are not enriched in any blood cell type, so these annotations are useless for height.”</p></li>
+<li><p>“Autoimmune loci overlap open chromatin of GM12878 4 times more often than random genomic positions do; therefore B cells are the key cell type for autoimmunity.”</p></li>
+</ol>
+</section>
+<section id="on-the-command-line" class="level2">
+<h2 class="anchored" data-anchor-id="on-the-command-line">On the command line</h2>
+<section id="c1-the-gwas-catalog-with-awk" class="level3">
+<h3 class="anchored" data-anchor-id="c1-the-gwas-catalog-with-awk">C1 — The GWAS Catalog with awk</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="va">$D</span>/gwas_catalog_gws.tsv.gz <span class="kw">|</span> <span class="fu">head</span> <span class="at">-3</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="va">$D</span>/gwas_catalog_gws.tsv.gz <span class="kw">|</span> <span class="fu">tail</span> <span class="at">-n</span> +2 <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f6</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-k1,1nr</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-10</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="va">$D</span>/gwas_catalog_gws.tsv.gz <span class="kw">|</span> <span class="fu">awk</span> <span class="at">-F</span><span class="st">'\t'</span> <span class="at">-v</span> OFS=<span class="st">'\t'</span> <span class="st">'</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="st">  $6 == "rheumatoid arthritis" || $6 == "systemic lupus erythematosus" || $6 == "multiple sclerosis" ||</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="st">  $6 == "inflammatory bowel disease" || $6 == "Crohn disease" || $6 == "ulcerative colitis" { print $2, $3 - 1, $3, $1 }'</span> <span class="dt">\</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-k1,1</span> <span class="at">-k2,2n</span> <span class="at">-u</span> <span class="op">&gt;</span> autoimmune_snps.bed</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="va">$D</span>/gwas_catalog_gws.tsv.gz <span class="kw">|</span> <span class="fu">awk</span> <span class="at">-F</span><span class="st">'\t'</span> <span class="at">-v</span> OFS=<span class="st">'\t'</span> <span class="st">'$6 == "low density lipoprotein cholesterol measurement" { print $2, $3 - 1, $3, $1 }'</span> <span class="dt">\</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-k1,1</span> <span class="at">-k2,2n</span> <span class="at">-u</span> <span class="op">&gt;</span> ldl_snps.bed</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="va">$D</span>/gwas_catalog_gws.tsv.gz <span class="kw">|</span> <span class="fu">tail</span> <span class="at">-n</span> +2 <span class="kw">|</span> <span class="fu">awk</span> <span class="at">-F</span><span class="st">'\t'</span> <span class="at">-v</span> OFS=<span class="st">'\t'</span> <span class="st">'{ print $2, $3 - 1, $3, $1 }'</span> <span class="dt">\</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-k1,1</span> <span class="at">-k2,2n</span> <span class="at">-u</span> <span class="op">&gt;</span> all_gwas_snps.bed</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> autoimmune_snps.bed ldl_snps.bed all_gwas_snps.bed</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>Which traits have the most associations? Why does “body height” have so many?</p></li>
+<li><p>How many unique autoimmune and LDL SNPs are there? Why is <code>$3 - 1</code> used for the BED start?</p></li>
+</ol>
+</section>
+<section id="c2-overlap-with-peaks-of-three-cell-lines" class="level3">
+<h3 class="anchored" data-anchor-id="c2-overlap-with-peaks-of-three-cell-lines">C2 — Overlap with peaks of three cell lines</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> cl <span class="kw">in</span> gm12878 k562 hepg2<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> s <span class="kw">in</span> autoimmune ldl all_gwas<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">n</span><span class="op">=</span><span class="va">$(</span><span class="fu">wc</span> <span class="at">-l</span> <span class="op">&lt;</span> <span class="va">${s}</span>_snps.bed<span class="va">)</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="va">k</span><span class="op">=</span><span class="va">$(</span><span class="ex">bedtools</span> intersect <span class="at">-u</span> <span class="at">-a</span> <span class="va">${s}</span>_snps.bed <span class="at">-b</span> <span class="va">$D</span>/<span class="va">${cl}</span>_atac_peaks.bed.gz <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span><span class="va">)</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="va">$cl</span> <span class="va">$s</span> <span class="va">$k</span> <span class="va">$n</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'{ printf "%-8s %-11s %6d / %6d = %.3f\n", $1, $2, $3, $4, $3 / $4 }'</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">done</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>Fill in a table: fraction of autoimmune, LDL and all GWAS SNPs inside the peaks of each cell line. Compute the enrichment of autoimmune and LDL SNPs relative to all GWAS SNPs.</p></li>
+<li><p>Why is this analysis weaker than the one in R (think about pruning and about peaks shared between cell lines)?</p></li>
+</ol>
+</section>
+<section id="c3-allele-counts-at-heterozygous-snps" class="level3">
+<h3 class="anchored" data-anchor-id="c3-allele-counts-at-heterozygous-snps">C3 — Allele counts at heterozygous SNPs</h3>
+<p>Run where your <code>rep1.dedup.bam</code> and <code>rep2.dedup.bam</code> from <em>ATAC-seq processing and peak calling</em> are:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="va">$D</span>/gm12878_atac_peaks.bed.gz <span class="kw">|</span> <span class="fu">awk</span> <span class="at">-v</span> OFS=<span class="st">'\t'</span> <span class="st">'$1 == "chr21" { print $1, $2, $3 }'</span> <span class="dt">\</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-k1,1</span> <span class="at">-k2,2n</span> <span class="kw">|</span> <span class="ex">bedtools</span> merge <span class="op">&gt;</span> peaks21.bed</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> view <span class="at">-H</span> <span class="at">-R</span> peaks21.bed <span class="va">$D</span>/na12878_chr21_het_snps.vcf.gz <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> mpileup <span class="at">-f</span> <span class="va">$D</span>/hg38_chr21_chrM.fa <span class="at">-R</span> peaks21.bed <span class="at">-T</span> <span class="va">$D</span>/na12878_chr21_het_snps.vcf.gz <span class="dt">\</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">-a</span> AD <span class="at">-q</span> 30 <span class="at">-Q</span> 20 <span class="at">-d</span> 1000 rep1.dedup.bam rep2.dedup.bam <span class="dv">2</span><span class="op">&gt;</span> /dev/null <span class="dt">\</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="ex">bcftools</span> query <span class="at">-f</span> <span class="st">'%CHROM\t%POS\t%REF\t%ALT\t[%AD\t]\n'</span> <span class="op">&gt;</span> allele_counts.txt</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> <span class="op">&lt;</span> allele_counts.txt</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-5</span> allele_counts.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>How many heterozygous SNPs of GM12878 lie in chr21 ATAC peaks? For how many does <code>mpileup</code> report counts?</p></li>
+<li><p>Explain the options <code>-T</code>, <code>-a AD</code>, <code>-q 30</code>, <code>-Q 20</code>. What do the two <code>AD</code> columns contain, and what does an ALT of <code>&lt;*&gt;</code> mean?</p></li>
+<li><p>Why do we merge the peaks before using them as regions?</p></li>
+</ol>
+</section>
+</section>
+<section id="in-r" class="level2">
+<h2 class="anchored" data-anchor-id="in-r">In R</h2>
+<p>You need data.table, GenomicRanges, rtracklayer, Rsamtools, Biostrings, JASPAR2024, TFBSTools, motifmatchr and ggplot2 (see <em>Install the software you need</em>).</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressPackageStartupMessages</span>({</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(data.table); <span class="fu">library</span>(GenomicRanges); <span class="fu">library</span>(rtracklayer); <span class="fu">library</span>(Rsamtools); <span class="fu">library</span>(Biostrings)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(JASPAR2024); <span class="fu">library</span>(TFBSTools); <span class="fu">library</span>(motifmatchr); <span class="fu">library</span>(ggplot2)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>D <span class="ot">&lt;-</span> <span class="st">"/path/to/course/data"</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="r1-traits-loci-and-the-share-of-non-coding-hits" class="level3">
+<h3 class="anchored" data-anchor-id="r1-traits-loci-and-the-share-of-non-coding-hits">R1 — Traits, loci and the share of non-coding hits</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>gw <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="fu">file.path</span>(D, <span class="st">"gwas_catalog_gws.tsv.gz"</span>))</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">associations =</span> <span class="fu">nrow</span>(gw), <span class="at">snps =</span> <span class="fu">uniqueN</span>(gw<span class="sc">$</span>snp), <span class="at">traits =</span> <span class="fu">uniqueN</span>(gw<span class="sc">$</span>trait))</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>snp <span class="ot">&lt;-</span> gw[, .(<span class="at">chr =</span> chr[<span class="dv">1</span>], <span class="at">pos =</span> pos[<span class="dv">1</span>], <span class="at">context =</span> context[<span class="dv">1</span>]), by <span class="ot">=</span> snp]</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>coding <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"missense_variant"</span>, <span class="st">"synonymous_variant"</span>, <span class="st">"stop_gained"</span>, <span class="st">"frameshift_variant"</span>, <span class="st">"inframe_insertion"</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>            <span class="st">"inframe_deletion"</span>, <span class="st">"start_lost"</span>, <span class="st">"stop_lost"</span>, <span class="st">"stop_retained_variant"</span>, <span class="st">"protein_altering_variant"</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>            <span class="st">"coding_sequence_variant"</span>, <span class="st">"splice_donor_variant"</span>, <span class="st">"splice_acceptor_variant"</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> <span class="fu">mean</span>(snp<span class="sc">$</span>context <span class="sc">%in%</span> coding), <span class="dv">1</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">sort</span>(<span class="fu">table</span>(snp<span class="sc">$</span>context), <span class="at">decreasing =</span> <span class="cn">TRUE</span>), <span class="dv">8</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>sets <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">autoimmune =</span> <span class="fu">c</span>(<span class="st">"rheumatoid arthritis"</span>, <span class="st">"systemic lupus erythematosus"</span>, <span class="st">"multiple sclerosis"</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"inflammatory bowel disease"</span>, <span class="st">"Crohn disease"</span>, <span class="st">"ulcerative colitis"</span>),</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>             <span class="at">LDL =</span> <span class="st">"low density lipoprotein cholesterol measurement"</span>, <span class="at">schizophrenia =</span> <span class="st">"schizophrenia"</span>,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>             <span class="at">height =</span> <span class="st">"body height"</span>)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>prune <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">w =</span> <span class="dv">250000</span>) {               <span class="co"># keep the strongest SNP, drop SNPs within w of a kept one</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> x[<span class="fu">order</span>(<span class="sc">-</span>mlog10p)]; keep <span class="ot">&lt;-</span> <span class="fu">logical</span>(<span class="fu">nrow</span>(x))</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (ch <span class="cf">in</span> <span class="fu">unique</span>(x<span class="sc">$</span>chr)) {</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    i <span class="ot">&lt;-</span> <span class="fu">which</span>(x<span class="sc">$</span>chr <span class="sc">==</span> ch); kept <span class="ot">&lt;-</span> <span class="fu">integer</span>(<span class="dv">0</span>)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (j <span class="cf">in</span> i) <span class="cf">if</span> (<span class="sc">!</span><span class="fu">length</span>(kept) <span class="sc">||</span> <span class="fu">all</span>(<span class="fu">abs</span>(x<span class="sc">$</span>pos[kept] <span class="sc">-</span> x<span class="sc">$</span>pos[j]) <span class="sc">&gt;</span> w)) kept <span class="ot">&lt;-</span> <span class="fu">c</span>(kept, j)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    keep[kept] <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  x[keep]</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>leads <span class="ot">&lt;-</span> <span class="fu">rbindlist</span>(<span class="fu">lapply</span>(<span class="fu">names</span>(sets), <span class="cf">function</span>(s) {</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> gw[trait <span class="sc">%in%</span> sets[[s]], .(<span class="at">chr =</span> chr[<span class="dv">1</span>], <span class="at">pos =</span> pos[<span class="dv">1</span>], <span class="at">mlog10p =</span> <span class="fu">max</span>(mlog10p)), by <span class="ot">=</span> snp]</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> <span class="fu">prune</span>(x); y[, set <span class="sc">:</span><span class="er">=</span> s]; y }))</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>leads[, .N, by <span class="ot">=</span> set]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>What fraction of unique GWAS SNPs is coding or at a splice site? Which contexts dominate?</p></li>
+<li><p>How many SNPs and how many pruned loci does each trait set have? Why is the ratio so different for height?</p></li>
+<li><p>What does <code>prune</code> do when two SNPs are 200 kb apart but in no LD at all? When two SNPs are 300 kb apart but in perfect LD?</p></li>
+</ol>
+</section>
+<section id="r2-enrichment-in-cell-type-specific-peaks" class="level3">
+<h3 class="anchored" data-anchor-id="r2-enrichment-in-cell-type-specific-peaks">R2 — Enrichment in cell-type-specific peaks</h3>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>chroms <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"chr"</span>, <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">22</span>, <span class="st">"X"</span>))</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>top_peaks <span class="ot">&lt;-</span> <span class="cf">function</span>(f, <span class="at">n =</span> <span class="dv">50000</span>) {            <span class="co"># the n strongest peaks, 500 bp around the summit</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="fu">file.path</span>(D, f))[V1 <span class="sc">%in%</span> chroms][<span class="fu">order</span>(<span class="sc">-</span>V7)][<span class="dv">1</span><span class="sc">:</span>n]</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">GRanges</span>(p<span class="sc">$</span>V1, <span class="fu">IRanges</span>(p<span class="sc">$</span>V2 <span class="sc">+</span> p<span class="sc">$</span>V10 <span class="sc">+</span> <span class="dv">1</span> <span class="sc">-</span> <span class="dv">250</span>, <span class="at">width =</span> <span class="dv">500</span>))</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>atac <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">GM12878 =</span> <span class="fu">top_peaks</span>(<span class="st">"gm12878_atac_peaks.bed.gz"</span>), <span class="at">K562 =</span> <span class="fu">top_peaks</span>(<span class="st">"k562_atac_peaks.bed.gz"</span>),</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">HepG2 =</span> <span class="fu">top_peaks</span>(<span class="st">"hepg2_atac_peaks.bed.gz"</span>))</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>spec <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">GM12878_only =</span> atac<span class="sc">$</span>GM12878[<span class="sc">!</span><span class="fu">overlapsAny</span>(atac<span class="sc">$</span>GM12878, <span class="fu">c</span>(atac<span class="sc">$</span>K562, atac<span class="sc">$</span>HepG2))],</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">K562_only    =</span> atac<span class="sc">$</span>K562[<span class="sc">!</span><span class="fu">overlapsAny</span>(atac<span class="sc">$</span>K562, <span class="fu">c</span>(atac<span class="sc">$</span>GM12878, atac<span class="sc">$</span>HepG2))],</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>             <span class="at">HepG2_only   =</span> atac<span class="sc">$</span>HepG2[<span class="sc">!</span><span class="fu">overlapsAny</span>(atac<span class="sc">$</span>HepG2, <span class="fu">c</span>(atac<span class="sc">$</span>GM12878, atac<span class="sc">$</span>K562))],</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>             <span class="at">all_three    =</span> atac<span class="sc">$</span>GM12878[<span class="fu">overlapsAny</span>(atac<span class="sc">$</span>GM12878, atac<span class="sc">$</span>K562) <span class="sc">&amp;</span> <span class="fu">overlapsAny</span>(atac<span class="sc">$</span>GM12878, atac<span class="sc">$</span>HepG2)])</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(spec, length)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>bg <span class="ot">&lt;-</span> snp[, .(snp, chr, pos)]</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>near <span class="ot">&lt;-</span> <span class="cf">function</span>(chr, pos, a, <span class="at">w =</span> <span class="dv">1000</span>) <span class="fu">overlapsAny</span>(<span class="fu">GRanges</span>(chr, <span class="fu">IRanges</span>(<span class="fu">pmax</span>(pos <span class="sc">-</span> w, <span class="dv">1</span>), pos <span class="sc">+</span> w)), a)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>enrich <span class="ot">&lt;-</span> <span class="cf">function</span>(a, s, <span class="at">w =</span> <span class="dv">1000</span>) {</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  l <span class="ot">&lt;-</span> leads[set <span class="sc">==</span> s]; k <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">near</span>(l<span class="sc">$</span>chr, l<span class="sc">$</span>pos, a, w)); p0 <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">near</span>(bg<span class="sc">$</span>chr, bg<span class="sc">$</span>pos, a, w))</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.table</span>(<span class="at">set =</span> s, <span class="at">n =</span> <span class="fu">nrow</span>(l), <span class="at">k =</span> k, <span class="at">frac =</span> k <span class="sc">/</span> <span class="fu">nrow</span>(l), <span class="at">bg =</span> p0, <span class="at">enrichment =</span> k <span class="sc">/</span> <span class="fu">nrow</span>(l) <span class="sc">/</span> p0,</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>             <span class="at">p =</span> <span class="fu">binom.test</span>(k, <span class="fu">nrow</span>(l), p0, <span class="at">alternative =</span> <span class="st">"greater"</span>)<span class="sc">$</span>p.value)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">rbindlist</span>(<span class="fu">lapply</span>(<span class="fu">names</span>(spec), <span class="cf">function</span>(a) <span class="fu">rbindlist</span>(<span class="fu">lapply</span>(<span class="fu">names</span>(sets), <span class="cf">function</span>(s) <span class="fu">cbind</span>(<span class="at">annot =</span> a, <span class="fu">enrich</span>(spec[[a]], s))))))</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="fu">dcast</span>(res, set <span class="sc">~</span> annot, <span class="at">value.var =</span> <span class="st">"enrichment"</span>)</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>res[p <span class="sc">&lt;</span> <span class="fl">0.05</span>]</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>cs <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="fu">file.path</span>(D, <span class="st">"hg38.chrom.sizes"</span>))[V1 <span class="sc">%in%</span> chroms]</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>rp <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">chr =</span> <span class="fu">sample</span>(cs<span class="sc">$</span>V1, <span class="fl">1e5</span>, <span class="cn">TRUE</span>, <span class="at">prob =</span> cs<span class="sc">$</span>V2))</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>rp[, pos <span class="sc">:</span><span class="er">=</span> <span class="fu">floor</span>(<span class="fu">runif</span>(.N, <span class="fl">1e6</span>, cs<span class="sc">$</span>V2[<span class="fu">match</span>(chr, cs<span class="sc">$</span>V1)] <span class="sc">-</span> <span class="fl">1e6</span>))]</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">random =</span> <span class="fu">mean</span>(<span class="fu">near</span>(rp<span class="sc">$</span>chr, rp<span class="sc">$</span>pos, atac<span class="sc">$</span>GM12878)), <span class="at">all_gwas =</span> <span class="fu">mean</span>(<span class="fu">near</span>(bg<span class="sc">$</span>chr, bg<span class="sc">$</span>pos, atac<span class="sc">$</span>GM12878)),</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">autoimmune =</span> leads[set <span class="sc">==</span> <span class="st">"autoimmune"</span>, <span class="fu">mean</span>(<span class="fu">near</span>(chr, pos, atac<span class="sc">$</span>GM12878))])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>How many peaks are specific to each cell line, and how many shared by all three?</p></li>
+<li><p>Which trait set is enriched in which annotation? Report enrichment and p for the significant ones.</p></li>
+<li><p>What fraction of random positions, of all GWAS SNPs and of autoimmune loci lies near a GM12878 peak (all 50 000)? Compute the enrichment of autoimmune loci against each background.</p></li>
+</ol>
+</section>
+<section id="r3-thirteen-blood-cell-types" class="level3">
+<h3 class="anchored" data-anchor-id="r3-thirteen-blood-cell-types">R3 — Thirteen blood cell types</h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>cc <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="fu">file.path</span>(D, <span class="st">"corces2016_atac_counts.txt.gz"</span>))</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>code2type <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"HSC"</span>, <span class="st">`</span><span class="at">2</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"MPP"</span>, <span class="st">`</span><span class="at">3</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"LMPP"</span>, <span class="st">`</span><span class="at">4</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"CMP"</span>, <span class="st">`</span><span class="at">5</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"GMP"</span>, <span class="st">`</span><span class="at">6</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"MEP"</span>, <span class="st">`</span><span class="at">7</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"Mono"</span>,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>               <span class="st">`</span><span class="at">9</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"CD4"</span>, <span class="st">`</span><span class="at">10</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"CD8"</span>, <span class="st">`</span><span class="at">11</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"NK"</span>, <span class="st">`</span><span class="at">13</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"B"</span>, <span class="st">`</span><span class="at">14</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"CLP"</span>, <span class="st">`</span><span class="at">15</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"Ery"</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>healthy <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="st">"^(Donor)?[0-9]+-"</span>, <span class="fu">names</span>(cc), <span class="at">value =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>re <span class="ot">&lt;-</span> <span class="st">"^(?:Donor)?([0-9]+)-(?:[A-Za-z][A-Za-z0-9]*-)?([0-9]+)([A-C]?)(?:-[0-9]+)?$"</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>ct <span class="ot">&lt;-</span> code2type[<span class="fu">sapply</span>(<span class="fu">regmatches</span>(healthy, <span class="fu">regexec</span>(re, healthy, <span class="at">perl =</span> <span class="cn">TRUE</span>)), <span class="st">`</span><span class="at">[</span><span class="st">`</span>, <span class="dv">3</span>)]</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>m  <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(cc[, ..healthy])</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>lc <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="fu">split</span>(<span class="fu">seq_along</span>(ct), ct), <span class="cf">function</span>(i)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">log2</span>(<span class="fu">rowMeans</span>(<span class="fu">sweep</span>(m[, i, <span class="at">drop =</span> <span class="cn">FALSE</span>], <span class="dv">2</span>, <span class="fu">colSums</span>(m[, i, <span class="at">drop =</span> <span class="cn">FALSE</span>]), <span class="st">"/"</span>)) <span class="sc">*</span> <span class="fl">1e6</span> <span class="sc">+</span> <span class="dv">1</span>))</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>z  <span class="ot">&lt;-</span> lc <span class="sc">-</span> <span class="fu">rowMeans</span>(lc)                                   <span class="co"># specificity: above the mean of all cell types</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>chainf <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="at">fileext =</span> <span class="st">".chain"</span>)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(<span class="fu">readLines</span>(<span class="fu">gzfile</span>(<span class="fu">file.path</span>(D, <span class="st">"hg19ToHg38.over.chain.gz"</span>))), chainf)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>lo  <span class="ot">&lt;-</span> <span class="fu">liftOver</span>(<span class="fu">GRanges</span>(cc<span class="sc">$</span>Chr, <span class="fu">IRanges</span>(cc<span class="sc">$</span>Start <span class="sc">+</span> <span class="dv">1</span>, cc<span class="sc">$</span>End)), <span class="fu">import.chain</span>(chainf))</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>one <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">lengths</span>(lo) <span class="sc">==</span> <span class="dv">1</span>); p38 <span class="ot">&lt;-</span> <span class="fu">unlist</span>(lo[one])</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>ctres <span class="ot">&lt;-</span> <span class="fu">rbindlist</span>(<span class="fu">lapply</span>(<span class="fu">colnames</span>(z), <span class="cf">function</span>(k) {</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  A <span class="ot">&lt;-</span> p38[<span class="fu">order</span>(<span class="sc">-</span>z[one, k])[<span class="dv">1</span><span class="sc">:</span><span class="dv">25000</span>]]</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rbindlist</span>(<span class="fu">lapply</span>(<span class="fu">c</span>(<span class="st">"autoimmune"</span>, <span class="st">"LDL"</span>), <span class="cf">function</span>(s) <span class="fu">cbind</span>(<span class="at">celltype =</span> k, <span class="fu">enrich</span>(A, s)))) }))</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="fu">dcast</span>(ctres, celltype <span class="sc">~</span> set, <span class="at">value.var =</span> <span class="st">"enrichment"</span>)</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>ctres[p <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">/</span> <span class="fu">nrow</span>(ctres)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>What does <code>z</code> measure? Why take the 25 000 most <em>specific</em> peaks rather than the most accessible?</p></li>
+<li><p>In which cell types are autoimmune loci most enriched? Is LDL enriched anywhere after Bonferroni correction?</p></li>
+</ol>
+</section>
+<section id="r4-window-size" class="level3">
+<h3 class="anchored" data-anchor-id="r4-window-size">R4 — Window size</h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>win <span class="ot">&lt;-</span> <span class="fu">rbindlist</span>(<span class="fu">lapply</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">500</span>, <span class="dv">1000</span>, <span class="dv">2000</span>, <span class="dv">5000</span>, <span class="dv">10000</span>, <span class="dv">20000</span>), <span class="cf">function</span>(w)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(<span class="at">w =</span> w, <span class="fu">enrich</span>(spec<span class="sc">$</span>GM12878_only, <span class="st">"autoimmune"</span>, w))))</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>win[, .(w, k, <span class="at">frac =</span> <span class="fu">round</span>(frac, <span class="dv">3</span>), <span class="at">bg =</span> <span class="fu">round</span>(bg, <span class="dv">3</span>), <span class="at">enrichment =</span> <span class="fu">round</span>(enrichment, <span class="dv">2</span>), <span class="at">p =</span> <span class="fu">signif</span>(p, <span class="dv">2</span>))]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>How do the number of loci near a peak, the background rate and the enrichment change with the window?</p></li>
+<li><p>Which window gives the smallest p-value? Why is that not necessarily the best choice?</p></li>
+</ol>
+</section>
+<section id="r5-motif-changes" class="level3">
+<h3 class="anchored" data-anchor-id="r5-motif-changes">R5 — Motif changes</h3>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>al <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="fu">file.path</span>(D, <span class="st">"gwas_autoimmune_gm12878_alleles.tsv"</span>))</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>risk <span class="ot">&lt;-</span> gw[trait <span class="sc">%in%</span> sets<span class="sc">$</span>autoimmune <span class="sc">|</span> snp <span class="sc">==</span> <span class="st">"rs12740374"</span>, .(<span class="at">risk =</span> <span class="fu">paste</span>(<span class="fu">unique</span>(risk_allele), <span class="at">collapse =</span> <span class="st">","</span>)), by <span class="ot">=</span> snp]</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>al <span class="ot">&lt;-</span> <span class="fu">merge</span>(al, risk, <span class="at">by =</span> <span class="st">"snp"</span>, <span class="at">all.x =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>pick_alt <span class="ot">&lt;-</span> <span class="cf">function</span>(alt, risk) {                <span class="co"># one alternative allele: the only one, or the risk allele</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> <span class="fu">strsplit</span>(alt, <span class="st">","</span>)[[<span class="dv">1</span>]]; <span class="cf">if</span> (<span class="fu">length</span>(a) <span class="sc">==</span> <span class="dv">1</span>) <span class="fu">return</span>(a)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">intersect</span>(<span class="fu">strsplit</span>(risk, <span class="st">","</span>)[[<span class="dv">1</span>]], a); <span class="cf">if</span> (<span class="fu">length</span>(x) <span class="sc">==</span> <span class="dv">1</span>) x <span class="cf">else</span> <span class="cn">NA_character_</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>al[, alt1 <span class="sc">:</span><span class="er">=</span> <span class="fu">mapply</span>(pick_alt, alt, risk)]</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="at">resolved =</span> <span class="sc">!</span><span class="fu">is.na</span>(al<span class="sc">$</span>alt1))</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>al <span class="ot">&lt;-</span> al[<span class="sc">!</span><span class="fu">is.na</span>(alt1)]</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>fa <span class="ot">&lt;-</span> <span class="fu">FaFile</span>(<span class="fu">file.path</span>(D, <span class="st">"hg38.fa.bgz"</span>))</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>jdb  <span class="ot">&lt;-</span> RSQLite<span class="sc">::</span><span class="fu">dbConnect</span>(RSQLite<span class="sc">::</span><span class="fu">SQLite</span>(), <span class="fu">db</span>(<span class="fu">JASPAR2024</span>()))</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>pfms <span class="ot">&lt;-</span> <span class="fu">getMatrixSet</span>(jdb, <span class="at">opts =</span> <span class="fu">list</span>(<span class="at">collection =</span> <span class="st">"CORE"</span>, <span class="at">tax_group =</span> <span class="st">"vertebrates"</span>, <span class="at">all_versions =</span> <span class="cn">FALSE</span>))</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(pfms) <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="fu">name</span>(pfms), <span class="fu">ID</span>(pfms), <span class="at">sep =</span> <span class="st">"_"</span>)</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>wd <span class="ot">&lt;-</span> <span class="fu">sapply</span>(pfms, <span class="cf">function</span>(p) <span class="fu">ncol</span>(<span class="fu">Matrix</span>(p))); L <span class="ot">&lt;-</span> <span class="fu">max</span>(wd)</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>allele_seqs <span class="ot">&lt;-</span> <span class="cf">function</span>(chr, pos, ref, alt) {    <span class="co"># sequences of both alleles, the variant at position L</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>  s <span class="ot">&lt;-</span> <span class="fu">getSeq</span>(fa, <span class="fu">GRanges</span>(chr, <span class="fu">IRanges</span>(pos <span class="sc">-</span> L <span class="sc">+</span> <span class="dv">1</span>, pos <span class="sc">+</span> L <span class="sc">-</span> <span class="dv">1</span>)))</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stopifnot</span>(<span class="fu">all</span>(<span class="fu">as.character</span>(<span class="fu">subseq</span>(s, L, L)) <span class="sc">==</span> ref))</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> s; <span class="fu">subseq</span>(a, L, L) <span class="ot">&lt;-</span> <span class="fu">DNAStringSet</span>(alt)</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">ref =</span> s, <span class="at">alt =</span> a)</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>motif_change <span class="ot">&lt;-</span> <span class="cf">function</span>(sq) {                   <span class="co"># per motif width: windows that contain the variant only</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">split</span>(<span class="fu">seq_along</span>(pfms), wd), <span class="cf">function</span>(i) {</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    k <span class="ot">&lt;-</span> wd[i[<span class="dv">1</span>]]</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>    r <span class="ot">&lt;-</span> <span class="fu">motifMatches</span>(<span class="fu">matchMotifs</span>(pfms[i], <span class="fu">subseq</span>(sq<span class="sc">$</span>ref, L <span class="sc">-</span> k <span class="sc">+</span> <span class="dv">1</span>, L <span class="sc">+</span> k <span class="sc">-</span> <span class="dv">1</span>), <span class="at">bg =</span> <span class="st">"even"</span>, <span class="at">p.cutoff =</span> <span class="fl">1e-4</span>))</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>    a <span class="ot">&lt;-</span> <span class="fu">motifMatches</span>(<span class="fu">matchMotifs</span>(pfms[i], <span class="fu">subseq</span>(sq<span class="sc">$</span>alt, L <span class="sc">-</span> k <span class="sc">+</span> <span class="dv">1</span>, L <span class="sc">+</span> k <span class="sc">-</span> <span class="dv">1</span>), <span class="at">bg =</span> <span class="st">"even"</span>, <span class="at">p.cutoff =</span> <span class="fl">1e-4</span>))</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(<span class="at">lost =</span> <span class="fu">as.matrix</span>(r <span class="sc">&amp;</span> <span class="sc">!</span>a), <span class="at">gained =</span> <span class="fu">as.matrix</span>(<span class="sc">!</span>r <span class="sc">&amp;</span> a))</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">lost =</span> <span class="fu">do.call</span>(cbind, <span class="fu">lapply</span>(out, <span class="st">`</span><span class="at">[[</span><span class="st">`</span>, <span class="st">"lost"</span>)), <span class="at">gained =</span> <span class="fu">do.call</span>(cbind, <span class="fu">lapply</span>(out, <span class="st">`</span><span class="at">[[</span><span class="st">`</span>, <span class="st">"gained"</span>)))</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>mc <span class="ot">&lt;-</span> <span class="fu">motif_change</span>(<span class="fu">allele_seqs</span>(al<span class="sc">$</span>chr, al<span class="sc">$</span>pos, al<span class="sc">$</span>ref, al<span class="sc">$</span>alt1))</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>nchg <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(mc<span class="sc">$</span>lost <span class="sc">|</span> mc<span class="sc">$</span>gained)</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">snps =</span> <span class="fu">nrow</span>(al), <span class="at">with_change =</span> <span class="fu">sum</span>(nchg <span class="sc">&gt;</span> <span class="dv">0</span>), <span class="at">fraction =</span> <span class="fu">mean</span>(nchg <span class="sc">&gt;</span> <span class="dv">0</span>))</span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="fu">file.path</span>(D, <span class="st">"gm12878_atac_peaks.bed.gz"</span>))[V1 <span class="sc">%in%</span> <span class="fu">paste0</span>(<span class="st">"chr"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">22</span>)][<span class="fu">sample</span>(.N, <span class="dv">2000</span>)]</span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>cpos <span class="ot">&lt;-</span> p<span class="sc">$</span>V2 <span class="sc">+</span> p<span class="sc">$</span>V10 <span class="sc">+</span> <span class="fu">sample</span>(<span class="sc">-</span><span class="dv">100</span><span class="sc">:</span><span class="dv">100</span>, <span class="fu">nrow</span>(p), <span class="cn">TRUE</span>)       <span class="co"># random positions near peak summits</span></span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>cref <span class="ot">&lt;-</span> <span class="fu">as.character</span>(<span class="fu">getSeq</span>(fa, <span class="fu">GRanges</span>(p<span class="sc">$</span>V1, <span class="fu">IRanges</span>(cpos, <span class="at">width =</span> <span class="dv">1</span>))))</span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>ok   <span class="ot">&lt;-</span> cref <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"C"</span>, <span class="st">"G"</span>, <span class="st">"T"</span>)</span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>calt <span class="ot">&lt;-</span> <span class="fu">sapply</span>(cref[ok], <span class="cf">function</span>(b) <span class="fu">sample</span>(<span class="fu">setdiff</span>(<span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"C"</span>, <span class="st">"G"</span>, <span class="st">"T"</span>), b), <span class="dv">1</span>))</span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>mcc  <span class="ot">&lt;-</span> <span class="fu">motif_change</span>(<span class="fu">allele_seqs</span>(p<span class="sc">$</span>V1[ok], cpos[ok], cref[ok], calt))</span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">rowSums</span>(mcc<span class="sc">$</span>lost <span class="sc">|</span> mcc<span class="sc">$</span>gained) <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>i <span class="ot">&lt;-</span> <span class="fu">which</span>(al<span class="sc">$</span>snp <span class="sc">==</span> <span class="st">"rs12740374"</span>)</span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a><span class="fu">list</span>(<span class="at">gained =</span> <span class="fu">colnames</span>(mc<span class="sc">$</span>gained)[mc<span class="sc">$</span>gained[i, ]], <span class="at">lost =</span> <span class="fu">colnames</span>(mc<span class="sc">$</span>lost)[mc<span class="sc">$</span>lost[i, ]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>For how many SNPs can one alternative allele be chosen? Why do dbSNP records often list several?</p></li>
+<li><p>Why are the sequences cut to <span class="math inline">\(2k - 1\)</span> bp for a motif of width <span class="math inline">\(k\)</span>?</p></li>
+<li><p>What fraction of autoimmune SNPs and of random positions gains or loses at least one motif match? What do you conclude?</p></li>
+<li><p>Which motifs does the T allele of rs12740374 gain? Compare with the lecture.</p></li>
+</ol>
+</section>
+<section id="r6-allelic-imbalance" class="level3">
+<h3 class="anchored" data-anchor-id="r6-allelic-imbalance">R6 — Allelic imbalance</h3>
+<p>Use <code>allele_counts.txt</code> from C3 (copy it into the R working directory).</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>ad  <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"allele_counts.txt"</span>, <span class="at">header =</span> <span class="cn">FALSE</span>, <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">select =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>,</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"chr"</span>, <span class="st">"pos"</span>, <span class="st">"ref"</span>, <span class="st">"alts"</span>, <span class="st">"ad1"</span>, <span class="st">"ad2"</span>))</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>het <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="at">cmd =</span> <span class="fu">paste</span>(<span class="st">"bcftools query -f '%POS</span><span class="sc">\\</span><span class="st">t%ALT</span><span class="sc">\\</span><span class="st">n'"</span>, <span class="fu">file.path</span>(D, <span class="st">"na12878_chr21_het_snps.vcf.gz"</span>)),</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"pos"</span>, <span class="st">"het_alt"</span>))</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>ad  <span class="ot">&lt;-</span> <span class="fu">merge</span>(ad, het, <span class="at">by =</span> <span class="st">"pos"</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>alt_count <span class="ot">&lt;-</span> <span class="cf">function</span>(adv, alts, a) <span class="fu">mapply</span>(<span class="cf">function</span>(x, al, h) {    <span class="co"># reads for the genotyped ALT allele</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  v <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">strsplit</span>(x, <span class="st">","</span>)[[<span class="dv">1</span>]]); k <span class="ot">&lt;-</span> <span class="fu">match</span>(h, <span class="fu">strsplit</span>(al, <span class="st">","</span>)[[<span class="dv">1</span>]])</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.na</span>(k)) <span class="dv">0</span>L <span class="cf">else</span> v[k <span class="sc">+</span> <span class="dv">1</span>] }, adv, alts, a)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>ad[, refc <span class="sc">:</span><span class="er">=</span> <span class="fu">as.integer</span>(<span class="fu">sub</span>(<span class="st">",.*"</span>, <span class="st">""</span>, ad1)) <span class="sc">+</span> <span class="fu">as.integer</span>(<span class="fu">sub</span>(<span class="st">",.*"</span>, <span class="st">""</span>, ad2))]</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>ad[, altc <span class="sc">:</span><span class="er">=</span> <span class="fu">alt_count</span>(ad1, alts, het_alt) <span class="sc">+</span> <span class="fu">alt_count</span>(ad2, alts, het_alt)]</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>ad[, n <span class="sc">:</span><span class="er">=</span> refc <span class="sc">+</span> altc]</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>ad <span class="ot">&lt;-</span> ad[n <span class="sc">&gt;=</span> <span class="dv">10</span>]</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>p_ref <span class="ot">&lt;-</span> <span class="fu">sum</span>(ad<span class="sc">$</span>refc) <span class="sc">/</span> <span class="fu">sum</span>(ad<span class="sc">$</span>n)</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">sites =</span> <span class="fu">nrow</span>(ad), <span class="at">median_depth =</span> <span class="fu">median</span>(ad<span class="sc">$</span>n), <span class="at">pooled_ref_fraction =</span> p_ref)</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>ad[, p   <span class="sc">:</span><span class="er">=</span> <span class="fu">mapply</span>(<span class="cf">function</span>(k, n) <span class="fu">binom.test</span>(k, n, <span class="fl">0.5</span>)<span class="sc">$</span>p.value, refc, n)]</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>ad[, p_b <span class="sc">:</span><span class="er">=</span> <span class="fu">mapply</span>(<span class="cf">function</span>(k, n) <span class="fu">binom.test</span>(k, n, p_ref)<span class="sc">$</span>p.value, refc, n)]</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">fdr10_vs_0.5 =</span> <span class="fu">sum</span>(<span class="fu">p.adjust</span>(ad<span class="sc">$</span>p, <span class="st">"BH"</span>) <span class="sc">&lt;</span> <span class="fl">0.1</span>), <span class="at">fdr10_vs_pooled =</span> <span class="fu">sum</span>(<span class="fu">p.adjust</span>(ad<span class="sc">$</span>p_b, <span class="st">"BH"</span>) <span class="sc">&lt;</span> <span class="fl">0.1</span>),</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">one_allele_only =</span> <span class="fu">sum</span>(ad<span class="sc">$</span>refc <span class="sc">==</span> <span class="dv">0</span> <span class="sc">|</span> ad<span class="sc">$</span>altc <span class="sc">==</span> <span class="dv">0</span>))</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>ad[<span class="fu">order</span>(p)][<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, .(pos, ref, het_alt, refc, altc, <span class="at">p =</span> <span class="fu">signif</span>(p, <span class="dv">2</span>))]</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ad, <span class="fu">aes</span>(refc <span class="sc">/</span> n)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.05</span>)) <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, p_ref))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>How many heterozygous SNPs have at least 10 reads? What is the pooled reference fraction, and what does it tell you?</p></li>
+<li><p>How many SNPs show imbalance at FDR 10%, testing against 0.5 and against the pooled fraction?</p></li>
+<li><p>Look at the top 10. Which ones cluster in the same peak, and do they agree in direction? What could explain sites with all reads from one allele?</p></li>
+<li><p>Name one way to remove reference mapping bias before counting.</p></li>
+</ol>
+</section>
+</section>
+<section id="hints" class="level2">
+<h2 class="anchored" data-anchor-id="hints">Hints</h2>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 1 — LD and fine-mapping (B1, B3)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 1 — LD and fine-mapping (B1, B3)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><span class="math inline">\(D = p_{AB} - p_A p_B\)</span>; with all four haplotypes, <span class="math inline">\(p_A = p_{AB} + p_{Ab}\)</span>. For PIPs: multiply each Bayes factor by its prior weight, divide by the sum; sort and accumulate until 0.95. <a href="https://doi.org/10.1038/s41576-018-0016-z">Schaid et al.&nbsp;2018</a> review fine-mapping; <a href="https://stephenslab.github.io/susieR/">SuSiE</a> allows several causal variants. <a href="https://ldlink.nih.gov/">LDlink</a> gives <span class="math inline">\(r^2\)</span> between SNPs in each 1000 Genomes population.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 2 — enrichment and backgrounds (B2, R2–R4, C2)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 2 — enrichment and backgrounds (B2, R2–R4, C2)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The 2×2 logic is the same as motif enrichment in <em>Motifs, motif enrichment and TF footprinting</em>. <a href="https://rdrr.io/r/stats/binom.test.html"><code>binom.test</code></a> with <code>alternative = "greater"</code> gives a one-sided p.&nbsp;<a href="https://rdrr.io/bioc/IRanges/man/findOverlaps-methods.html"><code>overlapsAny</code></a> asks whether each range overlaps any range of another set; <a href="https://bedtools.readthedocs.io/en/latest/content/tools/intersect.html"><code>bedtools intersect -u</code></a> reports each feature of <code>-a</code> once if it overlaps <code>-b</code>. Matched backgrounds: <a href="https://doi.org/10.1093/bioinformatics/btv201">GREGOR</a>, <a href="https://doi.org/10.1093/bioinformatics/btu848">SNPsnap</a>; heritability: <a href="https://github.com/bulik/ldsc/wiki/Partitioned-Heritability">S-LDSC</a> (<a href="https://doi.org/10.1038/ng.3404">Finucane et al.&nbsp;2015</a>).</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 3 — motifs and alleles (B4, R5)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 3 — motifs and alleles (B4, R5)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Score windows as in <em>Gene regulation and the cis-regulatory code</em>: sum the weights of the bases. <a href="https://bioconductor.org/packages/motifmatchr"><code>matchMotifs</code></a> with <code>p.cutoff = 1e-4</code> and <code>bg = "even"</code> calls a match per sequence; a sequence of <span class="math inline">\(2k - 1\)</span> bp centred on the variant contains exactly the <span class="math inline">\(k\)</span> windows that overlap it. <a href="https://rdrr.io/bioc/Biostrings/man/getSeq.html"><code>getSeq</code></a> reads sequence from the indexed FASTA (<a href="https://rdrr.io/bioc/Rsamtools/man/FaFile-class.html"><code>FaFile</code></a>). <a href="https://bioconductor.org/packages/motifbreakR">motifbreakR</a> does the same with more options.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 4 — allele counts (B5, C3, R6)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 4 — allele counts (B5, C3, R6)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><a href="https://samtools.github.io/bcftools/bcftools.html#mpileup"><code>bcftools mpileup</code></a>: <code>-R</code> restricts to regions (fast, with an index), <code>-T</code> to the sites of a VCF, <code>-a AD</code> adds allelic depths per sample (REF first, then each ALT in order), <code>-q</code>/<code>-Q</code> are minimum mapping and base quality, <code>-d</code> the maximum depth. <code>&lt;*&gt;</code> is the symbolic “any other allele” that <code>mpileup</code> always adds. Normal approximation: <span class="math inline">\(z = (k - np)/\sqrt{np(1-p)}\)</span>; <span class="math inline">\(|z| &gt; 1.96\)</span> is significant at 5% (two-sided). <a href="https://doi.org/10.1038/nmeth.3582">WASP</a> removes mapping bias by re-mapping reads with the other allele.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 5 — judging claims (B6, B7)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 5 — judging claims (B6, B7)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Ask of each: is the variant a tag or fine-mapped? Is the background other GWAS SNPs or the genome? Is the motif change more than chance (B4d)? Is there QTL or allelic evidence? Was the relevant cell state profiled? <a href="https://doi.org/10.1038/nature13835">Farh et al.&nbsp;2015</a> is a good model of how to combine these.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="solutions" class="level2">
+<h2 class="anchored" data-anchor-id="solutions">Solutions</h2>
+<div class="callout callout-style-default callout-note callout-titled" title="Solutions — by hand">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions — by hand
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>B1.</strong> (a) <span class="math inline">\(p_A = 0.4 + 0.1 = 0.5\)</span>, <span class="math inline">\(p_B = 0.5\)</span>; <span class="math inline">\(D = 0.4 - 0.25 = 0.15\)</span>; $r^2 = 0.15^2 / (0.5 ) = 0.0225 / 0.0625 = $ <strong>0.36</strong>. (b) AB 0.5, ab 0.5, Ab 0, aB 0: A always with B. (c) About <span class="math inline">\(0.36 \times 100 = 36\)</span>: yes, above 30. A SNP in moderate LD with the causal variant can itself be genome-wide significant; with <span class="math inline">\(r^2 = 0.9\)</span> it would be almost as significant as the causal one and, with noise, could be the lead SNP.</p>
+<p><strong>B2.</strong> (a) <span class="math inline">\(774 \times 0.028 = 21.7\)</span> expected; enrichment $(39/774)/0.028 = 0.0504/0.028 = $ <strong>1.8</strong>. (b) SD <span class="math inline">\(= \sqrt{774 \cdot 0.028 \cdot 0.972} = 4.6\)</span>; $z = (39 - 21.7)/4.6 = $ <strong>3.8</strong> (one-sided p ≈ 10⁻⁴; the exact binomial p is 4 × 10⁻⁴). (c) $0.0504/0.012 = $ <strong>4.2</strong>. The 1.8 against other GWAS SNPs is more honest: GWAS SNPs as a group are in active, gene-rich regions, so part of the 4.2 is ascertainment, not liver specificity. (d) SNPs in LD are not independent: one signal with 30 SNPs in LD would be counted 30 times, inflating both the counts and the significance (pseudo-replication), and loci with many reported SNPs would dominate.</p>
+<p><strong>B3.</strong> (a) Sum 100; PIPs <strong>0.50, 0.30, 0.15, 0.05</strong>. Credible set: 0.50 + 0.30 + 0.15 = 0.95 → SNPs <strong>1, 2, 3</strong>. (b) Weighted: 50, 30, 150, 5; sum 235; PIPs <strong>0.21, 0.13, 0.64, 0.02</strong>. Credible set: 0.64 + 0.21 = 0.85, + 0.13 = 0.98 → SNPs <strong>3, 1, 2</strong> (same three SNPs, but SNP 3 is now the most likely). (c) Whether the prior was set from independent data (e.g.&nbsp;heritability enrichment estimated genome-wide, not from this locus) and how strong it was: with a prior of 10×, the “enhancer” conclusion is partly assumed. Report PIPs with and without the prior.</p>
+<p><strong>B4.</strong> (a) Reference <code>AGAAC</code>: 1.2 + 1.9 + 1.5 + 1.8 + 1.6 = <strong>8.0</strong>. Alternative <code>AGAGC</code>: 1.2 + 1.9 + 1.5 − 2.0 + 1.6 = <strong>4.2</strong>. Δ = <strong>−3.8 bits</strong>: <span class="math inline">\(2^{3.8} \approx 14\)</span> times weaker. (b) Yes: 8.0 ≥ 6 (match) and 4.2 &lt; 6 (no match): lost. (c) TFs bind double-stranded DNA: the motif can be on either strand, so score the reverse complement too; and the variant can sit at any position of the motif, so all <span class="math inline">\(k\)</span> windows overlapping it must be scored (the best match may start upstream). (d) Gaining or losing <em>some</em> match is the norm: with ~900 motifs, almost any base change does it. The claim needs more: the TF expressed and bound in those cells (ChIP-seq, footprint), a large Δ at a strong site, and evidence that the variant changes binding or accessibility (allele-specific ChIP or ATAC, a QTL, a reporter assay).</p>
+<p><strong>B5.</strong> (a) $z = (30 - 20)/ = 10/3.16 = $ <strong>3.16</strong>, p ≈ 0.002: significant. (b) Expected <span class="math inline">\(40 \times 0.516 = 20.6\)</span>; SD <span class="math inline">\(= \sqrt{40 \cdot 0.516 \cdot 0.484} = 3.16\)</span>; $z = 9.4/3.16 = $ <strong>2.97</strong>, p ≈ 0.003: still significant. The bias is a fixed shift of the expected fraction; its effect on <span class="math inline">\(z\)</span> grows with <span class="math inline">\(\sqrt{n}\)</span>, so at deep sites a 1.6% bias alone produces “significant” imbalance. (c) It strengthens it if the two SNPs are on the same haplotypes as predicted (here both favour the reference; check phasing: are the two reference alleles on the same chromosome copy?). But the counts are not independent: the same fragments often cover both SNPs, so do not multiply the evidence. (d) A deletion or loss of heterozygosity of one haplotype in this cell line (copy-number change), a genotyping error (the site is not heterozygous here), imprinting or another monoallelic mechanism, or severe mapping bias (a cluster of variants on the alternative haplotype).</p>
+<p><strong>B6.</strong> (a) MS: CD4 T cells (5.3×), CD8 (4.6×), B (4.5×), NK (4.3×). SLE: B cells (3.4×), then CD4 T cells (2.9×). (b) Their relevant cells are not in the panel: hepatocytes for LDL, neurons for schizophrenia, chondrocytes/growth plate for height. (c) It shows that SLE risk variants are concentrated in elements specifically open in B cells (and T cells), so they likely act there; it does not show where the disease starts, it misses unprofiled cells and states (e.g.&nbsp;activated cells, plasmacytoid dendritic cells), and enrichment is relative to other GWAS SNPs.</p>
+<p><strong>B7.</strong> (a) The lead SNP is a tag (LD); a motif change is common by chance (B4d); the enhancer is in a cell line. Ask for fine-mapping (PIP), allelic or QTL evidence for that SNP, IRF4 binding in the relevant cells, and a reporter or editing experiment. (b) Absence of enrichment in these cells says only that height variants do not act there; annotations of growth plate or bone cells would show enrichment. (c) The 4× is against random positions; against other GWAS SNPs it is 1.8× (all GM12878 peaks). Also GM12878 is the only immune cell in that comparison: in the Corces data T cells show stronger enrichment for most autoimmune diseases. “Key cell type” needs comparison across many cell types and states.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Solutions — command line">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions — command line
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>C1.</strong> (a) Top traits: body height (36 075 associations), fatty acid amount (18 110), body mass index (16 766), triglycerides (15 507), then blood protein, haematological and bone density traits. Height is extremely polygenic and has been studied in samples of millions, so thousands of loci reach significance (metabolite and protein traits come from a few very large studies). (b) 3594 autoimmune and 3629 LDL SNP positions (332 630 in all; R counts rsIDs and finds slightly more, because a few rsIDs share a position). The catalogue positions are 1-based; BED starts are 0-based, so a SNP at position <span class="math inline">\(p\)</span> is the interval <span class="math inline">\([p-1, p)\)</span> (<em>Genomic intervals</em>).</p>
+<p><strong>C2.</strong> (a)</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>peaks of</th>
+<th style="text-align: right;">autoimmune</th>
+<th style="text-align: right;">LDL</th>
+<th style="text-align: right;">all GWAS</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>GM12878</td>
+<td style="text-align: right;">0.083</td>
+<td style="text-align: right;">0.041</td>
+<td style="text-align: right;">0.038</td>
+</tr>
+<tr class="even">
+<td>K562</td>
+<td style="text-align: right;">0.036</td>
+<td style="text-align: right;">0.037</td>
+<td style="text-align: right;">0.031</td>
+</tr>
+<tr class="odd">
+<td>HepG2</td>
+<td style="text-align: right;">0.042</td>
+<td style="text-align: right;">0.055</td>
+<td style="text-align: right;">0.035</td>
+</tr>
+</tbody>
+</table>
+<p>Enrichment vs all GWAS SNPs: autoimmune <strong>2.2×</strong> in GM12878 peaks (1.2× in K562, 1.2× in HepG2); LDL <strong>1.6×</strong> in HepG2 peaks (1.1× in GM12878, 1.2× in K562). (b) The SNPs are not pruned (one locus can contribute dozens of correlated SNPs, so there is no valid test), the window is 0 bp, and all peaks are used, including those shared by every cell type (promoters), which dilute the cell-type signal.</p>
+<p><strong>C3.</strong> (a) 494 heterozygous SNPs in the merged chr21 peaks; <code>mpileup</code> reports 493 (one without a single read). (b) <code>-T</code> restricts output to the sites in the VCF (<code>-R</code> to the regions, using the BAM index); <code>-a AD</code> adds allelic depths; <code>-q 30</code> minimum mapping quality, <code>-Q 20</code> minimum base quality. Each AD column belongs to one BAM (rep1, rep2) and lists the counts for REF and each ALT in the ALT column; <code>&lt;*&gt;</code> means “any other allele”: when it is the only ALT, no read carried a non-reference base. (c) Overlapping regions make <code>mpileup</code> report the same site several times (one per overlapping region).</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Solutions — R">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions — R
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Run times are from one server core; a laptop is 1.5–3 times slower.</p>
+<p><strong>R1.</strong> (a) <strong>3.3%</strong> coding or splice site; intron variants (219 000) and intergenic variants (78 000) dominate, then missense, 3′ UTR, non-coding transcript exon and regulatory region variants. (b) Autoimmune 3599 SNPs → <strong>770</strong> loci; LDL 3636 → <strong>774</strong>; schizophrenia 1361 → 504; height 27 841 → 4745. Height has many more SNPs per study and more loci; LDL has many SNPs per locus (strong loci reported by many studies). (c) Two SNPs 200 kb apart are merged even if independent (lost signal); two 300 kb apart in perfect LD are both kept (double counting). Distance is a crude proxy for LD.</p>
+<p><strong>R2.</strong> (a) GM12878 only 24 271, K562 only 17 904, HepG2 only 22 526, shared by all three 17 873. (b) Significant: autoimmune in GM12878-only peaks, <strong>2.33×</strong> (51 of 770 loci, background 2.8%, p = 4 × 10⁻⁸); LDL in HepG2-only peaks <strong>1.80×</strong> (p = 4 × 10⁻⁴) and in K562-only peaks 1.53× (p = 0.02). Shared peaks: nothing. (c) Random positions <strong>3.6%</strong>, all GWAS SNPs <strong>6.6%</strong>, autoimmune loci <strong>11.8%</strong>: enrichment 3.3× against random positions, 1.8× against GWAS SNPs.</p>
+<p><strong>R3.</strong> (a) <code>z</code> is a cell type’s log2 CPM minus the mean over all 13 cell types: how much more open the peak is in that cell type than on average. The most accessible peaks of any cell type are mostly shared promoters; the most specific ones carry the cell-type identity. (b) Autoimmune (the four diseases together): CD4 T cells <strong>2.9×</strong>, CD8 2.6×, B cells 2.3×, NK 2.2×, monocytes 1.8×; these five are significant after Bonferroni correction (p from 2 × 10⁻¹⁵ to 2 × 10⁻⁵). Progenitors 1.1–1.6×. LDL: at most 1.6× (CD4) and 1.5× (erythroblasts), nothing significant after correction.</p>
+<p><strong>R4.</strong> (a)</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: right;">window (±bp)</th>
+<th style="text-align: right;">loci near a peak</th>
+<th style="text-align: right;">background</th>
+<th style="text-align: right;">enrichment</th>
+<th style="text-align: right;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">0.006</td>
+<td style="text-align: right;">3.42</td>
+<td style="text-align: right;">3 × 10⁻⁵</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">500</td>
+<td style="text-align: right;">38</td>
+<td style="text-align: right;">0.017</td>
+<td style="text-align: right;">2.82</td>
+<td style="text-align: right;">2 × 10⁻⁸</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1000</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">0.028</td>
+<td style="text-align: right;">2.33</td>
+<td style="text-align: right;">4 × 10⁻⁸</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2000</td>
+<td style="text-align: right;">71</td>
+<td style="text-align: right;">0.050</td>
+<td style="text-align: right;">1.84</td>
+<td style="text-align: right;">9 × 10⁻⁷</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5000</td>
+<td style="text-align: right;">132</td>
+<td style="text-align: right;">0.111</td>
+<td style="text-align: right;">1.54</td>
+<td style="text-align: right;">4 × 10⁻⁷</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">10 000</td>
+<td style="text-align: right;">226</td>
+<td style="text-align: right;">0.198</td>
+<td style="text-align: right;">1.48</td>
+<td style="text-align: right;">2 × 10⁻¹⁰</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">20 000</td>
+<td style="text-align: right;">357</td>
+<td style="text-align: right;">0.332</td>
+<td style="text-align: right;">1.40</td>
+<td style="text-align: right;">2 × 10⁻¹⁴</td>
+</tr>
+</tbody>
+</table>
+<p>More loci and a higher background as the window widens; enrichment falls from 3.4 to 1.4. (b) ±20 kb gives the smallest p, because it counts many more loci; but most of those “hits” are chance proximity (a third of all GWAS SNPs have such a peak within 20 kb), so the enrichment, the interpretable quantity, is smallest. Choose the window before looking (or use LD proxies), and report the enrichment, not only p.</p>
+<p><strong>R5.</strong> (a) 211 of 296: 115 have one alternative allele in dbSNP; 96 more are resolved because the risk allele is one of several listed alternatives; 85 remain ambiguous. dbSNP merges all alleles ever observed, including rare ones. (b) A <span class="math inline">\((2k-1)\)</span>-bp sequence centred on the variant contains exactly the <span class="math inline">\(k\)</span> windows of width <span class="math inline">\(k\)</span> that overlap it; longer sequences would also contain windows that do not include the variant, which could hide or create a match unrelated to the allele. (c) Autoimmune SNPs <strong>85%</strong> (180 of 211); random positions <strong>81%</strong>. Almost every position in a peak changes some JASPAR match when mutated, so a motif change on its own is weak evidence. (d) Gained: CEBPA, CEBPD, CEBPG (C/EBP family), RUNX3, Nr1h3::Rxra; lost: TFAP2A, TFAP2E. The C/EBP gain matches Musunuru et al.&nbsp;2010 and the lecture.</p>
+<p><strong>R6.</strong> (a) <strong>437</strong> sites with ≥ 10 reads (median 49 reads); pooled reference fraction <strong>0.516</strong>: a small excess of reference reads, the expected signature of mapping bias. (b) <strong>62</strong> at FDR 10% against 0.5; 68 against 0.516 (shifting the expectation makes some alternative-biased sites more significant and some reference-biased sites less; with a median depth of 49 the net change is small); 7 sites have reads from one allele only. (c) 42 107 843, 42 107 916 and 42 107 962 lie in one peak and all favour the reference (27:0, 52:4, 88:8): one haplotype is more open, consistent with a cis effect (or a copy-number change) acting on the whole element; likewise 26 169 588 and 26 169 626 both favour the alternative. Sites at 44 196 392 and 44 196 441 with 78:0 and 79:0 suggest a deletion or loss of one haplotype in the cell line, or a genotype error, rather than a regulatory variant. (d) WASP: re-align each read with the allele swapped and discard reads that do not map to the same position; or align to a personal (diploid) genome.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="where-this-leads" class="level2">
+<h2 class="anchored" data-anchor-id="where-this-leads">Where this leads</h2>
+<ul>
+<li><em>Linking regulatory elements to genes</em> gives the enhancer–gene links that turn an enriched element into a candidate gene.</li>
+<li><em>What did the model learn? Variant effects</em> predicts the effect of a variant on accessibility directly from sequence with a neural network: an alternative to PWM scoring.</li>
+<li>The methylation units return to meQTLs and allele-specific methylation.</li>
+<li>For real projects: full summary statistics, LD reference panels (1000 Genomes), <a href="https://github.com/bulik/ldsc">S-LDSC</a>, fine-mapping with <a href="https://stephenslab.github.io/susieR/">SuSiE</a>, colocalisation with <a href="https://chr1swallace.github.io/coloc/">coloc</a>, and WASP-corrected allele counts.</li>
+</ul>
+</section>
+<section id="key-papers-optional-further-reading" class="level2">
+<h2 class="anchored" data-anchor-id="key-papers-optional-further-reading">Key papers (optional further reading)</h2>
+<p><em>Not required reading and not examined.</em></p>
+<ul>
+<li>Musunuru et al.&nbsp;2010, <em>Nature</em>. <a href="https://doi.org/10.1038/nature09266">From noncoding variant to phenotype via SORT1 at the 1p13 cholesterol locus</a>.</li>
+<li>Maurano et al.&nbsp;2012, <em>Science</em>. <a href="https://doi.org/10.1126/science.1222794">Systematic localization of common disease-associated variation in regulatory DNA</a>.</li>
+<li>Degner et al.&nbsp;2012, <em>Nature</em>. <a href="https://doi.org/10.1038/nature10808">DNase I sensitivity QTLs are a major determinant of human expression variation</a>.</li>
+<li>Finucane et al.&nbsp;2015, <em>Nat Genet</em>. <a href="https://doi.org/10.1038/ng.3404">Partitioning heritability by functional annotation using genome-wide association summary statistics</a>.</li>
+<li>Farh et al.&nbsp;2015, <em>Nature</em>. <a href="https://doi.org/10.1038/nature13835">Genetic and epigenetic fine mapping of causal autoimmune disease variants</a>.</li>
+<li>Schaid, Chen &amp; Larson 2018, <em>Nat Rev Genet</em>. <a href="https://doi.org/10.1038/s41576-018-0016-z">From genome-wide associations to candidate causal variants by statistical fine-mapping</a>.</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

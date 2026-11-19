@@ -1,0 +1,95 @@
+---
+title: "Quiz: methylation and chromatin from long reads"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+Short questions on modified-base calling, modBAM files, haplotype-resolved methylation and single-molecule accessibility. Try each on paper first, then open the answer.
+
+---
+
+**Q1.** Name two things a nanopore read can tell you about DNA methylation that a WGBS read cannot.
+
+::: {.callout-tip collapse="true" title="Hint"}
+Think about conversion, read length and what else sits on the same molecule.
+:::
+
+::: {.callout-note collapse="true" title="Answer"}
+Any two of: it separates 5mC from 5hmC (bisulfite reads both as C); it reads tens of kilobases of one molecule, so many CpGs and usually heterozygous SNPs on the same read (haplotype-resolved methylation, co-methylation patterns); it maps into repeats that short converted reads cannot place; and other modifications on the same molecule (6mA from a methyltransferase, i.e. accessibility) are read at the same time. Also: no bisulfite damage and a four-letter alignment.
+:::
+
+---
+
+**Q2.** A read has `MM:Z:C+m?,1,0;` and `ML:B:C,20,235`. The read's Cs are, in order, in contexts CG, CG, CG. Which Cs have calls, and what are the probabilities of 5mC?
+
+::: {.callout-note collapse="true" title="Answer"}
+Skip 1 C, call the second C; skip 0, call the third. Probabilities ≈ (ML + 0.5)/256: second C 0.08 (likely unmethylated), third C 0.92 (likely methylated). The first C has no call; because of `?` it is unknown, not unmethylated.
+:::
+
+---
+
+**Q3.** At one CpG, modkit reports N_valid = 40, N_mod (5mC) = 26, N_other (5hmC) = 2, N_fail = 4. What is the 5mC level? What would WGBS report (in expectation)?
+
+::: {.callout-note collapse="true" title="Answer"}
+5mC level = 26/40 = 0.65. N_valid includes the 5hmC calls (C = 40 − 26 − 2 = 12); failed calls are not counted. WGBS reads 5mC and 5hmC as C: (26 + 2)/40 = 0.70.
+:::
+
+---
+
+**Q4.** Why does modkit drop calls below a threshold, and why is the threshold for 6mA (0.97) much higher than for 5mC at CpG (0.87) in the same data?
+
+::: {.callout-note collapse="true" title="Answer"}
+Low-confidence calls (probability of the best state only slightly above the others) are often wrong; dropping the least confident 10% removes them at a small cost in coverage. The threshold is the 10th percentile of the confidence values of all calls of that base. Almost all adenines are confidently unmodified (human DNA has no natural 6mA and even treated DNA is marked sparsely), so their confidences are very high and so is the 10th percentile; CpG calls are more often uncertain.
+:::
+
+---
+
+**Q5.** A child is A/G at a SNP; her father is G/G and her mother A/G. Which allele is paternal? A nanopore read carries G at this SNP and is methylated at an imprinting control region nearby. Which ICR could this be: H19 or the PWS-IC (SNRPN)?
+
+::: {.callout-note collapse="true" title="Answer"}
+The father can only pass G, so G is paternal and A maternal. The read is paternal and methylated at the ICR: consistent with the H19 ICR (paternally methylated), not with the PWS-IC (maternally methylated).
+:::
+
+---
+
+**Q6.** In whole-blood WGBS a CpG at a known imprinting control region reads 0.5. In a woman's blood, a promoter CpG island on chrX also reads about 0.5. Explain both, and say what haplotype-resolved data would show in each case.
+
+::: {.callout-note collapse="true" title="Answer"}
+ICR: every cell has one methylated (imprinted) parental copy and one unmethylated copy; haplotype-resolved data show one haplotype at ~1 and the other at ~0, the same parent in every person. chrX: every cell has one inactive X with a methylated promoter, but in blood (a mixture of clones) half the cells inactivated the paternal X and half the maternal X; each haplotype is ~0.5 methylated (unless X inactivation is skewed). In a clonal cell line such as GM12878 the chrX island would look like the ICR: one haplotype methylated.
+:::
+
+---
+
+**Q7.** In haplotype-resolved data from one person, a CpG is 0.9 methylated on haplotype 1 and 0.05 on haplotype 2. Give three possible explanations and one observation that would distinguish them.
+
+::: {.callout-note collapse="true" title="Answer"}
+Imprinting (parent-of-origin), X inactivation (if on chrX, in a clonal population), or sequence-dependent allele-specific methylation (a SNP in the region, an meQTL). Distinguish with parents (does the methylated allele always come from the same parent?) and with other people (does methylation follow a particular SNP allele regardless of parent?). Location (chrX vs an autosome, a known ICR) is also a strong hint.
+:::
+
+---
+
+**Q8.** In a Fiber-seq-type experiment, 4.8% of adenines in accessible regions and 0.37% elsewhere are called m6A; in untreated DNA of the same cells, 0.02–0.04%. What is the enrichment, and why do you need the untreated control?
+
+::: {.callout-note collapse="true" title="Answer"}
+4.8/0.37 ≈ 13-fold. The untreated control measures the false-positive rate of the 6mA model (and any natural 6mA): here about 0.02–0.04%, small compared with the treated signal, so most calls in the treated sample come from the enzyme. Without the control you could not tell enzyme marks from model errors, and you could not claim (or refute) natural 6mA.
+:::
+
+---
+
+**Q9.** A nucleosome-free region of 300 bp has about 75 adenines on one strand, and about 13% of them are marked on an open fibre. How many marks do you expect, and what is the chance (Poisson) of seeing none? What does a fibre without marks over this region most likely mean?
+
+::: {.callout-note collapse="true" title="Answer"}
+λ = 0.13 × 75 ≈ 9.8 marks; P(0) = e^{−9.8} ≈ 6 × 10⁻⁵. A fibre without marks is almost certainly closed (nucleosome-covered) on that molecule, or a molecule the enzyme did not reach; it is not an open fibre that was missed by chance.
+:::
+
+---
+
+**Q10.** A study compares nanopore methylation of 20 patients, basecalled in 2024, with 20 controls basecalled in 2022 with an older model, and reports 1 200 differentially methylated regions. What is your main concern, and how would you fix it?
+
+::: {.callout-note collapse="true" title="Answer"}
+The basecaller and modification model are perfectly confounded with disease: model versions differ in calibration and context accuracy, so methylation levels shift systematically. Re-basecall all raw data (POD5) with the same model, or, if the raw data are gone, at least show that the DMRs are not explained by model differences (e.g. by re-calling a few controls with both models). Ideally also randomise sequencing runs across groups.
+:::

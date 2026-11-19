@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 330" width="1120" height="330" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker></defs>
+<rect width="1120" height="330" fill="#ffffff"/>
+<text x="210" y="32" text-anchor="middle" font-size="18" font-weight="bold" fill="#1b2a3a">1. Genomic DNA</text>
+<text x="590" y="32" text-anchor="middle" font-size="18" font-weight="bold" fill="#1b2a3a">2. After bisulfite + PCR</text>
+<text x="950" y="32" text-anchor="middle" font-size="18" font-weight="bold" fill="#1b2a3a">3. What the array reads</text>
+<!-- molecule 1: methylated -->
+<text x="20" y="98" font-size="15" fill="#5b6b7a">cell A</text>
+<g font-size="20" font-family="Courier New, monospace" font-weight="bold" fill="#1b2a3a">
+<text x="80" y="100">A</text><text x="104" y="100">T</text><text x="128" y="100" fill="#c0392b">C</text><text x="152" y="100">G</text><text x="176" y="100">T</text><text x="200" y="100">T</text><text x="224" y="100" fill="#2a6f97">C</text><text x="248" y="100">A</text><text x="272" y="100">G</text><text x="296" y="100">T</text>
+</g>
+<line x1="134" y1="78" x2="134" y2="62" stroke="#1b2a3a" stroke-width="2"/><circle cx="134" cy="56" r="7" fill="#1b2a3a"/>
+<text x="150" y="60" font-size="14" fill="#1b2a3a">5mC</text>
+<!-- molecule 2: unmethylated -->
+<text x="20" y="188" font-size="15" fill="#5b6b7a">cell B</text>
+<g font-size="20" font-family="Courier New, monospace" font-weight="bold" fill="#1b2a3a">
+<text x="80" y="190">A</text><text x="104" y="190">T</text><text x="128" y="190" fill="#c0392b">C</text><text x="152" y="190">G</text><text x="176" y="190">T</text><text x="200" y="190">T</text><text x="224" y="190" fill="#2a6f97">C</text><text x="248" y="190">A</text><text x="272" y="190">G</text><text x="296" y="190">T</text>
+</g>
+<line x1="134" y1="168" x2="134" y2="152" stroke="#1b2a3a" stroke-width="2"/><circle cx="134" cy="146" r="7" fill="#ffffff" stroke="#1b2a3a" stroke-width="2"/>
+<text x="150" y="150" font-size="14" fill="#1b2a3a">C</text>
+<!-- arrows -->
+<line x1="340" y1="94" x2="440" y2="94" stroke="#5b6b7a" stroke-width="2.5" marker-end="url(#ah)"/>
+<line x1="340" y1="184" x2="440" y2="184" stroke="#5b6b7a" stroke-width="2.5" marker-end="url(#ah)"/>
+<text x="390" y="132" text-anchor="middle" font-size="14" fill="#5b6b7a">C → U → T</text>
+<text x="390" y="150" text-anchor="middle" font-size="14" fill="#5b6b7a">5mC stays C</text>
+<!-- converted -->
+<g font-size="20" font-family="Courier New, monospace" font-weight="bold" fill="#1b2a3a">
+<text x="470" y="100">A</text><text x="494" y="100">T</text><text x="518" y="100" fill="#c0392b">C</text><text x="542" y="100">G</text><text x="566" y="100">T</text><text x="590" y="100">T</text><text x="614" y="100" fill="#2a6f97">T</text><text x="638" y="100">A</text><text x="662" y="100">G</text><text x="686" y="100">T</text>
+<text x="470" y="190">A</text><text x="494" y="190">T</text><text x="518" y="190" fill="#c0392b">T</text><text x="542" y="190">G</text><text x="566" y="190">T</text><text x="590" y="190">T</text><text x="614" y="190" fill="#2a6f97">T</text><text x="638" y="190">A</text><text x="662" y="190">G</text><text x="686" y="190">T</text>
+</g>
+<rect x="512" y="72" width="24" height="128" rx="4" fill="none" stroke="#c0392b" stroke-width="2" stroke-dasharray="5,3"/>
+<text x="524" y="226" text-anchor="middle" font-size="14" fill="#c0392b">the CpG</text>
+<text x="626" y="226" text-anchor="middle" font-size="14" fill="#2a6f97">non-CpG C:</text>
+<text x="626" y="243" text-anchor="middle" font-size="14" fill="#2a6f97">always T</text>
+<!-- arrow to array -->
+<line x1="720" y1="140" x2="790" y2="140" stroke="#5b6b7a" stroke-width="2.5" marker-end="url(#ah)"/>
+<!-- right panel: C vs T readout -->
+<rect x="810" y="62" width="280" height="170" rx="8" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="950" y="92" text-anchor="middle" font-size="16" fill="#1b2a3a">"C or T at this position?"</text>
+<rect x="840" y="130" width="40" height="60" fill="#2e8b57"/>
+<text x="860" y="210" text-anchor="middle" font-size="15" font-weight="bold" fill="#1b2a3a">C</text>
+<text x="860" y="226" text-anchor="middle" font-size="13" fill="#5b6b7a">M signal</text>
+<rect x="920" y="130" width="40" height="60" fill="#a8324a"/>
+<text x="940" y="210" text-anchor="middle" font-size="15" font-weight="bold" fill="#1b2a3a">T</text>
+<text x="940" y="226" text-anchor="middle" font-size="13" fill="#5b6b7a">U signal</text>
+<text x="1030" y="140" text-anchor="middle" font-size="16" fill="#1b2a3a">β =</text>
+<text x="1030" y="164" text-anchor="middle" font-size="15" fill="#1b2a3a">M / (M + U)</text>
+<text x="1030" y="190" text-anchor="middle" font-size="15" fill="#5b6b7a">= 1/2 for A + B</text>
+<!-- bottom note -->
+<text x="560" y="280" text-anchor="middle" font-size="16" fill="#1b2a3a">A methylation state becomes a C/T "SNP" in the converted DNA.</text>
+<text x="560" y="306" text-anchor="middle" font-size="16" fill="#1b2a3a">The array genotypes it in the DNA of a million cells at once: the result is a proportion.</text>
+</svg>

@@ -78,7 +78,7 @@ read 2   flag 147   chr21   POS 10231   CIGAR 50M   (− strand)
 
 (c) Why does this mistake change the peaks less than you might expect? (Think about $\lambda_\text{local}$.)
 
-**B3. Local λ and a Poisson p-value.** At a candidate peak summit the pileup is $k = 18$. $\lambda_\text{BG} = 4.0$. The 10-kb window around the summit contains 600 insertions. A ChIP-seq-style control gives $\lambda_\text{1k} = 6.0$ and $\lambda_\text{5k} = 7.5$. Upper-tail Poisson probabilities $P(X \ge k \mid \lambda)$:
+**B3. Local λ and a Poisson p-value.** At a candidate peak summit the pileup is $k = 18$. $\lambda_\text{BG} = 4.0$. The 10-kb window around the summit contains 600 insertions. A ChIP-seq-style control gives $\lambda_d = 7.5$ (its pileup over the fragment width) and $\lambda_\text{1k} = 6.0$. Upper-tail Poisson probabilities $P(X \ge k \mid \lambda)$:
 
 | $k$ \\ $\lambda$ | 4 | 6 | 7.5 | 9 |
 |---|---|---|---|---|
@@ -429,7 +429,7 @@ Sort by score; take the best; remove everything that overlaps it ([`findOverlaps
 
 **B2.** (a) $2\,000\,000 \times 150 / 4 \times 10^7 = 7.5$. (b) $2\,000\,000 \times 150 / 2.7 \times 10^9 \approx 0.11$, about 70 times too small. (c) $\lambda_\text{local}$ is the maximum of $\lambda_\text{BG}$ and the 10-kb window of the sample; on chr21 the 10-kb window (and thus the data themselves) sets the background almost everywhere there are reads, so the too-small $\lambda_\text{BG}$ rarely wins. It would matter in sparse regions, where weak noise would now pass the test.
 
-**B3.** (a) $600 \times 150 / 10\,000 = 9.0$. (b) With a control: $\max(4.0, 6.0, 7.5, 9.0) = 9.0$. Without a control MACS3 uses $\max(\lambda_\text{BG}, \lambda_\text{10k}) = 9.0$ too. (c) $P(X \ge 18 \mid 9) = 0.0053$; against $\lambda_\text{BG} = 4$ it would be $2.5 \times 10^{-7}$. The peak sits in a region of high background; against its neighbourhood it is only weakly significant, and would not pass a cutoff of $q < 0.01$ after testing millions of positions. (d) The maximum is conservative: if any scale shows high background (a broad open domain, a copy-number gain, a mappability artefact), the candidate must exceed it. A mean would let local biases through.
+**B3.** (a) $600 \times 150 / 10\,000 = 9.0$. (b) With a control, MACS2/3 take the maximum of $\lambda_\text{BG}$, $\lambda_d$, $\lambda_\text{1k}$ and $\lambda_\text{10k}$, all measured in the control; if the control's 10-kb window is similar to the sample's: $\max(4.0, 7.5, 6.0, 9.0) = 9.0$. Without a control MACS3 uses $\max(\lambda_\text{BG}, \lambda_\text{10k}) = 9.0$ too. (c) $P(X \ge 18 \mid 9) = 0.0053$; against $\lambda_\text{BG} = 4$ it would be $2.5 \times 10^{-7}$. The peak sits in a region of high background; against its neighbourhood it is only weakly significant, and would not pass a cutoff of $q < 0.01$ after testing millions of positions. (d) The maximum is conservative: if any scale shows high background (a broad open domain, a copy-number gain, a mappability artefact), the candidate must exceed it. A mean would let local biases through.
 
 **B4.** (a) $10^6 \times 10^{-4} = 100$. (b) About $100 / 2000 = 0.05$, i.e. q ≈ 0.05: about 5% of these windows are expected to be noise. (c) At $p < 0.01$ you expect $10^4$ false windows on chr21 alone, so most of the peaks are noise. IDR needs exactly that: a long ranked list including noise, so that it can see where replicate agreement breaks down.
 

@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 420" width="1120" height="420" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker></defs>
+<rect width="1120" height="420" fill="#ffffff"/>
+<line x1="560" y1="20" x2="560" y2="400" stroke="#dfe6ec" stroke-width="2"/>
+<!-- Panel A: nanopore -->
+<text x="280" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1b2a3a">A. Nanopore: the current through a pore</text>
+<!-- membrane and pore -->
+<rect x="40" y="96" width="118" height="22" fill="#e9c46a" fill-opacity="0.6"/>
+<rect x="192" y="96" width="118" height="22" fill="#e9c46a" fill-opacity="0.6"/>
+<rect x="158" y="88" width="12" height="38" rx="4" fill="#2a9d8f"/><rect x="180" y="88" width="12" height="38" rx="4" fill="#2a9d8f"/>
+<!-- DNA strand through pore -->
+<path d="M120,52 C150,60 170,70 175,86 L175,128 C175,138 182,142 196,144" fill="none" stroke="#1b2a3a" stroke-width="3"/>
+<circle cx="175" cy="106" r="5" fill="#c0392b"/>
+<text x="200" y="66" font-size="14" fill="#1b2a3a">single DNA strand,</text>
+<text x="200" y="83" font-size="14" fill="#1b2a3a">~400 bases/s</text>
+<text x="318" y="112" font-size="14" fill="#5b6b7a">membrane + pore protein</text>
+<!-- squiggle -->
+<line x1="40" y1="260" x2="520" y2="260" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="280" y="280" text-anchor="middle" font-size="14" fill="#5b6b7a">time</text>
+<text x="32" y="206" text-anchor="middle" font-size="14" fill="#5b6b7a" transform="rotate(-90 32 206)">current (pA)</text>
+<path d="M50,220 L90,220 L90,190 L130,190 L130,236 L170,236 L170,200 L210,200 L210,214 L250,214 L250,180 L290,180 L290,226 L330,226 L330,196 L370,196 L370,232 L410,232 L410,206 L450,206 L450,220 L500,220" fill="none" stroke="#1b2a3a" stroke-width="2"/>
+<path d="M250,170 L290,170 L290,180" fill="none" stroke="#c0392b" stroke-width="2" stroke-dasharray="5,3"/>
+<text x="270" y="146" text-anchor="middle" font-size="14" fill="#c0392b">5mC shifts the level</text>
+<text x="270" y="162" text-anchor="middle" font-size="14" fill="#c0392b">of k-mers that contain it</text>
+<rect x="40" y="296" width="490" height="96" rx="8" fill="#f4f6f8"/>
+<text x="56" y="322" font-size="15" fill="#1b2a3a">• several bases in the pore together set the current</text>
+<text x="56" y="346" font-size="15" fill="#1b2a3a">• a neural network (dorado) calls bases and, per C,</text>
+<text x="56" y="370" font-size="15" fill="#1b2a3a">   P(C), P(5mC), P(5hmC); also 6mA, 4mC models</text>
+<!-- Panel B: PacBio -->
+<text x="840" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1b2a3a">B. PacBio: the speed of the polymerase</text>
+<rect x="640" y="64" width="400" height="58" rx="8" fill="#eaf1f7" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="840" y="88" text-anchor="middle" font-size="14" fill="#1b2a3a">polymerase in a zero-mode waveguide copies a</text>
+<text x="840" y="108" text-anchor="middle" font-size="14" fill="#1b2a3a">circular template many times (HiFi)</text>
+<!-- pulses -->
+<line x1="600" y1="240" x2="1080" y2="240" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="840" y="260" text-anchor="middle" font-size="14" fill="#5b6b7a">time</text>
+<g fill="#2a6f97">
+<rect x="620" y="190" width="10" height="50"/><rect x="664" y="196" width="10" height="44"/><rect x="706" y="186" width="10" height="54"/><rect x="750" y="192" width="10" height="48"/>
+<rect x="872" y="190" width="10" height="50"/><rect x="916" y="194" width="10" height="46"/><rect x="960" y="188" width="10" height="52"/><rect x="1004" y="192" width="10" height="48"/>
+</g>
+<rect x="760" y="186" width="10" height="54" fill="#c0392b" opacity="0"/>
+<line x1="762" y1="170" x2="870" y2="170" stroke="#c0392b" stroke-width="2" marker-end="url(#ah)"/>
+<text x="816" y="144" text-anchor="middle" font-size="14" fill="#c0392b">long pause (IPD)</text>
+<text x="816" y="160" text-anchor="middle" font-size="14" fill="#c0392b">at a modified base</text>
+<text x="640" y="166" text-anchor="middle" font-size="13" fill="#5b6b7a">one pulse</text>
+<text x="640" y="182" text-anchor="middle" font-size="13" fill="#5b6b7a">per base</text>
+<rect x="600" y="296" width="490" height="96" rx="8" fill="#f4f6f8"/>
+<text x="616" y="322" font-size="15" fill="#1b2a3a">• 6mA gives a strong kinetic signal (Fiber-seq)</text>
+<text x="616" y="346" font-size="15" fill="#1b2a3a">• 5mC is subtle: a model over a window of IPDs</text>
+<text x="616" y="370" font-size="15" fill="#1b2a3a">   and pulse widths (jasmine) gives P(5mCpG)</text>
+</svg>

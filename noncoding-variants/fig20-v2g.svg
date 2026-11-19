@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 330" width="1120" height="330" font-family="Helvetica, Arial, sans-serif">
+<defs>
+<marker id="aink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker>
+<marker id="agreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker>
+<marker id="agrey" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker>
+</defs>
+<rect width="1120" height="330" fill="#ffffff"/>
+<!-- credible set -->
+<text x="20" y="30" font-size="17" font-weight="bold" fill="#1b2a3a">From a credible set to a gene</text>
+<text x="20" y="70" font-size="15" fill="#5b6b7a">credible set</text>
+<g fill="#d4a017">
+<circle cx="380" cy="66" r="6"/><circle cx="410" cy="66" r="6"/><circle cx="455" cy="66" r="6"/><circle cx="500" cy="66" r="6"/>
+</g>
+<circle cx="455" cy="66" r="9" fill="none" stroke="#c0392b" stroke-width="2.5"/>
+<text x="520" y="40" font-size="14" fill="#c0392b">the one SNP inside an immune-cell element</text>
+<text x="20" y="120" font-size="15" fill="#5b6b7a">ATAC / H3K27ac</text>
+<line x1="150" y1="130" x2="1060" y2="130" stroke="#5b6b7a" stroke-width="1"/>
+<path d="M190,130 L196,112 L202,130 z" fill="#2e8b57"/>
+<path d="M300,130 L306,118 L312,130 z" fill="#2e8b57"/>
+<path d="M443,130 L455,92 L467,130 z" fill="#c0392b"/>
+<path d="M620,130 L626,114 L632,130 z" fill="#2e8b57"/>
+<path d="M900,130 L906,110 L912,130 z" fill="#2e8b57"/>
+<!-- genes -->
+<line x1="320" y1="210" x2="560" y2="210" stroke="#1b2a3a" stroke-width="2"/>
+<rect x="320" y="202" width="14" height="16" fill="#1b2a3a"/><rect x="420" y="202" width="10" height="16" fill="#1b2a3a"/><rect x="546" y="202" width="14" height="16" fill="#1b2a3a"/>
+<path d="M560,202 L560,188 L546,188" stroke="#1b2a3a" stroke-width="2" fill="none" marker-end="url(#aink)"/>
+<text x="440" y="240" font-size="15" font-style="italic" fill="#1b2a3a" text-anchor="middle">gene A (variant in its intron)</text>
+<line x1="800" y1="210" x2="860" y2="210" stroke="#1b2a3a" stroke-width="2"/>
+<rect x="800" y="202" width="14" height="16" fill="#1b2a3a"/><rect x="846" y="202" width="14" height="16" fill="#1b2a3a"/>
+<path d="M800,202 L800,188 L814,188" stroke="#1b2a3a" stroke-width="2" fill="none" marker-end="url(#aink)"/>
+<text x="830" y="240" font-size="15" font-style="italic" fill="#1b2a3a" text-anchor="middle">gene B</text>
+<!-- links -->
+<path d="M467,112 C600,60 760,80 798,182" stroke="#2e8b57" stroke-width="3" fill="none" marker-end="url(#agreen)"/>
+<text x="822" y="160" font-size="15" font-weight="bold" fill="#2e8b57">ABC 0.12, eQTL colocalises</text>
+<path d="M452,136 C470,160 520,170 556,184" stroke="#5b6b7a" stroke-width="2" fill="none" stroke-dasharray="5,4" marker-end="url(#agrey)"/>
+<text x="600" y="168" font-size="15" fill="#5b6b7a">ABC 0.004</text>
+<!-- evidence table -->
+<g font-size="15" fill="#1b2a3a">
+<text x="20" y="282">nearest gene / host gene: <tspan font-style="italic">A</tspan>   ·   activity-by-contact: <tspan font-style="italic">B</tspan>   ·   eQTL colocalisation: <tspan font-style="italic">B</tspan>   ·   CRISPRi of the element: <tspan font-style="italic">B</tspan> drops</text>
+<text x="20" y="310" fill="#5b6b7a">Agreement between independent kinds of evidence makes a variant-to-gene assignment credible.</text>
+</g>
+</svg>

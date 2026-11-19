@@ -2,18 +2,251 @@
 title: "Glossary"
 ---
 
-A running glossary of the biological, technical and analysis terms used in this
-course. Add terms as the material is written; keep definitions short and link
-to the unit where the term is taught.
+Short definitions of the terms used in the course, grouped by topic. The unit
+where a term is taught is given in italics.
 
-<!-- Suggested entries to fill in:
-  - nucleosome, histone tail, histone mark (H3K4me3, H3K27ac, H3K27me3, H3K9me3, H3K36me3)
-  - euchromatin, heterochromatin, Polycomb, Trithorax
-  - promoter, enhancer, insulator, CTCF, cohesin, pioneer factor
-  - CpG, CpG island, 5mC, 5hmC, DNMT, TET, imprinting
-  - BED, narrowPeak, bigWig, BAM, MAPQ, duplicate, blacklist
-  - peak, FRiP, fingerprint, TSS enrichment, IDR, input control, spike-in
-  - Tn5, fragment-size distribution, footprint, motif, PWM
-  - bisulfite conversion, beta value, M value, DMR
-  - contact matrix, A/B compartment, TAD, loop, insulation score, ICE balancing
--->
+## Chromatin and gene regulation
+
+**Nucleosome** — 147 bp of DNA wrapped around a histone octamer (two each of H2A, H2B, H3, H4). *What is epigenetics?*
+
+**Histone mark** — a chemical modification of a histone residue, named histone–residue–position–modification (H3K27ac = histone H3, lysine 27, acetylated). *What is epigenetics?*
+
+**Writer / reader / eraser** — enzymes that add a mark, proteins that bind it, and enzymes that remove it. *What is epigenetics?*
+
+**Euchromatin / heterochromatin** — open, gene-rich chromatin vs compact chromatin; constitutive heterochromatin (H3K9me3, HP1) is compact in all cells, facultative (H3K27me3, Polycomb) only in some. *What is epigenetics?*
+
+**Nucleosome-depleted region (NDR)** — a stretch of a few hundred bp without nucleosomes at active promoters and enhancers, where transcription factors bind. *What is epigenetics?*
+
+**CpG island** — a ~1 kb CpG-rich, usually unmethylated region, often at a promoter (GC > 50%, CpG observed/expected > 0.6). *What is epigenetics?*
+
+**Cis-regulatory element** — DNA that controls a gene on the same chromosome: promoter, enhancer, silencer, insulator. *Gene regulation*
+
+**Core promoter** — the ~100 bp around the TSS where the transcription machinery assembles (TATA box, Initiator). *Gene regulation*
+
+**Enhancer** — a regulatory element that activates a promoter from a distance, independent of orientation; primed (H3K4me1), active (+H3K27ac) or poised (+H3K27me3). *Gene regulation*
+
+**Super-enhancer** — a cluster of enhancers with exceptional H3K27ac or Mediator signal; a useful but debated category. *Gene regulation*
+
+**Insulator** — a boundary element that blocks enhancer–promoter communication, in vertebrates mostly bound by CTCF. *Gene regulation*
+
+**Transcription factor (TF) / motif** — a protein that binds a specific DNA sequence / the set of sequences it prefers. *Gene regulation*
+
+**Position weight matrix (PWM)** — a 4 × k table of log-odds scores per base and position, used to score candidate binding sites. *Gene regulation*
+
+**Information content** — how far a motif column is from uniform, in bits (0–2); the height of a sequence logo. *Gene regulation*
+
+**Pioneer factor** — a TF that can bind its motif on nucleosomal DNA and open chromatin for others (FOXA, PU.1, EBF1). *Gene regulation*
+
+**Mediator / co-activator** — protein complexes that connect TFs to RNA polymerase II or modify chromatin (p300/CBP writes H3K27ac). *Gene regulation*
+
+## Intervals, reads and files
+
+**0-based half-open / 1-based closed** — BED counts boundaries between bases from 0 (length = end − start); GTF, SAM, VCF and GRanges number bases from 1 and include both ends. *Genomic intervals*
+
+**BED / narrowPeak / bigWig** — interval file / BED6 + signal, −log10 p and q, summit offset / indexed binary signal track. *Genomic intervals*
+
+**Genome build** — a version of the reference genome (GRCh37/hg19, GRCh38/hg38); coordinates are only valid within one build. *Genomic intervals*
+
+**liftOver / chain file** — conversion of intervals between builds using aligned blocks. *Genomic intervals*
+
+**Phred quality** — Q = −10 log10(error probability); Phred+33 and Phred+64 are two ways to write it as characters. *From reads to coverage*
+
+**SAM FLAG / MAPQ** — a bit field describing a read's alignment (paired, reverse strand, duplicate, …) / the aligner's confidence that the position is right. *From reads to coverage*
+
+**Multi-mapping read** — a read that aligns equally well to several places, typically in repeats. *From reads to coverage*
+
+**Duplicate** — reads from copies of the same original molecule (PCR or optical), recognised by identical ends. *From reads to coverage*
+
+**Blacklist (exclusion list)** — regions with artefactual signal in every experiment, removed before analysis. *From reads to coverage*
+
+**CPM / RPGC** — reads per million / reads per genomic content (1× coverage): two ways to normalise coverage tracks. *From reads to coverage*
+
+## Experimental design and QC
+
+**Biological / technical replicate / pseudoreplicate** — independent samples / repeated measurement of one sample / a random half of one sample's reads. *Experimental design and QC*
+
+**Input / IgG control** — sonicated chromatin without immunoprecipitation / IP with a non-specific antibody; both model background. *Experimental design and QC*
+
+**Spike-in normalisation** — scaling by reads from added foreign chromatin (e.g. Drosophila) so that global changes are not normalised away. *Experimental design and QC*
+
+**FRiP** — the fraction of reads in peaks: a signal-to-noise measure. *Experimental design and QC*
+
+**NRF / PBC1 / PBC2** — library complexity: distinct/total reads; positions with one read / distinct positions; one-read / two-read positions. *Experimental design and QC*
+
+**Fingerprint plot** — cumulative read share against ranked genome bins; enriched libraries bend away from the diagonal. *Experimental design and QC*
+
+**Strand cross-correlation (NSC, RSC)** — correlation of + and − strand coverage at increasing shifts; the peak gives the fragment length, NSC and RSC its strength. *Experimental design and QC*
+
+## ATAC-seq
+
+**Tn5 / tagmentation** — the transposase that cuts DNA and inserts sequencing adapters in one step; it prefers open DNA. *ATAC-seq: Tn5, fragment sizes, nucleosome ladder*
+
+**+4/−5 shift** — the correction that moves read ends to the centre of Tn5's 9-bp duplicated site. *ATAC-seq processing and peak calling*
+
+**Nucleosome ladder** — fragment-length peaks below 100 bp (nucleosome-free) and at ~200, ~400 bp (mono-, di-nucleosomes). *ATAC-seq: Tn5, fragment sizes, nucleosome ladder*
+
+**TSS enrichment** — Tn5 insertions at TSSs relative to the flanks; an ATAC quality score. *ATAC-seq: Tn5, fragment sizes, nucleosome ladder*
+
+**Local lambda (λ_local)** — MACS's background expectation at a position: the largest of the genome-wide and local estimates. *ATAC-seq processing and peak calling*, *Peak calling*
+
+**IDR** — irreproducible discovery rate: the probability that a peak is not reproducible, from the ranks of peaks in two replicates. *ATAC-seq processing and peak calling*, *Peak calling*
+
+**Consensus peak set** — one set of regions used for all samples, e.g. fixed-width 500-bp summit-centred peaks. *ATAC-seq processing and peak calling*
+
+**Size factor / TMM** — per-sample scaling of counts (DESeq2 median of ratios / edgeR trimmed mean of M-values). *Differential accessibility*
+
+**Global change** — a change in accessibility or binding over most of the genome; peak-based normalisation hides it. *Differential accessibility*
+
+**Motif enrichment** — more peaks with a motif match in a target set than in a background, tested with Fisher's exact (hypergeometric) test. *Motifs, motif enrichment and TF footprinting*
+
+**chromVAR deviation** — a per-sample z-score of accessibility at peaks with a motif, relative to GC- and accessibility-matched background peaks. *Motifs, motif enrichment and TF footprinting*
+
+**Footprint** — a dip in Tn5 insertions at a bound TF site, flanked by high accessibility. *Motifs, motif enrichment and TF footprinting*
+
+## ChIP-seq and successors
+
+**Formaldehyde crosslinking** — fixing proteins to nearby DNA before fragmentation. *ChIP-seq: the assay*
+
+**Native ChIP** — ChIP without crosslinking, on MNase-digested nucleosomes; used for histone marks. *ChIP-seq: the assay*
+
+**Hyper-ChIPable region** — a highly expressed locus that gives signal with almost any antibody. *ChIP-seq: the assay*
+
+**Broad peak / domain** — an enriched region of many kb (H3K27me3, H3K36me3), called by joining enriched bins across gaps. *Peak calling*
+
+**Rescue / self-consistency ratio** — ENCODE's IDR checks comparing true replicates with pseudoreplicates; both should be below 2. *Peak calling*
+
+**Peak annotation** — assigning each peak a category (promoter, intron, distal) and a nearby gene. *Annotation and differential binding*
+
+**Greylist** — regions with abnormal input signal (often copy-number gains) masked in differential analysis. *Annotation and differential binding*
+
+**CUT&RUN / CUT&Tag** — antibody-tethered MNase / Tn5 cutting in permeabilised nuclei; low background, few cells. *CUT&RUN and CUT&Tag*
+
+**SEACR** — a peak caller for CUT&RUN/CUT&Tag that thresholds blocks of contiguous signal by their total signal. *CUT&RUN and CUT&Tag*
+
+**Chromatin state** — a recurring combination of marks, learned by an HMM over binarised marks (ChromHMM). *Combining marks into chromatin states*
+
+**Hidden Markov model: emission / transition** — P(observed marks | state) / P(next state | this state); Viterbi gives the most probable state path. *Combining marks into chromatin states*
+
+## DNA methylation
+
+**5mC / 5hmC** — 5-methylcytosine / 5-hydroxymethylcytosine, the first TET oxidation product. *DNA methylation biology*
+
+**DNMT1 / DNMT3A, 3B / TET** — maintenance methyltransferase (with UHRF1) / de novo methyltransferases / dioxygenases that start active demethylation. *DNA methylation biology*
+
+**Imprinting control region (ICR)** — a region methylated on one parental allele that sets allele-specific expression. *DNA methylation biology*
+
+**Partially methylated domain (PMD)** — a large, low and variable methylation domain, common in cultured and cancer cells. *DNA methylation biology*
+
+**CG / CHG / CHH contexts; RdDM** — the sequence contexts of plant methylation; RNA-directed DNA methylation silences transposons. *DNA methylation biology*
+
+**Bisulfite conversion** — chemistry that turns unmethylated C into U (read as T) and leaves 5mC (and 5hmC) as C. *Bisulfite and enzymatic sequencing*
+
+**Three-letter alignment** — aligning C→T converted reads to C→T and G→A converted genomes (Bismark). *Bisulfite and enzymatic sequencing*
+
+**M-bias** — methylation level by read position; ends affected by end repair are trimmed. *Bisulfite and enzymatic sequencing*
+
+**Conversion rate** — the fraction of unmethylated C converted, estimated from non-CpG C or a lambda spike-in. *Bisulfite and enzymatic sequencing*
+
+**RRBS / EM-seq / TAPS** — MspI-reduced representation bisulfite sequencing / enzymatic conversion / TET-assisted pyridine borane sequencing. *Bisulfite and enzymatic sequencing*
+
+**β value / M value** — methylated / total signal (0–1) / log2 of methylated over unmethylated. *Differential methylation*, *Methylation arrays*
+
+**Beta-binomial / overdispersion** — a binomial whose probability varies between replicates; overdispersion is the extra variance beyond sampling noise. *Differential methylation*
+
+**DML / DMR** — differentially methylated locus / region. *Differential methylation*
+
+**Infinium I / II probes** — two-bead vs one-bead, two-colour probe designs on Illumina methylation arrays. *Methylation arrays*
+
+**Detection p-value / noob / functional normalisation** — probe signal vs negative-control background / within-array background and dye correction / between-array normalisation guided by control probes. *Methylation arrays*
+
+**Cross-reactive probe** — an array probe that also matches other loci; removed before analysis. *Methylation arrays*
+
+**Cell-type deconvolution (Houseman)** — estimating cell fractions of a mixed sample from reference profiles of sorted cells. *Methylation arrays*
+
+**EWAS / genomic inflation λ** — a linear model per CpG / median χ² divided by 0.455, which is 1 when the test statistics are well calibrated. *Methylation arrays*
+
+**Epigenetic clock / age acceleration** — a penalised-regression predictor of age from CpGs / predicted minus expected age (the residual). *Epigenetic clocks and biomarkers*
+
+**cfDNA / ctDNA** — cell-free DNA in plasma / its tumour-derived part; methylation reveals the tissue of origin. *Epigenetic clocks and biomarkers*
+
+**modBAM (MM/ML tags) / bedMethyl** — long-read BAM with per-read modification calls and probabilities / a per-site methylation count table (modkit). *Methylation and chromatin from long reads*
+
+**Haplotagging / allele-specific methylation** — assigning reads to a parental haplotype / methylation that differs between the two copies. *Methylation and chromatin from long reads*
+
+**XCI escape** — genes expressed from both X chromosomes despite X inactivation. *Methylation and chromatin from long reads*
+
+**Fiber-seq / m6A footprint** — accessibility marked on single DNA molecules by an adenine methyltransferase. *Methylation and chromatin from long reads*
+
+## 3D genome
+
+**Contact map** — a symmetric matrix of Hi-C ligation counts between genomic bins. *Hi-C: from reads to contact matrices*
+
+**Proximity ligation / ligation junction** — joining DNA ends held close by crosslinking / the duplicated restriction overhang at the join (GATCGATC for MboI). *Hi-C: from reads to contact matrices*
+
+**Valid pair / dangling end / self-circle** — a ligation product of two fragments / an unligated fragment / a fragment ligated to itself. *Hi-C: from reads to contact matrices*
+
+**Cis/trans ratio** — the share of contacts within vs between chromosomes. *Hi-C: from reads to contact matrices*
+
+**Matrix balancing (ICE)** — iterative scaling that gives every bin the same total coverage. *Hi-C: from reads to contact matrices*
+
+**P(s) / observed/expected** — mean contact frequency against genomic distance / a contact divided by that expectation. *Hi-C: from reads to contact matrices*
+
+**Chromosome territory** — the nuclear region occupied by one chromosome. *3D genome organisation*
+
+**A/B compartment** — active or inactive chromatin that preferentially contacts its own type; from the first eigenvector of the O/E correlation matrix. *Calling compartments, TADs and loops*
+
+**TAD / insulation score** — a self-interacting domain of ~0.1–1 Mb / the contact sum across a sliding window, whose minima are boundaries. *Calling compartments, TADs and loops*
+
+**Loop extrusion** — cohesin reels DNA into a growing loop until it meets CTCF bound in the convergent orientation. *3D genome organisation*
+
+**APA** — aggregate peak analysis: the mean of many loop windows, scored as centre over a corner. *Calling compartments, TADs and loops*
+
+## Integration and variation
+
+**ABC score** — activity (√(accessibility × H3K27ac)) × contact of an element, as a share of all elements near the gene. *Linking regulatory elements to genes*
+
+**CRISPRi screen** — dCas9-KRAB silencing of candidate elements to measure their effect on a gene's expression. *Linking regulatory elements to genes*
+
+**Linkage disequilibrium (LD)** — correlation of alleles between nearby variants; a GWAS lead SNP tags many candidates. *Epigenomics and genetic variation*
+
+**Fine-mapping / credible set** — estimating which variant in a locus is causal / the smallest set holding 95% of that probability. *Epigenomics and genetic variation*
+
+**caQTL / meQTL / eQTL** — variants associated with accessibility / methylation / expression. *Epigenomics and genetic variation*
+
+**Allelic imbalance / reference mapping bias** — unequal reads from the two alleles in one person / the tendency of reference-allele reads to align more often. *Epigenomics and genetic variation*
+
+## Machine learning
+
+**Supervised learning / feature / label** — fitting a model to labelled examples / an input variable / the answer to predict. *Machine learning from scratch*
+
+**Logistic regression / log-odds** — a linear model of log(p/(1 − p)). *Machine learning from scratch*
+
+**Gradient descent / learning rate** — fitting by small steps downhill on the loss / the step size. *Machine learning from scratch*
+
+**Training / validation / test set** — data to fit / to choose settings / to report performance once. *Machine learning from scratch*
+
+**Overfitting / regularisation (lasso, ridge, elastic net)** — fitting the training data but not new data / penalising large coefficients to prevent it. *Machine learning from scratch*
+
+**Cross-validation** — rotating held-out folds within the training data to estimate performance. *Machine learning from scratch*
+
+**Precision / recall / ROC and PR curves** — TP/(TP + FP) / TP/P / performance over all thresholds; ROC AUC is the chance a random positive outranks a random negative. *Machine learning from scratch*
+
+**Class imbalance** — very unequal class sizes, which make accuracy and ROC AUC look better than PR AUC. *Machine learning from scratch*
+
+**Leakage** — test information reaching training, e.g. overlapping windows or homologous sequences on different chromosomes. *What people try to predict*
+
+**Matched negatives / baseline** — negatives with the same GC (or accessibility) as the positives / the simplest sensible model to beat. *What people try to predict*
+
+**One-hot encoding** — each base as a column of one 1 and three 0s. *How a CNN reads DNA*
+
+**Convolutional filter** — a learned 4 × k weight matrix that scans a sequence like a PWM. *How a CNN reads DNA*
+
+**ReLU / max pooling / dense layer** — max(0, x) / keeping the largest activation / a weighted sum of all inputs. *How a CNN reads DNA*
+
+**Epoch / early stopping** — one pass over the training data / keeping the model with the best validation loss. *How a CNN reads DNA*
+
+**In-silico mutagenesis** — changing every base and recording the change in prediction. *What did the model learn? Variant effects*
+
+**Attribution (gradient × input, DeepLIFT, SHAP)** — the importance of each base for one prediction. *What did the model learn? Variant effects*
+
+**Variant effect** — prediction(alt) − prediction(ref), on the logit scale. *What did the model learn? Variant effects*

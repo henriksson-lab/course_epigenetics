@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 410" width="1120" height="410" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker>
+  </defs>
+  <rect width="1120" height="410" fill="#ffffff"/>
+  <text x="20" y="28" font-size="17" font-weight="bold" fill="#1b2a3a">1 One set of regions for all samples</text>
+  <g font-size="14" fill="#5b6b7a"><text x="20" y="62">GM12878 peaks</text><text x="20" y="92">K562 peaks</text><text x="20" y="132" font-weight="bold" fill="#1b2a3a">union, merged</text></g>
+  <g fill="#2a6f97"><rect x="150" y="50" width="60" height="14"/><rect x="280" y="50" width="40" height="14"/><rect x="420" y="50" width="70" height="14"/></g>
+  <g fill="#a8324a"><rect x="170" y="80" width="70" height="14"/><rect x="350" y="80" width="50" height="14"/><rect x="440" y="80" width="40" height="14"/></g>
+  <g fill="#1b2a3a"><rect x="150" y="120" width="90" height="14"/><rect x="280" y="120" width="40" height="14"/><rect x="350" y="120" width="50" height="14"/><rect x="420" y="120" width="70" height="14"/></g>
+  <text x="20" y="166" font-size="14" fill="#5b6b7a">Alternatives: peaks found in ≥ 2 samples (DiffBind default),</text>
+  <text x="20" y="184" font-size="14" fill="#5b6b7a">fixed-width summit windows, or sliding windows (csaw).</text>
+  <text x="20" y="202" font-size="14" fill="#5b6b7a">Never only the peaks of one condition: that biases the test.</text>
+  <line x1="510" y1="110" x2="560" y2="110" stroke="#5b6b7a" stroke-width="2" marker-end="url(#ar)"/>
+  <text x="580" y="28" font-size="17" font-weight="bold" fill="#1b2a3a">2 Count reads per region and sample</text>
+  <g font-size="14" fill="#1b2a3a">
+    <text x="700" y="58" font-weight="bold">GM_1</text><text x="770" y="58" font-weight="bold">GM_2</text><text x="840" y="58" font-weight="bold">K562_1</text><text x="920" y="58" font-weight="bold">K562_2</text>
+    <text x="580" y="84">region 1</text><text x="712" y="84">312</text><text x="782" y="84">268</text><text x="856" y="84">20</text><text x="936" y="84">8</text>
+    <text x="580" y="108">region 2</text><text x="712" y="108">45</text><text x="782" y="108">38</text><text x="856" y="108">61</text><text x="936" y="108">29</text>
+    <text x="580" y="132">region 3</text><text x="712" y="132">3</text><text x="782" y="132">6</text><text x="856" y="132">140</text><text x="936" y="132">77</text>
+    <text x="580" y="156">…</text><text x="712" y="156">…</text><text x="782" y="156">…</text><text x="856" y="156">…</text><text x="936" y="156">…</text>
+  </g>
+  <line x1="580" y1="66" x2="980" y2="66" stroke="#cfd8e0"/>
+  <text x="580" y="190" font-size="14" fill="#5b6b7a">exactly a gene × sample matrix from RNA-seq</text>
+  <!-- bottom: same vs different -->
+  <rect x="20" y="226" width="530" height="172" rx="8" fill="#e6f2ec" stroke="#2e8b57"/>
+  <text x="36" y="254" font-size="16" font-weight="bold" fill="#2e8b57">Same as RNA-seq</text>
+  <text x="36" y="280" font-size="15" fill="#1b2a3a">negative binomial counts, dispersion shared</text>
+  <text x="36" y="302" font-size="15" fill="#1b2a3a">across regions (DESeq2, edgeR)</text>
+  <text x="36" y="326" font-size="15" fill="#1b2a3a">design formula: ~ batch + condition</text>
+  <text x="36" y="350" font-size="15" fill="#1b2a3a">≥ 3 biological replicates per condition;</text>
+  <text x="36" y="372" font-size="15" fill="#1b2a3a">FDR, log2 fold change, MA and volcano plots</text>
+  <rect x="570" y="226" width="530" height="172" rx="8" fill="#fbeaea" stroke="#c0392b"/>
+  <text x="586" y="254" font-size="16" font-weight="bold" fill="#c0392b">Different</text>
+  <text x="586" y="280" font-size="15" fill="#1b2a3a">the features come from the data (peaks), not a GTF</text>
+  <text x="586" y="302" font-size="15" fill="#1b2a3a">count fragments (or their centres), not reads</text>
+  <text x="586" y="326" font-size="15" fill="#1b2a3a">normalisation: which regions are "unchanged"?</text>
+  <text x="586" y="350" font-size="15" fill="#1b2a3a">copy number and input differ between samples</text>
+  <text x="586" y="372" font-size="15" fill="#1b2a3a">global changes need spike-ins</text>
+</svg>

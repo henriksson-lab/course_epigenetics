@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 325" width="1120" height="325" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker><marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker></defs>
+<rect width="1120" height="325" fill="white"/>
+<text x="260" y="30" font-size="18" font-weight="bold" text-anchor="middle" fill="#1b2a3a">bisulfite</text>
+<text x="540" y="30" font-size="18" font-weight="bold" text-anchor="middle" fill="#1b2a3a">EM-seq (enzymes)</text>
+<text x="850" y="30" font-size="18" font-weight="bold" text-anchor="middle" fill="#1b2a3a">TAPS</text>
+<text x="260" y="56" font-size="14" text-anchor="middle" fill="#5b6b7a">sodium bisulfite deaminates C;</text>
+<text x="260" y="75" font-size="14" text-anchor="middle" fill="#5b6b7a">5mC, 5hmC resist</text>
+<text x="540" y="56" font-size="14" text-anchor="middle" fill="#5b6b7a">TET2 oxidises 5mC; BGT protects</text>
+<text x="540" y="75" font-size="14" text-anchor="middle" fill="#5b6b7a">5hmC; APOBEC3A deaminates C</text>
+<text x="850" y="56" font-size="14" text-anchor="middle" fill="#5b6b7a">TET oxidises 5mC, 5hmC; borane</text>
+<text x="850" y="75" font-size="14" text-anchor="middle" fill="#5b6b7a">turns them into DHU (read as T)</text>
+<line x1="30" y1="100" x2="1090" y2="100" stroke="#dfe6ec" stroke-width="1.5"/>
+<text x="40" y="140" font-size="18" font-weight="bold" fill="#1b2a3a">C</text>
+<text x="110" y="140" font-size="15" fill="#5b6b7a">reads as</text>
+<circle cx="260" cy="134" r="17" fill="white" stroke="#c0392b" stroke-width="2"/>
+<text x="260" y="141" font-size="19" font-weight="bold" text-anchor="middle" fill="#c0392b">T</text>
+<circle cx="540" cy="134" r="17" fill="white" stroke="#c0392b" stroke-width="2"/>
+<text x="540" y="141" font-size="19" font-weight="bold" text-anchor="middle" fill="#c0392b">T</text>
+<circle cx="850" cy="134" r="17" fill="white" stroke="#1b2a3a" stroke-width="2"/>
+<text x="850" y="141" font-size="19" font-weight="bold" text-anchor="middle" fill="#1b2a3a">C</text>
+<text x="40" y="186" font-size="18" font-weight="bold" fill="#1b2a3a">5mC</text>
+<text x="110" y="186" font-size="15" fill="#5b6b7a">reads as</text>
+<circle cx="260" cy="180" r="17" fill="white" stroke="#1b2a3a" stroke-width="2"/>
+<text x="260" y="187" font-size="19" font-weight="bold" text-anchor="middle" fill="#1b2a3a">C</text>
+<circle cx="540" cy="180" r="17" fill="white" stroke="#1b2a3a" stroke-width="2"/>
+<text x="540" y="187" font-size="19" font-weight="bold" text-anchor="middle" fill="#1b2a3a">C</text>
+<circle cx="850" cy="180" r="17" fill="white" stroke="#c0392b" stroke-width="2"/>
+<text x="850" y="187" font-size="19" font-weight="bold" text-anchor="middle" fill="#c0392b">T</text>
+<text x="40" y="232" font-size="18" font-weight="bold" fill="#1b2a3a">5hmC</text>
+<text x="110" y="232" font-size="15" fill="#5b6b7a">reads as</text>
+<circle cx="260" cy="226" r="17" fill="white" stroke="#1b2a3a" stroke-width="2"/>
+<text x="260" y="233" font-size="19" font-weight="bold" text-anchor="middle" fill="#1b2a3a">C</text>
+<circle cx="540" cy="226" r="17" fill="white" stroke="#1b2a3a" stroke-width="2"/>
+<text x="540" y="233" font-size="19" font-weight="bold" text-anchor="middle" fill="#1b2a3a">C</text>
+<circle cx="850" cy="226" r="17" fill="white" stroke="#c0392b" stroke-width="2"/>
+<text x="850" y="233" font-size="19" font-weight="bold" text-anchor="middle" fill="#c0392b">T</text>
+<line x1="30" y1="262" x2="1090" y2="262" stroke="#dfe6ec" stroke-width="1.5"/>
+<text x="260" y="290" font-size="15" text-anchor="middle" fill="#1b2a3a">degrades most of the DNA;</text>
+<text x="260" y="311" font-size="15" text-anchor="middle" fill="#1b2a3a">uneven, GC-biased coverage</text>
+<text x="540" y="290" font-size="15" text-anchor="middle" fill="#1b2a3a">gentle: low input, even coverage;</text>
+<text x="540" y="311" font-size="15" text-anchor="middle" fill="#1b2a3a">same reads and pipeline as bisulfite</text>
+<text x="850" y="290" font-size="15" text-anchor="middle" fill="#1b2a3a">only modified Cs change, so</text>
+<text x="850" y="311" font-size="15" text-anchor="middle" fill="#1b2a3a">reads keep 4 letters</text>
+</svg>

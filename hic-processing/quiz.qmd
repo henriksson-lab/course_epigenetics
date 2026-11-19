@@ -1,0 +1,91 @@
+---
+title: "Quiz: Hi-C, from reads to contact matrices"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+Short questions on the Hi-C protocol, read pairs, binning and normalisation. Try each on paper first, then open the answer.
+
+---
+
+**Q1.** DpnII cuts ^GATC (like MboI). What sequence marks a ligation junction in DpnII Hi-C reads, and why does it contain the site twice?
+
+::: {.callout-note collapse="true" title="Answer"}
+GATCGATC. Each cut end has a 4-nt 5′ overhang GATC; the fill-in copies it on both ends, and the blunt ligation joins the two copies.
+:::
+
+---
+
+**Q2.** Why are the two reads of a Hi-C pair aligned as single-end reads (`bwa mem -SP`) instead of as a normal pair?
+
+::: {.callout-note collapse="true" title="Answer"}
+A normal paired-end aligner expects the mates to face each other a few hundred bp apart and uses that to place or "rescue" them. In Hi-C the two ends come from loci that can be megabases apart or on different chromosomes, so that assumption is wrong for most pairs.
+:::
+
+---
+
+**Q3.** A read pair has both sides within the same restriction fragment, 280 bp apart, reads pointing towards each other. What is it, and what does it tell you about 3D structure?
+
+::: {.callout-note collapse="true" title="Answer"}
+A dangling end: a fragment that was never ligated (or a biotinylated end without a junction). It carries no information about contacts and is excluded (in practice by ignoring pairs closer than ~1–2 kb, or by explicit classification).
+:::
+
+---
+
+**Q4.** In the orientation plot, why are the four orientations equally frequent at large distances but not at short distances?
+
+::: {.callout-note collapse="true" title="Answer"}
+After ligation, the two fragments can join in either orientation and each can be read from either end, so all four combinations of strands are equally likely for real contacts. At short distances, artefacts with fixed orientations add to them: inward (+ −) dangling ends and re-ligations, outward (− +) self-circles.
+:::
+
+---
+
+**Q5.** Pair types: what do UU, UR, MU and NU mean, and which are kept?
+
+::: {.callout-note collapse="true" title="Answer"}
+UU: both sides uniquely mapped. UR: unique, plus a side rescued from a chimeric read explained by one ligation. MU: one side multi-mapped. NU: one side unmapped. UU, UR and RU are kept; pairs with an M or N side cannot be placed and are dropped.
+:::
+
+---
+
+**Q6.** Put the pairs (40 000, 160 000), (90 000, 110 000) and (250 000, 120 000) into 100-kb bins.
+
+::: {.callout-note collapse="true" title="Answer"}
+(0, 1), (0, 1), (1, 2) — the last pair is reordered so the smaller bin comes first. Pixel (0, 1) = 2, pixel (1, 2) = 1.
+:::
+
+---
+
+**Q7.** A raw 2 × 2 matrix is [[4, 6], [6, 16]]. Compute the row sums, the biases after one ICE step, and the new matrix.
+
+::: {.callout-note collapse="true" title="Answer"}
+Row sums 10 and 22, mean 16; biases 0.625 and 1.375. New pixels: 4/0.391 = 10.2; 6/(0.625 × 1.375) = 6/0.859 = 6.98; 16/1.891 = 8.46. New row sums 17.2 and 15.4: closer to equal; further iterations converge.
+:::
+
+---
+
+**Q8.** What assumption does matrix balancing make, and give one situation in which it is wrong.
+
+::: {.callout-note collapse="true" title="Answer"}
+That every bin would have the same total number of contacts without technical biases (equal visibility). It is wrong where copy number differs, e.g. an amplified region in a cancer genome or an aneuploid chromosome: the extra contacts are real but balancing removes them.
+:::
+
+---
+
+**Q9.** The expected contact frequency at 400 kb on a chromosome is 0.002 (balanced). A pixel at 400 kb has 0.007. What is its O/E? Another pixel at 20 kb has 0.03 with an expected of 0.05. Which pixel is enriched?
+
+::: {.callout-note collapse="true" title="Answer"}
+0.007/0.002 = 3.5: strongly enriched. 0.03/0.05 = 0.6: depleted, although its balanced value is four times higher. Only O/E compares a pixel with its distance.
+:::
+
+---
+
+**Q10.** Library A: 4% duplicates, 85% cis. Library B: 40% duplicates, 50% cis. Which one should be sequenced deeper, and what probably went wrong with B?
+
+::: {.callout-note collapse="true" title="Answer"}
+A. B has low complexity (deeper sequencing gives mostly duplicates) and many trans or random ligations (low cis fraction): typical of too little material, over-amplification, and ligation outside intact nuclei or poor crosslinking.
+:::

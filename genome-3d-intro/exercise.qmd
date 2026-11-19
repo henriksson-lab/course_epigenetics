@@ -1,0 +1,377 @@
+---
+title: "Exercise: 3D genome organisation"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+## Goal
+
+After this exercise you will be able to:
+
+- Read a Hi-C contact map: find the domains, loops and compartments in it, and say which loci a pixel connects.
+- Predict, on paper, how deleting or inverting a CTCF site, or removing CTCF or cohesin, changes a map.
+- Choose an assay from the 3C family for a given question, and judge claims about enhancer–promoter contact and disease.
+- Open a real Hi-C matrix (`.cool`) on the command line and in Python, measure how much of the genome's contacts stay within chromosomes, and look at domains and loops in GM12878.
+
+## Background
+
+**Contact map.** The genome is cut into bins (1 Mb to 1 kb). Pixel $(i, j)$ counts the read pairs that join bin $i$ to bin $j$, summed over millions of cells; the matrix is symmetric. "Balanced" maps have been corrected so that every bin has the same total (*Hi-C: from reads to contact matrices*).
+
+**Distance decay.** The average contact frequency at genomic distance $s$, $P(s)$, falls roughly as $s^{-1}$ between about 100 kb and a few Mb. Enrichment is measured against it: O/E = observed / expected at the same distance.
+
+**Features.** *Compartments*: a checkerboard of A (active) and B (inactive) chromatin. *Domains (TADs)*: squares on the diagonal, 0.1–1 Mb. *Loops*: dots off the diagonal, mostly between **convergent** CTCF sites (→ … ←), made by cohesin loop extrusion.
+
+**Depletion.** Without CTCF, most domains and loops are lost and compartments stay; without cohesin, all loop domains are lost and compartments get stronger; without WAPL, loops get longer.
+
+## Data
+
+All from GM12878 in situ Hi-C (Rao et al. 2014, all replicates combined), as reprocessed by ENCODE on GRCh38 (experiment ENCSR410MDC, file ENCFF555ISR):
+
+| file | what |
+|---|---|
+| `gm12878_hic_genome_1mb.cool` | whole genome (chr1–22, X), 1-Mb bins, raw counts + balancing weights |
+| `gm12878_hic_chr19_chr21.mcool` | chr19 and chr21, contacts within each chromosome, 5 kb to 500 kb |
+| `gm12878_hic_loops_hiccups.bedpe.gz` | ENCODE's loop calls (HiCCUPS), BEDPE |
+| `gm12878_hic_domains_arrowhead.bedpe.gz` | ENCODE's domain calls (Arrowhead), BEDPE |
+| `gm12878_ctcf_peaks.bed.gz` | CTCF ChIP-seq peaks (used before) |
+
+```bash
+data/download.sh genome-3d-intro      # the .cool files are made by data/prepare-hic.sh matrices
+mkdir -p ~/epi/genome3d && cd ~/epi/genome3d
+D=/path/to/course/data
+```
+
+You need `cooler` and `bedtools` on the command line and, in Python, `cooler`, `cooltools`, `numpy`, `pandas` and `matplotlib` (see *Install the software you need*; one conda line: `conda create -n hic -c conda-forge -c bioconda python=3.11 cooler=0.10 cooltools=0.7 pairtools=1.1 bwa samtools bedtools pybigwig pyfaidx bioframe matplotlib`). Everything runs in a few minutes on a laptop.
+
+*Simplification:* we use two chromosomes, a published matrix, and the published loop and domain calls. *Hi-C: from reads to contact matrices* makes a matrix from reads; *Calling compartments, TADs and loops* calls the features yourself.
+
+## By hand
+
+**B1. Read a map.** A balanced contact map of eight 50-kb bins (only the upper triangle is shown; the matrix is symmetric):
+
+```
+        1     2     3     4     5     6     7     8
+1     100    40    22    15     4     3     3     2
+2           100    42    20     5     4     3     3
+3                 100    41     6     4     3     2
+4                       100     7     5     4     3
+5                             100    45    25    18
+6                                   100    43    24
+7                                         100    44
+8                                               100
+```
+
+(a) Where are the domains (TADs)? Where is the boundary between them?
+
+(b) Pixel (1, 4) is 15, pixel (4, 7) is 4. Both are 150 kb apart. Why so different?
+
+(c) Pixel (5, 8) = 18 is the highest of all pixels 150 kb from the diagonal. Is it a loop? What would make you call it one?
+
+**B2. Distance decay.** Take $P(s) \propto s^{-1}$.
+
+(a) How much less often do two loci 1 Mb apart contact each other than two loci 100 kb apart? And 10 Mb apart?
+
+(b) A pixel 500 kb from the diagonal has 60 contacts. The average of all pixels 500 kb from the diagonal on that chromosome is 20. What is $O/E$? Why is the raw count alone not enough to say a contact is special?
+
+(c) The diagonal of every Hi-C map is bright. Is that biology?
+
+**B3. CTCF orientation.** Four CTCF sites lie along a chromosome (motif orientation in brackets). A gene promoter lies at 200 kb and an enhancer at 600 kb:
+
+```
+site            A     B     C     D
+position (kb)  100   300   450   700
+orientation     →     ←     →     ←
+promoter at 200 kb, enhancer at 600 kb
+```
+
+(a) Cohesin can be loaded anywhere. Which loops do you expect? Which are the main domains, and where is the boundary between them?
+
+(b) Are the promoter and the enhancer in the same domain? Do you expect the enhancer to activate the gene strongly?
+
+(c) Site C is deleted. What changes? (d) Instead, site C is inverted (→ becomes ←). What changes?
+
+**B4. Remove CTCF, remove cohesin.** Sketch, for one chromosome arm, a control Hi-C map with two domains, a loop and a checkerboard.
+
+(a) Sketch it after acute CTCF depletion, and after acute cohesin depletion. Which features remain in each?
+
+(b) A paper concludes: "CTCF depletion lost most TADs but changed expression of only ~200 genes, so 3D organisation is irrelevant for gene regulation." Give three reasons this conclusion is too strong.
+
+**B5. Territories.** A toy genome has three chromosomes of 100, 50 and 50 Mb.
+
+(a) If contact partners were picked at random from the whole genome, what fraction of contacts would be within a chromosome?
+
+(b) A Hi-C library has 80% of contacts within chromosomes. What does that say about the nucleus? A second library from the same cells has 45%. What might have gone wrong?
+
+**B6. One cell versus millions.** Two loci are 300 kb apart. DNA-FISH in 200 cells finds them within 200 nm of each other in 20 cells (10%) and more than 600 nm apart in most others. Hi-C shows a strong dot between them.
+
+(a) Are the two results in conflict?
+
+(b) A student writes "the enhancer and promoter are in a stable loop". Rewrite the sentence so it matches the data.
+
+**B7. Choose the assay.** For each question, name the most suitable method from the 3C family (or imaging) and say why:
+
+(a) Does one candidate enhancer contact one promoter, in 30 patient samples, cheaply?
+(b) All contacts of 2 000 gene promoters at high resolution, to link GWAS variants to genes.
+(c) Compartments in a new cell type, genome-wide.
+(d) Loops anchored by cohesin, genome-wide, with a limited sequencing budget.
+(e) Enhancer–promoter contacts at nucleosome resolution.
+(f) How variable a domain's shape is from cell to cell.
+
+**B8. A patient's structural variant.** A child with a limb malformation carries a 250-kb deletion. Before the deletion, the region looks like this:
+
+```
+[ domain 1: gene X (expressed in brain) ] | CTCF boundary | [ domain 2: limb enhancers, gene Y (expressed in limb) ]
+                                        deletion: ─────────────── (removes the boundary and gene Y)
+```
+
+(a) Predict what happens to gene X in the developing limb, and why.
+
+(b) Which data would you collect to test your prediction, in patient cells or in a mouse model?
+
+(c) A second patient has a deletion of the same size inside domain 2 that does not touch the boundary. Would you expect the same phenotype?
+
+## On the command line
+
+### C1 — What is in a .cool file?
+
+```bash
+cooler info $D/gm12878_hic_genome_1mb.cool
+cooler ls $D/gm12878_hic_chr19_chr21.mcool
+cooler info $D/gm12878_hic_chr19_chr21.mcool::resolutions/10000 | grep -E 'nbins|nnz|sum'
+cooler dump --join -r chr21:33,000,000-33,500,000 $D/gm12878_hic_chr19_chr21.mcool::resolutions/100000 | head
+cooler dump --join --balanced -r chr21:33,000,000-33,500,000 $D/gm12878_hic_chr19_chr21.mcool::resolutions/100000 | head -3
+```
+
+(a) How many bins, non-zero pixels and contacts does the 1-Mb genome-wide matrix have? And the 10-kb matrix of chr19 + chr21?
+
+(b) What are the columns of `cooler dump --join`? Why is there no line with the first bin later than the second?
+
+(c) What does the extra column of `--balanced` contain?
+
+### C2 — Territories in numbers
+
+```bash
+cooler dump --join $D/gm12878_hic_genome_1mb.cool \
+  | awk '{ t += $7; if ($1 == $4) c += $7 } END { printf "%d contacts, %.3f within a chromosome\n", t, c / t }'
+for chr in chr1 chr19 chr21 chrX; do
+  cooler dump --join $D/gm12878_hic_genome_1mb.cool \
+    | awk -v c=$chr '$1 == c || $4 == c { t += $7; if ($1 == $4) w += $7 } END { printf "%s %.3f\n", c, w / t }'
+done
+```
+
+(a) What fraction of all contacts is within a chromosome? Compare with your answer to B5.
+
+(b) Which of the four chromosomes keeps the largest share of its contacts to itself, and which the smallest? Suggest a reason.
+
+### C3 — Loops and domains
+
+```bash
+zcat $D/gm12878_hic_loops_hiccups.bedpe.gz | grep -v '^#' | wc -l
+zcat $D/gm12878_hic_loops_hiccups.bedpe.gz | awk '$1 == "chr21"' | wc -l
+zcat $D/gm12878_hic_loops_hiccups.bedpe.gz | grep -v '^#' \
+  | awk '{ print ($5 + $6) / 2 - ($2 + $3) / 2 }' | sort -n | awk '{ a[NR] = $1 } END { print "median loop size:", a[int(NR / 2)] }'
+zcat $D/gm12878_hic_domains_arrowhead.bedpe.gz | grep -v '^#' \
+  | awk '{ print $3 - $2 }' | sort -n | awk '{ a[NR] = $1 } END { print NR, "domains, median size:", a[int(NR / 2)] }'
+```
+
+(a) How many loops and domains did ENCODE call, and how many loops are on chr21?
+
+(b) What are the median loop size and domain size? Compare with the sizes on the *Folding at many scales* slide.
+
+### C4 — Are loop anchors CTCF sites?
+
+```bash
+zcat $D/gm12878_hic_loops_hiccups.bedpe.gz | grep -v '^#' \
+  | awk -v OFS='\t' '{ print $1, $2, $3, "L" NR "_a"; print $4, $5, $6, "L" NR "_b" }' \
+  | sort -k1,1 -k2,2n > anchors.bed
+wc -l < anchors.bed
+bedtools intersect -u -a anchors.bed -b $D/gm12878_ctcf_peaks.bed.gz | wc -l
+bedtools shuffle -i anchors.bed -g <(grep -P '^chr([0-9]+|X)\t' $D/hg38.chrom.sizes) -chrom -seed 1 \
+  | bedtools intersect -u -a - -b $D/gm12878_ctcf_peaks.bed.gz | wc -l
+```
+
+(a) What fraction of loop anchors overlaps a CTCF peak? What fraction of shuffled anchors?
+
+(b) How wide is an anchor in this file, and why does that width matter for (a)?
+
+## In Python
+
+Start Python (or a Jupyter notebook) in `~/epi/genome3d`:
+
+```python
+import numpy as np, pandas as pd, matplotlib.pyplot as plt
+from matplotlib.colors import LogNorm
+import cooler, cooltools
+D = "/path/to/course/data"
+MC = f"{D}/gm12878_hic_chr19_chr21.mcool::resolutions/"
+```
+
+### P1 — The whole genome
+
+```python
+g = cooler.Cooler(f"{D}/gm12878_hic_genome_1mb.cool")
+print(g.chromnames[:5], len(g.bins()[:]), g.info["sum"])
+A = g.matrix(balance=True)[:]
+plt.figure(figsize=(7, 6))
+plt.imshow(A, cmap="Reds", norm=LogNorm(vmin=np.nanpercentile(A[A > 0], 20), vmax=np.nanpercentile(A, 99.5)))
+plt.colorbar(label="balanced contacts"); plt.title("GM12878, 1 Mb"); plt.savefig("p1_genome.png", dpi=120)
+
+pix = g.pixels(join=True)[:]
+cis = {c: pix["count"][((pix.chrom1 == c) | (pix.chrom2 == c)) & (pix.chrom1 == pix.chrom2)].sum()
+          / pix["count"][(pix.chrom1 == c) | (pix.chrom2 == c)].sum() for c in g.chromnames}
+cis = pd.Series(cis).round(3)
+print(cis.sort_values())
+```
+
+(a) Do the numbers agree with C2?
+
+(b) Which chromosomes have the lowest and highest cis fractions? Relate this to their size and gene density (chr17, chr19 and chr22 are small and gene-rich; chr18 is small and gene-poor). In the map, which off-diagonal blocks are brightest?
+
+### P2 — Compartments by eye
+
+```python
+for chrom in ["chr19", "chr21"]:
+    c = cooler.Cooler(MC + "250000")
+    m = c.matrix(balance=True).fetch(chrom)
+    L = c.chromsizes[chrom] / 1e6
+    plt.figure(figsize=(6, 5.5))
+    plt.imshow(m, cmap="Reds", norm=LogNorm(vmin=np.nanpercentile(m[m > 0], 5), vmax=np.nanpercentile(m, 99)),
+               extent=[0, L, L, 0])
+    plt.title(f"{chrom}, 250 kb"); plt.xlabel("Mb"); plt.savefig(f"p2_{chrom}.png", dpi=120)
+```
+
+(a) Describe the checkerboard on chr19. Is it visible on chr21?
+
+(b) The first 14 Mb of the chr21 plot are empty (white). Why? (Hint: what is the short arm of chr21 made of?)
+
+### P3 — Distance decay
+
+```python
+c = cooler.Cooler(MC + "10000")
+view = pd.DataFrame({"chrom": ["chr19", "chr21"], "start": 0,
+                     "end": [c.chromsizes["chr19"], c.chromsizes["chr21"]], "name": ["chr19", "chr21"]})
+exp = cooltools.expected_cis(c, view_df=view, nproc=2)
+exp["s"] = exp["dist"] * 10000
+for chrom in ["chr19", "chr21"]:
+    e = exp[(exp.region1 == chrom) & (exp.dist >= 2)]
+    plt.loglog(e.s, e["balanced.avg"], label=chrom)
+    sel = (e.s >= 1e5) & (e.s <= 1e6)
+    print(chrom, "slope 100 kb - 1 Mb:", round(np.polyfit(np.log10(e.s[sel]), np.log10(e["balanced.avg"][sel]), 1)[0], 2))
+plt.xlabel("distance (bp)"); plt.ylabel("P(s)"); plt.legend(); plt.savefig("p3_ps.png", dpi=120)
+e = exp[exp.region1 == "chr21"].set_index("s")["balanced.avg"]
+print("P(100 kb) / P(1 Mb) on chr21:", round(e[100000] / e[1000000], 1))
+```
+
+(a) What slopes do you find? Compare with B2.
+
+(b) How many times more often do loci 100 kb apart contact than loci 1 Mb apart on chr21? Compare with the $s^{-1}$ prediction.
+
+### P4 — Domains and loops in one window
+
+```python
+res, chrom, s0, s1 = 10000, "chr21", 24_750_000, 26_250_000
+c = cooler.Cooler(MC + str(res))
+m = c.matrix(balance=True).fetch(f"{chrom}:{s0}-{s1}")
+loops = pd.read_csv(f"{D}/gm12878_hic_loops_hiccups.bedpe.gz", sep="\t", comment="#", header=None)
+lp = loops[(loops[0] == chrom) & (loops[1] >= s0) & (loops[5] <= s1)]
+dom = pd.read_csv(f"{D}/gm12878_hic_domains_arrowhead.bedpe.gz", sep="\t", comment="#", header=None)
+dm = dom[(dom[0] == chrom) & (dom[1] >= s0) & (dom[2] <= s1)]
+ext = np.array([s0, s1, s1, s0]) / 1e6
+plt.figure(figsize=(7, 6.5))
+plt.imshow(m, cmap="Reds", extent=ext, norm=LogNorm(vmin=np.nanpercentile(m[m > 0], 30), vmax=np.nanpercentile(m, 99.7)))
+plt.scatter((lp[4] + lp[5]) / 2e6, (lp[1] + lp[2]) / 2e6, s=150, facecolors="none", edgecolors="blue")
+for _, d in dm.iterrows():
+    a, b = d[1] / 1e6, d[2] / 1e6
+    plt.plot([a, b, b], [a, a, b], color="black", lw=1, ls="--")
+plt.title(f"{chrom}:{s0:,}-{s1:,}, {res // 1000} kb"); plt.savefig("p4_window.png", dpi=120)
+print(len(lp), "loops and", len(dm), "domains in the window")
+```
+
+(a) How many loops and domains are in the window? Do the loops sit at the corners of domains?
+
+(b) Pick one loop and read off its two anchor positions. Use the CTCF peak file (or a genome browser with the CTCF track) to check whether both anchors have a CTCF peak.
+
+(c) Change `res` to 5000 and to 50000. What can you see at each resolution, and what do you lose?
+
+## Hints
+
+::: {.callout-tip collapse="true" title="Hint 1 — reading maps and distance decay (B1, B2)"}
+A domain is a block of high values near the diagonal with a sharp drop outside it. Compare pixels at the **same distance** from the diagonal (the same off-diagonal): only those are comparable. $P(s) \propto s^{-1}$ means $P(s_1)/P(s_2) = s_2/s_1$. For the bright diagonal, think of what the bin of a pixel $(i, i)$ contains. Background: [Lieberman-Aiden et al. 2009](https://doi.org/10.1126/science.1181369), [Lajoie et al. 2015](https://doi.org/10.1016/j.ymeth.2014.10.031).
+:::
+
+::: {.callout-tip collapse="true" title="Hint 2 — CTCF and extrusion (B3, B4)"}
+Cohesin extrudes in both directions and stops at a CTCF site whose motif points **towards** it, i.e. into the loop: a → site on the left, a ← site on the right. A loop needs a → site to the left of a ← site with no intervening site of the right orientation that would stop cohesin first (in most cells). [Fudenberg et al. 2016](https://doi.org/10.1016/j.celrep.2016.04.085), [Sanborn et al. 2015](https://doi.org/10.1073/pnas.1518552112), [Nora et al. 2017](https://doi.org/10.1016/j.cell.2017.05.004), [Rao et al. 2017](https://doi.org/10.1016/j.cell.2017.09.026).
+:::
+
+::: {.callout-tip collapse="true" title="Hint 3 — assays, imaging and disease (B5–B8)"}
+The expected cis fraction for random partners is $\sum_k L_k^2 / (\sum_k L_k)^2$. For assays, ask: how many viewpoints, genome-wide or targeted, how deep, is a protein involved, single cells or population? Reviews: [Lajoie et al. 2015](https://doi.org/10.1016/j.ymeth.2014.10.031); single cells: [Bintu et al. 2018](https://doi.org/10.1126/science.aau1783); disease: [Lupiáñez et al. 2015](https://doi.org/10.1016/j.cell.2015.04.004).
+:::
+
+::: {.callout-tip collapse="true" title="Hint 4 — command line (C1–C4)"}
+[`cooler info`, `cooler ls`, `cooler dump`](https://cooler.readthedocs.io/en/latest/cli.html): `--join` writes chromosome names and positions instead of bin IDs, `-r` selects a region, `--balanced` adds the balanced value. A `.mcool` holds several resolutions; address one as `file.mcool::resolutions/10000`. [BEDPE](https://bedtools.readthedocs.io/en/latest/content/general-usage.html#bedpe-format) has two intervals per line; columns 1–3 and 4–6 are the two loop anchors. [`bedtools shuffle`](https://bedtools.readthedocs.io/en/latest/content/tools/shuffle.html) with `-chrom` keeps each interval on its chromosome.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 5 — Python (P1–P4)"}
+[cooler Python API](https://cooler.readthedocs.io/en/latest/api.html): `Cooler.matrix(balance=True).fetch(region)` returns a NumPy array; `Cooler.pixels(join=True)[:]` a table of non-zero pixels. [`cooltools.expected_cis`](https://cooltools.readthedocs.io/en/latest/cooltools.api.html#cooltools.api.expected.expected_cis) averages each diagonal (columns `dist` in bins and `balanced.avg`). [matplotlib `imshow`](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.imshow.html) with `LogNorm` gives the usual log colour scale; NaN (masked) bins are white.
+:::
+
+## Solutions
+
+::: {.callout-note collapse="true" title="Solutions — by hand"}
+**B1.** (a) Two domains: bins 1–4 and bins 5–8, with the boundary between bins 4 and 5. Within each block the values fall slowly (40 → 22 → 15), between the blocks they are low (≤ 7). (b) Pixel (1, 4) is inside domain 1; pixel (4, 7) crosses the boundary. At the same distance (150 kb), contacts within a domain are about four times more frequent than across a boundary: that is what insulation means. (c) No. At its distance it is high because it is inside a domain, like (1, 4) = 15. A loop is a pixel enriched over its **local neighbourhood**, including the pixels next to it closer to the diagonal. Here (5, 8) = 18 is lower than its neighbours (5, 7) = 25 and (6, 8) = 24: it is just the far corner of domain 2. A loop would show as a local maximum, e.g. (5, 8) = 40 with (5, 7) and (6, 8) near 25: a dot at the corner of the domain.
+
+**B2.** (a) 10 times less at 1 Mb, 100 times less at 10 Mb. (b) $O/E = 60/20 = 3$. The raw count depends mostly on distance: a 500-kb pixel with 60 contacts is special, a 20-kb pixel with 60 contacts may be below average. (c) Mostly not: two positions in the same bin are linearly adjacent, so they are always close. It also collects artefacts such as unligated and self-ligated fragments (removed in processing) and is excluded from most analyses.
+
+**B3.** (a) Each side of an extruding cohesin stops at the first site pointing towards it: the left side at a → site, the right side at a ← site. Loaded between A and B: loop **A–B**. Loaded between C and D: loop **C–D**. Loaded between B and C: the left side passes B (←, wrong way) and stops at A, the right side passes C (→) and stops at D: a larger, weaker loop **A–D**. The main domains are A–B and C–D; the **divergent pair B ← | → C** is the boundary between them (a classic strong boundary). (b) The promoter (200 kb) is in domain A–B, the enhancer (600 kb) in domain C–D, on opposite sides of the boundary; they meet only within the weaker A–D loop. Expect little activation. (c) Without C, cohesin loaded anywhere between B and D extrudes until A and D: the C–D domain is replaced by an **A–D domain** that contains both the promoter and the enhancer (the A–B loop remains nested inside). The enhancer can now reach the gene. (d) With C inverted (←), the right side of cohesin loaded between B and C stops at C: loops A–B, **A–C** and A–D; there is no longer a → site between A and D apart from A itself, so the boundary between B and C is gone and promoter and enhancer again share a domain. Either change can switch the gene on, which is the logic of the limb malformations in the lecture.
+
+**B4.** (a) CTCF depleted: domains and loops largely gone (the squares and dots fade, contacts spread across the old boundaries), checkerboard unchanged. Cohesin depleted: all loop domains and dots gone, the near-diagonal looks smooth, the checkerboard becomes stronger and finer. (b) (1) The experiment measures short-term effects (hours to days); maintenance of an existing state can be robust while establishing a new state (development, activation) needs the structure. (2) Many enhancer–promoter contacts are short-range or CTCF-independent and survive. (3) "~200 genes" can include key genes and still be a strong phenotype; a degron in one cell type does not test other cell types or development. Also: residual CTCF, compensation, and expression measured as steady-state RNA (slow) rather than nascent transcription.
+
+**B5.** (a) $(100^2 + 50^2 + 50^2) / 200^2 = 15\,000 / 40\,000 = 0.375$. (b) 80% ≫ 37.5%: chromosomes form territories. 45% close to random suggests a technical problem: many random ligations between fragments from different nuclei or in solution (poor crosslinking, nuclei lysed before ligation). The cis fraction is a standard Hi-C QC metric.
+
+**B6.** (a) No. Hi-C counts ligation events summed over cells; 10% of millions of cells in contact gives many reads, far more than at neighbouring pixels where contact is rarer, so a dot appears. FISH shows the same thing as a distribution: most cells far apart, a minority close. (b) "The enhancer and promoter come close (within 200 nm) in about 10% of cells at any moment, more often than neighbouring loci." Contact is transient and in a minority of cells.
+
+**B7.** (a) 3C (qPCR across the ligation junction) or 4C from the promoter as viewpoint; cheap per sample. (b) Promoter Capture Hi-C (or Capture-C): baits for 2 000 promoters, deep at those. (c) Hi-C at modest depth (compartments are visible at 100 kb–1 Mb with a few hundred million reads or less). (d) HiChIP or ChIA-PET for cohesin (SMC1/RAD21): reads concentrated at bound anchors. (e) Micro-C: MNase cuts at every linker, giving nucleosome-level resolution. (f) Imaging: DNA-FISH or chromatin tracing (or single-cell Hi-C), because Hi-C averages over cells.
+
+**B8.** (a) The limb enhancers lose their boundary and gene Y; gene X is now in the same domain as the limb enhancers and can be activated ectopically in the limb (as PAX3 in brachydactyly). (b) Capture-C or 4C from the gene X promoter in patient fibroblasts or limb buds of a mouse model to show new contacts with the enhancers; RNA (RNA-seq or in situ hybridisation) to show ectopic X expression in the limb; a mouse with the same deletion made by CRISPR to test whether it causes the phenotype. (c) Probably not: a deletion inside domain 2 that keeps the boundary does not bring the enhancers to X (Lupiáñez et al.: rewiring only happened when the variant disrupted a CTCF-associated boundary). It could still cause a phenotype by deleting enhancers of Y.
+:::
+
+::: {.callout-note collapse="true" title="Solutions — command line"}
+**C1.** (a) 1-Mb genome-wide: **3044** bins, **4 221 149** non-zero pixels, **4 564 968 531** contacts. 10 kb chr19 + chr21: **10 533** bins, **11 989 547** pixels, **123 772 864** contacts (only contacts within chr19 and within chr21). (b) `chrom1 start1 end1 chrom2 start2 end2 count`. Only the upper triangle (bin1 ≤ bin2) is stored; the lower triangle is the same by symmetry. (c) The balanced value: count × weight(bin1) × weight(bin2). It is NaN for masked bins (too few contacts to balance).
+
+**C2.** (a) **0.772** of all contacts are within a chromosome, 15 times the random expectation for the human genome (0.051: with 23 chromosomes of similar size, a random partner is on the same chromosome only about 1 time in 20). Compare 0.375 in the toy genome of B5. (b) chr1 0.648, chr19 0.594, chr21 0.543, chrX 0.673. (These per-chromosome fractions are lower than 0.772 because each trans contact counts for both chromosomes it joins.) Large chromosomes keep most of their contacts (chr1); small, gene-rich chromosomes in the nuclear interior (chr19) have a larger share of trans contacts, because they are small (fewer cis partners) and sit near other small, gene-rich chromosomes. chrX (one active and one inactive X in a female cell line) is near the top: the inactive X is compact and contacts little else.
+
+**C3.** (a) **14 599** loops and **10 306** domains; **164** loops on chr21. (b) Median loop size **330 000** bp (330 kb), median domain size **185 000** bp (185 kb): both in the 0.1–1 Mb range.
+
+**C4.** (a) **29 198** anchors; **18 763** overlap a CTCF peak (**64%**), against **3 691** shuffled anchors (**13%**): a fivefold enrichment. The rest may be anchored by weaker CTCF sites missing from the conservative peak set, or by other factors (promoters, enhancers, YY1). (b) Anchors are 5, 10 or 25 kb wide (the resolution at which the loop was called: 16 466, 7 216 and 5 516 anchors), so a random 10-kb window often overlaps one of the 44 000 CTCF peaks by chance; the shuffled control is essential.
+:::
+
+::: {.callout-note collapse="true" title="Solutions — Python"}
+**P1.** (a) Yes: the same pixels, counted in the same way. (b) Lowest: chr22 (0.539), chr21 (0.543), chr17 (0.556), chr20, chr15, chr16; highest chr2 (0.681), chrX (0.673), chr3. Small chromosomes have fewer cis partners, and the small gene-rich ones (16, 17, 19, 20, 22) sit together in the nuclear interior: their mutual off-diagonal blocks are among the brightest in the balanced map.
+
+**P2.** (a) On chr19 the map is a fine checkerboard of alternating blocks a few Mb wide; on chr21 it is coarser: mostly B from about 16 to 32 Mb (a gene-poor stretch), mostly A from about 32 to 37 Mb and 41 to 46 Mb (the gene-rich end of the long arm). (b) The short arm and centromere of chr21 (0–14 Mb) are gaps and repeats (rDNA, satellites) in the assembly: no unique alignments, so those bins are masked (NaN, white). Two more masked bins near 43–44 Mb are segmental duplications.
+
+**P3.** (a) chr19 −1.14, chr21 −0.97: close to −1. (b) 8.7 times, close to the factor 10 predicted by $s^{-1}$.
+
+**P4.** (a) **15** loops and **9** domains; most loops sit at domain corners, some link the corners of nested domains. (b) Example: the loop chr21:24 890 000–24 900 000 × 25 310 000–25 320 000 has a CTCF peak at both anchors. With `bedtools pairtobed -type both` you find 6 of the 15 loops with peaks at both anchors and 11 with a peak at one or both; the strongest dot in the window (25.50 × 25.56 Mb, 858 contacts) has none, a reminder that not every loop is a CTCF loop. (c) At 5 kb the dots are sharp but the map is noisy away from the diagonal; at 50 kb the domains and checkerboard are clear but the loops blur into their domain corners.
+:::
+
+## Where this leads
+
+- *Hi-C: from reads to contact matrices* turns raw read pairs into a `.cool` file like the ones used here, and explains balancing and $P(s)$.
+- *Calling compartments, TADs and loops* computes the eigenvector, insulation scores and dots yourself on the same GM12878 data and tests them against ChIP-seq.
+- *Linking regulatory elements to genes* uses contacts to connect enhancers to target genes (the activity-by-contact model).
+
+## Key papers (optional further reading)
+
+*Not required reading and not examined.*
+
+- Dekker et al. 2002, *Science*. [Capturing chromosome conformation](https://doi.org/10.1126/science.1067799).
+- Dixon et al. 2012, *Nature*. [Topological domains in mammalian genomes identified by analysis of chromatin interactions](https://doi.org/10.1038/nature11082).
+- Fudenberg et al. 2016, *Cell Rep*. [Formation of chromosomal domains by loop extrusion](https://doi.org/10.1016/j.celrep.2016.04.085).
+- Nora et al. 2017, *Cell*. [Targeted degradation of CTCF decouples local insulation of chromosome domains from genomic compartmentalization](https://doi.org/10.1016/j.cell.2017.05.004).
+- Rao et al. 2017, *Cell*. [Cohesin loss eliminates all loop domains](https://doi.org/10.1016/j.cell.2017.09.026).
+- Lupiáñez et al. 2015, *Cell*. [Disruptions of topological chromatin domains cause pathogenic rewiring of gene-enhancer interactions](https://doi.org/10.1016/j.cell.2015.04.004).

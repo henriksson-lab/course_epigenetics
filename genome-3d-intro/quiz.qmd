@@ -1,0 +1,95 @@
+---
+title: "Quiz: 3D genome organisation"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+Short questions on territories, compartments, domains, loops and the assays that measure them. Try each on paper first, then open the answer.
+
+---
+
+**Q1.** Name the four features of a Hi-C map that correspond to territories, compartments, domains and loops, and the typical genomic size of each.
+
+::: {.callout-note collapse="true" title="Answer"}
+Territories: blocks on the genome-wide diagonal (contacts within a chromosome dominate), a whole chromosome (50–250 Mb). Compartments: a checkerboard away from the diagonal, ~1–10 Mb segments. Domains (TADs): squares on the diagonal, ~0.1–1 Mb (median 185 kb in GM12878). Loops: dots off the diagonal, anchors ~10 kb–1 Mb apart (median 330 kb).
+:::
+
+---
+
+**Q2.** With $P(s) \propto s^{-1}$, two loci 50 kb apart have 400 contacts on average. How many do you expect for loci 500 kb apart? One pixel at 500 kb has 160 contacts: what is its observed/expected value?
+
+::: {.callout-note collapse="true" title="Answer"}
+Ten times farther, ten times fewer: 40 contacts. $O/E = 160 / 40 = 4$: a strong enrichment, possibly a loop (check its local neighbourhood).
+:::
+
+---
+
+**Q3.** Two CTCF sites lie 400 kb apart: the left one points right (→), the right one points left (←). A Hi-C dot connects them. What happens to the dot if (a) the right site is deleted, (b) the right site is inverted, (c) cohesin is degraded?
+
+::: {.callout-tip collapse="true" title="Hint"}
+Cohesin stops at a CTCF site whose motif points into the loop.
+:::
+
+::: {.callout-note collapse="true" title="Answer"}
+(a) The dot disappears; cohesin continues to the next ← site further right, so a new, larger loop can form. (b) The same: a → site on the right does not stop cohesin coming from the left; the loop moves to the next convergent site. (c) The dot disappears (and so do the loop domains), because extrusion makes the loop; compartments remain and get stronger.
+:::
+
+---
+
+**Q4.** After acute CTCF depletion, domains and loops are largely lost, but the A/B checkerboard is unchanged. What does that tell you about how compartments form?
+
+::: {.callout-note collapse="true" title="Answer"}
+Compartments do not depend on CTCF (or on loop extrusion: they even strengthen without cohesin). They form by a separate mechanism, the preferential association of chromatin of the same type (affinity-driven segregation, e.g. heterochromatin with heterochromatin via HP1, Polycomb domains with each other), and are linked to nuclear position (lamina, nucleolus, speckles).
+:::
+
+---
+
+**Q5.** Compartment A correlates with which of these: H3K27ac, H3K9me3, early replication, the nuclear lamina, high GC content, high gene density?
+
+::: {.callout-note collapse="true" title="Answer"}
+A: H3K27ac, early replication, high GC content, high gene density, nuclear interior. B: H3K9me3 (and H3K27me3 in some subcompartments), late replication, the nuclear lamina (LADs) and the nucleolus. On GM12878 chr19, E1 correlates with H3K27ac (r = 0.50) and against H3K9me3 (r = −0.64).
+:::
+
+---
+
+**Q6.** In 4C from a promoter, a peak appears 250 kb away. DNA-FISH shows the two loci closer than 200 nm in only 15% of cells. Is this a contradiction? What does "contact" mean in each assay?
+
+::: {.callout-note collapse="true" title="Answer"}
+No contradiction. Hi-C/4C counts ligation events summed over millions of cells: a contact in 15% of cells is many more than at neighbouring positions, so a peak appears. FISH measures distances in single cells and shows the same thing as a distribution. Neither shows a stable loop in every cell; contact is transient and variable.
+:::
+
+---
+
+**Q7.** You want the contacts of 300 candidate disease-gene promoters at high resolution in 10 patient samples. Which method do you choose, and why not plain Hi-C?
+
+::: {.callout-note collapse="true" title="Answer"}
+Promoter Capture Hi-C (or Capture-C): baits for the 300 promoters concentrate the sequencing on their contacts. Plain Hi-C spreads reads over all pairs of the genome; reaching kilobase resolution at 300 promoters would need billions of reads per sample.
+:::
+
+---
+
+**Q8.** What do HiChIP and ChIA-PET add to Hi-C, and what bias do they introduce?
+
+::: {.callout-note collapse="true" title="Answer"}
+An immunoprecipitation (e.g. cohesin, CTCF, H3K27ac) after ligation keeps only contacts with at least one anchor bound by the protein: many fewer reads are needed for loops at those sites. But the signal mixes contact frequency with ChIP enrichment: a strong ChIP peak gives many reads and can look like many loops; anchors without the protein are invisible. Normalisation must account for this.
+:::
+
+---
+
+**Q9.** A patient has a deletion that removes a TAD boundary between a limb-enhancer cluster and gene *PAX3*; another has a deletion of similar size inside the enhancers' domain that leaves the boundary intact. Which is more likely to cause ectopic *PAX3* expression in the limb, and why?
+
+::: {.callout-note collapse="true" title="Answer"}
+The first. Removing the CTCF-associated boundary puts the limb enhancers and *PAX3* in one domain, so the enhancers can contact and activate *PAX3* (brachydactyly in Lupiáñez et al. 2015). A deletion inside the domain does not change which genes the enhancers can reach (though it may remove some enhancers).
+:::
+
+---
+
+**Q10.** In IDH-mutant gliomas, *PDGFRA* is activated without any mutation near it. Explain the chain of events.
+
+::: {.callout-note collapse="true" title="Answer"}
+Mutant IDH produces 2-hydroxyglutarate, which inhibits TET demethylases, so CpG methylation rises genome-wide, including at CpGs in a CTCF motif at a domain boundary. CTCF cannot bind the methylated site, the boundary is lost, and a constitutive enhancer in the neighbouring domain (near *FIP1L1*) activates *PDGFRA* (Flavahan et al. 2016).
+:::

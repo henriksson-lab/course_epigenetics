@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 410" width="1120" height="410" font-family="Helvetica, Arial, sans-serif">
+  <rect width="1120" height="410" fill="#ffffff"/>
+  <g fill="#f4f6f8" stroke="#cfd8e0" stroke-width="1.2">
+    <rect x="10" y="10" width="265" height="390" rx="8"/><rect x="287" y="10" width="265" height="390" rx="8"/>
+    <rect x="564" y="10" width="265" height="390" rx="8"/><rect x="841" y="10" width="269" height="390" rx="8"/>
+  </g>
+  <g font-size="17" font-weight="bold" fill="#1b2a3a">
+    <text x="24" y="38">"Hyper-ChIPable"</text><text x="301" y="38">Indirect binding</text>
+    <text x="578" y="38">Copy number</text><text x="855" y="38">Repeats</text>
+  </g>
+  <!-- mini tracks: label, ChIP (brown), control (grey) -->
+  <g font-size="13" fill="#5b6b7a">
+    <text x="24" y="70">ChIP, factor X</text><text x="24" y="122">ChIP, unrelated / GFP</text>
+    <text x="301" y="70">ChIP, factor X</text><text x="301" y="122">motif of X</text>
+    <text x="578" y="70">ChIP</text><text x="578" y="122">input</text>
+    <text x="855" y="70">ChIP</text><text x="855" y="122">input</text>
+  </g>
+  <!-- 1 hyper-ChIPable: both tracks peak at a highly expressed gene -->
+  <path d="M24,100 L100,100 C112,100 116,76 130,76 C144,76 148,100 160,100 L260,100" fill="#8c564b" fill-opacity="0.35" stroke="#8c564b" stroke-width="2"/>
+  <path d="M24,152 L100,152 C112,152 116,132 130,132 C144,132 148,152 160,152 L260,152" fill="#5b6b7a" fill-opacity="0.3" stroke="#5b6b7a" stroke-width="2"/>
+  <rect x="100" y="164" width="140" height="10" fill="#2e8b57"/>
+  <text x="170" y="190" font-size="13" fill="#2e8b57" text-anchor="middle">highly expressed gene</text>
+  <!-- 2 indirect -->
+  <path d="M301,100 L380,100 C392,100 396,78 408,78 C420,78 424,100 436,100 L540,100" fill="#8c564b" fill-opacity="0.35" stroke="#8c564b" stroke-width="2"/>
+  <line x1="301" y1="140" x2="540" y2="140" stroke="#1b2a3a" stroke-width="1.5"/>
+  <text x="408" y="136" font-size="13" fill="#a8324a" text-anchor="middle">no motif</text>
+  <rect x="380" y="158" width="26" height="20" rx="5" fill="#8c564b" stroke="#1b2a3a"/>
+  <text x="393" y="172" font-size="12" fill="#ffffff" text-anchor="middle">X</text>
+  <rect x="406" y="164" width="32" height="20" rx="5" fill="#2a6f97" stroke="#1b2a3a"/>
+  <text x="422" y="178" font-size="12" fill="#ffffff" text-anchor="middle">Y</text>
+  <line x1="360" y1="186" x2="480" y2="186" stroke="#1b2a3a" stroke-width="3"/>
+  <!-- 3 copy number -->
+  <path d="M578,100 L640,100 L640,86 L760,86 L760,100 L820,100" fill="#8c564b" fill-opacity="0.35" stroke="#8c564b" stroke-width="2"/>
+  <path d="M578,152 L640,152 L640,138 L760,138 L760,152 L820,152" fill="#5b6b7a" fill-opacity="0.3" stroke="#5b6b7a" stroke-width="2"/>
+  <text x="700" y="178" font-size="13" fill="#5b6b7a" text-anchor="middle">amplified: 4 copies instead of 2</text>
+  <!-- 4 repeats -->
+  <path d="M855,100 L855,95 L940,95 L942,62 L948,62 L950,95 L1000,95 L1000,100 L1060,100 L1060,95 L1100,95 L1100,100" fill="#8c564b" fill-opacity="0.35" stroke="#8c564b" stroke-width="2"/>
+  <path d="M855,152 L855,148 L940,148 L942,116 L948,116 L950,148 L1000,148 L1000,152 L1060,152 L1060,148 L1100,148 L1100,152" fill="#5b6b7a" fill-opacity="0.3" stroke="#5b6b7a" stroke-width="2"/>
+  <rect x="1000" y="164" width="60" height="10" fill="#cfd8e0" stroke="#5b6b7a"/>
+  <text x="945" y="190" font-size="13" fill="#5b6b7a" text-anchor="middle">collapsed repeat</text>
+  <line x1="945" y1="176" x2="945" y2="156" stroke="#5b6b7a" stroke-width="1"/>
+  <text x="1030" y="208" font-size="13" fill="#5b6b7a" text-anchor="middle">unmappable: no reads</text>
+  <!-- explanations -->
+  <g font-size="15" fill="#1b2a3a">
+    <text x="24" y="230">Active promoters and highly</text>
+    <text x="24" y="249">transcribed genes give signal</text>
+    <text x="24" y="268">with almost any antibody,</text>
+    <text x="24" y="287">even against a protein the</text>
+    <text x="24" y="306">cells do not make.</text>
+    <text x="301" y="230">X binds DNA through a</text>
+    <text x="301" y="249">partner Y (or is crosslinked</text>
+    <text x="301" y="268">near it). A real peak, but not</text>
+    <text x="301" y="287">a direct contact: no motif,</text>
+    <text x="301" y="306">often weaker.</text>
+    <text x="578" y="230">An amplified region gives</text>
+    <text x="578" y="249">more reads in every library.</text>
+    <text x="578" y="268">Common in cancer cell lines</text>
+    <text x="578" y="287">(K562, HeLa, HepG2).</text>
+    <text x="855" y="230">Repeats collapsed in the</text>
+    <text x="855" y="249">reference attract reads from</text>
+    <text x="855" y="268">all copies; unique-read filters</text>
+    <text x="855" y="287">leave other repeats blind.</text>
+  </g>
+  <g font-size="15" font-weight="bold" fill="#2e8b57">
+    <text x="24" y="340">Control:</text><text x="301" y="340">Check:</text><text x="578" y="340">Control:</text><text x="855" y="340">Control:</text>
+  </g>
+  <g font-size="15" fill="#1b2a3a">
+    <text x="24" y="360">IgG or tag-only ChIP; be</text><text x="24" y="379">wary of promoter-only peaks</text>
+    <text x="301" y="360">motif at the summit; ChIP-</text><text x="301" y="379">exo footprints; co-factors</text>
+    <text x="578" y="360">the input, from the same</text><text x="578" y="379">cells (removes it)</text>
+    <text x="855" y="360">blacklist; MAPQ filter;</text><text x="855" y="379">mappability tracks</text>
+  </g>
+</svg>

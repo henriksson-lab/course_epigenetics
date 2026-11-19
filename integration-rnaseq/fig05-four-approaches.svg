@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 350" width="1120" height="350" font-family="Helvetica, Arial, sans-serif">
+<defs>
+<marker id="agreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker>
+<marker id="aink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker>
+</defs>
+<rect width="1120" height="350" fill="#ffffff"/>
+<g fill="#f4f6f8" stroke="#dfe6ec" stroke-width="1.5">
+<rect x="10" y="10" width="260" height="330" rx="8"/>
+<rect x="286" y="10" width="260" height="330" rx="8"/>
+<rect x="562" y="10" width="260" height="330" rx="8"/>
+<rect x="838" y="10" width="272" height="330" rx="8"/>
+</g>
+<g font-size="17" font-weight="bold" fill="#1b2a3a">
+<text x="24" y="38">1. Proximity</text>
+<text x="300" y="38">2. Correlation</text>
+<text x="576" y="38">3. 3D contact</text>
+<text x="852" y="38">4. Perturbation</text>
+</g>
+
+<!-- panel 1: proximity -->
+<line x1="30" y1="170" x2="250" y2="170" stroke="#5b6b7a" stroke-width="1.5"/>
+<path d="M62,170 L70,140 L78,170 z" fill="#c0392b"/>
+<text x="70" y="130" font-size="15" fill="#c0392b" text-anchor="middle" font-weight="bold">E</text>
+<rect x="126" y="162" width="40" height="16" fill="#1b2a3a"/>
+<path d="M126,162 L126,148 L140,148" stroke="#1b2a3a" stroke-width="2" fill="none" marker-end="url(#aink)"/>
+<text x="146" y="198" font-size="15" font-style="italic" fill="#1b2a3a" text-anchor="middle">G1</text>
+<rect x="206" y="162" width="36" height="16" fill="#1b2a3a"/>
+<path d="M206,162 L206,148 L220,148" stroke="#1b2a3a" stroke-width="2" fill="none" marker-end="url(#aink)"/>
+<text x="224" y="198" font-size="15" font-style="italic" fill="#1b2a3a" text-anchor="middle">G2</text>
+<path d="M80,112 C95,85 115,95 124,138" stroke="#2e8b57" stroke-width="2.5" fill="none" marker-end="url(#agreen)"/>
+<text x="112" y="80" font-size="15" fill="#2e8b57" font-weight="bold">nearest TSS</text>
+<text x="24" y="270" font-size="15" fill="#1b2a3a">+ needs only peaks and a GTF</text>
+<text x="24" y="294" font-size="15" fill="#1b2a3a">− ignores which genes are</text>
+<text x="38" y="314" font-size="15" fill="#1b2a3a">expressed and contacted</text>
+
+<!-- panel 2: correlation -->
+<line x1="330" y1="215" x2="520" y2="215" stroke="#1b2a3a" stroke-width="1.5"/>
+<line x1="330" y1="215" x2="330" y2="60" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="425" y="236" font-size="14" fill="#5b6b7a" text-anchor="middle">accessibility of E</text>
+<text x="318" y="140" font-size="14" fill="#5b6b7a" text-anchor="middle" transform="rotate(-90 318 140)">expression of G</text>
+<g fill="#2a6f97">
+<circle cx="352" cy="200" r="6"/><circle cx="372" cy="188" r="6"/><circle cx="390" cy="178" r="6"/><circle cx="410" cy="158" r="6"/>
+<circle cx="430" cy="148" r="6"/><circle cx="452" cy="118" r="6"/><circle cx="470" cy="116" r="6"/><circle cx="492" cy="86" r="6"/>
+</g>
+<text x="505" y="186" font-size="15" fill="#2a6f97" text-anchor="end" font-weight="bold">r = 0.95</text>
+<text x="300" y="270" font-size="15" fill="#1b2a3a">+ data-driven, any locus</text>
+<text x="300" y="294" font-size="15" fill="#1b2a3a">− needs many samples;</text>
+<text x="314" y="314" font-size="15" fill="#1b2a3a">co-variation ≠ regulation</text>
+
+<!-- panel 3: 3D contact -->
+<path d="M590,200 C620,200 640,200 660,190 C700,170 690,80 640,90 C600,100 620,170 690,190 C740,205 770,200 800,200" stroke="#1b2a3a" stroke-width="3" fill="none"/>
+<path d="M650,186 L656,170 L662,186 z" fill="#c0392b"/>
+<text x="634" y="170" font-size="15" fill="#c0392b" font-weight="bold" text-anchor="end">E</text>
+<rect x="682" y="181" width="22" height="14" fill="#1b2a3a" transform="rotate(15 693 188)"/>
+<text x="716" y="176" font-size="15" font-style="italic" fill="#1b2a3a">G</text>
+<ellipse cx="672" cy="188" rx="22" ry="12" fill="none" stroke="#2e8b57" stroke-width="3"/>
+<text x="672" y="226" font-size="14" fill="#2e8b57" text-anchor="middle">contact</text>
+<text x="576" y="270" font-size="15" fill="#1b2a3a">+ physical proximity</text>
+<text x="576" y="294" font-size="15" fill="#1b2a3a">− contact ≠ activity;</text>
+<text x="590" y="314" font-size="15" fill="#1b2a3a">Hi-C is costly, coarse</text>
+
+<!-- panel 4: perturbation -->
+<line x1="860" y1="110" x2="1090" y2="110" stroke="#5b6b7a" stroke-width="1.5"/>
+<path d="M900,110 L908,84 L916,110 z" fill="#c0392b"/>
+<text x="880" y="94" font-size="15" fill="#c0392b" font-weight="bold" text-anchor="end">E</text>
+<ellipse cx="908" cy="110" rx="26" ry="16" fill="#6b4fa0" fill-opacity="0.85"/>
+<text x="940" y="96" font-size="14" fill="#6b4fa0" font-weight="bold">dCas9-KRAB</text>
+<rect x="1030" y="102" width="40" height="16" fill="#1b2a3a"/>
+<text x="1050" y="138" font-size="15" font-style="italic" fill="#1b2a3a" text-anchor="middle">G</text>
+<line x1="930" y1="236" x2="1080" y2="236" stroke="#1b2a3a" stroke-width="1.5"/>
+<rect x="950" y="160" width="44" height="76" fill="#5b6b7a"/>
+<rect x="1014" y="208" width="44" height="28" fill="#c0392b"/>
+<text x="972" y="254" font-size="14" fill="#5b6b7a" text-anchor="middle">control</text>
+<text x="1036" y="254" font-size="14" fill="#c0392b" text-anchor="middle">E off</text>
+<text x="920" y="200" font-size="14" fill="#5b6b7a" text-anchor="end">G RNA</text>
+<text x="852" y="282" font-size="15" fill="#1b2a3a">+ causal test in the cells</text>
+<text x="852" y="306" font-size="15" fill="#1b2a3a">− one cell type, thousands</text>
+<text x="866" y="326" font-size="15" fill="#1b2a3a">of pairs, not millions</text>
+</svg>

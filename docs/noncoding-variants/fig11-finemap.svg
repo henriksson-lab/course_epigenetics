@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 330" width="1120" height="330" font-family="Helvetica, Arial, sans-serif">
+<rect width="1120" height="330" fill="#ffffff"/>
+<text x="20" y="30" font-size="17" font-weight="bold" fill="#1b2a3a">Statistics only</text>
+<text x="20" y="54" font-size="15" fill="#5b6b7a">Bayes factors 120, 100, 90, 20, 5, 1; equal priors</text>
+<line x1="40" y1="250" x2="520" y2="250" stroke="#1b2a3a" stroke-width="1.5"/>
+<line x1="40" y1="250" x2="40" y2="80" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="32" y="85" font-size="13" fill="#5b6b7a" text-anchor="end">1</text><text x="32" y="255" font-size="13" fill="#5b6b7a" text-anchor="end">0</text>
+<rect x="50" y="189.3" width="56" height="60.7" fill="#c0392b" stroke="#5b6b7a"/>
+<text x="78.0" y="183.3" font-size="14" fill="#1b2a3a" text-anchor="middle">0.36</text>
+<text x="78.0" y="270" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">a</text>
+<rect x="130" y="199.4" width="56" height="50.6" fill="#c0392b" stroke="#5b6b7a"/>
+<text x="158.0" y="193.4" font-size="14" fill="#1b2a3a" text-anchor="middle">0.30</text>
+<text x="158.0" y="270" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">b</text>
+<rect x="210" y="204.5" width="56" height="45.5" fill="#c0392b" stroke="#5b6b7a"/>
+<text x="238.0" y="198.5" font-size="14" fill="#1b2a3a" text-anchor="middle">0.27</text>
+<text x="238.0" y="270" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">c</text>
+<rect x="290" y="239.9" width="56" height="10.1" fill="#c0392b" stroke="#5b6b7a"/>
+<text x="318.0" y="233.9" font-size="14" fill="#1b2a3a" text-anchor="middle">0.06</text>
+<text x="318.0" y="270" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">d</text>
+<rect x="370" y="247.5" width="56" height="2.5" fill="#dfe6ec" stroke="#5b6b7a"/>
+<text x="398.0" y="241.5" font-size="14" fill="#1b2a3a" text-anchor="middle">0.01</text>
+<text x="398.0" y="270" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">e</text>
+<rect x="450" y="249.5" width="56" height="0.5" fill="#dfe6ec" stroke="#5b6b7a"/>
+<text x="478.0" y="243.5" font-size="14" fill="#1b2a3a" text-anchor="middle">0.00</text>
+<text x="478.0" y="270" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">f</text>
+<text x="40" y="300" font-size="15" fill="#1b2a3a">PIP; red = 95% credible set (4 SNPs)</text>
+<text x="580" y="30" font-size="17" font-weight="bold" fill="#1b2a3a">With a functional prior</text>
+<text x="580" y="54" font-size="15" fill="#5b6b7a">SNP c lies in an open, acetylated element: prior × 10</text>
+<line x1="600" y1="250" x2="1080" y2="250" stroke="#1b2a3a" stroke-width="1.5"/>
+<line x1="600" y1="250" x2="600" y2="80" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="592" y="85" font-size="13" fill="#5b6b7a" text-anchor="end">1</text><text x="592" y="255" font-size="13" fill="#5b6b7a" text-anchor="end">0</text>
+<rect x="610" y="232.2" width="56" height="17.8" fill="#c0392b" stroke="#5b6b7a"/>
+<text x="638.0" y="226.2" font-size="14" fill="#1b2a3a" text-anchor="middle">0.10</text>
+<text x="638.0" y="270" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">a</text>
+<rect x="690" y="235.2" width="56" height="14.8" fill="#c0392b" stroke="#5b6b7a"/>
+<text x="718.0" y="229.2" font-size="14" fill="#1b2a3a" text-anchor="middle">0.09</text>
+<text x="718.0" y="270" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">b</text>
+<rect x="770" y="116.5" width="56" height="133.5" fill="#c0392b" stroke="#5b6b7a"/>
+<text x="798.0" y="110.5" font-size="14" fill="#1b2a3a" text-anchor="middle">0.79</text>
+<text x="798.0" y="270" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">c</text>
+<rect x="850" y="247.0" width="56" height="3.0" fill="#dfe6ec" stroke="#5b6b7a"/>
+<text x="878.0" y="241.0" font-size="14" fill="#1b2a3a" text-anchor="middle">0.02</text>
+<text x="878.0" y="270" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">d</text>
+<rect x="930" y="249.3" width="56" height="0.7" fill="#dfe6ec" stroke="#5b6b7a"/>
+<text x="958.0" y="243.3" font-size="14" fill="#1b2a3a" text-anchor="middle">0.00</text>
+<text x="958.0" y="270" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">e</text>
+<rect x="1010" y="249.9" width="56" height="0.1" fill="#dfe6ec" stroke="#5b6b7a"/>
+<text x="1038.0" y="243.9" font-size="14" fill="#1b2a3a" text-anchor="middle">0.00</text>
+<text x="1038.0" y="270" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">f</text>
+<text x="600" y="300" font-size="15" fill="#1b2a3a">PIP; red = 95% credible set (3 SNPs)</text>
+<path d="M786,80 L798,62 L810,80 z" fill="#2e8b57"/>
+<text x="820" y="78" font-size="14" fill="#2e8b57">ATAC peak</text>
+</svg>

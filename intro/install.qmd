@@ -16,14 +16,25 @@ the course environment:
 
 ```bash
 mamba create -n epigenetics -c conda-forge -c bioconda \
-  "samtools>=1.16" htslib bedtools bowtie2 macs3 deeptools fastp multiqc ucsc-bedgraphtobigwig
-  # ... add tools here as the material is written
+  "samtools>=1.16" htslib bcftools bedtools bowtie2 bwa macs3 deeptools fastp multiqc \
+  ucsc-bedgraphtobigwig idr epic2 seacr chromhmm bismark openjdk ont-modkit whatshap
 mamba activate epigenetics
 ```
 
-<!-- Candidates as units are written: bismark, methyldackel (methylation);
-     homer, meme (motifs); tobias (footprinting); cooler, pairtools,
-     hicexplorer, cooltools (Hi-C); seacr (CUT&Tag); modkit (nanopore). -->
+What each is for: `samtools`, `bowtie2`, `fastp`, `deeptools` (alignment and
+coverage, *From reads to coverage*); `macs3`, `idr`, `epic2` (*Peak calling*);
+`seacr` (*CUT&RUN and CUT&Tag*); `chromhmm` and `openjdk` (*Combining marks into
+chromatin states*); `bismark` (*Bisulfite and enzymatic sequencing*);
+`bcftools` (*Epigenomics and genetic variation*); `ont-modkit` and `whatshap`
+(*Methylation and chromatin from long reads*).
+
+The Hi-C units use Python tools that need their own environment (the versions
+are pinned because newer `cooler` does not work with this `cooltools`):
+
+```bash
+mamba create -n hic -c conda-forge -c bioconda python=3.11 cooler=0.10 cooltools=0.7 \
+  pairtools=1.1 bwa samtools bedtools pybigwig pyfaidx bioframe matplotlib
+```
 
 ## 2. A genome browser
 
@@ -36,8 +47,10 @@ Install a recent [R](https://cran.r-project.org/) (4.4 or newer) and
 [RStudio Desktop](https://posit.co/download/rstudio-desktop/).
 
 ```r
-install.packages(c("tidyverse", "BiocManager", "torch", "patchwork", "ggrepel", "pheatmap", "data.table"))
-torch::install_torch()   # downloads the libtorch backend once (CPU version)
+install.packages(c("tidyverse", "BiocManager", "torch", "patchwork", "ggrepel", "pheatmap",
+                   "data.table", "glmnet", "pROC", "ggseqlogo", "jsonlite", "nnls"))
+torch::install_torch()   # downloads the libtorch backend once (CPU version);
+                         # if it fails on a machine with a GPU driver, run Sys.setenv(CUDA = "cpu") first
 BiocManager::install(c(
   "GenomicRanges",   # genomic intervals
   "rtracklayer",     # read/write BED, narrowPeak, GTF, bigWig
@@ -46,8 +59,11 @@ BiocManager::install(c(
   "GenomicAlignments", # reads from BAM files
   "DESeq2", "edgeR", "apeglm",   # differential accessibility
   "JASPAR2024", "TFBSTools", "motifmatchr", "universalmotif", "RSQLite",  # motifs
-  "chromVAR"         # motif accessibility per sample
-  # ... add Bioconductor packages here as the material is written
+  "chromVAR",        # motif accessibility per sample
+  "ChIPseeker", "txdbmaker",     # peak annotation (Annotation and differential binding)
+  "DSS",             # differential methylation (brings bsseq)
+  "limma", "minfi", "IlluminaHumanMethylation450kmanifest",
+  "IlluminaHumanMethylation450kanno.ilmn12.hg19", "FlowSorted.Blood.450k"   # methylation arrays
 ))
 ```
 
@@ -66,3 +82,7 @@ reduce(gr)   # should print one merged interval, chr1:100-249
 ```
 
 If both print without error, you are ready for the course!
+
+**If `preprocessFunnorm` (methylation arrays) stops with a pthread error**, reinstall
+one package without threading:
+`BiocManager::install("preprocessCore", configure.args = "--disable-threading", force = TRUE)`.

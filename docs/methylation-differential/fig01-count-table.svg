@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 280" width="1120" height="280" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker><marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker></defs>
+<rect width="1120" height="280" fill="white"/>
+<text x="20" y="100" font-size="14" fill="#5b6b7a">CpG 1</text>
+<text x="20" y="140" font-size="14" fill="#5b6b7a">CpG 2</text>
+<text x="20" y="180" font-size="14" fill="#5b6b7a">CpG 3</text>
+<text x="70" y="30" font-size="17" font-weight="bold" fill="#1b2a3a">methylated reads M</text>
+<text x="130" y="62" font-size="14" font-weight="bold" text-anchor="middle" fill="#2a6f97">GM 1</text>
+<text x="200" y="62" font-size="14" font-weight="bold" text-anchor="middle" fill="#2a6f97">GM 2</text>
+<text x="270" y="62" font-size="14" font-weight="bold" text-anchor="middle" fill="#a8324a">K562 1</text>
+<text x="340" y="62" font-size="14" font-weight="bold" text-anchor="middle" fill="#a8324a">K562 2</text>
+<rect x="90" y="76" width="290" height="34" fill="#f4f6f8"/>
+<text x="130" y="100" font-size="17" text-anchor="middle" fill="#1b2a3a">12</text>
+<text x="200" y="100" font-size="17" text-anchor="middle" fill="#1b2a3a">9</text>
+<text x="270" y="100" font-size="17" text-anchor="middle" fill="#1b2a3a">2</text>
+<text x="340" y="100" font-size="17" text-anchor="middle" fill="#1b2a3a">1</text>
+<rect x="90" y="116" width="290" height="34" fill="white"/>
+<text x="130" y="140" font-size="17" text-anchor="middle" fill="#1b2a3a">15</text>
+<text x="200" y="140" font-size="17" text-anchor="middle" fill="#1b2a3a">17</text>
+<text x="270" y="140" font-size="17" text-anchor="middle" fill="#1b2a3a">1</text>
+<text x="340" y="140" font-size="17" text-anchor="middle" fill="#1b2a3a">0</text>
+<rect x="90" y="156" width="290" height="34" fill="#f4f6f8"/>
+<text x="130" y="180" font-size="17" text-anchor="middle" fill="#1b2a3a">6</text>
+<text x="200" y="180" font-size="17" text-anchor="middle" fill="#1b2a3a">4</text>
+<text x="270" y="180" font-size="17" text-anchor="middle" fill="#1b2a3a">7</text>
+<text x="340" y="180" font-size="17" text-anchor="middle" fill="#1b2a3a">9</text>
+<text x="430" y="30" font-size="17" font-weight="bold" fill="#1b2a3a">all reads N</text>
+<text x="490" y="62" font-size="14" font-weight="bold" text-anchor="middle" fill="#2a6f97">GM 1</text>
+<text x="560" y="62" font-size="14" font-weight="bold" text-anchor="middle" fill="#2a6f97">GM 2</text>
+<text x="630" y="62" font-size="14" font-weight="bold" text-anchor="middle" fill="#a8324a">K562 1</text>
+<text x="700" y="62" font-size="14" font-weight="bold" text-anchor="middle" fill="#a8324a">K562 2</text>
+<rect x="450" y="76" width="290" height="34" fill="#f4f6f8"/>
+<text x="490" y="100" font-size="17" text-anchor="middle" fill="#1b2a3a">14</text>
+<text x="560" y="100" font-size="17" text-anchor="middle" fill="#1b2a3a">13</text>
+<text x="630" y="100" font-size="17" text-anchor="middle" fill="#1b2a3a">16</text>
+<text x="700" y="100" font-size="17" text-anchor="middle" fill="#1b2a3a">12</text>
+<rect x="450" y="116" width="290" height="34" fill="white"/>
+<text x="490" y="140" font-size="17" text-anchor="middle" fill="#1b2a3a">16</text>
+<text x="560" y="140" font-size="17" text-anchor="middle" fill="#1b2a3a">19</text>
+<text x="630" y="140" font-size="17" text-anchor="middle" fill="#1b2a3a">9</text>
+<text x="700" y="140" font-size="17" text-anchor="middle" fill="#1b2a3a">11</text>
+<rect x="450" y="156" width="290" height="34" fill="#f4f6f8"/>
+<text x="490" y="180" font-size="17" text-anchor="middle" fill="#1b2a3a">8</text>
+<text x="560" y="180" font-size="17" text-anchor="middle" fill="#1b2a3a">10</text>
+<text x="630" y="180" font-size="17" text-anchor="middle" fill="#1b2a3a">9</text>
+<text x="700" y="180" font-size="17" text-anchor="middle" fill="#1b2a3a">12</text>
+<text x="790" y="30" font-size="17" font-weight="bold" fill="#1b2a3a">level β = M / N</text>
+<text x="850" y="62" font-size="14" font-weight="bold" text-anchor="middle" fill="#2a6f97">GM 1</text>
+<text x="920" y="62" font-size="14" font-weight="bold" text-anchor="middle" fill="#2a6f97">GM 2</text>
+<text x="990" y="62" font-size="14" font-weight="bold" text-anchor="middle" fill="#a8324a">K562 1</text>
+<text x="1060" y="62" font-size="14" font-weight="bold" text-anchor="middle" fill="#a8324a">K562 2</text>
+<rect x="810" y="76" width="290" height="34" fill="#f4f6f8"/>
+<text x="850" y="100" font-size="17" text-anchor="middle" fill="#1b2a3a">0.86</text>
+<text x="920" y="100" font-size="17" text-anchor="middle" fill="#1b2a3a">0.69</text>
+<text x="990" y="100" font-size="17" text-anchor="middle" fill="#1b2a3a">0.12</text>
+<text x="1060" y="100" font-size="17" text-anchor="middle" fill="#1b2a3a">0.08</text>
+<rect x="810" y="116" width="290" height="34" fill="white"/>
+<text x="850" y="140" font-size="17" text-anchor="middle" fill="#1b2a3a">0.94</text>
+<text x="920" y="140" font-size="17" text-anchor="middle" fill="#1b2a3a">0.89</text>
+<text x="990" y="140" font-size="17" text-anchor="middle" fill="#1b2a3a">0.11</text>
+<text x="1060" y="140" font-size="17" text-anchor="middle" fill="#1b2a3a">0.00</text>
+<rect x="810" y="156" width="290" height="34" fill="#f4f6f8"/>
+<text x="850" y="180" font-size="17" text-anchor="middle" fill="#1b2a3a">0.75</text>
+<text x="920" y="180" font-size="17" text-anchor="middle" fill="#1b2a3a">0.40</text>
+<text x="990" y="180" font-size="17" text-anchor="middle" fill="#1b2a3a">0.78</text>
+<text x="1060" y="180" font-size="17" text-anchor="middle" fill="#1b2a3a">0.75</text>
+<line x1="20" y1="200" x2="1090" y2="200" stroke="#dfe6ec" stroke-width="1.5"/>
+<text x="20" y="232" font-size="16" fill="#1b2a3a">Two matrices, CpGs × samples, are the input of every method. β alone throws away how many reads it rests on:</text>
+<text x="20" y="258" font-size="16" fill="#1b2a3a">CpG 3 in GM rep1 is 6/8 = 0.75, CpG 1 is 12/14 = 0.86; the first is much less certain.</text>
+</svg>

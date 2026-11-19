@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 330" width="1120" height="330" font-family="Helvetica, Arial, sans-serif">
+<defs>
+<marker id="aink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker>
+</defs>
+<rect width="1120" height="330" fill="#ffffff"/>
+<g fill="#f4f6f8" stroke="#dfe6ec" stroke-width="1.5">
+<rect x="10" y="10" width="265" height="310" rx="8"/>
+<rect x="288" y="10" width="265" height="310" rx="8"/>
+<rect x="566" y="10" width="265" height="310" rx="8"/>
+<rect x="844" y="10" width="266" height="310" rx="8"/>
+</g>
+<g font-size="17" font-weight="bold" fill="#1b2a3a">
+<text x="24" y="38">Learn from CRISPRi</text>
+<text x="302" y="38">Single-cell multiome</text>
+<text x="580" y="38">Sequence models</text>
+<text x="858" y="38">Human genetics</text>
+</g>
+
+<!-- 1: supervised -->
+<g font-size="14" fill="#1b2a3a">
+<rect x="30" y="58" width="120" height="104" fill="#ffffff" stroke="#5b6b7a"/>
+<text x="40" y="78">ABC score</text><text x="40" y="98">distance</text><text x="40" y="118">accessibility</text><text x="40" y="138">contact, …</text>
+</g>
+<path d="M156,110 L196,110" stroke="#1b2a3a" stroke-width="2" marker-end="url(#aink)"/>
+<circle cx="225" cy="110" r="24" fill="#2e8b57"/>
+<text x="225" y="115" font-size="14" fill="#ffffff" text-anchor="middle" font-weight="bold">score</text>
+<g font-size="15" fill="#1b2a3a">
+<text x="24" y="200">features → a classifier trained</text>
+<text x="24" y="220">on CRISPRi pairs</text>
+<text x="24" y="250" fill="#5b6b7a">e.g. ENCODE-rE2G</text>
+<text x="24" y="280" fill="#5b6b7a">− few cell types to train on</text>
+</g>
+
+<!-- 2: multiome -->
+<line x1="320" y1="170" x2="520" y2="170" stroke="#1b2a3a" stroke-width="1.5"/>
+<line x1="320" y1="170" x2="320" y2="56" stroke="#1b2a3a" stroke-width="1.5"/>
+<g fill="#6b4fa0" fill-opacity="0.55">
+<circle cx="335" cy="160" r="3.5"/><circle cx="345" cy="156" r="3.5"/><circle cx="352" cy="162" r="3.5"/><circle cx="360" cy="150" r="3.5"/><circle cx="372" cy="146" r="3.5"/><circle cx="380" cy="152" r="3.5"/><circle cx="392" cy="138" r="3.5"/><circle cx="400" cy="130" r="3.5"/><circle cx="410" cy="136" r="3.5"/><circle cx="420" cy="122" r="3.5"/><circle cx="428" cy="116" r="3.5"/><circle cx="440" cy="110" r="3.5"/><circle cx="448" cy="98" r="3.5"/><circle cx="460" cy="96" r="3.5"/><circle cx="470" cy="86" r="3.5"/><circle cx="482" cy="80" r="3.5"/><circle cx="494" cy="72" r="3.5"/><circle cx="505" cy="66" r="3.5"/>
+</g>
+<text x="420" y="190" font-size="14" fill="#5b6b7a" text-anchor="middle">ATAC in E, per (meta)cell</text>
+<text x="310" y="114" font-size="14" fill="#5b6b7a" text-anchor="middle" transform="rotate(-90 310 114)">G RNA</text>
+<g font-size="15" fill="#1b2a3a">
+<text x="302" y="220">RNA and ATAC from the same</text>
+<text x="302" y="240">cell: thousands of samples</text>
+<text x="302" y="270" fill="#5b6b7a">e.g. ArchR, Signac, SCENT</text>
+<text x="302" y="296" fill="#5b6b7a">− still a correlation</text>
+</g>
+
+<!-- 3: sequence models -->
+<text x="582" y="74" font-size="14" fill="#1b2a3a" font-family="Courier New, monospace">…ACGTTGACTCAGCA…</text>
+<path d="M698,82 L698,104" stroke="#1b2a3a" stroke-width="2" marker-end="url(#aink)"/>
+<rect x="640" y="108" width="116" height="34" rx="6" fill="#2a6f97"/>
+<text x="698" y="130" font-size="14" fill="#ffffff" text-anchor="middle" font-weight="bold">neural network</text>
+<path d="M698,144 L698,164" stroke="#1b2a3a" stroke-width="2" marker-end="url(#aink)"/>
+<path d="M600,196 L620,196 L630,176 L640,196 L700,196 L712,168 L724,196 L800,196" stroke="#e67e22" stroke-width="2.5" fill="none"/>
+<g font-size="15" fill="#1b2a3a">
+<text x="580" y="226">predict tracks or expression</text>
+<text x="580" y="246">from DNA; delete E in silico</text>
+<text x="580" y="276" fill="#5b6b7a">machine-learning units</text>
+<text x="580" y="300" fill="#5b6b7a">− weak at long distances</text>
+</g>
+
+<!-- 4: genetics -->
+<line x1="880" y1="170" x2="1080" y2="170" stroke="#1b2a3a" stroke-width="1.5"/>
+<g>
+<rect x="896" y="120" width="40" height="40" fill="#dfe6ec" stroke="#5b6b7a"/><line x1="896" y1="140" x2="936" y2="140" stroke="#1b2a3a" stroke-width="2"/>
+<rect x="960" y="100" width="40" height="40" fill="#dfe6ec" stroke="#5b6b7a"/><line x1="960" y1="120" x2="1000" y2="120" stroke="#1b2a3a" stroke-width="2"/>
+<rect x="1024" y="74" width="40" height="40" fill="#dfe6ec" stroke="#5b6b7a"/><line x1="1024" y1="94" x2="1064" y2="94" stroke="#1b2a3a" stroke-width="2"/>
+</g>
+<g font-size="14" fill="#5b6b7a" text-anchor="middle"><text x="916" y="190">AA</text><text x="980" y="190">AG</text><text x="1044" y="190">GG</text></g>
+<text x="866" y="66" font-size="14" fill="#5b6b7a">G RNA</text>
+<g font-size="15" fill="#1b2a3a">
+<text x="858" y="220">a variant in E changes G</text>
+<text x="858" y="240">(eQTL) across people</text>
+<text x="858" y="270" fill="#5b6b7a" font-size="13">see: Epigenomics and genetic variation</text>
+<text x="858" y="296" fill="#5b6b7a">− LD blurs which variant</text>
+</g>
+</svg>

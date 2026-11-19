@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 420" width="1120" height="420" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker>
+  </defs>
+  <rect width="1120" height="420" fill="#ffffff"/>
+  <!-- panel 1: ranks -->
+  <text x="20" y="28" font-size="17" font-weight="bold" fill="#1b2a3a">1 Match peaks, rank them</text>
+  <line x1="60" y1="320" x2="330" y2="320" stroke="#1b2a3a" stroke-width="1.5" marker-end="url(#ar)"/>
+  <line x1="60" y1="320" x2="60" y2="50" stroke="#1b2a3a" stroke-width="1.5" marker-end="url(#ar)"/>
+  <text x="195" y="346" font-size="14" fill="#1b2a3a" text-anchor="middle">rank in replicate 1 (strong → weak)</text>
+  <text x="40" y="185" font-size="14" fill="#1b2a3a" text-anchor="middle" transform="rotate(-90 40 185)">rank in replicate 2</text>
+  <!-- reproducible: along diagonal near origin -->
+  <g fill="#2e8b57">
+    <circle cx="70" cy="308" r="3.5"/><circle cx="78" cy="300" r="3.5"/><circle cx="86" cy="304" r="3.5"/><circle cx="92" cy="290" r="3.5"/><circle cx="100" cy="294" r="3.5"/>
+    <circle cx="108" cy="280" r="3.5"/><circle cx="114" cy="286" r="3.5"/><circle cx="122" cy="270" r="3.5"/><circle cx="130" cy="276" r="3.5"/><circle cx="138" cy="262" r="3.5"/>
+    <circle cx="146" cy="268" r="3.5"/><circle cx="150" cy="250" r="3.5"/><circle cx="160" cy="258" r="3.5"/><circle cx="168" cy="244" r="3.5"/><circle cx="176" cy="236" r="3.5"/>
+    <circle cx="96" cy="276" r="3.5"/><circle cx="126" cy="290" r="3.5"/><circle cx="154" cy="234" r="3.5"/>
+  </g>
+  <!-- irreproducible: scattered -->
+  <g fill="#a8324a" fill-opacity="0.8">
+    <circle cx="200" cy="120" r="3.5"/><circle cx="260" cy="200" r="3.5"/><circle cx="300" cy="90" r="3.5"/><circle cx="230" cy="280" r="3.5"/><circle cx="290" cy="250" r="3.5"/>
+    <circle cx="210" cy="190" r="3.5"/><circle cx="250" cy="70" r="3.5"/><circle cx="310" cy="160" r="3.5"/><circle cx="190" cy="230" r="3.5"/><circle cx="270" cy="130" r="3.5"/>
+    <circle cx="225" cy="100" r="3.5"/><circle cx="315" cy="300" r="3.5"/><circle cx="180" cy="160" r="3.5"/><circle cx="240" cy="240" r="3.5"/><circle cx="295" cy="205" r="3.5"/>
+  </g>
+  <text x="100" y="226" font-size="14" fill="#2e8b57">strong in both</text>
+  <text x="200" y="56" font-size="14" fill="#a8324a">noise: ranks unrelated</text>
+  <text x="20" y="378" font-size="15" fill="#1b2a3a">Only ranks are used, so the two</text>
+  <text x="20" y="398" font-size="15" fill="#1b2a3a">replicates need not be on one scale.</text>
+
+  <line x1="370" y1="16" x2="370" y2="406" stroke="#cfd8e0" stroke-width="1.5"/>
+  <!-- panel 2: mixture -->
+  <text x="390" y="28" font-size="17" font-weight="bold" fill="#1b2a3a">2 Fit a mixture of two components</text>
+  <rect x="390" y="50" width="340" height="130" rx="8" fill="#e6f2ec" stroke="#2e8b57"/>
+  <text x="404" y="76" font-size="16" font-weight="bold" fill="#2e8b57">reproducible (proportion π)</text>
+  <text x="404" y="100" font-size="15" fill="#1b2a3a">signals of the two replicates are</text>
+  <text x="404" y="120" font-size="15" fill="#1b2a3a">correlated (ρ &gt; 0) and shifted</text>
+  <text x="404" y="140" font-size="15" fill="#1b2a3a">upwards (mean μ, spread σ)</text>
+  <text x="404" y="166" font-size="13" fill="#5b6b7a">a bivariate normal on a latent scale</text>
+  <rect x="390" y="196" width="340" height="110" rx="8" fill="#f6e8eb" stroke="#a8324a"/>
+  <text x="404" y="222" font-size="16" font-weight="bold" fill="#a8324a">irreproducible (1 − π)</text>
+  <text x="404" y="246" font-size="15" fill="#1b2a3a">the two replicates are independent:</text>
+  <text x="404" y="266" font-size="15" fill="#1b2a3a">a peak strong in one says nothing</text>
+  <text x="404" y="286" font-size="15" fill="#1b2a3a">about the other</text>
+  <text x="390" y="338" font-size="15" fill="#1b2a3a">A copula model: ranks are mapped to a</text>
+  <text x="390" y="358" font-size="15" fill="#1b2a3a">latent scale and the four parameters</text>
+  <text x="390" y="378" font-size="15" fill="#1b2a3a">(π, μ, σ, ρ) are fitted by EM.</text>
+
+  <line x1="750" y1="16" x2="750" y2="406" stroke="#cfd8e0" stroke-width="1.5"/>
+  <!-- panel 3: idr -->
+  <text x="770" y="28" font-size="17" font-weight="bold" fill="#1b2a3a">3 Score each peak, cut</text>
+  <text x="770" y="62" font-size="15" fill="#1b2a3a"><tspan font-weight="bold">local idr</tspan> = probability that the peak</text>
+  <text x="770" y="82" font-size="15" fill="#1b2a3a">belongs to the irreproducible part</text>
+  <text x="770" y="116" font-size="15" fill="#1b2a3a"><tspan font-weight="bold">IDR</tspan> of a set = mean local idr of</text>
+  <text x="770" y="136" font-size="15" fill="#1b2a3a">the peaks in it, strongest first</text>
+  <text x="770" y="156" font-size="15" fill="#1b2a3a">(like a q-value: an expected rate)</text>
+  <!-- curve: IDR vs number of peaks -->
+  <line x1="800" y1="330" x2="1090" y2="330" stroke="#1b2a3a" stroke-width="1.5" marker-end="url(#ar)"/>
+  <line x1="800" y1="330" x2="800" y2="180" stroke="#1b2a3a" stroke-width="1.5" marker-end="url(#ar)"/>
+  <path d="M800,328 L900,327 C940,326 960,320 980,300 C1000,276 1020,226 1060,200" fill="none" stroke="#1b2a3a" stroke-width="2.4"/>
+  <line x1="800" y1="312" x2="1090" y2="312" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="1090" y="306" font-size="13" fill="#c0392b" text-anchor="end">IDR = 0.05</text>
+  <line x1="968" y1="312" x2="968" y2="330" stroke="#c0392b" stroke-width="1.5"/>
+  <text x="945" y="350" font-size="14" fill="#1b2a3a" text-anchor="middle">peaks kept</text>
+  <text x="1090" y="368" font-size="14" fill="#1b2a3a" text-anchor="end">peaks, strongest first</text>
+  <text x="790" y="260" font-size="14" fill="#1b2a3a" text-anchor="middle" transform="rotate(-90 790 260)">IDR</text>
+  <text x="770" y="398" font-size="14" fill="#5b6b7a">ENCODE: IDR 0.05 for TFs (Li et al. 2011)</text>
+</svg>

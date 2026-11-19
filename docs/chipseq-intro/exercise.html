@@ -1,0 +1,2142 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.30">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Exercise: ChIP-seq: the assay – Epigenetics</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-662ae1889177880cb371f83234c0a158.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-d37fb74fd9c61f52627c5754f4dbd5bd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Epigenetics</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-course-info" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Course info</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-course-info">    
+        <li>
+    <a class="dropdown-item" href="../courseplan.html">
+ <span class="dropdown-text">Course plan</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Protein–DNA binding and histone marks (ChIP-seq)</li><li class="breadcrumb-item"><a href="../chipseq-intro/lec.html">ChIP-seq: the assay</a></li><li class="breadcrumb-item"><a href="../chipseq-intro/exercise.html">Exercise</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Course info</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../courseplan.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Course plan</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../elo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Learning outcomes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../intro/install.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Install software</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dictionary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Glossary</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Foundations</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">What is epigenetics?</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chromatin-intro/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chromatin-intro/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chromatin-intro/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Genomic intervals</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../genomic-intervals/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../genomic-intervals/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../genomic-intervals/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text">Gene regulation</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../gene-regulation/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../gene-regulation/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../gene-regulation/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false">
+ <span class="menu-text">From reads to coverage</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../enrichment-alignment/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../enrichment-alignment/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../enrichment-alignment/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false">
+ <span class="menu-text">Experimental design and QC</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epigenomics-design/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epigenomics-design/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epigenomics-design/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
+ <span class="menu-text">Chromatin accessibility (ATAC-seq)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="false">
+ <span class="menu-text">ATAC-seq: Tn5, fragment sizes, nucleosome ladder</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atacseq-intro/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atacseq-intro/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atacseq-intro/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false">
+ <span class="menu-text">ATAC-seq processing and peak calling</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atacseq-analysis/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atacseq-analysis/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../atacseq-analysis/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="false">
+ <span class="menu-text">Differential accessibility</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../differential-accessibility/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../differential-accessibility/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../differential-accessibility/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="false">
+ <span class="menu-text">Motifs, motif enrichment and TF footprinting</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../motifs-footprinting/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../motifs-footprinting/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../motifs-footprinting/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="true">
+ <span class="menu-text">Protein–DNA binding and histone marks (ChIP-seq)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" role="navigation" aria-expanded="true">
+ <span class="menu-text">ChIP-seq: the assay</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-14" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-intro/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-intro/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-intro/exercise.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-15" role="navigation" aria-expanded="false">
+ <span class="menu-text">Peak calling</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-15" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-15" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-peaks/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-peaks/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-peaks/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" role="navigation" aria-expanded="false">
+ <span class="menu-text">CUT&amp;RUN and CUT&amp;Tag</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-16" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cutrun-cuttag/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cutrun-cuttag/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cutrun-cuttag/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-17" role="navigation" aria-expanded="false">
+ <span class="menu-text">Annotation and differential binding</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-17" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-17" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-downstream/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-downstream/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chipseq-downstream/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-18" role="navigation" aria-expanded="false">
+ <span class="menu-text">Combining marks into chromatin states</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-18" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-18" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chromatin-states/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chromatin-states/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chromatin-states/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-19" role="navigation" aria-expanded="true">
+ <span class="menu-text">DNA methylation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-19" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-19" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-20" role="navigation" aria-expanded="false">
+ <span class="menu-text">DNA methylation biology</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-20" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-20" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-biology/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-biology/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-biology/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-21" role="navigation" aria-expanded="false">
+ <span class="menu-text">Bisulfite and enzymatic sequencing</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-21" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-21" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-bisulfite/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-bisulfite/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-bisulfite/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-22" role="navigation" aria-expanded="false">
+ <span class="menu-text">Differential methylation</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-22" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-22" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-differential/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-differential/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-differential/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-23" role="navigation" aria-expanded="false">
+ <span class="menu-text">Methylation arrays (Illumina EPIC)</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-23" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-23" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-arrays/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-arrays/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../methylation-arrays/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-24" role="navigation" aria-expanded="false">
+ <span class="menu-text">Epigenetic clocks and biomarkers</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-24" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-24" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epigenetic-clocks/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epigenetic-clocks/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epigenetic-clocks/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-25" role="navigation" aria-expanded="false">
+ <span class="menu-text">Methylation and chromatin from long reads</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-25" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-25" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../longread-epigenomics/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../longread-epigenomics/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../longread-epigenomics/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-26" role="navigation" aria-expanded="true">
+ <span class="menu-text">3D genome</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-26" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-26" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-27" role="navigation" aria-expanded="false">
+ <span class="menu-text">3D genome organisation</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-27" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-27" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../genome-3d-intro/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../genome-3d-intro/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../genome-3d-intro/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-28" role="navigation" aria-expanded="false">
+ <span class="menu-text">Hi-C: from reads to contact matrices</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-28" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-28" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hic-processing/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hic-processing/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hic-processing/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-29" role="navigation" aria-expanded="false">
+ <span class="menu-text">Calling compartments, TADs and loops</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-29" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-29" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hic-features/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hic-features/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hic-features/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-30" role="navigation" aria-expanded="true">
+ <span class="menu-text">Integration and interpretation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-30" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-30" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-31" role="navigation" aria-expanded="false">
+ <span class="menu-text">Linking regulatory elements to genes</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-31" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-31" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../integration-rnaseq/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../integration-rnaseq/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../integration-rnaseq/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-32" role="navigation" aria-expanded="false">
+ <span class="menu-text">Epigenomics and genetic variation</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-32" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-32" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../noncoding-variants/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../noncoding-variants/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../noncoding-variants/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-33" role="navigation" aria-expanded="true">
+ <span class="menu-text">Machine learning for prediction</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-33" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-33" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-34" role="navigation" aria-expanded="false">
+ <span class="menu-text">Machine learning from scratch</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-34" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-34" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-basics/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-basics/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-basics/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-35" role="navigation" aria-expanded="false">
+ <span class="menu-text">What people try to predict</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-35" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-35" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-prediction-tasks/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-prediction-tasks/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-prediction-tasks/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-36" role="navigation" aria-expanded="false">
+ <span class="menu-text">How a CNN reads DNA</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-36" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-36" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-cnn-dna/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-cnn-dna/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-cnn-dna/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-37" role="navigation" aria-expanded="false">
+ <span class="menu-text">What did the model learn? Variant effects</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-37" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-37" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-interpretation-variants/lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture (slides)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-interpretation-variants/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ml-interpretation-variants/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#goal" id="toc-goal" class="nav-link active" data-scroll-target="#goal">Goal</a></li>
+  <li><a href="#background" id="toc-background" class="nav-link" data-scroll-target="#background">Background</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
+  <li><a href="#by-hand" id="toc-by-hand" class="nav-link" data-scroll-target="#by-hand">By hand</a></li>
+  <li><a href="#on-the-command-line" id="toc-on-the-command-line" class="nav-link" data-scroll-target="#on-the-command-line">On the command line</a>
+  <ul class="collapse">
+  <li><a href="#c1-look-at-the-reads" id="toc-c1-look-at-the-reads" class="nav-link" data-scroll-target="#c1-look-at-the-reads">C1 — Look at the reads</a></li>
+  <li><a href="#c2-the-alignment-chain-as-a-function" id="toc-c2-the-alignment-chain-as-a-function" class="nav-link" data-scroll-target="#c2-the-alignment-chain-as-a-function">C2 — The alignment chain as a function</a></li>
+  <li><a href="#c3-can-the-fragment-length-be-estimated" id="toc-c3-can-the-fragment-length-be-estimated" class="nav-link" data-scroll-target="#c3-can-the-fragment-length-be-estimated">C3 — Can the fragment length be estimated?</a></li>
+  <li><a href="#c4-fingerprints-of-a-sharp-and-a-broad-mark" id="toc-c4-fingerprints-of-a-sharp-and-a-broad-mark" class="nav-link" data-scroll-target="#c4-fingerprints-of-a-sharp-and-a-broad-mark">C4 — Fingerprints of a sharp and a broad mark</a></li>
+  <li><a href="#c5-tracks-for-the-browser" id="toc-c5-tracks-for-the-browser" class="nav-link" data-scroll-target="#c5-tracks-for-the-browser">C5 — Tracks for the browser</a></li>
+  </ul></li>
+  <li><a href="#in-r" id="toc-in-r" class="nav-link" data-scroll-target="#in-r">In R</a>
+  <ul class="collapse">
+  <li><a href="#r1-strand-cross-correlation-sharp-vs-broad" id="toc-r1-strand-cross-correlation-sharp-vs-broad" class="nav-link" data-scroll-target="#r1-strand-cross-correlation-sharp-vs-broad">R1 — Strand cross-correlation, sharp vs broad</a></li>
+  <li><a href="#r2-is-the-input-flat" id="toc-r2-is-the-input-flat" class="nav-link" data-scroll-target="#r2-is-the-input-flat">R2 — Is the input flat?</a></li>
+  <li><a href="#r3-h3k36me3-in-gene-bodies" id="toc-r3-h3k36me3-in-gene-bodies" class="nav-link" data-scroll-target="#r3-h3k36me3-in-gene-bodies">R3 — H3K36me3 in gene bodies</a></li>
+  <li><a href="#r4-how-far-does-the-signal-extend" id="toc-r4-how-far-does-the-signal-extend" class="nav-link" data-scroll-target="#r4-how-far-does-the-signal-extend">R4 — How far does the signal extend?</a></li>
+  </ul></li>
+  <li><a href="#hints" id="toc-hints" class="nav-link" data-scroll-target="#hints">Hints</a></li>
+  <li><a href="#solutions" id="toc-solutions" class="nav-link" data-scroll-target="#solutions">Solutions</a></li>
+  <li><a href="#where-this-leads" id="toc-where-this-leads" class="nav-link" data-scroll-target="#where-this-leads">Where this leads</a></li>
+  <li><a href="#key-papers-optional-further-reading" id="toc-key-papers-optional-further-reading" class="nav-link" data-scroll-target="#key-papers-optional-further-reading">Key papers (optional further reading)</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Protein–DNA binding and histone marks (ChIP-seq)</li><li class="breadcrumb-item"><a href="../chipseq-intro/lec.html">ChIP-seq: the assay</a></li><li class="breadcrumb-item"><a href="../chipseq-intro/exercise.html">Exercise</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Exercise: ChIP-seq: the assay</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="goal" class="level2">
+<h2 class="anchored" data-anchor-id="goal">Goal</h2>
+<p>After this exercise you will be able to:</p>
+<ul>
+<li>Compute DNA amounts, ChIP efficiency and a ChIP-qPCR “percent of input” on paper, and predict the shape of a ChIP-seq track from the target.</li>
+<li>Process a transcription-factor ChIP (CTCF) and a broad histone-mark ChIP (H3K36me3) with their inputs, reusing the chain from <em>From reads to coverage</em> as a shell function.</li>
+<li>Compare sharp and broad signals with <a href="https://macs3-project.github.io/MACS/docs/predictd.html">MACS3 predictd</a>, <a href="https://deeptools.readthedocs.io/en/latest/content/tools/plotFingerprint.html">deepTools plotFingerprint</a>, strand cross-correlation and autocorrelation in R.</li>
+<li>Show with your own reads that an input is not flat (open promoters) and that H3K36me3 covers transcribed gene bodies.</li>
+</ul>
+</section>
+<section id="background" class="level2">
+<h2 class="anchored" data-anchor-id="background">Background</h2>
+<p><strong>The protocol.</strong> Formaldehyde crosslinks proteins to DNA (and to each other) within ~2 Å; chromatin is fragmented by sonication (crosslinked ChIP) or micrococcal nuclease (native ChIP of histones); an antibody on protein A/G beads pulls down the target; crosslinks are reversed at 65 °C, the DNA is purified (typically 1–10 ng), made into a library and sequenced. The <strong>input</strong> is the same chromatin taken through every step except the immunoprecipitation.</p>
+<p><strong>Amounts.</strong> A diploid human cell has about 6.6 pg of DNA. One base pair of double-stranded DNA weighs about 650 g/mol (Avogadro’s number <span class="math inline">\(6.022 \times 10^{23}\)</span> /mol).</p>
+<p><strong>ChIP-qPCR, percent of input.</strong> If a fraction <span class="math inline">\(f\)</span> of the chromatin was kept as input, first adjust its Ct: <span class="math inline">\(Ct_\text{input,adj} = Ct_\text{input} - \log_2(1/f)\)</span>. Then <span class="math inline">\(\%\text{input} = 100 \times 2^{\,Ct_\text{input,adj} - Ct_\text{ChIP}}\)</span>. Fold enrichment between two regions is <span class="math inline">\(2^{\Delta Ct}\)</span>.</p>
+<p><strong>Signal shapes.</strong> A transcription factor gives sharp peaks about two fragment lengths wide, with + strand reads to the left of the site and − strand reads to the right (separated by the fragment length <span class="math inline">\(d\)</span>). Histone marks give nucleosome-scale peaks (H3K4me3, H3K27ac: 1–5 kb, with a dip at the nucleosome-free TSS) or broad domains (H3K36me3 over transcribed gene bodies; H3K27me3, H3K9me3 over silent regions, tens to hundreds of kb).</p>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>file</th>
+<th>content</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>gm12878_ctcf_chip.fastq.gz</code>, <code>gm12878_ctcf_input.fastq.gz</code></td>
+<td>CTCF ChIP (ENCSR000DZN rep 1, 36 bp, 2011) and its input (ENCSR000EYX, 28 bp, 2009), Phred+64, as in <em>From reads to coverage</em></td>
+</tr>
+<tr class="even">
+<td><code>gm12878_h3k36me3_chip.fastq.gz</code></td>
+<td>H3K36me3 ChIP (<a href="https://www.encodeproject.org/experiments/ENCSR000AKE/">ENCSR000AKE</a> rep 1, Broad, 51 bp, 2008): 98 689 reads</td>
+</tr>
+<tr class="odd">
+<td><code>gm12878_h3k36me3_input.fastq.gz</code></td>
+<td>its input (<a href="https://www.encodeproject.org/experiments/ENCSR000AKJ/">ENCSR000AKJ</a> rep 1, 51 bp): 131 839 reads</td>
+</tr>
+<tr class="even">
+<td><code>gm12878_h3k4me3_fc.bigWig</code></td>
+<td>ENCODE H3K4me3 fold change, to tell active from silent promoters</td>
+</tr>
+<tr class="odd">
+<td><code>hg38_chr21_chrM.fa</code>, <code>bowtie2/</code>, <code>hg38_blacklist.bed.gz</code>, <code>gencode.v46.basic.annotation.gtf.gz</code></td>
+<td>reference, index, blacklist, genes</td>
+</tr>
+</tbody>
+</table>
+<p>As before, the FASTQ files contain only the reads that ENCODE aligned to <strong>chr21 or chrM</strong> against the whole genome (built by <code>data/prepare-reads.sh</code> and <code>data/prepare-chip.sh</code>). For H3K36me3 that is only 0.42% of the library: H3K36me3 lives in gene bodies and chr21 is gene-poor, so this is a <strong>sparse</strong> dataset, about 70 000 reads after filtering.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/epi/chip <span class="kw">&amp;&amp;</span> <span class="bu">cd</span> ~/epi/chip</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="va">D</span><span class="op">=</span>/path/to/course/data</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="va">T</span><span class="op">=</span>8</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You need <code>fastp</code>, <code>bowtie2</code>, <code>samtools</code>, <code>bedtools</code>, <code>macs3</code> and <code>deeptools</code> (see <em>Install the software you need</em>). The command line takes about 3 minutes with 8 threads.</p>
+</section>
+<section id="by-hand" class="level2">
+<h2 class="anchored" data-anchor-id="by-hand">By hand</h2>
+<p><strong>B1. How much DNA, and how much of it is signal?</strong> A CTCF ChIP starts from <span class="math inline">\(5 \times 10^6\)</span> cells. 1% of the sheared chromatin is kept as input. The IP returns 4 ng of DNA with fragments of about 200 bp.</p>
+<ol type="a">
+<li><p>How much DNA is in the chromatin? How much in the input aliquot?</p></li>
+<li><p>What fraction of the chromatin DNA did the IP recover?</p></li>
+<li><p>Suppose 20% of the IP DNA comes from the 40 000 CTCF sites of the genome. How many 200-bp fragments is that? Each site exists in two copies per cell: what fraction of all site copies in the sample ended up in the IP?</p></li>
+<li><p>The library is sequenced to 20 M reads with FRiP 0.2. On average, how many reads per CTCF site? Compare with (c): what does sequencing do to the library?</p></li>
+</ol>
+<p><strong>B2. ChIP-qPCR.</strong> 1% of the chromatin was kept as input. Ct values: input 25.0 (primer pair at site X); ChIP at site X 27.4; ChIP at a negative control region 32.6 (assume the input Ct is the same for both primer pairs).</p>
+<ol type="a">
+<li><p>Compute the percent of input at site X and at the negative region.</p></li>
+<li><p>What is the fold enrichment of site X over the negative region?</p></li>
+<li><p>A colleague reports “0.19% of input” as weak. Is it? What would you compare it with?</p></li>
+</ol>
+<p><strong>B3. Strands and resolution.</strong></p>
+<ol type="a">
+<li><p>Around 300 summits of a TF, + strand read 5’ ends peak at −58 bp and − strand 5’ ends at +62 bp. Estimate the fragment length. Why is there no read 5’ end exactly at the summit?</p></li>
+<li><p>In a ChIP-exo experiment for the same factor, + strand read starts pile up at −12 bp and − strand starts at +14 bp. What do these positions mean, and how large is the protected region?</p></li>
+<li><p>Why do the same two calculations fail for H3K36me3?</p></li>
+</ol>
+<p><strong>B4. Which antibody?</strong> Four ChIP-seq tracks of the same cells, over a 400-kb region with two active genes, one silent developmental gene cluster and an intergenic stretch:</p>
+<ul>
+<li>Track A: about 15 needle-like peaks, 300–500 bp wide, in genes and between them.</li>
+<li>Track B: 2–4 kb peaks at the TSSs of the two active genes, each with a small dip at the TSS itself.</li>
+<li>Track C: low, 30–60 kb “carpets” over the bodies of the two active genes, starting about 1 kb after the TSS and highest towards the 3’ end.</li>
+<li>Track D: a 150-kb low plateau over the silent gene cluster, nothing over the active genes.</li>
+</ul>
+<ol type="a">
+<li><p>Match each track to one of: H3K27me3, CTCF, H3K36me3, H3K4me3. Give one reason for each.</p></li>
+<li><p>For which tracks would <code>macs3 predictd</code> find a clear fragment length? Which would need about 45 M reads per replicate by ENCODE’s standards?</p></li>
+<li><p>Why does track B dip at the TSS?</p></li>
+</ol>
+<p><strong>B5. Read the figures</strong> (lecture: <em>Real data: the input is not flat</em> and <em>Real data: profiles around genes</em>).</p>
+<ol type="a">
+<li><p>The input of the CTCF ChIP reaches 14 times the chr21 average at active TSSs, the input of the H3K36me3 ChIP about 1.1 times. Give two reasons why two inputs from the same cell line can differ this much.</p></li>
+<li><p>A CTCF peak at an active promoter is twice as high as the input there. A CTCF peak in a gene desert is twice as high as the input there too. Which one contains more reads? Are both equally convincing?</p></li>
+<li><p>Around active TSSs, H3K4me1 is lowest at the TSS and highest about 1 kb away, while H3K4me3 is high on both flanks. What does that tell you about where each mark sits?</p></li>
+</ol>
+<p><strong>B6. Judge the design.</strong></p>
+<ol type="a">
+<li><p>A lab makes a ChIP of a TF in GM12878 and, to save money, uses an input sequenced from K562 cells that was available from ENCODE. What can go wrong?</p></li>
+<li><p>Another lab sequences the ChIP to 30 M reads and the input to 2 M reads. What happens to a peak caller’s estimate of the local background?</p></li>
+<li><p>A paper maps a transient co-activator that has no DNA-binding domain with 1% formaldehyde for 5 minutes and finds almost no peaks. Suggest two changes to the protocol.</p></li>
+</ol>
+<p><strong>B7. Hyper-ChIPable?</strong> A new antibody against transcription factor Z gives 3 000 peaks. 85% of them lie at the promoters of the 10% most highly expressed genes, and none has the known motif of Z. A ChIP with a non-specific IgG in the same cells gives weaker peaks at many of the same promoters.</p>
+<ol type="a">
+<li><p>What is the most likely explanation?</p></li>
+<li><p>Name two experiments that would test whether Z binds these promoters.</p></li>
+</ol>
+<p><strong>B8. Crosslinked or native?</strong> For each, choose X-ChIP (formaldehyde + sonication) or N-ChIP (no fixation + MNase) and give a reason: (a) H3K27me3 in 50 000 sorted cells; (b) a TF that binds for a few seconds; (c) the positions of H3K4me3 nucleosomes around TSSs, at nucleosome resolution; (d) the co-activator of B6c.</p>
+<p><strong>B9. Peak heights.</strong> In one CTCF ChIP, site A has 400 reads and site B 100 reads, with similar inputs. A student concludes that CTCF occupies site A in four times as many cells as site B. List three other explanations. What comparison would be meaningful?</p>
+</section>
+<section id="on-the-command-line" class="level2">
+<h2 class="anchored" data-anchor-id="on-the-command-line">On the command line</h2>
+<section id="c1-look-at-the-reads" class="level3">
+<h3 class="anchored" data-anchor-id="c1-look-at-the-reads">C1 — Look at the reads</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> gm12878_ctcf_chip gm12878_ctcf_input gm12878_h3k36me3_chip gm12878_h3k36me3_input<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="va">$f</span> <span class="va">$(</span><span class="fu">zcat</span> <span class="va">$D</span>/<span class="va">$f</span>.fastq.gz <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'NR % 4 == 2 { n++; if (length($0) &gt; l) l = length($0) } END { print n, l }'</span><span class="va">)</span> <span class="dt">\</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">$(</span><span class="fu">zcat</span> <span class="va">$D</span>/<span class="va">$f</span>.fastq.gz <span class="kw">|</span> <span class="fu">head</span> <span class="at">-400000</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'NR % 4 == 0'</span> <span class="kw">|</span> <span class="fu">fold</span> <span class="at">-w1</span> <span class="kw">|</span> <span class="va">LC_ALL</span><span class="op">=</span>C <span class="fu">sort</span> <span class="at">-u</span> <span class="kw">|</span> <span class="fu">tr</span> <span class="at">-d</span> <span class="st">'\n'</span><span class="va">)</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>For each file: how many reads, how long, and which quality characters occur? Which files are Phred+64 and which Phred+33 (lowest and highest character)?</p>
+</section>
+<section id="c2-the-alignment-chain-as-a-function" class="level3">
+<h3 class="anchored" data-anchor-id="c2-the-alignment-chain-as-a-function">C2 — The alignment chain as a function</h3>
+<p>The chain of <em>From reads to coverage</em>, wrapped in a shell function so that it can be run on any single-end sample:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="va">$D</span>/hg38_blacklist.bed.gz <span class="op">&gt;</span> blacklist.bed</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">chain()</span> <span class="kw">{</span>   <span class="co"># usage: chain &lt;name&gt; &lt;reads.fastq.gz&gt; &lt;33 or 64&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">local</span> <span class="va">s</span><span class="op">=</span><span class="va">$1</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="bu">[</span> <span class="st">"</span><span class="va">$3</span><span class="st">"</span> <span class="ot">=</span> 64 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span> <span class="fu">zcat</span> <span class="va">$2</span> <span class="kw">|</span> <span class="fu">perl</span> <span class="at">-pe</span> <span class="st">'tr/@-~/!-_/ if $. % 4 == 0'</span> <span class="kw">|</span> <span class="fu">gzip</span> <span class="op">&gt;</span> <span class="va">$s</span>.fastq.gz</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> <span class="fu">cp</span> <span class="va">$2</span> <span class="va">$s</span>.fastq.gz<span class="kw">;</span> <span class="cf">fi</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="ex">fastp</span> <span class="at">-w</span> <span class="va">$T</span> <span class="at">-i</span> <span class="va">$s</span>.fastq.gz <span class="at">-o</span> <span class="va">$s</span>.trim.fastq.gz <span class="at">-j</span> <span class="va">$s</span>.fastp.json <span class="at">-h</span> <span class="va">$s</span>.fastp.html <span class="dv">2</span><span class="op">&gt;</span> <span class="va">$s</span>.fastp.log</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="ex">bowtie2</span> <span class="at">-p</span> <span class="va">$T</span> <span class="at">-x</span> <span class="va">$D</span>/bowtie2/hg38_chr21_chrM <span class="at">-U</span> <span class="va">$s</span>.trim.fastq.gz <span class="dv">2</span><span class="op">&gt;</span> <span class="va">$s</span>.bowtie2.log <span class="dt">\</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">|</span> <span class="ex">samtools</span> sort <span class="at">-@</span> 4 <span class="at">-o</span> <span class="va">$s</span>.sorted.bam <span class="at">-</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="ex">samtools</span> index <span class="va">$s</span>.sorted.bam</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="ex">samtools</span> view <span class="at">-b</span> <span class="at">-q</span> 30 <span class="at">-F</span> 1804 <span class="at">-o</span> <span class="va">$s</span>.q30.bam <span class="va">$s</span>.sorted.bam</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="ex">samtools</span> markdup <span class="at">-s</span> <span class="va">$s</span>.q30.bam <span class="va">$s</span>.markdup.bam <span class="dv">2</span><span class="op">&gt;</span> <span class="va">$s</span>.markdup.txt</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="ex">samtools</span> index <span class="va">$s</span>.markdup.bam</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="ex">samtools</span> view <span class="at">-b</span> <span class="at">-F</span> 1024 <span class="at">-o</span> <span class="va">$s</span>.dedup.bam <span class="va">$s</span>.markdup.bam chr21</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="ex">bedtools</span> intersect <span class="at">-v</span> <span class="at">-abam</span> <span class="va">$s</span>.dedup.bam <span class="at">-b</span> blacklist.bed <span class="op">&gt;</span> <span class="va">$s</span>.final.bam</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="ex">samtools</span> index <span class="va">$s</span>.final.bam</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="ex">chain</span> ctcf           <span class="va">$D</span>/gm12878_ctcf_chip.fastq.gz      64</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="ex">chain</span> ctcf_input     <span class="va">$D</span>/gm12878_ctcf_input.fastq.gz     64</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="ex">chain</span> h3k36me3       <span class="va">$D</span>/gm12878_h3k36me3_chip.fastq.gz  33</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="ex">chain</span> h3k36me3_input <span class="va">$D</span>/gm12878_h3k36me3_input.fastq.gz 33</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> ctcf ctcf_input h3k36me3 h3k36me3_input<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="va">$s</span> <span class="va">$(</span><span class="ex">samtools</span> view <span class="at">-c</span> <span class="at">-F</span> 4 <span class="va">$s</span>.sorted.bam<span class="va">)</span> <span class="va">$(</span><span class="ex">samtools</span> view <span class="at">-c</span> <span class="at">-F</span> 4 <span class="va">$s</span>.sorted.bam chrM<span class="va">)</span> <span class="dt">\</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    <span class="va">$(</span><span class="fu">grep</span> <span class="st">"DUPLICATE SINGLE:"</span> <span class="va">$s</span>.markdup.txt <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span><span class="st">' '</span> <span class="at">-f3</span><span class="va">)</span> <span class="va">$(</span><span class="ex">samtools</span> view <span class="at">-c</span> <span class="va">$s</span>.final.bam<span class="va">)</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>For each sample: aligned reads, reads on chrM, duplicates, final reads on chr21. Which library has the most duplicates, and where are they?</p></li>
+<li><p>The two inputs have very different chrM fractions. Does that matter for a chr21 analysis? (Think about what <code>samtools view ... chr21</code> does.)</p></li>
+</ol>
+</section>
+<section id="c3-can-the-fragment-length-be-estimated" class="level3">
+<h3 class="anchored" data-anchor-id="c3-can-the-fragment-length-be-estimated">C3 — Can the fragment length be estimated?</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> ctcf h3k36me3<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="ex">macs3</span> predictd <span class="at">-i</span> <span class="va">$s</span>.final.bam <span class="at">-f</span> BAM <span class="at">-g</span> 40088619 <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-E</span> <span class="st">"paired peaks|predicted fragment|alternative"</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Compare the two. How many “alternative” fragment lengths does MACS3 suggest for H3K36me3, and what does that tell you?</p>
+</section>
+<section id="c4-fingerprints-of-a-sharp-and-a-broad-mark" class="level3">
+<h3 class="anchored" data-anchor-id="c4-fingerprints-of-a-sharp-and-a-broad-mark">C4 — Fingerprints of a sharp and a broad mark</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">plotFingerprint</span> <span class="at">-b</span> ctcf.final.bam ctcf_input.final.bam h3k36me3.final.bam h3k36me3_input.final.bam <span class="dt">\</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">--labels</span> CTCF CTCF_input H3K36me3 H3K36me3_input <span class="at">--binSize</span> 1000 <span class="at">--region</span> chr21 <span class="dt">\</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">--plotFile</span> fingerprint.png <span class="at">--outRawCounts</span> fingerprint.tsv <span class="at">-p</span> <span class="va">$T</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Open <code>fingerprint.png</code>. Which curve is closest to the diagonal? How does the H3K36me3 curve differ in shape from the CTCF curve? (Experimental design and QC explains how to read the plot.)</p>
+</section>
+<section id="c5-tracks-for-the-browser" class="level3">
+<h3 class="anchored" data-anchor-id="c5-tracks-for-the-browser">C5 — Tracks for the browser</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bamCoverage</span> <span class="at">-b</span> ctcf.final.bam <span class="at">-o</span> ctcf.cpm.bw <span class="at">--normalizeUsing</span> CPM <span class="at">--extendReads</span> 100 <span class="at">--binSize</span> 10 <span class="at">-p</span> <span class="va">$T</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> h3k36me3 h3k36me3_input<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="ex">bamCoverage</span> <span class="at">-b</span> <span class="va">$s</span>.final.bam <span class="at">-o</span> <span class="va">$s</span>.cpm.bw <span class="at">--normalizeUsing</span> CPM <span class="at">--extendReads</span> 200 <span class="at">--binSize</span> 50 <span class="at">-p</span> <span class="va">$T</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Load the three bigWigs in IGV (genome hg38), together with <code>$D/gm12878_h3k36me3_fc.bigWig</code>, and go to <code>chr21:33,220,000-33,600,000</code>. Where is H3K36me3 enriched relative to the genes (IFNAR1, IFNGR2, TMEM50B, GART, SON, DONSON)? Zoom in to a single 50-bp bin inside a gene body: how many reads support it?</p>
+</section>
+</section>
+<section id="in-r" class="level2">
+<h2 class="anchored" data-anchor-id="in-r">In R</h2>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressPackageStartupMessages</span>({ <span class="fu">library</span>(GenomicAlignments); <span class="fu">library</span>(rtracklayer) })</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>D <span class="ot">&lt;-</span> <span class="st">"/path/to/course/data"</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"~/epi/chip"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="r1-strand-cross-correlation-sharp-vs-broad" class="level3">
+<h3 class="anchored" data-anchor-id="r1-strand-cross-correlation-sharp-vs-broad">R1 — Strand cross-correlation, sharp vs broad</h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>rd <span class="ot">&lt;-</span> <span class="cf">function</span>(s) <span class="fu">granges</span>(<span class="fu">readGAlignments</span>(<span class="fu">paste0</span>(s, <span class="st">".final.bam"</span>)))</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>reads <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">c</span>(<span class="at">ctcf =</span> <span class="st">"ctcf"</span>, <span class="at">ctcf_input =</span> <span class="st">"ctcf_input"</span>, <span class="at">h3k36me3 =</span> <span class="st">"h3k36me3"</span>, <span class="at">h3k36me3_input =</span> <span class="st">"h3k36me3_input"</span>), rd)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(reads, length)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>crosscor <span class="ot">&lt;-</span> <span class="cf">function</span>(gr, <span class="at">maxk =</span> <span class="dv">500</span>, <span class="at">from =</span> <span class="fl">13e6</span>, <span class="at">to =</span> <span class="dv">46709983</span>) {</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  five <span class="ot">&lt;-</span> <span class="fu">resize</span>(gr, <span class="dv">1</span>, <span class="at">fix =</span> <span class="st">"start"</span>)                       <span class="co"># 5' end of each read</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  five <span class="ot">&lt;-</span> five[<span class="fu">start</span>(five) <span class="sc">&gt;=</span> from <span class="sc">&amp;</span> <span class="fu">start</span>(five) <span class="sc">&lt;=</span> to <span class="sc">-</span> maxk]</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> to <span class="sc">-</span> from <span class="sc">+</span> <span class="dv">1</span> <span class="sc">-</span> maxk</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">tabulate</span>(<span class="fu">start</span>(five)[<span class="fu">as.vector</span>(<span class="fu">strand</span>(five) <span class="sc">==</span> <span class="st">"+"</span>)] <span class="sc">-</span> from <span class="sc">+</span> <span class="dv">1</span>, n <span class="sc">+</span> maxk)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  m <span class="ot">&lt;-</span> <span class="fu">tabulate</span>(<span class="fu">start</span>(five)[<span class="fu">as.vector</span>(<span class="fu">strand</span>(five) <span class="sc">==</span> <span class="st">"-"</span>)] <span class="sc">-</span> from <span class="sc">+</span> <span class="dv">1</span>, n <span class="sc">+</span> maxk)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  ip <span class="ot">&lt;-</span> <span class="fu">which</span>(p[<span class="dv">1</span><span class="sc">:</span>n] <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  mp <span class="ot">&lt;-</span> <span class="fu">mean</span>(p[<span class="dv">1</span><span class="sc">:</span>n]); sp <span class="ot">&lt;-</span> <span class="fu">sd</span>(p[<span class="dv">1</span><span class="sc">:</span>n]); mm <span class="ot">&lt;-</span> <span class="fu">mean</span>(m); sm <span class="ot">&lt;-</span> <span class="fu">sd</span>(m)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sapply</span>(<span class="dv">0</span><span class="sc">:</span>maxk, <span class="cf">function</span>(k) (<span class="fu">sum</span>(p[ip] <span class="sc">*</span> m[ip <span class="sc">+</span> k]) <span class="sc">/</span> n <span class="sc">-</span> mp <span class="sc">*</span> mm) <span class="sc">/</span> (sp <span class="sc">*</span> sm))</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>cc <span class="ot">&lt;-</span> <span class="fu">sapply</span>(reads, crosscor)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(cc, <span class="dv">2</span>, <span class="cf">function</span>(x) <span class="fu">c</span>(<span class="at">max =</span> <span class="fu">max</span>(x[<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">41</span>)]), <span class="at">at =</span> <span class="fu">which.max</span>(x[<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">41</span>)]) <span class="sc">+</span> <span class="dv">40</span>))   <span class="co"># ignore k &lt; 41</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>cc[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">37</span>, <span class="dv">52</span>, <span class="dv">101</span>, <span class="dv">201</span>, <span class="dv">301</span>) , ]</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="fu">matplot</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">500</span>, cc[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>], <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">xlab =</span> <span class="st">"shift (bp)"</span>, <span class="at">ylab =</span> <span class="st">"cross-correlation"</span>, <span class="at">main =</span> <span class="st">"CTCF"</span>)</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="fu">matplot</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">500</span>, cc[, <span class="dv">3</span><span class="sc">:</span><span class="dv">4</span>], <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">xlab =</span> <span class="st">"shift (bp)"</span>, <span class="at">ylab =</span> <span class="st">"cross-correlation"</span>, <span class="at">main =</span> <span class="st">"H3K36me3"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>Explain what <code>crosscor</code> computes. Why does it start at 13 Mb?</p></li>
+<li><p>Where is the maximum for each sample, and how large is it? Which maxima are meaningful?</p></li>
+<li><p>The rows of <code>cc</code> printed are shifts 0, 36, 51, 100, 200 and 300 bp. Is there a phantom peak at the read length for CTCF?</p></li>
+</ol>
+</section>
+<section id="r2-is-the-input-flat" class="level3">
+<h3 class="anchored" data-anchor-id="r2-is-the-input-flat">R2 — Is the input flat?</h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>chr21 <span class="ot">&lt;-</span> <span class="fu">GRanges</span>(<span class="st">"chr21"</span>, <span class="fu">IRanges</span>(<span class="dv">1</span>, <span class="dv">46709983</span>))</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>gtf <span class="ot">&lt;-</span> <span class="fu">import</span>(<span class="fu">file.path</span>(D, <span class="st">"gencode.v46.basic.annotation.gtf.gz"</span>), <span class="at">which =</span> chr21)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>genes <span class="ot">&lt;-</span> gtf[gtf<span class="sc">$</span>type <span class="sc">==</span> <span class="st">"gene"</span> <span class="sc">&amp;</span> gtf<span class="sc">$</span>gene_type <span class="sc">==</span> <span class="st">"protein_coding"</span>]</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>k4 <span class="ot">&lt;-</span> <span class="fu">import</span>(<span class="fu">file.path</span>(D, <span class="st">"gm12878_h3k4me3_fc.bigWig"</span>), <span class="at">which =</span> chr21, <span class="at">as =</span> <span class="st">"RleList"</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>tss <span class="ot">&lt;-</span> <span class="fu">resize</span>(genes, <span class="dv">1</span>, <span class="at">fix =</span> <span class="st">"start"</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>tss<span class="sc">$</span>k4 <span class="ot">&lt;-</span> <span class="fu">mean</span>(k4[<span class="fu">promoters</span>(tss, <span class="dv">1000</span>, <span class="dv">1001</span>)])</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="fu">cut</span>(tss<span class="sc">$</span>k4, <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="cn">Inf</span>), <span class="at">include.lowest =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>around <span class="ot">&lt;-</span> <span class="cf">function</span>(gr, tss, <span class="at">w =</span> <span class="dv">500</span>) {</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">countOverlaps</span>(<span class="fu">promoters</span>(tss, w, w <span class="sc">+</span> <span class="dv">1</span>), <span class="fu">resize</span>(gr, <span class="dv">1</span>, <span class="at">fix =</span> <span class="st">"start"</span>), <span class="at">ignore.strand =</span> <span class="cn">TRUE</span>)   <span class="co"># 5' ends within +-500 bp</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(n) <span class="sc">/</span> (<span class="fu">length</span>(gr) <span class="sc">*</span> (<span class="dv">2</span> <span class="sc">*</span> w <span class="sc">+</span> <span class="dv">1</span>) <span class="sc">/</span> <span class="dv">40088619</span>)                             <span class="co"># observed / expected</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(reads[<span class="fu">c</span>(<span class="st">"ctcf_input"</span>, <span class="st">"h3k36me3_input"</span>)], <span class="cf">function</span>(gr)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="at">active =</span> <span class="fu">around</span>(gr, tss[tss<span class="sc">$</span>k4 <span class="sc">&gt;</span> <span class="dv">5</span>]), <span class="at">silent =</span> <span class="fu">around</span>(gr, tss[tss<span class="sc">$</span>k4 <span class="sc">&lt;</span> <span class="dv">1</span>])))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>How many protein-coding TSSs on chr21 are active (H3K4me3 fold change &gt; 5) and silent (&lt; 1)?</p></li>
+<li><p>How many times more input reads than expected fall within 500 bp of active and of silent TSSs, for each input? Why is <code>ignore.strand = TRUE</code> needed here?</p></li>
+</ol>
+</section>
+<section id="r3-h3k36me3-in-gene-bodies" class="level3">
+<h3 class="anchored" data-anchor-id="r3-h3k36me3-in-gene-bodies">R3 — H3K36me3 in gene bodies</h3>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>gb <span class="ot">&lt;-</span> genes[<span class="fu">width</span>(genes) <span class="sc">&gt;</span> <span class="dv">5000</span>]</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>gb<span class="sc">$</span>k4 <span class="ot">&lt;-</span> <span class="fu">mean</span>(k4[<span class="fu">promoters</span>(<span class="fu">resize</span>(gb, <span class="dv">1</span>, <span class="at">fix =</span> <span class="st">"start"</span>), <span class="dv">1000</span>, <span class="dv">1001</span>)])</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>rpkm <span class="ot">&lt;-</span> <span class="cf">function</span>(gr, g) <span class="fu">sum</span>(<span class="fu">countOverlaps</span>(g, <span class="fu">resize</span>(gr, <span class="dv">1</span>, <span class="at">fix =</span> <span class="st">"start"</span>), <span class="at">ignore.strand =</span> <span class="cn">TRUE</span>)) <span class="sc">/</span> <span class="fu">sum</span>(<span class="fu">width</span>(g)) <span class="sc">*</span> <span class="fl">1e3</span> <span class="sc">/</span> <span class="fu">length</span>(gr) <span class="sc">*</span> <span class="fl">1e6</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>grp <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">active =</span> gb[gb<span class="sc">$</span>k4 <span class="sc">&gt;</span> <span class="dv">5</span>], <span class="at">silent =</span> gb[gb<span class="sc">$</span>k4 <span class="sc">&lt;</span> <span class="dv">1</span>])</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(grp, length)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(grp, <span class="cf">function</span>(g) <span class="fu">c</span>(<span class="at">H3K36me3 =</span> <span class="fu">rpkm</span>(reads<span class="sc">$</span>h3k36me3, g), <span class="at">input =</span> <span class="fu">rpkm</span>(reads<span class="sc">$</span>h3k36me3_input, g)))</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="fl">1e3</span> <span class="sc">/</span> <span class="dv">40088619</span> <span class="sc">*</span> <span class="fl">1e6</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>first <span class="ot">&lt;-</span> <span class="cf">function</span>(g) <span class="fu">resize</span>(g, <span class="dv">2000</span>, <span class="at">fix =</span> <span class="st">"start"</span>); last <span class="ot">&lt;-</span> <span class="cf">function</span>(g) <span class="fu">resize</span>(g, <span class="dv">2000</span>, <span class="at">fix =</span> <span class="st">"end"</span>)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">first2kb =</span> <span class="fu">rpkm</span>(reads<span class="sc">$</span>h3k36me3, <span class="fu">first</span>(grp<span class="sc">$</span>active)), <span class="at">last2kb =</span> <span class="fu">rpkm</span>(reads<span class="sc">$</span>h3k36me3, <span class="fu">last</span>(grp<span class="sc">$</span>active)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>What does <code>rpkm()</code> compute? What is the value for a uniform library (the line <code>1e3 / 40088619 * 1e6</code>)?</p></li>
+<li><p>Compare H3K36me3 and input in active and in silent gene bodies. What is the enrichment over input in active genes?</p></li>
+<li><p>Compare the first and the last 2 kb of active genes. Which enzyme and process explain the difference?</p></li>
+</ol>
+</section>
+<section id="r4-how-far-does-the-signal-extend" class="level3">
+<h3 class="anchored" data-anchor-id="r4-how-far-does-the-signal-extend">R4 — How far does the signal extend?</h3>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>bins <span class="ot">&lt;-</span> <span class="fu">tileGenome</span>(<span class="fu">c</span>(<span class="at">chr21 =</span> <span class="dv">46709983</span>), <span class="at">tilewidth =</span> <span class="dv">1000</span>, <span class="at">cut.last.tile.in.chrom =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>bins <span class="ot">&lt;-</span> bins[<span class="fu">start</span>(bins) <span class="sc">&gt;</span> <span class="fl">13e6</span>]</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>cnt <span class="ot">&lt;-</span> <span class="fu">sapply</span>(reads, <span class="cf">function</span>(gr) <span class="fu">countOverlaps</span>(bins, <span class="fu">resize</span>(gr, <span class="dv">1</span>, <span class="at">fix =</span> <span class="st">"start"</span>)))</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>ac <span class="ot">&lt;-</span> <span class="cf">function</span>(x, lag) <span class="fu">cor</span>(x[<span class="dv">1</span><span class="sc">:</span>(<span class="fu">length</span>(x) <span class="sc">-</span> lag)], x[(<span class="dv">1</span> <span class="sc">+</span> lag)<span class="sc">:</span><span class="fu">length</span>(x)])</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>lags <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">50</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">sapply</span>(<span class="fu">c</span>(<span class="st">"ctcf"</span>, <span class="st">"h3k36me3"</span>, <span class="st">"h3k36me3_input"</span>), <span class="cf">function</span>(s) <span class="fu">sapply</span>(lags, <span class="cf">function</span>(l) <span class="fu">ac</span>(<span class="fu">log1p</span>(cnt[, s]), l))), <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li><p>What is the correlation between the counts of 1-kb bins 1, 2, 5, 10, 20 and 50 kb apart, for each sample?</p></li>
+<li><p>Why does CTCF still show some correlation at 50 kb, and the input too? (Hint: what else varies along a chromosome?) What extra correlation does H3K36me3 have?</p></li>
+</ol>
+</section>
+</section>
+<section id="hints" class="level2">
+<h2 class="anchored" data-anchor-id="hints">Hints</h2>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 1 — amounts and qPCR (B1, B2)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 1 — amounts and qPCR (B1, B2)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Mass of one fragment = length × 650 g/mol / <span class="math inline">\(6.022 \times 10^{23}\)</span> /mol. Number of site copies = sites × 2 × cells. For qPCR, an input of 1% is 100-fold diluted relative to the whole chromatin: subtract <span class="math inline">\(\log_2 100 = 6.64\)</span> cycles. Each cycle doubles: <span class="math inline">\(\Delta Ct = 1\)</span> is a factor 2. See e.g.&nbsp;the <a href="https://www.thermofisher.com/se/en/home/life-science/epigenetics-noncoding-rna-research/chromatin-remodeling/chromatin-immunoprecipitation-chip/chip-analysis.html">percent-input method</a>.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 2 — strands and shapes (B3, B4, C3, R1)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 2 — strands and shapes (B3, B4, C3, R1)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A single-end read is the 5’ end of a fragment; + strand reads start at the left end of their fragment, − strand reads at the right end. In ChIP-exo the exonuclease stops at the crosslinked protein (<a href="https://doi.org/10.1016/j.cell.2011.11.013">Rhee &amp; Pugh 2011</a>). The strand cross-correlation is described in <a href="https://doi.org/10.1038/nbt.1508">Kharchenko et al.&nbsp;2008</a> and in <em>Experimental design and QC</em>; MACS3’s model in the <a href="https://macs3-project.github.io/MACS/docs/predictd.html">predictd documentation</a>. Where marks sit on genes: <a href="https://doi.org/10.1016/j.cell.2007.05.009">Barski et al.&nbsp;2007</a>.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 3 — controls and artefacts (B5–B7)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 3 — controls and artefacts (B5–B7)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Sonication breaks open chromatin more easily; amplified DNA gives more reads everywhere; inputs from different preparations have different biases. <a href="https://doi.org/10.1101/gr.136184.111">Landt et al.&nbsp;2012</a> describe ENCODE’s control requirements; <a href="https://doi.org/10.1073/pnas.1316064110">Teytelman et al.&nbsp;2013</a> and <a href="https://doi.org/10.1093/nar/gkv637">Jain et al.&nbsp;2015</a> describe hyper-ChIPable regions and phantom peaks. For the local background of a peak caller, see the MACS λ in <a href="https://doi.org/10.1186/gb-2008-9-9-r137">Zhang et al.&nbsp;2008</a>.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 4 — commands (C1–C5)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 4 — commands (C1–C5)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><code>perl -pe 'tr/@-~/!-_/ if $. % 4 == 0'</code> converts Phred+64 to Phred+33 on every fourth line (<em>From reads to coverage</em>). Shell functions: <code>local</code> keeps a variable inside the function; <code>$1</code>, <code>$2</code>, <code>$3</code> are its arguments (<a href="https://www.gnu.org/software/bash/manual/html_node/Shell-Functions.html">bash manual</a>). <a href="https://deeptools.readthedocs.io/en/latest/content/tools/plotFingerprint.html">plotFingerprint</a> samples 500 000 bins by default; <a href="https://deeptools.readthedocs.io/en/latest/content/tools/bamCoverage.html">bamCoverage</a> <code>--extendReads</code> sets the fragment length for single-end reads.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint 5 — R (R1–R4)">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint 5 — R (R1–R4)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><a href="https://rdrr.io/bioc/GenomicRanges/man/intra-range-methods.html"><code>resize(x, 1, fix = "start")</code></a> is strand-aware: it gives each read’s 5’ end. <a href="https://rdrr.io/bioc/GenomicRanges/man/findOverlaps-methods.html"><code>countOverlaps</code></a> only counts features on the same strand unless <code>ignore.strand = TRUE</code> (genes and reads both have a strand). <a href="https://rdrr.io/r/base/tabulate.html"><code>tabulate</code></a> counts how often each integer occurs; <a href="https://rdrr.io/bioc/GenomicRanges/man/intra-range-methods.html"><code>promoters(x, up, down)</code></a> makes a window around each TSS; <code>mean()</code> of an <code>RleList</code> over a <code>GRanges</code> gives the mean signal per range (<a href="https://rdrr.io/bioc/rtracklayer/man/BigWigFile.html">rtracklayer import</a>).</p>
+</div>
+</div>
+</div>
+</section>
+<section id="solutions" class="level2">
+<h2 class="anchored" data-anchor-id="solutions">Solutions</h2>
+<p>All numbers come from running the commands as written (fastp 0.23.4, bowtie2 2.4.4, samtools 1.21, bedtools 2.30, MACS3 3.1.0, deepTools 3.5.1, R 4.6 with Bioconductor 3.23).</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Solutions — by hand">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions — by hand
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>B1.</strong> (a) <span class="math inline">\(5 \times 10^6 \times 6.6\)</span> pg <span class="math inline">\(= 33\)</span> µg; the input aliquot 0.33 µg. (b) <span class="math inline">\(4 \text{ ng} / 33\,000 \text{ ng} = 0.012\%\)</span>. (c) One 200-bp fragment weighs <span class="math inline">\(200 \times 650 / 6.022 \times 10^{23} = 2.2 \times 10^{-19}\)</span> g; 0.8 ng is <span class="math inline">\(3.7 \times 10^9\)</span> fragments. Site copies: <span class="math inline">\(40\,000 \times 2 \times 5 \times 10^6 = 4 \times 10^{11}\)</span>. So about <strong>0.9%</strong> of all site copies were captured: crosslinking, fragmentation, antibody binding and washes each lose most of the material. (d) <span class="math inline">\(20 \text{ M} \times 0.2 / 40\,000 = 100\)</span> reads per site on average, out of about 93 000 fragments per site in the IP: sequencing samples a tiny fraction of the library (and PCR has made copies of each molecule), which is why duplicates appear only when the number of <em>distinct</em> molecules is small.</p>
+<p><strong>B2.</strong> (a) <span class="math inline">\(Ct_\text{input,adj} = 25.0 - 6.64 = 18.36\)</span>. Site X: <span class="math inline">\(100 \times 2^{18.36 - 27.4} = 100 \times 2^{-9.04} = 0.19\%\)</span>. Negative region: <span class="math inline">\(100 \times 2^{18.36 - 32.6} = 0.0052\%\)</span>. (b) <span class="math inline">\(2^{32.6 - 27.4} = 2^{5.2} = 37\)</span>-fold. (c) Not weak: percent input depends on the antibody and the factor, and what matters is the comparison with negative regions (37-fold here) and with a mock IP (IgG). Most of the chromatin at site X is not crosslinked to the factor, or is lost; 0.1–1% is typical for a TF.</p>
+<p><strong>B3.</strong> (a) <span class="math inline">\(58 + 62 = 120\)</span> bp. The protein covers the summit: a fragment can only end outside the crosslinked protein, so 5’ ends cannot fall on the site itself, and sonication rarely breaks right next to it. (b) The exonuclease trims each fragment’s 5’ end up to the crosslinked protein: −12 and +14 are the left and right borders of the protected region, about 26 bp, the footprint of the protein (or complex) on the DNA. (c) H3K36me3 has no single site: + and − strand reads both cover the whole domain, so their distributions overlap and the shift between them is not visible; strand peaks cannot be paired (C3, R1).</p>
+<p><strong>B4.</strong> (a) A = CTCF (sharp, ~2 fragment lengths wide, intergenic as well as genic); B = H3K4me3 (promoter, nucleosome-scale, dip at the nucleosome-free TSS); C = H3K36me3 (gene bodies of transcribed genes, rising to the 3’ end); D = H3K27me3 (broad Polycomb domain over a silent developmental cluster). (b) A clear fragment length: A, and probably B (narrow peaks with strand separation); not C or D. ENCODE’s 45 M reads per replicate apply to broad marks: C and D. (c) The nucleosome-free region at an active TSS has no histones, so a histone mark cannot be there; the signal comes from the −1 and +1 nucleosomes.</p>
+<p><strong>B5.</strong> (a) Different sonication (more or stronger sonication shears open chromatin preferentially), different fixation, different cell batches and handling (nuclei preparation, chromatin release), different library protocols and read lengths (28 vs 51 bp), and depth. (b) The promoter peak has many more reads (the input there is about 10 times higher than in a gene desert), but both have the same enrichment over their local background. The desert peak is the more convincing evidence of binding per read; the promoter peak would look like binding even with a weak antibody, so it needs the input most. (c) H3K4me3 sits on the nucleosomes immediately flanking the TSS (−1 and +1 and a few downstream); H3K4me1 sits further out, on nucleosomes 1–2 kb away, and is depleted where H3K4me3 is high (the same lysine cannot be both mono- and trimethylated).</p>
+<p><strong>B6.</strong> (a) K562 has a different karyotype (many amplifications and losses) and different open chromatin: amplified regions of GM12878 are not corrected, K562-specific open regions make GM12878 peaks there look weaker, and GM12878-specific open promoters are uncorrected. The input must come from the same chromatin. (b) With 2 M input reads the 1-kb and even the 10-kb windows contain few reads, so local estimates are noisy; MACS scales the larger library down to the smaller one and the background is often set by the genome-wide λ, which ignores local biases. Sequence the input at least as deep as the ChIP. (c) Crosslink longer (e.g.&nbsp;10–15 min) and add a protein–protein crosslinker such as DSG before formaldehyde; or use an epitope tag with a validated antibody; check by ChIP-qPCR at expected sites before sequencing.</p>
+<p><strong>B7.</strong> (a) Hyper-ChIPable regions: highly expressed promoters and genes give ChIP signal with almost any antibody (open chromatin, high protein density, sticky). The lack of the motif and the IgG signal both point that way. (b) ChIP in cells where Z is knocked out or degraded (the peaks should disappear); a second antibody against a different epitope, or an epitope-tagged Z with a tag-only control; check whether the motif of Z is enriched in the remaining peaks after removing those shared with IgG; CUT&amp;RUN with the same antibody (much lower background).</p>
+<p><strong>B8.</strong> (a) N-ChIP: histone marks survive without fixation and MNase gives clean, low-input libraries (or CUT&amp;Tag). (b) X-ChIP: without crosslinking a short-lived TF is lost during digestion and washes. (c) N-ChIP: MNase gives mono-nucleosomes, so each read is one nucleosome. (d) X-ChIP with longer fixation and a double crosslinker: it does not bind DNA itself.</p>
+<p><strong>B9.</strong> Differences in crosslinking efficiency or epitope accessibility between the sites, residence time (a longer-bound site is captured more often), local shearing (open chromatin), copy number (site A amplified), mappability (part of site B in a repeat), and, at very strong sites, duplicates removed. Meaningful: the same site compared between samples processed the same way (differential binding).</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Solutions — command line">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions — command line
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>C1.</strong> CTCF ChIP 390 097 reads of 36 bp, characters <code>B</code>…<code>f</code>; CTCF input 476 372 reads, up to 28 bp, <code>C</code>…<code>]</code>: both <strong>Phred+64</strong> (no character below <code>;</code>, and <code>f</code> would be Q69 as +33). H3K36me3 98 689 reads of 51 bp, <code>$</code>…<code>A</code>; its input 131 839 reads of 51 bp, <code>$</code>…<code>?</code>: <strong>Phred+33</strong>, from an early Illumina instrument whose qualities top out at Q27–32 (<code>&lt;</code> = Q27).</p>
+<p><strong>C2.</strong> The four chains take about 2.5 minutes in all.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>sample</th>
+<th style="text-align: right;">aligned</th>
+<th style="text-align: right;">on chrM</th>
+<th style="text-align: right;">duplicates</th>
+<th style="text-align: right;">final (chr21)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ctcf</td>
+<td style="text-align: right;">378 556</td>
+<td style="text-align: right;">52 343</td>
+<td style="text-align: right;">77 450</td>
+<td style="text-align: right;">197 587</td>
+</tr>
+<tr class="even">
+<td>ctcf_input</td>
+<td style="text-align: right;">476 024</td>
+<td style="text-align: right;">315 745</td>
+<td style="text-align: right;">283 747</td>
+<td style="text-align: right;">116 397</td>
+</tr>
+<tr class="odd">
+<td>h3k36me3</td>
+<td style="text-align: right;">93 077</td>
+<td style="text-align: right;">132</td>
+<td style="text-align: right;">786</td>
+<td style="text-align: right;">70 741</td>
+</tr>
+<tr class="even">
+<td>h3k36me3_input</td>
+<td style="text-align: right;">125 258</td>
+<td style="text-align: right;">25 201</td>
+<td style="text-align: right;">8 788</td>
+<td style="text-align: right;">73 652</td>
+</tr>
+</tbody>
+</table>
+<ol type="a">
+<li>The CTCF input has the most duplicates (283 747), almost all on chrM (<em>From reads to coverage</em>, C5b); the CTCF ChIP has 77 450, many at strong CTCF sites. The H3K36me3 ChIP has almost none (786): its reads are spread over large domains, so two fragments rarely share a start. (b) No: chrM reads are removed when the BAM is cut to chr21, before normalisation; the chrM fraction only reflects how much mitochondrial DNA went into each input (it would matter for CPM if chrM were kept).</li>
+</ol>
+<p><strong>C3.</strong> CTCF: 359 paired peaks, predicted fragment length <strong>100 bp</strong>, one alternative (100). H3K36me3: 305 paired peaks, predicted <strong>246 bp</strong>, with 17 alternative lengths between 24 and 595 bp. MACS3 found “peaks” on both strands, but the shift between them is not stable: there is no well-defined fragment-length signal in a broad mark. For broad marks, set the fragment length yourself (from the sonication profile, or use paired-end data).</p>
+<p><strong>C4.</strong> The two inputs are closest to the diagonal; the H3K36me3 input is the flattest. CTCF bends sharply at the very end: its top 1% of bins hold <strong>30%</strong> of the reads (input 8%). H3K36me3 bends gradually over a large part of the range: top 1% of bins only <strong>10%</strong> of its reads, but top 10% of bins <strong>49%</strong> (CTCF 53%, its input 32%). 44% of the H3K36me3 bins have no read at all (a sparse library). That gradual bend is the fingerprint of a broad mark.</p>
+<p><strong>C5.</strong> H3K36me3 is enriched over the bodies of IFNAR1, IFNGR2, TMEM50B, GART, SON and DONSON, from a little after the TSS to the 3’ end, and not between genes. In a single 50-bp bin there are only a few reads (the library has 70 741 reads on all of chr21): broad marks are visible only when you look at many kilobases at once.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Solutions — R">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions — R
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>R1.</strong> (a) It counts the 5’ ends of + and − strand reads at every base from 13 Mb to the end of chr21 and computes, for each shift k, the Pearson correlation between + strand counts at x and − strand counts at x + k, using only the positions with a + strand read for the sum of products (the others contribute zero). The first 13 Mb are the unassembled short arm and the centromere, with no reads. Reading the BAMs and computing all four curves takes about a minute. (b) CTCF: maximum <strong>0.152 at 93 bp</strong>, the fragment length. CTCF input: 0.0021 at 95 bp, 70 times lower: a trace of the strongest sites (open CTCF sites are over-represented in the input), but essentially flat. H3K36me3: 0.0022 at 294 bp and its input 0.0007 at 331 bp: both noise; there is no fragment-length peak. H3K36me3 is above its input at every shift because both strands fall in the same domains. (c) At the read length (row 2, k = 36) CTCF has 0.092, on the rising flank towards the fragment peak (0.15 at 100); with a fragment length close to the read length, the phantom peak is hidden in the shoulder.</p>
+<p><strong>R2.</strong> (a) 72 active, 107 silent, 41 in between (220 in all). (b) CTCF input: <strong>8.4×</strong> the expected count within 500 bp of active TSSs, 0.96× at silent TSSs. H3K36me3 input: 1.06× and 0.83×. The first input is strongly biased towards open promoters, the second hardly. TSSs and genes have a strand, and so do reads; without <code>ignore.strand = TRUE</code>, only reads on the same strand as the gene are counted, half of them.</p>
+<p><strong>R3.</strong> (a) Reads (5’ ends) per kb of gene body per million reads in the library. A uniform library gives 24.9 on chr21. (b) 69 active and 49 silent genes longer than 5 kb. Active: H3K36me3 <strong>75.6</strong>, input 31.4 (2.4-fold enrichment). Silent: 23.4 and 27.4: no enrichment. The input is itself above average in active genes, so comparing the ChIP with the chromosome average would overstate the enrichment. (c) First 2 kb 30.5, last 2 kb <strong>88.6</strong>: H3K36me3 is deposited by SETD2, which travels with the elongating RNA polymerase II, so the mark accumulates towards the 3’ end.</p>
+<p><strong>R4.</strong> (a)</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>lag (kb)</th>
+<th>1</th>
+<th>2</th>
+<th>5</th>
+<th>10</th>
+<th>20</th>
+<th>50</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>CTCF</td>
+<td>0.310</td>
+<td>0.225</td>
+<td>0.182</td>
+<td>0.165</td>
+<td>0.133</td>
+<td>0.110</td>
+</tr>
+<tr class="even">
+<td>H3K36me3</td>
+<td>0.474</td>
+<td>0.455</td>
+<td>0.423</td>
+<td>0.389</td>
+<td>0.328</td>
+<td>0.230</td>
+</tr>
+<tr class="odd">
+<td>H3K36me3 input</td>
+<td>0.129</td>
+<td>0.124</td>
+<td>0.108</td>
+<td>0.105</td>
+<td>0.091</td>
+<td>0.077</td>
+</tr>
+</tbody>
+</table>
+<ol start="2" type="a">
+<li>Everything that varies slowly along the chromosome changes the read density of all libraries together: gene density, GC content, mappability, open chromatin (and copy number in other cells). That gives the input and CTCF a slowly decaying baseline. H3K36me3 stays well above it out to tens of kilobases, the size of the transcribed genes it covers. The lecture’s version of this plot uses ENCODE’s fold-change tracks.</li>
+</ol>
+</div>
+</div>
+</div>
+</section>
+<section id="where-this-leads" class="level2">
+<h2 class="anchored" data-anchor-id="where-this-leads">Where this leads</h2>
+<ul>
+<li><em>Peak calling</em> turns these BAM files into peaks: MACS3’s local λ from the input, narrow vs broad calling for CTCF and H3K36me3, and replicates (IDR).</li>
+<li><em>Annotation and differential binding</em> asks where peaks are relative to genes and how binding differs between cell types.</li>
+<li><em>CUT&amp;RUN and CUT&amp;Tag</em> replace fragmentation and immunoprecipitation by an antibody-tethered enzyme.</li>
+</ul>
+</section>
+<section id="key-papers-optional-further-reading" class="level2">
+<h2 class="anchored" data-anchor-id="key-papers-optional-further-reading">Key papers (optional further reading)</h2>
+<p><em>Not required reading and not examined.</em></p>
+<ul>
+<li>Solomon, Larsen &amp; Varshavsky 1988, <em>Cell</em>. <a href="https://doi.org/10.1016/s0092-8674(88)90469-2">Mapping protein-DNA interactions in vivo with formaldehyde: evidence that histone H4 is retained on a highly transcribed gene</a>.</li>
+<li>Johnson, Mortazavi, Myers &amp; Wold 2007, <em>Science</em>. <a href="https://doi.org/10.1126/science.1141319">Genome-wide mapping of in vivo protein-DNA interactions</a>.</li>
+<li>Barski et al.&nbsp;2007, <em>Cell</em>. <a href="https://doi.org/10.1016/j.cell.2007.05.009">High-resolution profiling of histone methylations in the human genome</a>.</li>
+<li>Park 2009, <em>Nat Rev Genet</em>. <a href="https://doi.org/10.1038/nrg2641">ChIP-seq: advantages and challenges of a maturing technology</a>.</li>
+<li>Rhee &amp; Pugh 2011, <em>Cell</em>. <a href="https://doi.org/10.1016/j.cell.2011.11.013">Comprehensive genome-wide protein-DNA interactions detected at single-nucleotide resolution</a>.</li>
+<li>Teytelman et al.&nbsp;2013, <em>PNAS</em>. <a href="https://doi.org/10.1073/pnas.1316064110">Highly expressed loci are vulnerable to misleading ChIP localization of multiple unrelated proteins</a>.</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

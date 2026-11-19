@@ -1,0 +1,91 @@
+---
+title: "Quiz: what did the model learn? Variant effects"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+Short questions on attribution, in-silico mutagenesis and variant effects. Try each on paper first, then open the answer.
+
+---
+
+**Q1.** What is in-silico mutagenesis? How many model evaluations does it need for a 1-kb sequence?
+
+::: {.callout-note collapse="true" title="Answer"}
+Change each base of the sequence to each of the three other bases, run the model on every mutant, and record the change in the output, Δ = z(mutant) − z(reference). For 1000 bp: 3 × 1000 = 3000 mutants, plus the reference: 3001 evaluations.
+:::
+
+---
+
+**Q2.** A model gives $z = 2.5$ for a sequence. The three mutants at position 40 give $z = 0.5$, $1.5$ and $2.5$. What are the three Δ values and the importance of position 40?
+
+::: {.callout-note collapse="true" title="Answer"}
+Δ = −2.0, −1.0 and 0.0. Importance = −mean Δ = 1.0. The reference base is better than two of the alternatives and equivalent to the third.
+:::
+
+---
+
+**Q3.** A sequence contains two copies of a CTCF motif. ISM gives importance close to zero at every base, although the model predicts strong binding. Explain, and suggest how to reveal the motifs.
+
+::: {.callout-note collapse="true" title="Answer"}
+Redundancy (saturation): each copy alone is enough for the prediction (for example through max pooling), so destroying one leaves the other and the output barely changes. Mutate both copies together (pairs or whole motifs), or use a reference-based method (DeepLIFT, SHAP, integrated gradients) that measures contributions against a sequence without the motifs, so the two copies share the credit.
+:::
+
+---
+
+**Q4.** Why is gradient × input much cheaper than ISM, and when can the two disagree?
+
+::: {.callout-note collapse="true" title="Answer"}
+One backward pass gives the gradient with respect to all inputs at once, instead of one forward pass per mutant. The gradient is a local, linear slope: it disagrees with ISM when a mutation changes the model non-linearly, for example when a ReLU switches on or off, another window wins the max pooling, or the output is saturated.
+:::
+
+---
+
+**Q5.** A variant has $z_{ref} = 1.0$ and $z_{alt} = -1.0$. What is the variant effect, by how much do the odds of binding change, and what are the two probabilities?
+
+::: {.callout-note collapse="true" title="Answer"}
+Δ = −2.0. The odds are multiplied by $e^{-2} = 0.135$ (about 7.4 times lower). $p_{ref} = 1/(1 + e^{-1}) = 0.73$, $p_{alt} = 1/(1 + e^{1}) = 0.27$.
+:::
+
+---
+
+**Q6.** Two variants: one changes $z$ from 8 to 6, the other from 0 to −2. Which has the larger effect on the probability scale, and which on the logit scale? Which scale would you use to compare them?
+
+::: {.callout-note collapse="true" title="Answer"}
+On the logit scale both are Δ = −2. On the probability scale the first moves from 0.9997 to 0.9975 (hardly at all), the second from 0.50 to 0.12. The logit scale compares relative changes in the odds of binding regardless of how strong the site is, which is what a variant effect should measure; the probability scale is compressed near 0 and 1.
+:::
+
+---
+
+**Q7.** In ChIP-seq of a heterozygous individual, 45 reads carry the reference allele and 15 the alternative; in the input DNA the split is 30/30. What does this show, and why is it called a natural experiment?
+
+::: {.callout-note collapse="true" title="Answer"}
+Allele-specific binding: the TF binds the reference allele about three times more (75% of reads), and the balanced input rules out a copy-number difference or mapping bias as the cause. Both alleles are in the same nucleus, with the same TF levels and the same trans environment, so the difference must come from the DNA sequence of the two haplotypes (the SNP itself, or another variant in phase with it).
+:::
+
+---
+
+**Q8.** A sequence model predicts the direction of 2609 allele-specific CTCF SNPs correctly 58% of the time; 58.5% of these SNPs prefer the reference allele. For the 115 SNPs with |Δ| > 2 it is right 95% of the time. Summarise what the model can and cannot do.
+
+::: {.callout-note collapse="true" title="Answer"}
+Overall it is no better than always guessing the reference allele: for most allele-specific SNPs (not in a motif, or not causal) its predictions carry no information. When it predicts a large effect, typically for a SNP that breaks or creates a strong motif, it is usually right. Use its large predicted effects, and compare every concordance with the trivial majority-class baseline.
+:::
+
+---
+
+**Q9.** Enformer predicts gene expression across genes with a correlation of about 0.57 in lymphoblastoid cells. Why can it still fail to predict which people have high or low expression of a given gene?
+
+::: {.callout-note collapse="true" title="Answer"}
+Across genes, expression differs because of large differences in promoters, CpG islands, enhancers and gene structure, which the model learned from the reference genome. Across people, for one gene, the differences come from a few common variants with small effects; the model must get the effect and direction of each variant right, and it was never trained on variation between individuals. Huang et al. 2023 and Sasse et al. 2023 found cross-individual correlations centred near zero and often the wrong sign.
+:::
+
+---
+
+**Q10.** "Our deep-learning model predicts that this non-coding variant reduces CTCF binding (Δ = −4), so the variant causes the patient's disease." List what is missing.
+
+::: {.callout-note collapse="true" title="Answer"}
+The prediction is a molecular hypothesis for one readout in the model's cell type. Missing: evidence that this variant (not one in linkage disequilibrium) is causal (fine-mapping, segregation in a family); evidence that binding changes in the relevant cell type (allele-specific binding, reporter or editing experiments); evidence that the CTCF site matters for a gene relevant to the disease (contacts, expression); and functional evidence that the gene change causes the phenotype.
+:::

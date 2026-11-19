@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 330" width="1120" height="330" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker><marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker><marker id="aa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker><marker id="ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a8324a"/></marker><marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a6f97"/></marker><marker id="ao" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e67e22"/></marker><marker id="ap" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b4fa0"/></marker><marker id="an" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8c564b"/></marker></defs>
+<rect width="1120" height="330" fill="#ffffff"/>
+<text x="20.0" y="30.0" font-size="17" text-anchor="start" font-weight="bold" fill="#1b2a3a">Wet lab</text>
+<text x="20.0" y="190.0" font-size="17" text-anchor="start" font-weight="bold" fill="#1b2a3a">Computation</text>
+<rect x="20.0" y="50.0" width="160.0" height="52.0" rx="8" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="100.0" y="82.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1b2a3a">crosslink</text>
+<line x1="182.0" y1="76.0" x2="199.0" y2="76.0" stroke="#5b6b7a" stroke-width="2" stroke-linecap="butt" marker-end="url(#ag)"/>
+<rect x="202.0" y="50.0" width="160.0" height="52.0" rx="8" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="282.0" y="82.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1b2a3a">digest (MboI)</text>
+<line x1="364.0" y1="76.0" x2="381.0" y2="76.0" stroke="#5b6b7a" stroke-width="2" stroke-linecap="butt" marker-end="url(#ag)"/>
+<rect x="384.0" y="50.0" width="160.0" height="52.0" rx="8" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="464.0" y="82.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1b2a3a">fill in + biotin</text>
+<line x1="546.0" y1="76.0" x2="563.0" y2="76.0" stroke="#5b6b7a" stroke-width="2" stroke-linecap="butt" marker-end="url(#ag)"/>
+<rect x="566.0" y="50.0" width="160.0" height="52.0" rx="8" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="646.0" y="82.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1b2a3a">ligate</text>
+<line x1="728.0" y1="76.0" x2="745.0" y2="76.0" stroke="#5b6b7a" stroke-width="2" stroke-linecap="butt" marker-end="url(#ag)"/>
+<rect x="748.0" y="50.0" width="160.0" height="52.0" rx="8" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="828.0" y="82.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1b2a3a">shear + pull down</text>
+<line x1="910.0" y1="76.0" x2="927.0" y2="76.0" stroke="#5b6b7a" stroke-width="2" stroke-linecap="butt" marker-end="url(#ag)"/>
+<rect x="930.0" y="50.0" width="160.0" height="52.0" rx="8" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="1010.0" y="82.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1b2a3a">sequence pairs</text>
+<rect x="20.0" y="210.0" width="160.0" height="66.0" rx="8" fill="#eaf1f7" stroke="#2a6f97" stroke-width="1.5"/>
+<text x="100.0" y="237.0" font-size="15" text-anchor="middle" font-weight="bold" fill="#1b2a3a">align each end</text>
+<text x="100.0" y="258.0" font-size="13" text-anchor="middle" font-weight="normal" fill="#5b6b7a" font-family="Courier New, monospace">bwa mem -SP5M</text>
+<line x1="182.0" y1="243.0" x2="199.0" y2="243.0" stroke="#2a6f97" stroke-width="2" stroke-linecap="butt" marker-end="url(#ab)"/>
+<rect x="202.0" y="210.0" width="160.0" height="66.0" rx="8" fill="#eaf1f7" stroke="#2a6f97" stroke-width="1.5"/>
+<text x="282.0" y="237.0" font-size="15" text-anchor="middle" font-weight="bold" fill="#1b2a3a">parse pairs</text>
+<text x="282.0" y="258.0" font-size="13" text-anchor="middle" font-weight="normal" fill="#5b6b7a" font-family="Courier New, monospace">pairtools parse</text>
+<line x1="364.0" y1="243.0" x2="381.0" y2="243.0" stroke="#2a6f97" stroke-width="2" stroke-linecap="butt" marker-end="url(#ab)"/>
+<rect x="384.0" y="210.0" width="160.0" height="66.0" rx="8" fill="#eaf1f7" stroke="#2a6f97" stroke-width="1.5"/>
+<text x="464.0" y="237.0" font-size="15" text-anchor="middle" font-weight="bold" fill="#1b2a3a">sort + dedup</text>
+<text x="464.0" y="258.0" font-size="13" text-anchor="middle" font-weight="normal" fill="#5b6b7a" font-family="Courier New, monospace">pairtools dedup</text>
+<line x1="546.0" y1="243.0" x2="563.0" y2="243.0" stroke="#2a6f97" stroke-width="2" stroke-linecap="butt" marker-end="url(#ab)"/>
+<rect x="566.0" y="210.0" width="160.0" height="66.0" rx="8" fill="#eaf1f7" stroke="#2a6f97" stroke-width="1.5"/>
+<text x="646.0" y="237.0" font-size="15" text-anchor="middle" font-weight="bold" fill="#1b2a3a">bin</text>
+<text x="646.0" y="258.0" font-size="13" text-anchor="middle" font-weight="normal" fill="#5b6b7a" font-family="Courier New, monospace">cooler cload</text>
+<line x1="728.0" y1="243.0" x2="745.0" y2="243.0" stroke="#2a6f97" stroke-width="2" stroke-linecap="butt" marker-end="url(#ab)"/>
+<rect x="748.0" y="210.0" width="160.0" height="66.0" rx="8" fill="#eaf1f7" stroke="#2a6f97" stroke-width="1.5"/>
+<text x="828.0" y="237.0" font-size="15" text-anchor="middle" font-weight="bold" fill="#1b2a3a">balance</text>
+<text x="828.0" y="258.0" font-size="13" text-anchor="middle" font-weight="normal" fill="#5b6b7a" font-family="Courier New, monospace">cooler balance</text>
+<line x1="910.0" y1="243.0" x2="927.0" y2="243.0" stroke="#2a6f97" stroke-width="2" stroke-linecap="butt" marker-end="url(#ab)"/>
+<rect x="930.0" y="210.0" width="160.0" height="66.0" rx="8" fill="#eaf1f7" stroke="#2a6f97" stroke-width="1.5"/>
+<text x="1010.0" y="237.0" font-size="15" text-anchor="middle" font-weight="bold" fill="#1b2a3a">expected, O/E</text>
+<text x="1010.0" y="258.0" font-size="13" text-anchor="middle" font-weight="normal" fill="#5b6b7a" font-family="Courier New, monospace">cooltools</text>
+<path d="M1010.0,102 V150 H100.0 V206" fill="none" stroke="#1b2a3a" stroke-width="2" stroke-linejoin="round" marker-end="url(#ak)"/>
+<text x="560.0" y="143.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#1b2a3a">FASTQ (R1, R2)</text>
+<text x="100.0" y="300.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#5b6b7a">SAM</text>
+<text x="282.0" y="300.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#5b6b7a">.pairs</text>
+<text x="464.0" y="300.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#5b6b7a">.pairs (dedup)</text>
+<text x="646.0" y="300.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#5b6b7a">.cool</text>
+<text x="828.0" y="300.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#5b6b7a">.cool + weights</text>
+<text x="1010.0" y="300.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#5b6b7a">P(s), O/E</text>
+<line x1="20.0" y1="280.0" x2="1100.0" y2="280.0" stroke="#d0d6dc" stroke-width="1" stroke-linecap="butt"/>
+<text x="1100.0" y="322.0" font-size="13" text-anchor="end" font-weight="normal" fill="#5b6b7a" font-style="italic">files produced at each step</text>
+</svg>

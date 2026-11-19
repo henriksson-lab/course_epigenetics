@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 360" width="1120" height="360" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker><marker id="ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker></defs>
+<rect width="1120" height="360" fill="#ffffff"/>
+<text x="40" y="30" font-size="18" font-weight="bold" fill="#1b2a3a">Held-out chromosomes, and the leak they do not close</text>
+<text x="100" y="85" text-anchor="end" font-size="15" fill="#1b2a3a">chr2</text>
+<rect x="112" y="70" width="520" height="20" rx="10" fill="#2a6f97" fill-opacity="0.8"/>
+<text x="100" y="137" text-anchor="end" font-size="15" fill="#1b2a3a">chr5</text>
+<rect x="112" y="122" width="430" height="20" rx="10" fill="#2a6f97" fill-opacity="0.8"/>
+<text x="100" y="189" text-anchor="end" font-size="15" fill="#1b2a3a">chr8</text>
+<rect x="112" y="174" width="330" height="20" rx="10" fill="#c0392b" fill-opacity="0.8"/>
+<text x="100" y="241" text-anchor="end" font-size="15" fill="#1b2a3a">chr9</text>
+<rect x="112" y="226" width="310" height="20" rx="10" fill="#c0392b" fill-opacity="0.8"/>
+<rect x="240" y="66" width="30" height="28" fill="#d4a017" stroke="#1b2a3a" stroke-width="1"/>
+<rect x="330" y="118" width="30" height="28" fill="#d4a017" stroke="#1b2a3a" stroke-width="1"/>
+<rect x="180" y="222" width="30" height="28" fill="#d4a017" stroke="#1b2a3a" stroke-width="1"/>
+<path d="M197,214 C220,175 300,170 336,150" fill="none" stroke="#c0392b" stroke-width="2.5" stroke-dasharray="6,4" marker-end="url(#ahr)"/>
+<text x="236" y="218" font-size="14" fill="#c0392b">test copy ≈ a training copy</text>
+<text x="660" y="84" font-size="15" fill="#2a6f97" font-weight="bold">train chromosomes</text>
+<text x="660" y="108" font-size="15" fill="#c0392b" font-weight="bold">test chromosomes</text>
+<rect x="660" y="128" width="20" height="20" fill="#d4a017" stroke="#1b2a3a"/>
+<text x="690" y="143" font-size="15" fill="#1b2a3a">copies of one sequence: a repeat family,</text>
+<text x="690" y="163" font-size="15" fill="#1b2a3a">segmental duplication or paralogous gene</text>
+<text x="660" y="206" font-size="15" fill="#1b2a3a">Half of the genome is repeat-derived. A model</text>
+<text x="660" y="228" font-size="15" fill="#1b2a3a">can recognise a test copy it has memorised.</text>
+<text x="660" y="270" font-size="15" fill="#5b6b7a">Stricter: cluster sequences by similarity and split</text>
+<text x="660" y="292" font-size="15" fill="#5b6b7a">whole clusters; or check performance separately</text>
+<text x="660" y="314" font-size="15" fill="#5b6b7a">on repeat-masked and unique sequence.</text>
+</svg>

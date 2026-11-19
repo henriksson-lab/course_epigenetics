@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-662ae1889177880cb371f83234c0a158.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.7.30">
+
+  <meta name="author" content="Epigenetics">
+  <title>Epigenetics – Bisulfite and enzymatic sequencing (WGBS, RRBS, EM-seq)</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-bf56578b9c06c165c166475cd19dbcd1.css">
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Bisulfite and enzymatic sequencing (WGBS, RRBS, EM-seq)</h1>
+  <p class="subtitle">From converted DNA to per-CpG methylation calls</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Epigenetics 
+</div>
+</div>
+</div>
+
+</section>
+<section id="about-this-lecture" class="slide level2">
+<h2>About this lecture</h2>
+<p><em>DNA methylation biology</em> showed per-CpG methylation levels of GM12878. This lecture shows how such numbers are made, and what can go wrong on the way.</p>
+<ul>
+<li><strong>Bisulfite chemistry</strong>: unmethylated C becomes T; 5mC (and 5hmC) stay C.</li>
+<li><strong>Libraries and alignment</strong>: four strands, directional libraries, alignment in a three-letter alphabet with <strong>Bismark</strong>.</li>
+<li><strong>Quality control</strong>: M-bias, conversion efficiency, duplicates, coverage.</li>
+<li>From reads to <strong>per-CpG calls</strong>, and how they compare with ENCODE’s.</li>
+<li><strong>Pitfalls</strong>: SNPs that look like unmethylated CpGs.</li>
+<li>The alternatives: <strong>RRBS</strong>, <strong>EM-seq</strong>, <strong>TAPS</strong>, and where arrays and long reads fit.</li>
+</ul>
+<aside class="notes">
+<p>This is the processing unit of the methylation block, the counterpart of <em>From reads to coverage for enrichment assays</em> for ChIP and ATAC. Everything shown on the real-data slides comes from the exercise: 360 142 reads from ENCODE’s GM12878 whole-genome bisulfite sequencing (WGBS), the reads that ENCODE aligned to a 2 Mb region of chr21, processed end to end with fastp and Bismark in about five minutes. The general logic (trim, align, deduplicate, count) is the one students know from enrichment assays; spend the time on what is different: the chemistry, the three-letter alignment, and the QC plots specific to bisulfite.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="mc-is-invisible-to-sequencing" class="slide level2 smaller">
+<h2>5mC is invisible to sequencing</h2>
+
+<img data-src="fig01-why-convert.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><ul>
+<li>Polymerases copy 5mC as C, and sequencers read it as C: the methylation of a molecule is lost in PCR and in sequencing.</li>
+<li>Either turn methylation into a <strong>sequence difference</strong> first (bisulfite, enzymes), or read the <strong>native molecule</strong> (nanopore, PacBio: <em>Methylation and chromatin from long reads</em>).</li>
+<li>Older methods used methylation-sensitive restriction enzymes or antibodies against 5mC (MeDIP); they give regional, not single-base, information.</li>
+</ul>
+<aside class="notes">
+<p>The problem in one picture. The two molecules have the same sequence and differ only in the methyl group at one CpG; after PCR the information is gone. After bisulfite treatment the unmethylated molecule has a T where the methylated one keeps a C. Methylation-sensitive restriction (HpaII vs its methylation-insensitive isoschizomer MspI) was the first genome-scale approach; MeDIP (immunoprecipitation with an anti-5mC antibody) is like ChIP for methylated DNA and was used before WGBS became affordable. Both survive in niche uses; WGBS is the reference method, arrays are the workhorse of population studies (<em>Methylation arrays</em>).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="bisulfite-chemistry" class="slide level2 smaller">
+<h2>Bisulfite chemistry</h2>
+
+<img data-src="fig02-bisulfite-chemistry.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>Bisulfite adds to C; the adduct <strong>deaminates</strong> to uracil-sulfonate; alkali removes the sulfonate; PCR copies U as <strong>T</strong>.</li>
+<li>5mC reacts about 100 times more slowly and stays C. 5hmC forms a stable adduct (CMS) and also reads as C.</li>
+<li>Harsh conditions (low pH, heat, hours): most of the DNA is fragmented and lost, and conversion must be <strong>&gt; 99%</strong> to be useful.</li>
+</ul>
+<aside class="notes">
+<p>Frommer et al.&nbsp;1992 (key paper) introduced bisulfite genomic sequencing. Conditions differ between kits, but typically DNA is denatured and incubated with sodium bisulfite at pH 5 and 50–65 °C for hours. The damage is real: depurination and strand breaks destroy 80–95% of input DNA, which is why bisulfite libraries need more input or post-bisulfite adapter tagging (PBAT), and why enzymatic alternatives were developed. Two consequences for data analysis follow from this slide. Incomplete conversion turns unmethylated C into apparent methylation, so it must be measured (conversion slide). And 5hmC is counted as methylated (<em>DNA methylation biology</em>); 5fC and 5caC convert like C.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="one-molecule-four-strands" class="slide level2 smaller">
+<h2>One molecule, four strands</h2>
+
+<img data-src="fig03-four-strands.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><ul>
+<li>After conversion the two strands are <strong>no longer complementary</strong>: each is its own template.</li>
+<li>PCR makes a complementary copy of each: four possible strands in the library.</li>
+<li>Standard WGBS kits are <strong>directional</strong>: read 1 always comes from OT or OB, which halves the alignment work.</li>
+</ul>
+<aside class="notes">
+<p>This slide explains a choice students will see as a flag in Bismark (–directional, the default, versus –non_directional or –pbat). In a directional library methylated adapters are ligated before bisulfite treatment, so the adapter orientation records which original strand a fragment came from; read 1 reads OT or OB, read 2 reads the complementary strands. In post-bisulfite adapter tagging (PBAT, common in single-cell methods) adapters are added after conversion and all four strands occur. Aligning a non-directional library as directional throws away half the reads. Our exercise reads are read 1 of a directional library: Bismark finds only OT and OB alignments, as expected (158 877 and 157 074).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="reading-a-converted-read" class="slide level2 smaller">
+<h2>Reading a converted read</h2>
+
+<img data-src="fig04-read-vs-ref.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>Compare each read with the reference: where the reference has a C, a <strong>C</strong> in the read means <strong>methylated</strong>, a <strong>T</strong> means <strong>unmethylated</strong>.</li>
+<li>Bismark writes one symbol per base in the <strong>XM</strong> tag of the BAM file; upper case = methylated.</li>
+<li>The level of a CpG is the fraction of reads with C: <span class="math inline">\beta = M / (M + U)</span>.</li>
+</ul>
+<aside class="notes">
+<p>This is the core of every by-hand question in this unit: given a reference and some aligned reads, count C and T at each CpG. The XM string is a compact record of every call in a read: z/Z for CpG, x/X for CHG, h/H for CHH, u/U for unknown context, a dot for non-C positions. Note that a T can also be a C-to-T SNP or a sequencing error, and a C at a non-CpG position is usually a failure of conversion rather than methylation in mammals. For reads from the bottom strand (OB), the comparison is done on the bottom strand: Bismark handles that and reports the call at the genomic position.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="bisulfite-reads-look-strange" class="slide level2 smaller">
+<h2>Bisulfite reads look strange</h2>
+
+<img data-src="fig05-base-composition.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"><ul>
+<li>Our 360 142 reads (GM12878, read 1): <strong>1.5% C</strong> and <strong>48.5% T</strong>, against 20.4% C and 29.6% T in the genome.</li>
+<li>Almost all remaining Cs are in CpG context: the methylated ones.</li>
+<li>Low complexity breaks normal tools: quality metrics complain, and a normal aligner sees many mismatches.</li>
+</ul>
+<aside class="notes">
+<p>A quick check that every student should do on any bisulfite FASTQ (exercise C1). Read 1 of a directional library comes from OT or OB, which are both C-depleted; G content stays near the genome’s. Read 2 would show the complement: few G, many A. If a “bisulfite” FASTQ has normal base composition, it was not converted, or it is read 2 of the complementary strands. FastQC flags these libraries as failing per-base content; that is expected. The low complexity also means that fewer reads align uniquely than in a normal library: two regions that differ only at C positions become identical after conversion.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="alignment-in-three-letters" class="slide level2 smaller">
+<h2>Alignment in three letters</h2>
+
+<img data-src="fig06-three-letter.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>Convert all C to T in the read, and make two converted copies of the genome (C→T and G→A).</li>
+<li>Align with a normal aligner (bowtie2) to both; keep the read only if it has a <strong>unique best</strong> alignment.</li>
+<li>Then compare the <em>original</em> read with the <em>original</em> genome to call methylation.</li>
+</ul>
+<aside class="notes">
+<p>This is the Bismark strategy (Krueger &amp; Andrews 2011, key paper). By converting both sides, methylation no longer causes mismatches, so the aligner is unbiased between methylated and unmethylated reads. The cost is a reduced alphabet, more multi-mapping reads, and twice the index (two converted genomes; four alignments for non-directional libraries). An alternative family of aligners (bwa-meth, BSMAP, gemBS which ENCODE used for these data) use similar in-silico conversion with different aligners or seeding tricks. bwa-meth is often faster and maps a few % more reads; in practice results are very similar, as the comparison with ENCODE later in this lecture shows.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="bismark-from-fastq-to-per-cpg-calls" class="slide level2">
+<h2>Bismark: from FASTQ to per-CpG calls</h2>
+
+<img data-src="fig07-bismark-pipeline.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" tabindex="-1"></a><span class="ex">bismark_genome_preparation</span> genome                  <span class="co"># once per genome</span></span>
+<span id="cb1-2"><a aria-hidden="true" tabindex="-1"></a><span class="ex">bismark</span> <span class="at">--genome</span> genome trimmed.fastq.gz</span>
+<span id="cb1-3"><a aria-hidden="true" tabindex="-1"></a><span class="ex">deduplicate_bismark</span> <span class="at">--bam</span> trimmed_bismark_bt2.bam</span>
+<span id="cb1-4"><a aria-hidden="true" tabindex="-1"></a><span class="ex">bismark_methylation_extractor</span> <span class="at">--gzip</span> <span class="at">--bedGraph</span> trimmed_bismark_bt2.deduplicated.bam</span>
+<span id="cb1-5"><a aria-hidden="true" tabindex="-1"></a><span class="ex">coverage2cytosine</span> <span class="at">--merge_CpG</span> <span class="at">--genome_folder</span> genome <span class="at">-o</span> gm_cpg <span class="pp">*</span>.bismark.cov.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<aside class="notes">
+<p>The whole exercise pipeline. Run times on 8 server threads for our 360 000 reads: index 48 s, alignment 59 s, deduplication 11 s, extraction 26 s, strand merging 69 s; a laptop is two to three times slower. A full human WGBS sample (300–600 million read pairs) takes one to two days on a node with Bismark, which is why production pipelines (later slide) parallelise over chunks. The extractor writes one file per context and strand, an M-bias table, a splitting report with conversion statistics, and a coverage file (chromosome, position, % methylated, count methylated, count unmethylated). coverage2cytosine with –merge_CpG adds up the two strands of each CpG. The trimming step comes first and is shown in the exercise (fastp with the Illumina adapter).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="what-happened-to-our-reads" class="slide level2 smaller">
+<h2>What happened to our reads</h2>
+
+<img data-src="fig09-read-fate.png" class="quarto-figure quarto-figure-center r-stretch" style="width:72.0%"><ul>
+<li>fastp removed 6% (low quality), and trimmed adapters from 36 808 reads.</li>
+<li>Bismark aligned <strong>93.5%</strong> uniquely; only 379 reads were ambiguous.</li>
+<li><strong>19.4%</strong> were duplicates (same start and strand); 254 533 reads remain.</li>
+</ul>
+<aside class="notes">
+<p>Honesty about the shortcut: 93.5% is much higher than a real WGBS library (typically 60–80% unique alignment to the whole genome), because these reads were selected as the ones ENCODE had already aligned to this region, and we align them to chr21 only. Reads from elsewhere in the genome are not in our file, so they cannot mis-align to chr21; in a real analysis always align to the whole genome. The duplicate rate is also inflated: the region is small and deeply covered, so independent fragments share start positions by chance more often than across the whole genome. The 21 757 reads with no alignment are reads that ENCODE’s aligner (GEM3) placed, often with MAPQ 0, but bowtie2 under Bismark’s stricter scoring did not.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="duplicates" class="slide level2 smaller">
+<h2>Duplicates</h2>
+
+<img data-src="fig10-duplicates.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><ul>
+<li>In <strong>WGBS</strong>, reads with the same start and strand are probably PCR copies of one molecule: keep one (<code>deduplicate_bismark</code>).</li>
+<li>In <strong>RRBS</strong> (and amplicon methods), fragments start at the same restriction site by design: <strong>do not</strong> deduplicate.</li>
+<li>Duplicates inflate coverage without adding information: a CpG seen 20 times in one molecule’s copies has really one observation.</li>
+</ul>
+<aside class="notes">
+<p>The same logic as in <em>From reads to coverage for enrichment assays</em>, with one twist: deduplication matters more for methylation than for coverage tracks, because the statistic is a proportion. Ten PCR copies of one methylated molecule look like ten independent methylated reads and give false confidence (a β of 1 with “20 reads” instead of 2). For paired-end data, both ends define a duplicate, which is more reliable. Unique molecular identifiers (UMIs) solve the RRBS problem in some protocols.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="where-m-bias-comes-from" class="slide level2 smaller">
+<h2>Where M-bias comes from</h2>
+
+<img data-src="fig08-end-repair.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>Sheared fragments are <strong>end-repaired</strong> before adapter ligation; the polymerase fills gaps with <strong>unmethylated</strong> dCTP.</li>
+<li>The filled-in bases are read at the start of <strong>read 2</strong>: their CpGs look unmethylated.</li>
+<li>Other read-end artefacts: adapter remnants, random-primer bias (PBAT), low quality at 3’ ends.</li>
+</ul>
+<aside class="notes">
+<p>Methylation of a CpG cannot depend on where in the read it is observed, so any trend of methylation along the read is a technical artefact: that is the idea of the M-bias plot (Hansen et al.&nbsp;2012 introduced it with BSmooth; Bismark computes it). The end-repair artefact is the classic one: fragment ends are blunted by a polymerase that synthesises new DNA, and new DNA is unmethylated; in a directional library this new DNA sits at the start of read 2. The fix is to ignore those positions when calling methylation, not to throw away the reads.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="reading-an-m-bias-plot" class="slide level2 smaller">
+<h2>Reading an M-bias plot</h2>
+
+<img data-src="fig11-mbias.png" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>ENCODE paired-end data (left): <strong>read 2</strong> positions 2–4 are at 40–43% vs a plateau of 48%; position 1 jumps to 66%. Read 1 is nearly flat.</li>
+<li>Our single-end read 1 (right): flat at about 61% (this region is more methylated than the genome average).</li>
+<li>Fix: ignore the biased positions at extraction, e.g.&nbsp;<code>--ignore_r2 4</code>, and check the plot again.</li>
+</ul>
+<aside class="notes">
+<p>The left plot uses about 3 million random read pairs from ENCODE’s older Bismark alignment of the same GM12878 replicate (the first 800 MB of a 121 GB BAM; data file gm12878_wgbs_pe_mbias.txt). The curve of read 2 drops towards the end because few reads are that long after ENCODE’s trimming, so the estimate gets noisy. The lesson for reading an M-bias plot: find the plateau, find where the curve departs from it, and ignore those positions in both reads. Typical choices are 2–10 bp at the 5’ end of read 2 and sometimes a few at the 3’ end of both. Also check the CHH curve: it should be flat near 0; a rise at the read ends signals the same artefact. Do not trim for wiggles in the middle of the read: with few calls per position they are sampling noise, not bias.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="conversion-efficiency" class="slide level2 smaller">
+<h2>Conversion efficiency</h2>
+<div class="columns">
+<div class="column" style="width:48%;">
+<p><img data-src="fig12-contexts.png" style="width:100.0%"></p>
+</div><div class="column" style="width:52%;">
+<ul>
+<li>In most mammalian cells non-CpG methylation is near 0. So methylated CHH calls measure <strong>failed conversion</strong>: here <strong>0.66%</strong>, a conversion rate of <strong>99.34%</strong>.</li>
+<li>A spike-in of unmethylated <strong>lambda phage</strong> DNA measures it directly, also where CpH methylation is real (neurons, ES cells, plants).</li>
+<li>Effect: an unmethylated CpG appears 0.7% methylated; β = 0.5 appears 0.503. ENCODE requires conversion ≥ 98%.</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>The splitting report gives the numbers: 30 824 methylated of 4 644 038 CHH calls. Incomplete conversion adds a small upward bias to every β: observed = β + (1 − β) × non-conversion rate. At 99.3% this is negligible for most purposes; at 95% (a failed batch) every unmethylated CpG island looks 5% methylated, which can create false differences between batches. Caution: non-CpG methylation is real and abundant in neurons (mCA, written by DNMT3A) and in embryonic stem cells, and of course in plants (CHG, CHH), so there the CHH estimate is not a conversion estimate; use lambda or another unmethylated spike-in. A methylated control (e.g.&nbsp;fully methylated pUC19) checks the opposite error, over-conversion of 5mC.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="coverage-and-precision" class="slide level2 smaller">
+<h2>Coverage and precision</h2>
+
+<img data-src="fig13-coverage-ci.png" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>After merging strands, 24 675 CpGs; median <strong>14 reads</strong>, 75% with at least 10.</li>
+<li>With 14 reads a CpG at β = 0.5 has a 95% interval of about <strong>± 0.26</strong>: single CpGs are imprecise.</li>
+<li>Remedies: more depth, more replicates, or averaging neighbouring CpGs (<em>Differential methylation</em>).</li>
+</ul>
+<aside class="notes">
+<p>The binomial standard error is sqrt(β(1 − β)/N); at N = 14 and β = 0.5 that is 0.13, so the 95% interval spans about 0.24 to 0.76. ENCODE’s standard for WGBS is at least 30x coverage per replicate (both strands combined), which halves the interval width compared with 14 reads. Strand merging is valid for CpGs because they are symmetrically methylated almost everywhere; it doubles the reads per site. Never merge strands for non-CpG contexts. A few CpGs have unusually high coverage (copy number gains, repeats, PCR jackpots); analyses often remove the top 0.1% of coverage.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="do-our-calls-agree-with-encodes" class="slide level2 smaller">
+<h2>Do our calls agree with ENCODE’s?</h2>
+<div class="columns">
+<div class="column" style="width:52%;">
+<p><img data-src="fig14-compare-encode.png" style="width:100.0%"></p>
+</div><div class="column" style="width:48%;">
+<ul>
+<li>Same reads, different pipelines: ENCODE used gemBS (GEM3 aligner, its own caller), we used fastp + Bismark.</li>
+<li>23 567 CpGs in both; 17 483 with ≥ 10 reads in both: <strong>r = 0.997</strong>, mean |Δβ| = <strong>0.016</strong>.</li>
+<li>Only 28% of CpGs have identical counts: trimming, duplicate removal and alignment filters differ slightly.</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>A reassuring and realistic result: pipelines agree closely on well-covered CpGs, and differences come from details (which reads were filtered as low quality, which duplicates were removed, how soft-clipped ends and MAPQ 0 reads are treated, how the first and last bases are used). Mean read coverage is nearly the same (13.9 vs 14.2 per CpG). The comparison is fair because ENCODE’s per-CpG file for this replicate was made from the same read-1 FASTQ. In a methods section, say which pipeline and which filters you used, and do not mix calls from different pipelines in one differential analysis without checking for a pipeline effect.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="snps-at-cpgs-look-like-unmethylated-cs" class="slide level2 smaller">
+<h2>SNPs at CpGs look like unmethylated Cs</h2>
+
+<img data-src="fig15-snp.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>On the strand with the C, a <strong>C→T SNP</strong> gives exactly the same read as an unmethylated C.</li>
+<li>On the <strong>other strand</strong> the same site is G vs A, which bisulfite does not change: the genotype is visible there.</li>
+<li>Tools that use both strands can call SNPs and methylation together (Bis-SNP, gemBS, BISCUIT).</li>
+</ul>
+<aside class="notes">
+<p>This is the most important bisulfite-specific pitfall for differential analyses between individuals: a CpG that carries a C/T SNP in some people looks partially or fully unmethylated in them, and appears as a “differentially methylated” site that is really a genotype difference. CpG-SNPs are common because CpG is the most mutable dinucleotide in the genome. Practical remedies: remove CpGs that overlap known SNPs (dbSNP above some frequency) or that are called as SNPs in the samples themselves (ENCODE’s gemBS output contains the genotype; column 13 of our per-CpG file); for arrays, manufacturers flag probes over SNPs (<em>Methylation arrays</em>). meQTL studies (<em>Epigenomics and genetic variation</em>) deliberately model genotype effects on methylation.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="snps-in-real-data" class="slide level2 smaller">
+<h2>SNPs in real data</h2>
+
+<img data-src="fig16-snp-data.png" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"><ul>
+<li>ENCODE called the genotype of GM12878 at every CpG. In our Bismark calls, CpGs with a <strong>heterozygous C/T</strong> SNP average <strong>0.38</strong> (vs 0.63), and <strong>homozygous C&gt;T</strong> sites <strong>0.01</strong>.</li>
+<li>Other SNPs (C/A, C/G, G/T) change the base to one bisulfite cannot produce, so they are seen as mismatches, not as unmethylated.</li>
+</ul>
+<aside class="notes">
+<p>Real numbers from the exercise region (CpGs with at least 8 reads). The homozygous sites are not CpGs in this genome at all: there is no cytosine to methylate, yet a naive analysis reports “unmethylated”. The heterozygous sites lose roughly half their methylation signal (0.63 to 0.38; a bit more than half remains because the reference allele reads are unaffected). In a comparison of GM12878 with another person’s cells, all these sites would appear as differences. This is exercise R5.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="reduced-representation-bisulfite-sequencing-rrbs" class="slide level2 smaller">
+<h2>Reduced representation bisulfite sequencing (RRBS)</h2>
+
+<img data-src="fig17-rrbs.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>MspI (C^CGG) cuts regardless of methylation; short fragments come from <strong>CpG-dense</strong> DNA: islands and promoters.</li>
+<li>Cheap and deep for 1–3 million CpGs, ideal for many samples; blind to most enhancers, gene bodies and PMDs.</li>
+<li>Analysis differences: Trim Galore <code>--rrbs</code>, <strong>no deduplication</strong>, and only regions covered in all samples can be compared.</li>
+</ul>
+<aside class="notes">
+<p>RRBS (Meissner et al.&nbsp;2005, key paper) enriches CpG-rich sequence with a restriction enzyme whose site contains a CpG; size selection of 40–220 bp keeps the fragments from dense regions. A small fraction of the sequencing cost of WGBS for 5–10% of CpGs, but those include most CpG-island promoters, which is why RRBS was used in many cancer and mouse studies, and in ENCODE’s early phase (GM12878 and K562 have RRBS data too). Its main limitations: low coverage of the regulatory regions that differ most between cell types (distal enhancers are CpG-poor), and fragment-start artefacts handled by the –rrbs trimming mode. Enhanced RRBS uses several enzymes for broader coverage.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="em-seq-and-taps-without-bisulfite" class="slide level2 smaller">
+<h2>EM-seq and TAPS: without bisulfite</h2>
+
+<img data-src="fig18-emseq-taps.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li><strong>EM-seq</strong>: TET2 and T4-BGT protect 5mC and 5hmC; APOBEC3A deaminates the unprotected C. Same readout as bisulfite, so the same pipeline (Bismark works unchanged).</li>
+<li><strong>TAPS</strong>: only modified Cs change (to T). Reads keep four letters: better alignment, less sequencing wasted.</li>
+<li>Both damage DNA much less: lower input, more uniform coverage, fewer duplicates.</li>
+</ul>
+<aside class="notes">
+<p>EM-seq (Vaisvila et al.&nbsp;2021, key paper) is now widely used where input is limited (cell-free DNA, clinical samples, single cells) and is a drop-in replacement for bisulfite in analysis. TAPS (Liu et al.&nbsp;2019, key paper) reverses the logic: TET oxidation of 5mC and 5hmC to 5caC, then pyridine borane reduction to dihydrouracil, which polymerases read as T. Because only the 2–5% of cytosines that are modified change, the reads stay close to the reference; variants (TAPSβ, CAPS) separate 5mC from 5hmC. Newer “6-base” methods read A, C, G, T, 5mC and 5hmC in one library. Whatever the chemistry, per-CpG output is the same table of methylated and unmethylated counts.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="telling-5mc-from-5hmc" class="slide level2 smaller">
+<h2>Telling 5mC from 5hmC</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 63%">
+<col style="width: 11%">
+<col style="width: 11%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>method</th>
+<th>how</th>
+<th>5mC</th>
+<th>5hmC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>bisulfite (BS)</td>
+<td>standard</td>
+<td>C</td>
+<td>C</td>
+</tr>
+<tr class="even">
+<td>oxidative BS (oxBS)</td>
+<td>oxidise 5hmC to 5fC first, then BS</td>
+<td>C</td>
+<td><strong>T</strong></td>
+</tr>
+<tr class="odd">
+<td>TAB-seq</td>
+<td>protect 5hmC (glucose), oxidise 5mC with TET, then BS</td>
+<td><strong>T</strong></td>
+<td>C</td>
+</tr>
+<tr class="even">
+<td>EM-seq / ACE-seq variants</td>
+<td>enzymatic, with or without 5hmC protection</td>
+<td>C / T</td>
+<td>C</td>
+</tr>
+<tr class="odd">
+<td>nanopore, PacBio</td>
+<td>direct signal from the native base</td>
+<td>5mC call</td>
+<td>5hmC call (nanopore)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>BS − oxBS</strong> estimates 5hmC per CpG (two libraries, so noisy where 5hmC is low).</li>
+<li>In blood and cell lines 5hmC is small; in brain it is not.</li>
+</ul>
+<aside class="notes">
+<p>No figure: a reference table. The subtraction approach needs deep coverage because the 5hmC estimate is the difference of two binomial proportions. TAB-seq gives 5hmC directly but needs very efficient TET oxidation. Long reads call 5mC and (on nanopore) 5hmC from the raw signal with neural-network models; <em>Methylation and chromatin from long reads</em> covers them, including haplotype-resolved methylation, which no short-read method gives easily.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="choosing-an-assay" class="slide level2 smaller">
+<h2>Choosing an assay</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 30%">
+<col style="width: 50%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>assay</th>
+<th>CpGs measured</th>
+<th>typical use</th>
+<th>cost per sample</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>WGBS / EM-seq (30x)</td>
+<td>~28 million (all)</td>
+<td>reference methylomes, DMRs anywhere, PMDs</td>
+<td>high</td>
+</tr>
+<tr class="even">
+<td>RRBS</td>
+<td>1–3 million, CGI-rich</td>
+<td>many samples, promoter methylation</td>
+<td>low</td>
+</tr>
+<tr class="odd">
+<td>EPIC array</td>
+<td>~900 000 selected</td>
+<td>epidemiology, clinical, clocks</td>
+<td>lowest</td>
+</tr>
+<tr class="even">
+<td>targeted (capture, amplicons)</td>
+<td>chosen regions</td>
+<td>validation, diagnostics</td>
+<td>low</td>
+</tr>
+<tr class="odd">
+<td>nanopore / PacBio</td>
+<td>all, on long single molecules</td>
+<td>haplotypes, repeats, 5hmC</td>
+<td>high</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>More replicates usually beat more depth: biological variation between samples is larger than sampling noise at 10–15x.</li>
+</ul>
+<aside class="notes">
+<p>Help students match questions to assays; it is a classic exam question (“you have 2 ng of cell-free DNA from 200 patients…”). WGBS is the only unbiased method; RRBS and arrays answer most questions about promoters and CpG islands cheaply; arrays dominate population studies (<em>Methylation arrays</em>, <em>Epigenetic clocks and biomarkers</em>). Ziller et al.&nbsp;(2015, Nat Methods) recommended, for DMR detection, two or more replicates at 5–15x over one deeply sequenced sample, which matches what <em>Differential methylation</em> will show about biological variation.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="per-cpg-file-formats" class="slide level2 smaller">
+<h2>Per-CpG file formats</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 76%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>format</th>
+<th>columns</th>
+<th>from</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Bismark coverage (<code>.cov</code>)</td>
+<td>chr, start, end, % methylated, count methylated, count unmethylated</td>
+<td><code>bismark_methylation_extractor</code></td>
+</tr>
+<tr class="even">
+<td>merged CpG evidence</td>
+<td>the same, one row per CpG (both strands)</td>
+<td><code>coverage2cytosine --merge_CpG</code></td>
+</tr>
+<tr class="odd">
+<td>CpG report</td>
+<td>chr, position, strand, count methylated, count unmethylated, context, trinucleotide</td>
+<td><code>--cytosine_report</code></td>
+</tr>
+<tr class="even">
+<td>ENCODE bed9+</td>
+<td>BED9 + coverage, % methylated, reference and called context, genotype quality</td>
+<td>gemBS (ENCODE4)</td>
+</tr>
+<tr class="odd">
+<td>bedMethyl</td>
+<td>BED9 + coverage, % methylated (+ more in modkit’s version)</td>
+<td>ENCODE3 pipeline, modkit</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Always check: 0- or 1-based? per strand or per CpG? % or counts? rounded?</li>
+</ul>
+<aside class="notes">
+<p>The format zoo is a practical source of errors. The Bismark coverage file is 1-based and has no strand column; the merged file with –zero_based is BED-like; ENCODE’s bed9+ is BED (0-based start) per strand, and the percentage is an integer rounded down, so counts are recovered as round(N × pct / 100), exact for coverage below 50 (<em>DNA methylation biology</em> exercise). Most R packages (bsseq, DSS, methylKit) want, for each CpG and sample, the number of methylated reads and the total: everything else is bookkeeping.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="production-pipelines-and-qc" class="slide level2">
+<h2>Production pipelines and QC</h2>
+<ul>
+<li><strong>nf-core/methylseq</strong>: trimming, Bismark <em>or</em> bwa-meth + MethylDackel, deduplication, M-bias, MultiQC report; runs on SLURM.</li>
+<li><strong>gemBS</strong> (used by ENCODE for these data), <strong>BISCUIT</strong>: fast, call SNPs and methylation together.</li>
+<li>QC numbers to report: reads, unique alignment rate, duplication, <strong>conversion rate</strong>, <strong>M-bias</strong> decision, mean coverage per CpG, fraction of CpGs ≥ 10x.</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run nf-core/methylseq <span class="at">-profile</span> singularity <span class="at">--input</span> samples.csv <span class="at">--genome</span> GRCh38 <span class="at">--outdir</span> results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<aside class="notes">
+<p>After doing every step by hand on 360 000 reads, students should know what the pipeline does with 500 million. nf-core/methylseq is the standard: its default aligner is Bismark (as in the exercise); bwa-meth with MethylDackel is a faster alternative that also produces M-bias plots and lets the user set inclusion bounds per read position. The QC list is the bisulfite equivalent of the enrichment-assay QC in <em>Experimental design and QC for epigenomic assays</em>. For our exercise: 93.5% unique (inflated by preselection), 19.4% duplicates, 99.34% conversion, no M-bias trimming needed for read 1, median 14 reads per CpG.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="summary" class="slide level2 smaller">
+<h2>Summary</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 80%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>idea</th>
+<th>key fact</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>chemistry</td>
+<td>bisulfite: C → U → T; 5mC and 5hmC stay C; DNA is degraded</td>
+</tr>
+<tr class="even">
+<td>libraries</td>
+<td>four strands (OT, OB, CTOT, CTOB); directional kits read OT/OB in read 1</td>
+</tr>
+<tr class="odd">
+<td>alignment</td>
+<td>three-letter: C→T reads against C→T and G→A genomes; unique best hit (Bismark)</td>
+</tr>
+<tr class="even">
+<td>calls</td>
+<td>C = methylated, T = unmethylated at a reference C; β = M/(M+U); merge CpG strands</td>
+</tr>
+<tr class="odd">
+<td>M-bias</td>
+<td>end repair makes read-2 starts look unmethylated; ignore those positions</td>
+</tr>
+<tr class="even">
+<td>conversion</td>
+<td>CHH methylation (mammals) or lambda spike-in; here 99.34%</td>
+</tr>
+<tr class="odd">
+<td>duplicates</td>
+<td>remove in WGBS, keep in RRBS</td>
+</tr>
+<tr class="even">
+<td>SNPs</td>
+<td>C&gt;T at a CpG looks unmethylated; the other strand shows G/A</td>
+</tr>
+<tr class="odd">
+<td>alternatives</td>
+<td>RRBS (CpG-rich subset), EM-seq (same readout, gentle), TAPS (modified C → T)</td>
+</tr>
+<tr class="even">
+<td>this dataset</td>
+<td>360 142 reads → 254 533; median 14x; r = 0.997 with ENCODE</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>Students should leave able to: convert a sequence by hand (both strands) and call methylation from aligned reads; read an M-bias plot and decide what to ignore; compute conversion efficiency and its effect on β; explain why SNPs and duplicates matter; choose between WGBS, RRBS, EM-seq, arrays and long reads for a given question. Next: <em>Differential methylation</em>, which takes per-CpG counts from several samples and asks where they differ.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="key-papers-optional-further-reading" class="slide level2 smaller">
+<h2>Key papers (optional further reading)</h2>
+<p><em>Not required reading and not examined. For those who want the primary literature.</em></p>
+<ul>
+<li>Frommer et al.&nbsp;1992, <em>PNAS</em>. <a href="https://doi.org/10.1073/pnas.89.5.1827">A genomic sequencing protocol that yields a positive display of 5-methylcytosine residues in individual DNA strands</a>. Bisulfite sequencing.</li>
+<li>Meissner et al.&nbsp;2005, <em>Nucleic Acids Res</em>. <a href="https://doi.org/10.1093/nar/gki901">Reduced representation bisulfite sequencing for comparative high-resolution DNA methylation analysis</a>. RRBS.</li>
+<li>Lister et al.&nbsp;2009, <em>Nature</em>. <a href="https://doi.org/10.1038/nature08514">Human DNA methylomes at base resolution show widespread epigenomic differences</a>. The first human WGBS methylomes; non-CpG methylation and PMDs.</li>
+<li>Krueger &amp; Andrews 2011, <em>Bioinformatics</em>. <a href="https://doi.org/10.1093/bioinformatics/btr167">Bismark: a flexible aligner and methylation caller for Bisulfite-Seq applications</a>. The aligner of the exercise.</li>
+<li>Vaisvila et al.&nbsp;2021, <em>Genome Res</em>. <a href="https://doi.org/10.1101/gr.266551.120">Enzymatic methyl sequencing detects DNA methylation at single-base resolution from picograms of DNA</a>. EM-seq.</li>
+<li>Liu et al.&nbsp;2019, <em>Nat Biotechnol</em>. <a href="https://doi.org/10.1038/s41587-019-0041-2">Bisulfite-free direct detection of 5-methylcytosine and 5-hydroxymethylcytosine at base resolution</a>. TAPS.</li>
+</ul>
+
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'visible',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: false,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+            const codeEl = trigger.previousElementSibling.cloneNode(true);
+            for (const childEl of codeEl.children) {
+              if (isCodeAnnotation(childEl)) {
+                childEl.remove();
+              }
+            }
+            return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

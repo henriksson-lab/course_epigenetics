@@ -1,0 +1,12 @@
+# id	url	description	used_by
+gm12878_wgbs_rep1_chr21.bed.gz	prepare-meth.sh	GM12878 WGBS rep1 per-CpG calls (bed9+, per strand: col10 coverage, col11 % methylated), chr21 only, bgzip+tabix; from ENCFF570TIL (ENCSR890UQO, HAIB, gemBS pipeline, GRCh38)	methylation-biology, methylation-bisulfite, methylation-differential
+gm12878_wgbs_rep2_chr21.bed.gz	prepare-meth.sh	GM12878 WGBS rep2 per-CpG calls, chr21; from ENCFF614QHA (ENCSR890UQO)	methylation-differential
+k562_wgbs_rep1_chr21.bed.gz	prepare-meth.sh	K562 WGBS rep1 per-CpG calls, chr21; from ENCFF660IHA (ENCSR765JPC, HAIB, GRCh38)	methylation-biology, methylation-differential
+k562_wgbs_rep2_chr21.bed.gz	prepare-meth.sh	K562 WGBS rep2 per-CpG calls, chr21; from ENCFF328NMN (ENCSR765JPC)	methylation-differential
+gm12878_wgbs_reads.fastq.gz	prepare-meth.sh	GM12878 WGBS rep1 read 1 (125 bp, untrimmed, original orientation): the 360 142 reads ENCODE aligned to chr21:33-35 Mb (ENCFF072CRF from FASTQ ENCFF798RSS), recovered with HTTP range requests (bam_slice_remote.py), shuffled	methylation-bisulfite
+hg38_cpgIslandExt.txt.gz	https://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/cpgIslandExt.txt.gz	UCSC CpG islands (cpgIslandExt) for hg38; col1 bin, cols 2-4 BED-style chrom/start/end	methylation-biology, methylation-differential
+gm12878_rna_rep1_genes.tsv	https://www.encodeproject.org/files/ENCFF910XWA/@@download/ENCFF910XWA.tsv	GM12878 total RNA-seq rep1 RSEM gene quantifications (GENCODE V29; ENCSR000AEC, Gingeras)	methylation-biology, methylation-differential
+gm12878_rna_rep2_genes.tsv	https://www.encodeproject.org/files/ENCFF413MYB/@@download/ENCFF413MYB.tsv	GM12878 total RNA-seq rep2 RSEM gene quantifications (ENCSR000AEC)	methylation-differential
+k562_rna_rep1_genes.tsv	https://www.encodeproject.org/files/ENCFF136UBW/@@download/ENCFF136UBW.tsv	K562 total RNA-seq rep1 RSEM gene quantifications (GENCODE V29; ENCSR000AEL, Gingeras)	methylation-differential
+k562_rna_rep2_genes.tsv	https://www.encodeproject.org/files/ENCFF171FQU/@@download/ENCFF171FQU.tsv	K562 total RNA-seq rep2 RSEM gene quantifications (ENCSR000AEL)	methylation-differential
+gm12878_wgbs_pe_mbias.txt	prepare-meth.sh	M-bias table (Bismark --mbias_only, read 1 and read 2) of ~3 M random read pairs from GM12878 WGBS rep1 (ENCODE Bismark alignment ENCFF681ASN, first 800 MB)	methylation-bisulfite

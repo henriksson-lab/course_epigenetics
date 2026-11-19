@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-662ae1889177880cb371f83234c0a158.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.7.30">
+
+  <meta name="author" content="Epigenetics">
+  <title>Epigenetics – Methylation and chromatin from long reads</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-bf56578b9c06c165c166475cd19dbcd1.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Methylation and chromatin from long reads</h1>
+  <p class="subtitle">Modified bases on single native molecules: nanopore and PacBio, modkit, haplotypes, imprinting, X inactivation and Fiber-seq</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Epigenetics 
+</div>
+</div>
+</div>
+
+</section>
+<section id="about-this-lecture" class="slide level2">
+<h2>About this lecture</h2>
+<p><em>Bisulfite and enzymatic sequencing</em> reads methylation from converted, short DNA fragments. Long-read sequencers read the <strong>native molecule</strong>, so the modification itself is part of the signal, on reads of 10 to 100 kb.</p>
+<ul>
+<li><strong>How</strong> a nanopore and a PacBio instrument see 5mC, 5hmC and 6mA without conversion.</li>
+<li><strong>The modBAM</strong>: MM and ML tags, call probabilities, and <code>modkit pileup</code> to a bedMethyl table.</li>
+<li><strong>Agreement with WGBS</strong> on the same cell line.</li>
+<li><strong>Haplotype-resolved methylation</strong>: phasing reads, imprinted loci, X inactivation.</li>
+<li><strong>Chromatin accessibility on single molecules</strong>: Fiber-seq and its nanopore relatives.</li>
+<li>Running example: <strong>HG001 = GM12878</strong> (nanopore, ~80×) and an EcoGII-treated nanopore run of HG002.</li>
+</ul>
+<aside class="notes">
+<p>This lecture builds on two others: <em>DNA methylation biology</em> (imprinting, X inactivation, 5mC and 5hmC) and <em>Bisulfite and enzymatic sequencing</em> (what a bedMethyl file is, how WGBS measures methylation). Here the question is what changes when the instrument reads the original DNA strand. Three things change. First, there is no conversion, so 5mC and 5hmC can be told apart and the reference genome stays a four-letter genome. Second, reads are long, so one read carries many CpGs and usually several SNPs, which lets us assign each read to a parental chromosome. Third, any other modification on the same molecule is read at the same time, including adenine methylation that we add on purpose to mark accessible chromatin. The data are real: Oxford Nanopore’s open data for HG001, which is the Genome in a Bottle name for NA12878, the woman whose cells are the GM12878 cell line used throughout this course, and a 2025 nanopore chromatin-accessibility release on HG002.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="short-converted-reads-vs-long-native-molecules" class="slide level2 smaller">
+<h2>Short converted reads vs long native molecules</h2>
+
+<img data-src="fig01-short-vs-long.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>WGBS and EM-seq: reads of 150 bp, converted, aligned to a three-letter genome; 5mC and 5hmC both read as C.</li>
+<li>Long reads: tens of kilobases of native DNA; every CpG on the molecule, its SNP alleles and other modifications in <strong>one record</strong>.</li>
+</ul>
+<aside class="notes">
+<p>Walk through panel A: a region with a heterozygous SNP and an allele-specific methylated stretch. With 150-bp reads only the reads that happen to overlap the SNP can be assigned to an allele, and those reads usually do not reach the CpGs we care about. In panel B every read spans both the SNP and the CpGs, so every methylation call is labelled with a haplotype. This is the main scientific advantage; the practical advantages are no bisulfite damage (bisulfite fragments DNA heavily), no conversion-related biases, and the ability to map into repeats that short reads cannot place. The costs: more DNA input (micrograms of high-molecular-weight DNA), higher cost per genome than arrays, and calls that come from a neural network rather than from a chemical conversion we can count directly.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="two-ways-to-see-a-modification-without-conversion" class="slide level2 smaller">
+<h2>Two ways to see a modification without conversion</h2>
+
+<img data-src="fig02-detection.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li><strong>Nanopore</strong>: the ionic current through the pore depends on the few bases inside it; a methyl group changes it slightly. A neural network (dorado) turns the signal into bases and, for each candidate base, modification probabilities.</li>
+<li><strong>PacBio HiFi</strong>: the polymerase pauses longer at a modified template base (inter-pulse duration). 6mA gives a strong signal; 5mC at CpG is learned from the kinetics around it.</li>
+</ul>
+<aside class="notes">
+<p>Nanopore: a single strand of DNA is pulled through a protein pore by a motor protein at about 400 bases per second; the current is sampled thousands of times per second. Because several bases sit in the constriction at once, the current reflects a k-mer, and a 5mC in that k-mer shifts the level by a few picoamperes. Modern basecallers (dorado) are neural networks that output bases plus modification calls in one pass; separate models exist for 5mC and 5hmC in CpG context, 5mC in all contexts, 6mA in all contexts and 4mC (bacteria). PacBio: the polymerase copies a circular molecule many times; each incorporated base gives a fluorescent pulse. The time between pulses (IPD) and the pulse width depend on the template base and its modifications. 6mA slows the polymerase a lot, which is why the original Fiber-seq used PacBio. 5mC is subtle and is called by a model (jasmine) over a window of kinetics. Both platforms report the result in the same way, which is the next topic.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="what-can-be-called-today" class="slide level2 smaller">
+<h2>What can be called today</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>modification</th>
+<th>context</th>
+<th>nanopore (R10.4.1, dorado)</th>
+<th>PacBio HiFi</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>5mC</td>
+<td>CpG</td>
+<td>yes, routine</td>
+<td>yes, routine (jasmine)</td>
+</tr>
+<tr class="even">
+<td>5hmC</td>
+<td>CpG</td>
+<td>yes, together with 5mC</td>
+<td>not routinely</td>
+</tr>
+<tr class="odd">
+<td>5mC</td>
+<td>all contexts (CHG, CHH: plants)</td>
+<td>yes (all-context model)</td>
+<td>limited</td>
+</tr>
+<tr class="even">
+<td>6mA</td>
+<td>all contexts</td>
+<td>yes</td>
+<td>yes (strong kinetic signal)</td>
+</tr>
+<tr class="odd">
+<td>4mC</td>
+<td>bacteria</td>
+<td>yes</td>
+<td>yes</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Every call is a <strong>probability per base per read</strong>, from a model trained on control DNA (unmethylated PCR products, fully methylated by M.SssI, synthetic oligos).</li>
+<li>Model and basecaller <strong>versions matter</strong>: always report them, and compare samples called with the same model.</li>
+</ul>
+<aside class="notes">
+<p>The table is a snapshot (2025–2026); models are added frequently. Two consequences for analysis. First, a modification call is only as good as the model’s training data: models are trained on DNA of known state, for example PCR-amplified DNA (all unmethylated) and DNA treated with the CpG methyltransferase M.SssI (all CpGs methylated), so accuracy is best for contexts and modification densities that resemble the training data. Second, because calls come from a model, a new basecaller version can shift methylation levels by a few percent. Comparing a patient called with model v4 to controls called with v5 is like comparing arrays from two different platforms without normalisation. The HG001 data in this lecture were called in 2023 with a 5mCG_5hmCG model; the EcoGII data in 2025 with dorado 1.0 and the 5mCG_5hmCG and 6mA models (both recorded in the BAM header <span class="citation" data-cites="PG">@PG</span> and <span class="citation" data-cites="RG">@RG</span> lines).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-data-of-this-lecture" class="slide level2 smaller">
+<h2>The data of this lecture</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>sample</th>
+<th>what</th>
+<th>region</th>
+<th>where from</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>HG001 (GM12878 DNA)</td>
+<td>nanopore R10.4.1, 4 flow cells, 5mC + 5hmC calls</td>
+<td>5 regions, 1.35 Mb: H19, KvDMR, SNRPN, chrX (KDM5C), chr21 33–34 Mb</td>
+<td>ONT open data, giab_2023.05</td>
+</tr>
+<tr class="even">
+<td>HG001</td>
+<td>ONT’s haplotype-resolved pileups (5mC)</td>
+<td>chrX and chr20</td>
+<td>ONT open data, giab_2025.01</td>
+</tr>
+<tr class="odd">
+<td>NA12878, father, mother</td>
+<td>SNP genotypes</td>
+<td>same regions</td>
+<td>1000 Genomes 30× (2022)</td>
+</tr>
+<tr class="even">
+<td>GM12878</td>
+<td>WGBS (ENCODE ENCFF570TIL)</td>
+<td>same regions</td>
+<td>ENCODE</td>
+</tr>
+<tr class="odd">
+<td>HG002</td>
+<td>nanopore, nuclei treated with EcoGII (6mA), and untreated</td>
+<td>chr21 33–34 Mb</td>
+<td>ONT open data, chrom_acc_2025.06</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>10 462 reads, median length 4.6 kb (mean 11 kb) in the slices; about 80× coverage. The reads were cut out of the genome-wide CRAMs by <strong>indexed remote access</strong> (<code>samtools view -M -L regions.bed https://...cram</code>).</li>
+</ul>
+<aside class="notes">
+<p>HG001 is the Genome in a Bottle reference sample made from a large batch of GM12878 cells, so these nanopore data come from the same cell line as the ENCODE data used elsewhere in the course. The 1000 Genomes high-coverage release includes NA12878’s parents (NA12891, the father, and NA12892, the mother), which lets us label haplotypes as paternal and maternal: rare and valuable, because most individuals do not have parents sequenced. The read lengths in a regional slice underestimate the run’s read lengths, because long reads that start outside the slice are kept but short reads are more numerous. Remote access: CRAM and BAM files with an index can be queried over https without downloading the whole file, which is how a 60-GB CRAM becomes a 120-MB teaching file. The HG002 chromatin data are a different person (HG002 is a man, NA24385, also from a lymphoblastoid cell line), so we compare with GM12878 ATAC peaks only as a rough guide.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-modbam-mm-and-ml-tags" class="slide level2">
+<h2>The modBAM: MM and ML tags</h2>
+
+<img data-src="fig04-mm-ml.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li><code>MM</code> lists which bases carry calls (as skip counts); <code>ML</code> gives one probability per call, scaled to 0–255.</li>
+<li>Calls refer to the <strong>read sequence as sequenced</strong> (SEQ is reverse-complemented for reverse-strand alignments: tools handle this).</li>
+</ul>
+<aside class="notes">
+<p>The SAM tags specification defines MM and ML so that modification calls travel with the read through alignment, sorting and merging. Decode the example: C+m? says the calls are for C, on the top strand of the read, modification code m (5mC). The question mark means that Cs without a call are unknown, not unmethylated: the model only calls Cs in a CpG context, so the C in CA is simply skipped. The numbers 0,1,0 are skip counts over the Cs of the read: call the first C, skip one and call the third, skip none and call the fourth. ML gives one byte per call: 242/256 is about 0.95, so the first CpG is confidently methylated, the second (13) confidently unmethylated, and the third (128) is a coin flip, which modkit will filter. Real nanopore reads carry two lists, C+h? for 5hmC and C+m? for 5mC, with one ML value per call for each; the probability of plain C is what is left over. You will decode one by hand in the exercise; in practice nobody parses these strings, modkit and pysam do.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="probabilities-and-the-threshold" class="slide level2 smaller">
+<h2>Probabilities, and the threshold</h2>
+
+<img data-src="fig05-call-probs.png" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"><ul>
+<li>Most calls are confident (probability &gt; 0.95). <code>modkit</code> estimates a threshold so that the <strong>least confident 10%</strong> of calls are discarded: <strong>0.865</strong> for these reads.</li>
+<li>A methylation level is then a <strong>count</strong>: methylated calls / valid calls, exactly like C/(C+T) in WGBS.</li>
+</ul>
+<aside class="notes">
+<p>Every CpG call has a probability for each state (C, 5mC, 5hmC); the call is the most likely state and its probability is the confidence. modkit samples reads, takes the 10th percentile of the confidence values, and drops calls below it as “fail”. Here that threshold is 0.865 for cytosines (computed from all 1.36 million calls in the region BAM; on a whole genome modkit samples a subset). Why not just average the probabilities? You could (some tools do), but thresholded counts behave like the binomial counts of bisulfite data and can be fed into the same statistics (<em>Differential methylation</em>). Dropping 10% of calls costs a little coverage but removes the calls that are most likely wrong, often at the read ends, in homopolymers or near other modifications. In the exercise you will compute a methylation level from a handful of read calls with a threshold by hand.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="from-reads-to-a-bedmethyl-table" class="slide level2">
+<h2>From reads to a bedMethyl table</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> faidx <span class="va">$D</span>/hg38.fa.bgz chr11 chr15 chr21 chrX <span class="op">&gt;</span> hg38_lr.fa <span class="kw">&amp;&amp;</span> <span class="ex">samtools</span> faidx hg38_lr.fa</span>
+<span id="cb1-2"><a aria-hidden="true" tabindex="-1"></a><span class="ex">modkit</span> pileup <span class="va">$D</span>/hg001_ont_regions.bam hg001_cpg.bed <span class="at">--ref</span> hg38_lr.fa <span class="dt">\</span></span>
+<span id="cb1-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">--cpg</span> <span class="at">--modified-bases</span> 5mC 5hmC <span class="at">--combine-strands</span> <span class="at">--sampling-frac</span> 1 <span class="at">-t</span> 4</span>
+<span id="cb1-4"><a aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-w</span> m hg001_cpg.bed <span class="kw">|</span> <span class="fu">head</span> <span class="at">-2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>chr11  1960033  1960034  m  45  .  1960033  1960034  255,0,0  45  13.33   6  39  0  1   3  1  2
+chr11  1960060  1960061  m  36  .  1960060  1960061  255,0,0  36  94.44  34   2  0  1  12  2  1</code></pre>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>column</th>
+<th>meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>4</td>
+<td>modification code: <code>m</code> 5mC, <code>h</code> 5hmC</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>N valid: calls that passed the threshold</td>
+</tr>
+<tr class="odd">
+<td>11, 12, 13</td>
+<td>percent modified, N modified, N canonical (C)</td>
+</tr>
+<tr class="even">
+<td>14</td>
+<td>N other modification (here: 5hmC calls, for the <code>m</code> row)</td>
+</tr>
+<tr class="odd">
+<td>16</td>
+<td>N fail: calls below the confidence threshold</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>This is the long-read counterpart of the Bismark methylation extractor from <em>Bisulfite and enzymatic sequencing</em>. –cpg restricts to CpG sites in the reference, –combine-strands adds the two Cs of a CpG together (the methylation of the two strands is almost always the same, and it doubles the coverage), –sampling-frac 1 makes the threshold estimate use every read so that the result is reproducible. The output is bedMethyl: one row per CpG and modification code. For the m row, percent modified = N modified / N valid. Note that the 5hmC calls are counted in “N other” for the m row and vice versa, and that the denominator includes them: 5mC% + 5hmC% + C% = 100%. The first example line: 45 valid calls, 6 methylated, 39 unmethylated, no 5hmC, so 13.33%; 3 more calls failed the threshold and are not in the denominator. The second CpG, 27 bp away, is 94% methylated: neighbouring CpGs can differ, and both are at the edge of a region. On a laptop this step takes under a minute for the course data. The first line prepares an uncompressed reference for the four chromosomes we need: modkit and WhatsHap read random positions of the reference many times, and that is much faster from an uncompressed file.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="nanopore-and-wgbs-agree" class="slide level2 smaller">
+<h2>Nanopore and WGBS agree</h2>
+
+<img data-src="fig07-ont-vs-wgbs.png" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>9 779 CpGs with ≥ 10 calls in nanopore and in each of two ENCODE WGBS replicates: nanopore vs pooled WGBS <strong>r = 0.92</strong> (median absolute difference 0.05).</li>
+<li>The two <strong>WGBS replicates agree less with each other (r = 0.80)</strong> than nanopore agrees with them. Along the chromosome the profiles are almost identical.</li>
+</ul>
+<aside class="notes">
+<p>Left: per-CpG comparison of the nanopore level (5mC + 5hmC, because bisulfite cannot separate them) with ENCODE WGBS of GM12878 (two replicates pooled) in our regions. Most CpGs sit in the corners: fully methylated or unmethylated in both. Middle: the two WGBS replicates against each other on the same CpGs: more scatter, including CpGs that read 0 in one replicate and 1 in the other. Nanopore agrees with replicate 2 at r = 0.94 and with replicate 1 at r = 0.82: replicate 1 is the noisier library. The lesson is not that one technology is “right”: a correlation between two assays is limited by the noisier of the two, and a replicate-to-replicate comparison tells you what agreement to expect. Right: along 70 kb of chr21 around GART, SON and DONSON, both show the same unmethylated CpG islands at the promoters. Remember also that the samples are different DNA preparations of the same cell line, made years apart; a cell line that keeps dividing can change its methylation.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="mc-and-5hmc-what-bisulfite-cannot-separate" class="slide level2 smaller">
+<h2>5mC and 5hmC: what bisulfite cannot separate</h2>
+<ul>
+<li>In our HG001 slices: mean <strong>5mC 55%</strong>, mean <strong>5hmC 0.8%</strong> of CpG calls. Blood cells and cell lines have little 5hmC; brain has 10–20 times more.</li>
+<li>Bisulfite (and EM-seq) report 5mC + 5hmC as “methylated”. TAB-seq, oxBS or 5hmC-specific enzymatic methods are needed to split them; the nanopore model does it in the same run.</li>
+<li>Caution: at 1% the 5hmC calls are close to the <strong>false-positive rate</strong> of the model. Small 5hmC differences between samples need validation.</li>
+</ul>
+<aside class="notes">
+<p>5hmC is the first oxidation product of TET enzymes (<em>DNA methylation biology</em>). In most cell types it is a small fraction of the modified cytosines; in neurons it can be 20–40% of the modified CpGs in gene bodies. A nanopore 5hmC call is a model prediction between three classes; for a class that is rare, even a small error rate produces many false calls relative to the true ones, the same base-rate problem as a screening test for a rare disease. The practical rule: 5hmC levels from nanopore are useful in tissues where 5hmC is abundant, and should be interpreted with care where it is not. For comparison with WGBS, always add 5mC and 5hmC (as in the previous slide).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="haplotypes-which-copy-is-methylated" class="slide level2 smaller">
+<h2>Haplotypes: which copy is methylated?</h2>
+
+<img data-src="fig06-phasing.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>A level of 0.5 can mean <strong>half of the cells</strong>, or <strong>one of the two alleles</strong> in every cell. Only reads assigned to haplotypes tell them apart.</li>
+<li>With the parents’ genotypes (a trio) the haplotypes get <strong>parental labels</strong>; without them they are just 1 and 2.</li>
+</ul>
+<aside class="notes">
+<p>Step 1, Mendelian logic: at s1 the father is C/C and the child C/T, so the child’s T came from the mother. At s2 the mother is A/A, so the child’s G is paternal. At s3 both parents are heterozygous and the child is too: we cannot tell which allele came from whom. Step 2: a read that carries C at s1 and G at s2 is on the paternal chromosome. WhatsHap does this assignment for every read and writes the tag HP:i:1 or HP:i:2. Step 3: count calls per haplotype. In the toy example the paternal copy is fully methylated and the maternal copy unmethylated: the pattern of an imprinting control region. In most studies there are no parents: then SNPs are phased from the long reads themselves (read-based phasing, WhatsHap or LongPhase); haplotypes are consistent within a phase block (often hundreds of kilobases) but carry no parental label and may flip between blocks.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="phasing-in-practice" class="slide level2">
+<h2>Phasing in practice</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># child heterozygous, phase by transmission -&gt; VCF with GT = paternal|maternal (awk in the exercise)</span></span>
+<span id="cb3-2"><a aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> query <span class="at">-f</span> <span class="st">'%CHROM\t%POS\t%REF\t%ALT[\t%GT]\n'</span> <span class="va">$D</span>/hg001_trio_regions.vcf.gz <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'...'</span> <span class="op">&gt;</span> trio_phased.vcf</span>
+<span id="cb3-3"><a aria-hidden="true" tabindex="-1"></a><span class="ex">bgzip</span> trio_phased.vcf <span class="kw">&amp;&amp;</span> <span class="ex">tabix</span> <span class="at">-p</span> vcf trio_phased.vcf.gz</span>
+<span id="cb3-4"><a aria-hidden="true" tabindex="-1"></a><span class="ex">whatshap</span> haplotag <span class="at">--ignore-read-groups</span> <span class="at">--reference</span> hg38_lr.fa <span class="dt">\</span></span>
+<span id="cb3-5"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">--output-haplotag-list</span> haplotags.tsv <span class="at">-o</span> hg001_tagged.bam trio_phased.vcf.gz <span class="va">$D</span>/hg001_ont_regions.bam</span>
+<span id="cb3-6"><a aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> index hg001_tagged.bam</span>
+<span id="cb3-7"><a aria-hidden="true" tabindex="-1"></a><span class="ex">modkit</span> pileup hg001_tagged.bam phased/ <span class="at">--phased</span> <span class="at">--ref</span> hg38_lr.fa <span class="dt">\</span></span>
+<span id="cb3-8"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">--cpg</span> <span class="at">--modified-bases</span> 5mC 5hmC <span class="at">--combine-strands</span> <span class="at">--sampling-frac</span> 1 <span class="at">-t</span> 4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>562 heterozygous SNPs informative in the trio; <strong>5 575 of 10 462 reads</strong> (53%) carry at least one and get a tag: 2 880 paternal, 2 695 maternal.</li>
+<li><code>phased/hp1.bedmethyl</code> and <code>phased/hp2.bedmethyl</code>: one bedMethyl per haplotype.</li>
+</ul>
+<aside class="notes">
+<p>The awk program (written out in the exercise) keeps the child’s heterozygous SNPs and writes the paternal allele first in the genotype (for example 1|0 when the father passed on the ALT allele). WhatsHap haplotag reads that VCF and assigns each read to haplotype 1 (here: the first allele = paternal) or 2, using the alleles the read carries at those SNPs; reads that cover no informative SNP stay untagged. Half the reads are tagged here: the SNPs are not dense enough near some loci for reads of a few kb (the median read in our slice is 4.6 kb). Longer reads tag more. modkit pileup –phased then writes three bedMethyl files: hp1, hp2 and combined. In a production pipeline (ONT wf-human-variation) the SNPs come from the same reads (Clair3), are phased by WhatsHap or LongPhase, and the pileup is done per haplotype automatically.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="single-molecules-at-the-h19-imprinting-control-region" class="slide level2 smaller">
+<h2>Single molecules at the H19 imprinting control region</h2>
+
+<img data-src="fig08-h19-reads.png" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"><ul>
+<li>Paternal reads: <strong>67%</strong> of CpG calls methylated; maternal reads: <strong>8%</strong>, and across the 5-kb ICR <strong>0.72 vs 0.01</strong>. The methylated copy is the paternal one, as the textbook says.</li>
+<li>Outside the ICR (left, over the H19 gene) both alleles are partly methylated.</li>
+</ul>
+<aside class="notes">
+<p>Each row is one nanopore read assigned to a parent; each circle a CpG call (filled = 5mC). The shaded region is the H19/IGF2 imprinting control region (ICR, also called IC1), about 2–7 kb upstream of the H19 transcription start. On the paternal allele the ICR is methylated, CTCF cannot bind, and the downstream enhancers reach IGF2 (expressed from the paternal allele); on the maternal allele the ICR is unmethylated, CTCF binds and insulates IGF2, and H19 is expressed. Recap from <em>DNA methylation biology</em>. The maternal reads are not completely unmethylated: a few isolated filled circles are either real (the ICR edges) or false-positive calls. Note that only 15 reads are shown: few reads reach both the ICR and an informative SNP (the nearest is 6 kb away), a real limitation of phasing in SNP-poor regions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="three-imprinted-loci-both-directions" class="slide level2 smaller">
+<h2>Three imprinted loci, both directions</h2>
+
+<img data-src="fig10-imprinted-loci.png" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><table class="caption-top">
+<thead>
+<tr class="header">
+<th>ICR (shaded)</th>
+<th>methylated allele, expected</th>
+<th style="text-align: right;">paternal</th>
+<th style="text-align: right;">maternal</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>H19 ICR (chr11)</td>
+<td>paternal</td>
+<td style="text-align: right;">0.72</td>
+<td style="text-align: right;">0.01</td>
+</tr>
+<tr class="even">
+<td>KvDMR, KCNQ1OT1 promoter (chr11)</td>
+<td>maternal</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.90</td>
+</tr>
+<tr class="odd">
+<td>PWS-IC, SNURF/SNRPN promoter (chr15)</td>
+<td>maternal</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.75</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>Mean 5mC of CpGs in the shaded region per haplotype, from modkit pileup –phased. The three ICRs behave exactly as expected, and in both directions: H19 is methylated on the paternal copy, KvDMR and the Prader–Willi imprinting centre on the maternal copy. Look also at the gene bodies: downstream of the SNRPN promoter the paternal allele (the expressed one) is highly methylated over the gene body while the maternal allele is not. Gene-body methylation follows transcription (DNMT3B is recruited by H3K36me3), so the silent maternal copy has a methylation-free promoter-to-body pattern turned inside out. This is the same assay that clinical labs now use to diagnose imprinting disorders (Prader–Willi, Angelman, Beckwith–Wiedemann, Silver–Russell) and to see the parent of origin of a deletion in one run.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="three-reasons-for-allele-specific-methylation" class="slide level2">
+<h2>Three reasons for allele-specific methylation</h2>
+
+<img data-src="fig14-asm-causes.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>Phasing finds <strong>allele-specific methylation</strong> (ASM); the cause must be inferred: parent of origin, random X choice, or the DNA sequence.</li>
+<li>Test: does the methylated allele follow the <strong>parent</strong> (imprinting) or the <strong>SNP allele</strong> across people (meQTL)?</li>
+</ul>
+<aside class="notes">
+<p>Panel A: imprinting. In every person, the paternal (or maternal) copy is methylated, whatever the SNP alleles on it. Panel B: X inactivation. Each cell of the early female embryo chooses one X; its descendants keep the choice. In a tissue, half the cells silenced each X, so each haplotype looks half methylated; in a clonal population such as a cell line, all cells made the same choice and the inactive X is the same haplotype everywhere. Panel C: sequence-dependent ASM. A SNP changes a TF binding site or removes the CpG itself; the methylated allele is the one carrying a particular base, regardless of which parent passed it on. Sequence-dependent ASM is the most common type genome-wide and is the molecular basis of methylation QTLs (meQTLs, <em>Epigenomics and genetic variation</em>). With one person you cannot tell A from C; with trios or many people you can.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="x-inactivation-on-one-cell-lines-two-x-chromosomes" class="slide level2 smaller">
+<h2>X inactivation, on one cell line’s two X chromosomes</h2>
+
+<img data-src="fig11-chrx-cgis.png" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"><ul>
+<li><strong>62%</strong> of 399 chrX promoter CpG islands are methylated on one haplotype only (difference &gt; 0.5), against <strong>1.5%</strong> of 330 on chr20; the chr20 exceptions include the imprinted <em>GNAS</em> and <em>MCTS2</em>.</li>
+<li>37 chrX islands are unmethylated on <strong>both</strong>: <em>KDM5C, KDM6A, DDX3X, EIF2S3, ZFX, USP9X, STS</em>, the PAR1 genes, all known to <strong>escape</strong> X inactivation.</li>
+</ul>
+<aside class="notes">
+<p>ONT’s own haplotype-resolved pileups of HG001 (another flow cell, 2025), one point per promoter CpG island, averaged over its CpGs. On chr20 nearly all islands lie on the diagonal near zero: promoter CpG islands are unmethylated on both alleles. On chrX most islands are off the diagonal: one copy unmethylated (the active X) and one methylated (the inactive X). That GM12878 shows this so clearly means most of its cells inactivated the same X, as expected for a clonal (or nearly clonal) cell line (<em>Three reasons</em>, panel B). The points at the origin of the chrX panel are the escape genes; the pseudoautosomal genes (SHOX, CD99, SLC25A6, ASMTL…) have a Y-linked copy in males and are not subject to X inactivation, and genes like KDM5C, KDM6A and DDX3X are the classic escapees with Y homologues. A cluster near the diagonal at high methylation are islands methylated on both X chromosomes, not promoters of expressed genes in lymphoblasts. Caveat: here the haplotypes come from read-based phasing within phase blocks, so we cannot say whether the paternal or the maternal X is inactive.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="accessibility-on-the-same-molecules-fiber-seq" class="slide level2 smaller">
+<h2>Accessibility on the same molecules: Fiber-seq</h2>
+
+<img data-src="fig09-fiberseq.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>Treat nuclei with a non-specific <strong>adenine methyltransferase</strong> (Hia5, EcoGII): it methylates A wherever the DNA is reachable. Then sequence the native DNA.</li>
+<li>One read = one chromatin fibre: <strong>nucleosome footprints</strong> (~147 bp without m6A), linkers, and nucleosome-free regulatory elements, plus the read’s own 5mC and SNP alleles.</li>
+</ul>
+<aside class="notes">
+<p>Fiber-seq (Stergachis et al.&nbsp;2020, PacBio) and its relatives (SAMOSA with EcoGII on PacBio, NanoNOMe with a GpC methyltransferase on nanopore, SMAC-seq with several enzymes on nanopore, and the ONT EcoGII protocol used here) all write accessibility into the DNA as a modification that mammalian cells do not make themselves. Human DNA has essentially no 6mA of its own, so (apart from false-positive calls) every m6A is a mark left by the enzyme. Compare with ATAC-seq (<em>ATAC-seq: Tn5, fragment sizes, nucleosome ladder</em>): ATAC counts cuts in a population of cells; Fiber-seq shows on each molecule whether this element was open, how its neighbouring nucleosomes were placed, and whether the CpGs of the same molecule were methylated. That allows questions ATAC cannot answer: are two enhancers open on the same molecule? Is the open copy the unmethylated allele?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="real-fibres-at-a-promoter" class="slide level2 smaller">
+<h2>Real fibres at a promoter</h2>
+
+<img data-src="fig12-atp5po-fibres.png" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"><ul>
+<li>At the <em>ATP5PO</em> promoter (an LCL ATAC peak), <strong>12.9%</strong> of adenines are m6A in the nucleosome-free region, against 0.5% in the flanks; the CpG island on the same reads is <strong>unmethylated</strong> (9.5% vs 82%).</li>
+<li>Fibres differ: some are open over the whole element, some only partly, a few not at all.</li>
+</ul>
+<aside class="notes">
+<p>30 reads that span the 6-kb window, one per row. Red: adenines called m6A (EcoGII marks); black: CpGs called 5mC. Two things are visible on the same molecules. The promoter of ATP5PO, a mitochondrial ATP synthase subunit expressed in every cell, is nucleosome-free and accessible (dense red), and its CpG island has no methylation (no black). Away from the promoter, CpGs are methylated and m6A is sparse: here the DNA is wrapped in nucleosomes. The green band is the GM12878 ATAC peak; HG002 is a different person but also a lymphoblastoid cell line, and housekeeping promoters are open in both. Note the efficiency: even in the open region only about one adenine in eight is marked, because the enzyme is used at a limited dose and each A is a chance event. Footprint calling therefore uses the spacing of marks, not individual bases.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-signal-in-aggregate" class="slide level2 smaller">
+<h2>The signal in aggregate</h2>
+
+<img data-src="fig13-m6a-peaks.png" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><ul>
+<li>Over 116 ATAC summits on chr21 (33–34 Mb): m6A peaks at the summit (~8.5% of A), on a plateau of ~3% that extends ±400 bp.</li>
+<li>Treated: <strong>4.8%</strong> in peaks vs <strong>0.37%</strong> outside (13-fold). Untreated control: <strong>0.04%</strong> and <strong>0.02%</strong>, the false-positive background of the 6mA model.</li>
+</ul>
+<aside class="notes">
+<p>Left: the fraction of adenines called m6A as a function of distance to GM12878 ATAC summits, in the treated sample (red) and the untreated native DNA of the same individual (grey). Right: totals inside and outside peaks. Three lessons. First, the treated sample reproduces the accessibility landscape of ATAC-seq from a completely different chemistry. Second, the background outside peaks (0.37%) is ten times higher than in untreated DNA: linker DNA between nucleosomes is accessible too, so closed chromatin is not unmarked, only sparsely marked. Third, the untreated control is essential: 0.02–0.04% of adenines are called m6A in DNA that never saw the enzyme, which is the model’s false-positive rate. Claims of naturally occurring 6mA in mammalian genomes have been made with methods that could not exclude such artefacts, bacterial contamination or RNA; a control like this is the minimum.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="from-m6a-marks-to-footprints-and-elements" class="slide level2 smaller">
+<h2>From m6A marks to footprints and elements</h2>
+<ul>
+<li><strong>Nucleosomes</strong>: stretches of ~100–200 bp without m6A between marked linkers. <strong>Methyltransferase-sensitive patches (MSPs)</strong>: longer marked stretches, i.e.&nbsp;nucleosome-free regions.</li>
+<li><strong>Accessible regulatory elements</strong> per fibre (e.g.&nbsp;FIREs in the fibertools pipeline), then aggregated into peaks, like ATAC peaks but with a per-molecule fraction: “this element is open on 62% of fibres”.</li>
+<li><strong>TF footprints</strong>: short protected stretches inside an open element (CTCF, ~40 bp).</li>
+<li>Tools: <a href="https://github.com/fiberseq/fibertools-rs">fibertools</a> (PacBio and nanopore), <code>modkit open-chromatin predict</code> (nanopore EcoGII), NanoNOMe/<code>nanopolish</code> for GpC data.</li>
+</ul>
+<aside class="notes">
+<p>The raw calls are sparse and noisy, so footprinting uses a hidden Markov model or a classifier over the pattern of marks along each read: long unmarked runs are nucleosomes, runs with dense marks are open. This is the long-read version of the nucleosome ladder from MNase-seq and ATAC fragment sizes (<em>ATAC-seq: Tn5, fragment sizes, nucleosome ladder</em>), but per molecule. Two caveats: the methyltransferases are not perfectly uniform (both EcoGII and Hia5 methylate A in almost any sequence context, but with some preferences), and AT-rich DNA has more targets, so raw m6A density must be normalised by the number of As. And a “closed” fibre at a peak can be a molecule from a cell where the element is closed, or a molecule where the enzyme simply did not act: the per-fibre fraction is a lower bound.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="caveats-and-pitfalls" class="slide level2 smaller">
+<h2>Caveats and pitfalls</h2>
+<ul>
+<li><strong>Models</strong>: accuracy depends on context and on the training data; compare samples called with the <strong>same</strong> basecaller and model version.</li>
+<li><strong>Thresholds</strong>: modkit drops the least confident 10% of calls; low-confidence regions (homopolymers, read ends) lose more coverage.</li>
+<li><strong>Strand and context</strong>: CpG models do not call CpH methylation; <code>--combine-strands</code> assumes symmetric CpG methylation (not true for hemimethylated DNA).</li>
+<li><strong>Mapping</strong>: long reads map into repeats short reads cannot, but MAPQ still matters; supplementary and secondary alignments are skipped by default.</li>
+<li><strong>Phasing</strong>: only reads with informative SNPs get a haplotype; switch errors between phase blocks mix haplotypes; parental labels need a trio or a known ICR.</li>
+<li><strong>Coverage</strong>: 30× genome ≈ 15× per haplotype: allele-specific calls are noisy at single CpGs, average over regions.</li>
+</ul>
+<aside class="notes">
+<p>These are the questions to ask of any long-read methylation paper. The model point is the most common source of artefacts in published comparisons: a disease cohort sequenced in 2022 and controls sequenced in 2024 with a different basecaller is a batch effect by design. Hemimethylation: right after replication the new strand is unmethylated until DNMT1 catches up; strand-specific calling (without –combine-strands) can show this. Phasing switch errors: if the haplotype assignment flips halfway along a region, each “haplotype” becomes a mixture and allele-specific differences shrink. For per-haplotype analysis at 30× you have about 15 reads per allele, so binomial noise at a single CpG is large (standard deviation 0.13 at a level of 0.5); region-level averages or a DMR caller (modkit dmr, DSS on per-haplotype counts, <em>Differential methylation</em>) are the way to go.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-workflow-end-to-end" class="slide level2">
+<h2>The workflow, end to end</h2>
+
+<img data-src="fig15-workflow.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>Basecalling with modification models needs the raw signal and a GPU; most users start from the <strong>modBAM</strong>.</li>
+<li>Production pipelines run every box: ONT <a href="https://github.com/epi2me-labs/wf-human-variation">wf-human-variation</a>, PacBio <a href="https://github.com/PacificBiosciences/HiFi-human-WGS-WDL">HiFi-human-WGS</a>.</li>
+</ul>
+<aside class="notes">
+<p>The raw nanopore signal (POD5) of a 30× human genome is on the order of a terabyte, and basecalling with the most accurate models takes hours to days on GPUs. That is why public data and most core facilities hand out modBAMs: basecalled, aligned reads with MM/ML tags. From there the steps are the ones in the exercise: modkit pileup for aggregate levels, modkit extract for per-read calls, SNP calling and phasing for haplotypes, and pileup per haplotype. The Nextflow workflow wf-human-variation does it all (and calls structural variants, copy number and repeat expansions from the same reads); the bedMethyl files per haplotype we used for the chrX analysis come from that workflow. modkit dmr compares two samples or two haplotypes; for replicated designs, the beta-binomial models of <em>Differential methylation</em> (DSS, methylKit) take modkit counts as input.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="where-long-reads-change-the-answer" class="slide level2 smaller">
+<h2>Where long reads change the answer</h2>
+<ul>
+<li><strong>Repeats and centromeres</strong>: the first complete human genome (T2T-CHM13) came with a complete methylome, including centromeric satellites invisible to short reads (Gershman et al.&nbsp;2022).</li>
+<li><strong>Imprinting disorders</strong>: parent-of-origin methylation and the variant in one test.</li>
+<li><strong>X inactivation, escape and erosion</strong> in female cells and cell lines.</li>
+<li><strong>Allele-specific methylation</strong> and meQTLs without population arrays.</li>
+<li><strong>Single-molecule co-occurrence</strong>: is the open enhancer on the unmethylated copy? Are two elements open together?</li>
+<li><strong>Cancer</strong>: haplotype-specific methylation at amplified or deleted alleles; structural variants and their methylation from the same reads.</li>
+</ul>
+<aside class="notes">
+<p>A short tour of where the long-read view is not just a cheaper or more convenient WGBS but answers questions short reads cannot. Gershman et al.&nbsp;(2022) mapped methylation across the centromeres of CHM13, which consist of megabases of near-identical alpha-satellite repeats, and found a hypomethylated “centromere dip region” that marks where the kinetochore assembles. Clinical genetics is moving towards a single long-read test that reports SNVs, structural variants, repeat expansions and imprinting methylation together. For the rest of this course: the chromatin accessibility from Fiber-seq connects to <em>ATAC-seq</em> and <em>Motifs, motif enrichment and TF footprinting</em>; the per-haplotype methylation to <em>Epigenomics and genetic variation</em>; cfDNA methylation from nanopore to <em>Epigenetic clocks and biomarkers</em>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="summary" class="slide level2 smaller">
+<h2>Summary</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>idea</th>
+<th>key fact</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>detection</td>
+<td>nanopore: current through a pore; PacBio: polymerase kinetics; no conversion</td>
+</tr>
+<tr class="even">
+<td>what is called</td>
+<td>5mC and 5hmC at CpG, 6mA, 4mC; probabilities per base per read from a model</td>
+</tr>
+<tr class="odd">
+<td>modBAM</td>
+<td>MM: which bases (skip counts); ML: probability × 256; <code>?</code> vs <code>.</code> for skipped bases</td>
+</tr>
+<tr class="even">
+<td>pileup</td>
+<td>modkit drops the least confident 10%; level = modified / valid calls (bedMethyl)</td>
+</tr>
+<tr class="odd">
+<td>vs WGBS</td>
+<td>r = 0.92 per CpG (WGBS rep vs rep: 0.80); compare 5mC + 5hmC with bisulfite</td>
+</tr>
+<tr class="even">
+<td>phasing</td>
+<td>het SNPs on reads → HP tags (WhatsHap); trio gives parental labels</td>
+</tr>
+<tr class="odd">
+<td>imprinting</td>
+<td>H19 ICR paternal 0.72 / maternal 0.01; KvDMR and PWS-IC maternal</td>
+</tr>
+<tr class="even">
+<td>X inactivation</td>
+<td>62% of chrX promoter CGIs methylated on one haplotype vs 1.5% on chr20; escapees on neither</td>
+</tr>
+<tr class="odd">
+<td>Fiber-seq</td>
+<td>m6A from an added methyltransferase marks accessible DNA on each fibre; untreated control essential</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>Students should leave able to: explain how each platform detects a modification without bisulfite; decode an MM/ML pair by hand; compute a methylation level from thresholded read calls; phase a SNP by Mendelian logic and say what a haplotag is; read a single-molecule plot and a per-haplotype methylation profile; distinguish imprinting, X inactivation and sequence-dependent ASM; and say why Fiber-seq needs an untreated control. In the exercise you run all of this on the course data: modkit pileup, trio phasing, haplotagging, per-haplotype pileups, the chrX analysis and the m6A analysis.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="key-papers-optional-further-reading" class="slide level2 smaller">
+<h2>Key papers (optional further reading)</h2>
+<p><em>Not required reading and not examined. For those who want the primary literature.</em></p>
+<ul>
+<li>Flusberg et al.&nbsp;2010, <em>Nat Methods</em>. <a href="https://doi.org/10.1038/nmeth.1459">Direct detection of DNA methylation during single-molecule, real-time sequencing</a>. Polymerase kinetics reveal modified bases.</li>
+<li>Simpson et al.&nbsp;2017, <em>Nat Methods</em>. <a href="https://doi.org/10.1038/nmeth.4184">Detecting DNA cytosine methylation using nanopore sequencing</a>. The first 5mC calls from nanopore current.</li>
+<li>Gigante et al.&nbsp;2019, <em>Nucleic Acids Res</em>. <a href="https://doi.org/10.1093/nar/gkz107">Using long-read sequencing to detect imprinted DNA methylation</a>. Haplotype-resolved methylation at imprinted loci.</li>
+<li>Stergachis et al.&nbsp;2020, <em>Science</em>. <a href="https://doi.org/10.1126/science.aaz1646">Single-molecule regulatory architectures captured by chromatin fiber sequencing</a>. Fiber-seq.</li>
+<li>Lee et al.&nbsp;2020, <em>Nat Methods</em>. <a href="https://doi.org/10.1038/s41592-020-01000-7">Simultaneous profiling of chromatin accessibility and methylation on human cell lines with nanopore sequencing</a>. NanoNOMe, on GM12878.</li>
+<li>Gershman et al.&nbsp;2022, <em>Science</em>. <a href="https://doi.org/10.1126/science.abj5089">Epigenetic patterns in a complete human genome</a>. Methylation of the whole T2T genome, centromeres included.</li>
+</ul>
+
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'visible',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: false,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+            const codeEl = trigger.previousElementSibling.cloneNode(true);
+            for (const childEl of codeEl.children) {
+              if (isCodeAnnotation(childEl)) {
+                childEl.remove();
+              }
+            }
+            return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

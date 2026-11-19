@@ -1,0 +1,99 @@
+---
+title: "Quiz: machine learning from scratch"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+Short questions on supervised learning, logistic regression, overfitting and classifier metrics. Try each on paper first, then open the answer.
+
+---
+
+**Q1.** A study predicts whether each 200-bp window of the genome is bound by CTCF in K562, from the counts of all 6-mers in the window. Name the examples, the features, the label and the parameters of a logistic regression. How many parameters are there?
+
+::: {.callout-tip collapse="true" title="Hint"}
+How many different 6-mers are there? Do not forget the intercept.
+:::
+
+::: {.callout-note collapse="true" title="Answer"}
+Examples: the 200-bp windows. Features: the 6-mer counts, $4^6 = 4096$ of them. Label: bound (1) or not (0), from CTCF ChIP-seq peaks in K562. Parameters: one coefficient per 6-mer plus the intercept, 4097.
+:::
+
+---
+
+**Q2.** A logistic regression gives a window the score $-1$. What is P(bound)? A feature with coefficient 0.7 increases by 1. What happens to the odds, and what is the new probability?
+
+::: {.callout-note collapse="true" title="Answer"}
+$P = 1/(1 + e^{1}) = 0.27$. The odds are multiplied by $e^{0.7} = 2.0$ (from 0.37 to 0.74); the new score is $-0.3$ and $P = 1/(1 + e^{0.3}) = 0.43$.
+:::
+
+---
+
+**Q3.** A model predicts P(open) = 0.95 for a window that is closed. What is its log-loss? Compare with the log-loss of predicting 0.5.
+
+::: {.callout-note collapse="true" title="Answer"}
+$-\log(1 - 0.95) = -\log 0.05 = 3.0$, against $-\log 0.5 = 0.69$. Being confidently wrong costs more than four times as much as saying "I don't know".
+:::
+
+---
+
+**Q4.** On 500 test windows (100 bound, 400 unbound) a classifier calls 120 windows bound, 80 of them correctly. Give TP, FP, FN, TN, precision, recall, FPR and accuracy.
+
+::: {.callout-note collapse="true" title="Answer"}
+TP 80, FP 40, FN 20, TN 360. Precision $80/120 = 0.67$, recall $80/100 = 0.80$, FPR $40/400 = 0.10$, accuracy $440/500 = 0.88$.
+:::
+
+---
+
+**Q5.** Six test windows, sorted by score: open, open, closed, open, closed, closed. Draw the ROC curve and give its AUC.
+
+::: {.callout-tip collapse="true" title="Hint"}
+Up by 1/3 for each open window, right by 1/3 for each closed one. Or count (open, closed) pairs in the right order.
+:::
+
+::: {.callout-note collapse="true" title="Answer"}
+Points (0, 0), (0, 1/3), (0, 2/3), (1/3, 2/3), (1/3, 1), (2/3, 1), (1, 1). Pairs: the first two open windows beat all 3 closed ones (6 pairs), the third open beats 2: 8 of 9, AUC $= 0.89$.
+:::
+
+---
+
+**Q6.** Two papers predict enhancers. Paper A reports ROC AUC 0.92 on a test set with one enhancer per non-enhancer; paper B reports ROC AUC 0.90 and PR AUC 0.35 on a test set with one enhancer per 50 non-enhancers. Can you say which model is better? What would you ask for?
+
+::: {.callout-note collapse="true" title="Answer"}
+Not from these numbers. ROC AUCs are roughly comparable across class ratios (0.92 vs 0.90 is a small difference, and the test sets differ in other ways too). PR AUCs depend strongly on the fraction of positives: paper B's 0.35 is far above its baseline of 1/51 = 0.02, and paper A's PR AUC is not given (its baseline would be 0.5). Ask for both models evaluated on the same test set, with the same class ratio, ideally the realistic one, and with a simple baseline (GC, motif presence).
+:::
+
+---
+
+**Q7.** A model with 10 000 features is trained on 300 samples. Training accuracy is 100%, test accuracy 58%, in a balanced two-class problem. What happened, and name two remedies.
+
+::: {.callout-note collapse="true" title="Answer"}
+Overfitting: with far more parameters than samples the model can fit the training labels perfectly, including noise, and the fit does not generalise (58% is barely above the 50% of guessing). Remedies: regularisation (lasso, ridge or elastic net, with λ chosen by cross-validation), fewer features (chosen *inside* the cross-validation, not on all data), or more samples.
+:::
+
+---
+
+**Q8.** What is the difference between the lasso (L1) and ridge (L2) penalties in what they do to the coefficients? Which one would you use to obtain a short list of CpGs for an epigenetic clock?
+
+::: {.callout-note collapse="true" title="Answer"}
+Both shrink coefficients towards 0; the lasso sets many of them exactly to 0 (feature selection), ridge keeps all of them small but non-zero. For a short list of CpGs: the lasso, or the elastic net (a mix of both, as in Horvath's clock), which keeps the selection but behaves better when CpGs are correlated.
+:::
+
+---
+
+**Q9.** A student tunes λ by trying 50 values and picking the one with the best AUC on the test chromosomes, then reports that AUC. What is wrong? How should λ be chosen?
+
+::: {.callout-note collapse="true" title="Answer"}
+The test set was used to choose the model, so the reported AUC is optimistically biased: it is the best of 50 tries, partly by luck. Choose λ by cross-validation within the training chromosomes (folds made of whole chromosomes), then evaluate the chosen model once on the test chromosomes.
+:::
+
+---
+
+**Q10.** In the lecture, the GC-only model had ROC AUC 0.71 for open vs closed windows. A new model reaches 0.73. Is that a good result? What is the baseline here, and what other information would you want?
+
+::: {.callout-note collapse="true" title="Answer"}
+It is only 0.02 above a one-feature baseline, so it adds little beyond GC content; whether that difference is real needs an uncertainty estimate (e.g. a bootstrap of the test windows, or several held-out chromosomes). Also ask how the negatives were chosen: with random-genome negatives, GC alone separates the classes well, and a model can look good by learning GC. With GC-matched negatives the comparison would be fairer (next unit).
+:::

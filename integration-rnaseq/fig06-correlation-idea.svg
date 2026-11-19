@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 262" width="1120" height="262" font-family="Helvetica, Arial, sans-serif">
+<rect width="1120" height="262" fill="#ffffff"/>
+<!-- column headers: 8 samples, 4 of type X (B-like), 4 of type Y -->
+<text x="250" y="34" font-size="15" font-weight="bold" fill="#2a6f97" text-anchor="middle">cell type 1 (4 samples)</text>
+<text x="450" y="34" font-size="15" font-weight="bold" fill="#e67e22" text-anchor="middle">cell type 2 (4 samples)</text>
+<line x1="160" y1="42" x2="340" y2="42" stroke="#2a6f97" stroke-width="3"/>
+<line x1="360" y1="42" x2="540" y2="42" stroke="#e67e22" stroke-width="3"/>
+<!-- rows -->
+<g font-size="15" fill="#1b2a3a">
+<text x="146" y="80" text-anchor="end" font-weight="bold">peak E (ATAC)</text>
+<text x="146" y="130" text-anchor="end">gene G1, 30 kb</text>
+<text x="146" y="180" text-anchor="end">gene G2, 60 kb</text>
+<text x="146" y="230" text-anchor="end">gene G3, chr 9</text>
+</g>
+<!-- heat cells: x positions 160..520 step 45, width 42 -->
+<g>
+<!-- peak E: high in type1, low in type2, some spread -->
+<rect x="160" y="60" width="42" height="30" fill="#2e8b57" fill-opacity="0.95"/><rect x="205" y="60" width="42" height="30" fill="#2e8b57" fill-opacity="0.8"/><rect x="250" y="60" width="42" height="30" fill="#2e8b57" fill-opacity="0.9"/><rect x="295" y="60" width="42" height="30" fill="#2e8b57" fill-opacity="0.7"/>
+<rect x="360" y="60" width="42" height="30" fill="#2e8b57" fill-opacity="0.12"/><rect x="405" y="60" width="42" height="30" fill="#2e8b57" fill-opacity="0.2"/><rect x="450" y="60" width="42" height="30" fill="#2e8b57" fill-opacity="0.1"/><rect x="495" y="60" width="42" height="30" fill="#2e8b57" fill-opacity="0.15"/>
+<!-- G1: true target, follows E -->
+<rect x="160" y="110" width="42" height="30" fill="#6b4fa0" fill-opacity="0.9"/><rect x="205" y="110" width="42" height="30" fill="#6b4fa0" fill-opacity="0.75"/><rect x="250" y="110" width="42" height="30" fill="#6b4fa0" fill-opacity="0.85"/><rect x="295" y="110" width="42" height="30" fill="#6b4fa0" fill-opacity="0.65"/>
+<rect x="360" y="110" width="42" height="30" fill="#6b4fa0" fill-opacity="0.15"/><rect x="405" y="110" width="42" height="30" fill="#6b4fa0" fill-opacity="0.2"/><rect x="450" y="110" width="42" height="30" fill="#6b4fa0" fill-opacity="0.1"/><rect x="495" y="110" width="42" height="30" fill="#6b4fa0" fill-opacity="0.18"/>
+<!-- G2: housekeeping, flat -->
+<rect x="160" y="160" width="42" height="30" fill="#6b4fa0" fill-opacity="0.5"/><rect x="205" y="160" width="42" height="30" fill="#6b4fa0" fill-opacity="0.55"/><rect x="250" y="160" width="42" height="30" fill="#6b4fa0" fill-opacity="0.45"/><rect x="295" y="160" width="42" height="30" fill="#6b4fa0" fill-opacity="0.5"/>
+<rect x="360" y="160" width="42" height="30" fill="#6b4fa0" fill-opacity="0.52"/><rect x="405" y="160" width="42" height="30" fill="#6b4fa0" fill-opacity="0.48"/><rect x="450" y="160" width="42" height="30" fill="#6b4fa0" fill-opacity="0.55"/><rect x="495" y="160" width="42" height="30" fill="#6b4fa0" fill-opacity="0.5"/>
+<!-- G3: other chromosome, same program -->
+<rect x="160" y="210" width="42" height="30" fill="#6b4fa0" fill-opacity="0.85"/><rect x="205" y="210" width="42" height="30" fill="#6b4fa0" fill-opacity="0.8"/><rect x="250" y="210" width="42" height="30" fill="#6b4fa0" fill-opacity="0.9"/><rect x="295" y="210" width="42" height="30" fill="#6b4fa0" fill-opacity="0.7"/>
+<rect x="360" y="210" width="42" height="30" fill="#6b4fa0" fill-opacity="0.1"/><rect x="405" y="210" width="42" height="30" fill="#6b4fa0" fill-opacity="0.15"/><rect x="450" y="210" width="42" height="30" fill="#6b4fa0" fill-opacity="0.12"/><rect x="495" y="210" width="42" height="30" fill="#6b4fa0" fill-opacity="0.2"/>
+</g>
+<!-- correlation column -->
+<text x="610" y="34" font-size="15" font-weight="bold" fill="#1b2a3a" text-anchor="middle">r with E</text>
+<g font-size="16" text-anchor="middle">
+<text x="610" y="131" fill="#2e8b57" font-weight="bold">0.95</text>
+<text x="610" y="181" fill="#5b6b7a">0.05</text>
+<text x="610" y="231" fill="#c0392b" font-weight="bold">0.93</text>
+</g>
+<g font-size="15" fill="#1b2a3a">
+<text x="670" y="124">the true target: E activates G1</text>
+<text x="670" y="144" fill="#5b6b7a">(but r alone cannot say so)</text>
+<text x="670" y="182">expressed everywhere: no signal, even if E acts on it</text>
+<text x="670" y="224">same cell-type program, another chromosome:</text>
+<text x="670" y="244">high r, no regulation</text>
+</g>
+</svg>

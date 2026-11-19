@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 420" width="1120" height="420" font-family="Helvetica, Arial, sans-serif">
+  <rect width="1120" height="420" fill="#ffffff"/>
+  <text x="20" y="28" font-size="18" font-weight="bold" fill="#1b2a3a">A broad domain: many weak bins, few strong ones</text>
+  <!-- bins: 30 windows of 30 px from x=60 -->
+  <g font-size="14" fill="#5b6b7a"><text x="20" y="62">reads per</text><text x="20" y="80">200-bp bin</text></g>
+  <g fill="#2e8b57">
+    <rect x="120" y="128" width="26" height="12"/><rect x="150" y="116" width="26" height="24"/><rect x="180" y="104" width="26" height="36"/><rect x="210" y="128" width="26" height="12"/>
+    <rect x="240" y="104" width="26" height="36"/><rect x="270" y="116" width="26" height="24"/><rect x="330" y="104" width="26" height="36"/><rect x="360" y="116" width="26" height="24"/>
+    <rect x="390" y="92" width="26" height="48"/><rect x="420" y="104" width="26" height="36"/><rect x="510" y="116" width="26" height="24"/><rect x="540" y="104" width="26" height="36"/>
+    <rect x="570" y="116" width="26" height="24"/><rect x="600" y="104" width="26" height="36"/><rect x="630" y="128" width="26" height="12"/>
+  </g>
+  <g fill="#cfd8e0">
+    <rect x="60" y="134" width="26" height="6"/><rect x="300" y="134" width="26" height="6"/><rect x="450" y="134" width="26" height="6"/><rect x="480" y="134" width="26" height="6"/>
+    <rect x="690" y="134" width="26" height="6"/><rect x="780" y="134" width="26" height="6"/><rect x="840" y="134" width="26" height="6"/>
+  </g>
+  <line x1="60" y1="140" x2="900" y2="140" stroke="#1b2a3a" stroke-width="1.5"/>
+  <line x1="60" y1="96" x2="900" y2="96" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="910" y="100" font-size="14" fill="#c0392b">narrow-peak cutoff</text>
+  <line x1="60" y1="131" x2="900" y2="131" stroke="#2a6f97" stroke-width="1.5" stroke-dasharray="2 3"/>
+  <text x="910" y="135" font-size="14" fill="#2a6f97">lenient bin cutoff</text>
+
+  <!-- narrow calling -->
+  <text x="20" y="182" font-size="15" font-weight="bold" fill="#1b2a3a">Narrow peaks</text>
+  <rect x="390" y="170" width="26" height="14" fill="#c0392b"/>
+  <text x="440" y="182" font-size="15" fill="#1b2a3a">one bin passes: the domain is missed or shattered into fragments</text>
+
+  <!-- SICER / epic2 -->
+  <text x="20" y="226" font-size="15" font-weight="bold" fill="#1b2a3a">SICER / epic2</text>
+  <rect x="120" y="214" width="540" height="14" fill="#2e8b57" fill-opacity="0.85"/>
+  <text x="680" y="226" font-size="15" fill="#1b2a3a">bins above a lenient cutoff, joined across gaps of</text>
+  <text x="680" y="246" font-size="15" fill="#1b2a3a">≤ 3 bins (600 bp), become an island; the island is</text>
+  <text x="680" y="266" font-size="15" fill="#1b2a3a">scored as a whole, against the control</text>
+
+  <!-- MACS broad -->
+  <text x="20" y="300" font-size="15" font-weight="bold" fill="#1b2a3a">MACS3 --broad</text>
+  <rect x="150" y="288" width="300" height="14" fill="#2a6f97" fill-opacity="0.85"/><rect x="510" y="288" width="120" height="14" fill="#2a6f97" fill-opacity="0.85"/>
+  <rect x="390" y="306" width="26" height="8" fill="#c0392b"/>
+  <text x="680" y="300" font-size="15" fill="#1b2a3a">strong regions (q &lt; 0.01) nested in weaker ones</text>
+  <text x="680" y="320" font-size="15" fill="#1b2a3a">(--broad-cutoff, q &lt; 0.1) that link them</text>
+
+  <rect x="10" y="342" width="1100" height="68" rx="8" fill="#eaf1f7" stroke="#cfd8e0"/>
+  <text x="26" y="368" font-size="15" fill="#1b2a3a">The statistical idea: a domain gains power by adding up many bins that are each only slightly enriched.</text>
+  <text x="26" y="390" font-size="15" fill="#1b2a3a">The price: boundaries depend on the gap and bin size, and two domains can merge across a short break.</text>
+</svg>

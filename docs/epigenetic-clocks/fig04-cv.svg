@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 400" width="1120" height="400" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker></defs>
+<rect width="1120" height="400" fill="#ffffff"/>
+<g transform="translate(40,0)">
+<text x="40" y="34" font-size="18" font-weight="bold" fill="#1b2a3a">1. Split once: lock the test set away</text>
+<rect x="40" y="52" width="700" height="40" fill="#2a6f97" fill-opacity="0.25" stroke="#2a6f97" stroke-width="1.5"/>
+<text x="390" y="78" text-anchor="middle" font-size="16" fill="#1b2a3a">training set (70%): 459 people</text>
+<rect x="740" y="52" width="300" height="40" fill="#e67e22" fill-opacity="0.3" stroke="#e67e22" stroke-width="1.5"/>
+<text x="890" y="78" text-anchor="middle" font-size="16" fill="#1b2a3a">test set (30%): 197</text>
+<text x="40" y="136" font-size="18" font-weight="bold" fill="#1b2a3a">2. Inside the training set: 10-fold cross-validation to choose λ</text>
+<!-- 4 example folds -->
+<g font-size="14" fill="#5b6b7a">
+<text x="32" y="172" text-anchor="end">fold 1</text><text x="32" y="200" text-anchor="end">fold 2</text><text x="32" y="228" text-anchor="end">fold 3</text><text x="32" y="256" text-anchor="end">…</text>
+</g>
+<g stroke="#ffffff" stroke-width="2">
+<rect x="40" y="158" width="700" height="20" fill="#2a6f97" fill-opacity="0.25"/><rect x="40" y="158" width="70" height="20" fill="#2a6f97" fill-opacity="0.85"/>
+<rect x="40" y="186" width="700" height="20" fill="#2a6f97" fill-opacity="0.25"/><rect x="110" y="186" width="70" height="20" fill="#2a6f97" fill-opacity="0.85"/>
+<rect x="40" y="214" width="700" height="20" fill="#2a6f97" fill-opacity="0.25"/><rect x="180" y="214" width="70" height="20" fill="#2a6f97" fill-opacity="0.85"/>
+</g>
+<text x="760" y="174" font-size="15" fill="#1b2a3a">fit on 9/10 for every λ,</text>
+<text x="760" y="194" font-size="15" fill="#1b2a3a">predict the held-out 1/10</text>
+<text x="760" y="226" font-size="15" fill="#1b2a3a">→ CV error for each λ;</text>
+<text x="760" y="246" font-size="15" fill="#1b2a3a">pick the λ with the lowest</text>
+<text x="40" y="304" font-size="18" font-weight="bold" fill="#1b2a3a">3. Refit on all training data with that λ, then predict the test set once</text>
+<rect x="40" y="320" width="1000" height="62" rx="8" fill="#f4f6f8"/>
+<text x="60" y="346" font-size="15" fill="#1b2a3a">Every decision (which CpGs, which λ, which normalisation) must be made without the test set.</text>
+<text x="60" y="370" font-size="15" fill="#1b2a3a">Choosing CpGs by their correlation with age in <tspan font-weight="bold">all</tspan> samples, then splitting, is leakage: the test error looks too good.</text>
+</g>
+</svg>

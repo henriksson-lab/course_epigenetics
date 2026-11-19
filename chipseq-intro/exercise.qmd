@@ -1,0 +1,394 @@
+---
+title: "Exercise: ChIP-seq: the assay"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+## Goal
+
+After this exercise you will be able to:
+
+- Compute DNA amounts, ChIP efficiency and a ChIP-qPCR "percent of input" on paper, and predict the shape of a ChIP-seq track from the target.
+- Process a transcription-factor ChIP (CTCF) and a broad histone-mark ChIP (H3K36me3) with their inputs, reusing the chain from *From reads to coverage* as a shell function.
+- Compare sharp and broad signals with [MACS3 predictd](https://macs3-project.github.io/MACS/docs/predictd.html), [deepTools plotFingerprint](https://deeptools.readthedocs.io/en/latest/content/tools/plotFingerprint.html), strand cross-correlation and autocorrelation in R.
+- Show with your own reads that an input is not flat (open promoters) and that H3K36me3 covers transcribed gene bodies.
+
+## Background
+
+**The protocol.** Formaldehyde crosslinks proteins to DNA (and to each other) within ~2 Å; chromatin is fragmented by sonication (crosslinked ChIP) or micrococcal nuclease (native ChIP of histones); an antibody on protein A/G beads pulls down the target; crosslinks are reversed at 65 °C, the DNA is purified (typically 1–10 ng), made into a library and sequenced. The **input** is the same chromatin taken through every step except the immunoprecipitation.
+
+**Amounts.** A diploid human cell has about 6.6 pg of DNA. One base pair of double-stranded DNA weighs about 650 g/mol (Avogadro's number $6.022 \times 10^{23}$ /mol).
+
+**ChIP-qPCR, percent of input.** If a fraction $f$ of the chromatin was kept as input, first adjust its Ct: $Ct_\text{input,adj} = Ct_\text{input} - \log_2(1/f)$. Then $\%\text{input} = 100 \times 2^{\,Ct_\text{input,adj} - Ct_\text{ChIP}}$. Fold enrichment between two regions is $2^{\Delta Ct}$.
+
+**Signal shapes.** A transcription factor gives sharp peaks about two fragment lengths wide, with + strand reads to the left of the site and − strand reads to the right (separated by the fragment length $d$). Histone marks give nucleosome-scale peaks (H3K4me3, H3K27ac: 1–5 kb, with a dip at the nucleosome-free TSS) or broad domains (H3K36me3 over transcribed gene bodies; H3K27me3, H3K9me3 over silent regions, tens to hundreds of kb).
+
+## Data
+
+| file | content |
+|---|---|
+| `gm12878_ctcf_chip.fastq.gz`, `gm12878_ctcf_input.fastq.gz` | CTCF ChIP (ENCSR000DZN rep 1, 36 bp, 2011) and its input (ENCSR000EYX, 28 bp, 2009), Phred+64, as in *From reads to coverage* |
+| `gm12878_h3k36me3_chip.fastq.gz` | H3K36me3 ChIP ([ENCSR000AKE](https://www.encodeproject.org/experiments/ENCSR000AKE/) rep 1, Broad, 51 bp, 2008): 98 689 reads |
+| `gm12878_h3k36me3_input.fastq.gz` | its input ([ENCSR000AKJ](https://www.encodeproject.org/experiments/ENCSR000AKJ/) rep 1, 51 bp): 131 839 reads |
+| `gm12878_h3k4me3_fc.bigWig` | ENCODE H3K4me3 fold change, to tell active from silent promoters |
+| `hg38_chr21_chrM.fa`, `bowtie2/`, `hg38_blacklist.bed.gz`, `gencode.v46.basic.annotation.gtf.gz` | reference, index, blacklist, genes |
+
+As before, the FASTQ files contain only the reads that ENCODE aligned to **chr21 or chrM** against the whole genome (built by `data/prepare-reads.sh` and `data/prepare-chip.sh`). For H3K36me3 that is only 0.42% of the library: H3K36me3 lives in gene bodies and chr21 is gene-poor, so this is a **sparse** dataset, about 70 000 reads after filtering.
+
+```bash
+mkdir -p ~/epi/chip && cd ~/epi/chip
+D=/path/to/course/data
+T=8
+```
+
+You need `fastp`, `bowtie2`, `samtools`, `bedtools`, `macs3` and `deeptools` (see *Install the software you need*). The command line takes about 3 minutes with 8 threads.
+
+## By hand
+
+**B1. How much DNA, and how much of it is signal?** A CTCF ChIP starts from $5 \times 10^6$ cells. 1% of the sheared chromatin is kept as input. The IP returns 4 ng of DNA with fragments of about 200 bp.
+
+(a) How much DNA is in the chromatin? How much in the input aliquot?
+
+(b) What fraction of the chromatin DNA did the IP recover?
+
+(c) Suppose 20% of the IP DNA comes from the 40 000 CTCF sites of the genome. How many 200-bp fragments is that? Each site exists in two copies per cell: what fraction of all site copies in the sample ended up in the IP?
+
+(d) The library is sequenced to 20 M reads with FRiP 0.2. On average, how many reads per CTCF site? Compare with (c): what does sequencing do to the library?
+
+**B2. ChIP-qPCR.** 1% of the chromatin was kept as input. Ct values: input 25.0 (primer pair at site X); ChIP at site X 27.4; ChIP at a negative control region 32.6 (assume the input Ct is the same for both primer pairs).
+
+(a) Compute the percent of input at site X and at the negative region.
+
+(b) What is the fold enrichment of site X over the negative region?
+
+(c) A colleague reports "0.19% of input" as weak. Is it? What would you compare it with?
+
+**B3. Strands and resolution.**
+
+(a) Around 300 summits of a TF, + strand read 5' ends peak at −58 bp and − strand 5' ends at +62 bp. Estimate the fragment length. Why is there no read 5' end exactly at the summit?
+
+(b) In a ChIP-exo experiment for the same factor, + strand read starts pile up at −12 bp and − strand starts at +14 bp. What do these positions mean, and how large is the protected region?
+
+(c) Why do the same two calculations fail for H3K36me3?
+
+**B4. Which antibody?** Four ChIP-seq tracks of the same cells, over a 400-kb region with two active genes, one silent developmental gene cluster and an intergenic stretch:
+
+- Track A: about 15 needle-like peaks, 300–500 bp wide, in genes and between them.
+- Track B: 2–4 kb peaks at the TSSs of the two active genes, each with a small dip at the TSS itself.
+- Track C: low, 30–60 kb "carpets" over the bodies of the two active genes, starting about 1 kb after the TSS and highest towards the 3' end.
+- Track D: a 150-kb low plateau over the silent gene cluster, nothing over the active genes.
+
+(a) Match each track to one of: H3K27me3, CTCF, H3K36me3, H3K4me3. Give one reason for each.
+
+(b) For which tracks would `macs3 predictd` find a clear fragment length? Which would need about 45 M reads per replicate by ENCODE's standards?
+
+(c) Why does track B dip at the TSS?
+
+**B5. Read the figures** (lecture: *Real data: the input is not flat* and *Real data: profiles around genes*).
+
+(a) The input of the CTCF ChIP reaches 14 times the chr21 average at active TSSs, the input of the H3K36me3 ChIP about 1.1 times. Give two reasons why two inputs from the same cell line can differ this much.
+
+(b) A CTCF peak at an active promoter is twice as high as the input there. A CTCF peak in a gene desert is twice as high as the input there too. Which one contains more reads? Are both equally convincing?
+
+(c) Around active TSSs, H3K4me1 is lowest at the TSS and highest about 1 kb away, while H3K4me3 is high on both flanks. What does that tell you about where each mark sits?
+
+**B6. Judge the design.**
+
+(a) A lab makes a ChIP of a TF in GM12878 and, to save money, uses an input sequenced from K562 cells that was available from ENCODE. What can go wrong?
+
+(b) Another lab sequences the ChIP to 30 M reads and the input to 2 M reads. What happens to a peak caller's estimate of the local background?
+
+(c) A paper maps a transient co-activator that has no DNA-binding domain with 1% formaldehyde for 5 minutes and finds almost no peaks. Suggest two changes to the protocol.
+
+**B7. Hyper-ChIPable?** A new antibody against transcription factor Z gives 3 000 peaks. 85% of them lie at the promoters of the 10% most highly expressed genes, and none has the known motif of Z. A ChIP with a non-specific IgG in the same cells gives weaker peaks at many of the same promoters.
+
+(a) What is the most likely explanation?
+
+(b) Name two experiments that would test whether Z binds these promoters.
+
+**B8. Crosslinked or native?** For each, choose X-ChIP (formaldehyde + sonication) or N-ChIP (no fixation + MNase) and give a reason: (a) H3K27me3 in 50 000 sorted cells; (b) a TF that binds for a few seconds; (c) the positions of H3K4me3 nucleosomes around TSSs, at nucleosome resolution; (d) the co-activator of B6c.
+
+**B9. Peak heights.** In one CTCF ChIP, site A has 400 reads and site B 100 reads, with similar inputs. A student concludes that CTCF occupies site A in four times as many cells as site B. List three other explanations. What comparison would be meaningful?
+
+## On the command line
+
+### C1 — Look at the reads
+
+```bash
+for f in gm12878_ctcf_chip gm12878_ctcf_input gm12878_h3k36me3_chip gm12878_h3k36me3_input; do
+  echo $f $(zcat $D/$f.fastq.gz | awk 'NR % 4 == 2 { n++; if (length($0) > l) l = length($0) } END { print n, l }') \
+    $(zcat $D/$f.fastq.gz | head -400000 | awk 'NR % 4 == 0' | fold -w1 | LC_ALL=C sort -u | tr -d '\n')
+done
+```
+
+For each file: how many reads, how long, and which quality characters occur? Which files are Phred+64 and which Phred+33 (lowest and highest character)?
+
+### C2 — The alignment chain as a function
+
+The chain of *From reads to coverage*, wrapped in a shell function so that it can be run on any single-end sample:
+
+```bash
+zcat $D/hg38_blacklist.bed.gz > blacklist.bed
+chain() {   # usage: chain <name> <reads.fastq.gz> <33 or 64>
+  local s=$1
+  if [ "$3" = 64 ]; then zcat $2 | perl -pe 'tr/@-~/!-_/ if $. % 4 == 0' | gzip > $s.fastq.gz
+  else cp $2 $s.fastq.gz; fi
+  fastp -w $T -i $s.fastq.gz -o $s.trim.fastq.gz -j $s.fastp.json -h $s.fastp.html 2> $s.fastp.log
+  bowtie2 -p $T -x $D/bowtie2/hg38_chr21_chrM -U $s.trim.fastq.gz 2> $s.bowtie2.log \
+    | samtools sort -@ 4 -o $s.sorted.bam -
+  samtools index $s.sorted.bam
+  samtools view -b -q 30 -F 1804 -o $s.q30.bam $s.sorted.bam
+  samtools markdup -s $s.q30.bam $s.markdup.bam 2> $s.markdup.txt
+  samtools index $s.markdup.bam
+  samtools view -b -F 1024 -o $s.dedup.bam $s.markdup.bam chr21
+  bedtools intersect -v -abam $s.dedup.bam -b blacklist.bed > $s.final.bam
+  samtools index $s.final.bam
+}
+chain ctcf           $D/gm12878_ctcf_chip.fastq.gz      64
+chain ctcf_input     $D/gm12878_ctcf_input.fastq.gz     64
+chain h3k36me3       $D/gm12878_h3k36me3_chip.fastq.gz  33
+chain h3k36me3_input $D/gm12878_h3k36me3_input.fastq.gz 33
+for s in ctcf ctcf_input h3k36me3 h3k36me3_input; do
+  echo $s $(samtools view -c -F 4 $s.sorted.bam) $(samtools view -c -F 4 $s.sorted.bam chrM) \
+    $(grep "DUPLICATE SINGLE:" $s.markdup.txt | cut -d' ' -f3) $(samtools view -c $s.final.bam)
+done
+```
+
+(a) For each sample: aligned reads, reads on chrM, duplicates, final reads on chr21. Which library has the most duplicates, and where are they?
+
+(b) The two inputs have very different chrM fractions. Does that matter for a chr21 analysis? (Think about what `samtools view ... chr21` does.)
+
+### C3 — Can the fragment length be estimated?
+
+```bash
+for s in ctcf h3k36me3; do
+  macs3 predictd -i $s.final.bam -f BAM -g 40088619 2>&1 | grep -E "paired peaks|predicted fragment|alternative"
+done
+```
+
+Compare the two. How many "alternative" fragment lengths does MACS3 suggest for H3K36me3, and what does that tell you?
+
+### C4 — Fingerprints of a sharp and a broad mark
+
+```bash
+plotFingerprint -b ctcf.final.bam ctcf_input.final.bam h3k36me3.final.bam h3k36me3_input.final.bam \
+  --labels CTCF CTCF_input H3K36me3 H3K36me3_input --binSize 1000 --region chr21 \
+  --plotFile fingerprint.png --outRawCounts fingerprint.tsv -p $T
+```
+
+Open `fingerprint.png`. Which curve is closest to the diagonal? How does the H3K36me3 curve differ in shape from the CTCF curve? (Experimental design and QC explains how to read the plot.)
+
+### C5 — Tracks for the browser
+
+```bash
+bamCoverage -b ctcf.final.bam -o ctcf.cpm.bw --normalizeUsing CPM --extendReads 100 --binSize 10 -p $T
+for s in h3k36me3 h3k36me3_input; do
+  bamCoverage -b $s.final.bam -o $s.cpm.bw --normalizeUsing CPM --extendReads 200 --binSize 50 -p $T
+done
+```
+
+Load the three bigWigs in IGV (genome hg38), together with `$D/gm12878_h3k36me3_fc.bigWig`, and go to `chr21:33,220,000-33,600,000`. Where is H3K36me3 enriched relative to the genes (IFNAR1, IFNGR2, TMEM50B, GART, SON, DONSON)? Zoom in to a single 50-bp bin inside a gene body: how many reads support it?
+
+## In R
+
+```r
+suppressPackageStartupMessages({ library(GenomicAlignments); library(rtracklayer) })
+D <- "/path/to/course/data"
+setwd("~/epi/chip")
+```
+
+### R1 — Strand cross-correlation, sharp vs broad
+
+```r
+rd <- function(s) granges(readGAlignments(paste0(s, ".final.bam")))
+reads <- lapply(c(ctcf = "ctcf", ctcf_input = "ctcf_input", h3k36me3 = "h3k36me3", h3k36me3_input = "h3k36me3_input"), rd)
+sapply(reads, length)
+crosscor <- function(gr, maxk = 500, from = 13e6, to = 46709983) {
+  five <- resize(gr, 1, fix = "start")                       # 5' end of each read
+  five <- five[start(five) >= from & start(five) <= to - maxk]
+  n <- to - from + 1 - maxk
+  p <- tabulate(start(five)[as.vector(strand(five) == "+")] - from + 1, n + maxk)
+  m <- tabulate(start(five)[as.vector(strand(five) == "-")] - from + 1, n + maxk)
+  ip <- which(p[1:n] > 0)
+  mp <- mean(p[1:n]); sp <- sd(p[1:n]); mm <- mean(m); sm <- sd(m)
+  sapply(0:maxk, function(k) (sum(p[ip] * m[ip + k]) / n - mp * mm) / (sp * sm))
+}
+cc <- sapply(reads, crosscor)
+apply(cc, 2, function(x) c(max = max(x[-(1:41)]), at = which.max(x[-(1:41)]) + 40))   # ignore k < 41
+cc[c(1, 37, 52, 101, 201, 301) , ]
+par(mfrow = c(1, 2))
+matplot(0:500, cc[, 1:2], type = "l", lty = 1, xlab = "shift (bp)", ylab = "cross-correlation", main = "CTCF")
+matplot(0:500, cc[, 3:4], type = "l", lty = 1, xlab = "shift (bp)", ylab = "cross-correlation", main = "H3K36me3")
+```
+
+(a) Explain what `crosscor` computes. Why does it start at 13 Mb?
+
+(b) Where is the maximum for each sample, and how large is it? Which maxima are meaningful?
+
+(c) The rows of `cc` printed are shifts 0, 36, 51, 100, 200 and 300 bp. Is there a phantom peak at the read length for CTCF?
+
+### R2 — Is the input flat?
+
+```r
+chr21 <- GRanges("chr21", IRanges(1, 46709983))
+gtf <- import(file.path(D, "gencode.v46.basic.annotation.gtf.gz"), which = chr21)
+genes <- gtf[gtf$type == "gene" & gtf$gene_type == "protein_coding"]
+k4 <- import(file.path(D, "gm12878_h3k4me3_fc.bigWig"), which = chr21, as = "RleList")
+tss <- resize(genes, 1, fix = "start")
+tss$k4 <- mean(k4[promoters(tss, 1000, 1001)])
+table(cut(tss$k4, c(0, 1, 5, Inf), include.lowest = TRUE))
+around <- function(gr, tss, w = 500) {
+  n <- countOverlaps(promoters(tss, w, w + 1), resize(gr, 1, fix = "start"), ignore.strand = TRUE)   # 5' ends within +-500 bp
+  mean(n) / (length(gr) * (2 * w + 1) / 40088619)                             # observed / expected
+}
+sapply(reads[c("ctcf_input", "h3k36me3_input")], function(gr)
+  c(active = around(gr, tss[tss$k4 > 5]), silent = around(gr, tss[tss$k4 < 1])))
+```
+
+(a) How many protein-coding TSSs on chr21 are active (H3K4me3 fold change > 5) and silent (< 1)?
+
+(b) How many times more input reads than expected fall within 500 bp of active and of silent TSSs, for each input? Why is `ignore.strand = TRUE` needed here?
+
+### R3 — H3K36me3 in gene bodies
+
+```r
+gb <- genes[width(genes) > 5000]
+gb$k4 <- mean(k4[promoters(resize(gb, 1, fix = "start"), 1000, 1001)])
+rpkm <- function(gr, g) sum(countOverlaps(g, resize(gr, 1, fix = "start"), ignore.strand = TRUE)) / sum(width(g)) * 1e3 / length(gr) * 1e6
+grp <- list(active = gb[gb$k4 > 5], silent = gb[gb$k4 < 1])
+sapply(grp, length)
+sapply(grp, function(g) c(H3K36me3 = rpkm(reads$h3k36me3, g), input = rpkm(reads$h3k36me3_input, g)))
+1e3 / 40088619 * 1e6
+first <- function(g) resize(g, 2000, fix = "start"); last <- function(g) resize(g, 2000, fix = "end")
+c(first2kb = rpkm(reads$h3k36me3, first(grp$active)), last2kb = rpkm(reads$h3k36me3, last(grp$active)))
+```
+
+(a) What does `rpkm()` compute? What is the value for a uniform library (the line `1e3 / 40088619 * 1e6`)?
+
+(b) Compare H3K36me3 and input in active and in silent gene bodies. What is the enrichment over input in active genes?
+
+(c) Compare the first and the last 2 kb of active genes. Which enzyme and process explain the difference?
+
+### R4 — How far does the signal extend?
+
+```r
+bins <- tileGenome(c(chr21 = 46709983), tilewidth = 1000, cut.last.tile.in.chrom = TRUE)
+bins <- bins[start(bins) > 13e6]
+cnt <- sapply(reads, function(gr) countOverlaps(bins, resize(gr, 1, fix = "start")))
+ac <- function(x, lag) cor(x[1:(length(x) - lag)], x[(1 + lag):length(x)])
+lags <- c(1, 2, 5, 10, 20, 50)
+round(sapply(c("ctcf", "h3k36me3", "h3k36me3_input"), function(s) sapply(lags, function(l) ac(log1p(cnt[, s]), l))), 3)
+```
+
+(a) What is the correlation between the counts of 1-kb bins 1, 2, 5, 10, 20 and 50 kb apart, for each sample?
+
+(b) Why does CTCF still show some correlation at 50 kb, and the input too? (Hint: what else varies along a chromosome?) What extra correlation does H3K36me3 have?
+
+## Hints
+
+::: {.callout-tip collapse="true" title="Hint 1 — amounts and qPCR (B1, B2)"}
+Mass of one fragment = length × 650 g/mol / $6.022 \times 10^{23}$ /mol. Number of site copies = sites × 2 × cells. For qPCR, an input of 1% is 100-fold diluted relative to the whole chromatin: subtract $\log_2 100 = 6.64$ cycles. Each cycle doubles: $\Delta Ct = 1$ is a factor 2. See e.g. the [percent-input method](https://www.thermofisher.com/se/en/home/life-science/epigenetics-noncoding-rna-research/chromatin-remodeling/chromatin-immunoprecipitation-chip/chip-analysis.html).
+:::
+
+::: {.callout-tip collapse="true" title="Hint 2 — strands and shapes (B3, B4, C3, R1)"}
+A single-end read is the 5' end of a fragment; + strand reads start at the left end of their fragment, − strand reads at the right end. In ChIP-exo the exonuclease stops at the crosslinked protein ([Rhee & Pugh 2011](https://doi.org/10.1016/j.cell.2011.11.013)). The strand cross-correlation is described in [Kharchenko et al. 2008](https://doi.org/10.1038/nbt.1508) and in *Experimental design and QC*; MACS3's model in the [predictd documentation](https://macs3-project.github.io/MACS/docs/predictd.html). Where marks sit on genes: [Barski et al. 2007](https://doi.org/10.1016/j.cell.2007.05.009).
+:::
+
+::: {.callout-tip collapse="true" title="Hint 3 — controls and artefacts (B5–B7)"}
+Sonication breaks open chromatin more easily; amplified DNA gives more reads everywhere; inputs from different preparations have different biases. [Landt et al. 2012](https://doi.org/10.1101/gr.136184.111) describe ENCODE's control requirements; [Teytelman et al. 2013](https://doi.org/10.1073/pnas.1316064110) and [Jain et al. 2015](https://doi.org/10.1093/nar/gkv637) describe hyper-ChIPable regions and phantom peaks. For the local background of a peak caller, see the MACS λ in [Zhang et al. 2008](https://doi.org/10.1186/gb-2008-9-9-r137).
+:::
+
+::: {.callout-tip collapse="true" title="Hint 4 — commands (C1–C5)"}
+`perl -pe 'tr/@-~/!-_/ if $. % 4 == 0'` converts Phred+64 to Phred+33 on every fourth line (*From reads to coverage*). Shell functions: `local` keeps a variable inside the function; `$1`, `$2`, `$3` are its arguments ([bash manual](https://www.gnu.org/software/bash/manual/html_node/Shell-Functions.html)). [plotFingerprint](https://deeptools.readthedocs.io/en/latest/content/tools/plotFingerprint.html) samples 500 000 bins by default; [bamCoverage](https://deeptools.readthedocs.io/en/latest/content/tools/bamCoverage.html) `--extendReads` sets the fragment length for single-end reads.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 5 — R (R1–R4)"}
+[`resize(x, 1, fix = "start")`](https://rdrr.io/bioc/GenomicRanges/man/intra-range-methods.html) is strand-aware: it gives each read's 5' end. [`countOverlaps`](https://rdrr.io/bioc/GenomicRanges/man/findOverlaps-methods.html) only counts features on the same strand unless `ignore.strand = TRUE` (genes and reads both have a strand). [`tabulate`](https://rdrr.io/r/base/tabulate.html) counts how often each integer occurs; [`promoters(x, up, down)`](https://rdrr.io/bioc/GenomicRanges/man/intra-range-methods.html) makes a window around each TSS; `mean()` of an `RleList` over a `GRanges` gives the mean signal per range ([rtracklayer import](https://rdrr.io/bioc/rtracklayer/man/BigWigFile.html)).
+:::
+
+## Solutions
+
+All numbers come from running the commands as written (fastp 0.23.4, bowtie2 2.4.4, samtools 1.21, bedtools 2.30, MACS3 3.1.0, deepTools 3.5.1, R 4.6 with Bioconductor 3.23).
+
+::: {.callout-note collapse="true" title="Solutions — by hand"}
+
+**B1.** (a) $5 \times 10^6 \times 6.6$ pg $= 33$ µg; the input aliquot 0.33 µg. (b) $4 \text{ ng} / 33\,000 \text{ ng} = 0.012\%$. (c) One 200-bp fragment weighs $200 \times 650 / 6.022 \times 10^{23} = 2.2 \times 10^{-19}$ g; 0.8 ng is $3.7 \times 10^9$ fragments. Site copies: $40\,000 \times 2 \times 5 \times 10^6 = 4 \times 10^{11}$. So about **0.9%** of all site copies were captured: crosslinking, fragmentation, antibody binding and washes each lose most of the material. (d) $20 \text{ M} \times 0.2 / 40\,000 = 100$ reads per site on average, out of about 93 000 fragments per site in the IP: sequencing samples a tiny fraction of the library (and PCR has made copies of each molecule), which is why duplicates appear only when the number of *distinct* molecules is small.
+
+**B2.** (a) $Ct_\text{input,adj} = 25.0 - 6.64 = 18.36$. Site X: $100 \times 2^{18.36 - 27.4} = 100 \times 2^{-9.04} = 0.19\%$. Negative region: $100 \times 2^{18.36 - 32.6} = 0.0052\%$. (b) $2^{32.6 - 27.4} = 2^{5.2} = 37$-fold. (c) Not weak: percent input depends on the antibody and the factor, and what matters is the comparison with negative regions (37-fold here) and with a mock IP (IgG). Most of the chromatin at site X is not crosslinked to the factor, or is lost; 0.1–1% is typical for a TF.
+
+**B3.** (a) $58 + 62 = 120$ bp. The protein covers the summit: a fragment can only end outside the crosslinked protein, so 5' ends cannot fall on the site itself, and sonication rarely breaks right next to it. (b) The exonuclease trims each fragment's 5' end up to the crosslinked protein: −12 and +14 are the left and right borders of the protected region, about 26 bp, the footprint of the protein (or complex) on the DNA. (c) H3K36me3 has no single site: + and − strand reads both cover the whole domain, so their distributions overlap and the shift between them is not visible; strand peaks cannot be paired (C3, R1).
+
+**B4.** (a) A = CTCF (sharp, ~2 fragment lengths wide, intergenic as well as genic); B = H3K4me3 (promoter, nucleosome-scale, dip at the nucleosome-free TSS); C = H3K36me3 (gene bodies of transcribed genes, rising to the 3' end); D = H3K27me3 (broad Polycomb domain over a silent developmental cluster). (b) A clear fragment length: A, and probably B (narrow peaks with strand separation); not C or D. ENCODE's 45 M reads per replicate apply to broad marks: C and D. (c) The nucleosome-free region at an active TSS has no histones, so a histone mark cannot be there; the signal comes from the −1 and +1 nucleosomes.
+
+**B5.** (a) Different sonication (more or stronger sonication shears open chromatin preferentially), different fixation, different cell batches and handling (nuclei preparation, chromatin release), different library protocols and read lengths (28 vs 51 bp), and depth. (b) The promoter peak has many more reads (the input there is about 10 times higher than in a gene desert), but both have the same enrichment over their local background. The desert peak is the more convincing evidence of binding per read; the promoter peak would look like binding even with a weak antibody, so it needs the input most. (c) H3K4me3 sits on the nucleosomes immediately flanking the TSS (−1 and +1 and a few downstream); H3K4me1 sits further out, on nucleosomes 1–2 kb away, and is depleted where H3K4me3 is high (the same lysine cannot be both mono- and trimethylated).
+
+**B6.** (a) K562 has a different karyotype (many amplifications and losses) and different open chromatin: amplified regions of GM12878 are not corrected, K562-specific open regions make GM12878 peaks there look weaker, and GM12878-specific open promoters are uncorrected. The input must come from the same chromatin. (b) With 2 M input reads the 1-kb and even the 10-kb windows contain few reads, so local estimates are noisy; MACS scales the larger library down to the smaller one and the background is often set by the genome-wide λ, which ignores local biases. Sequence the input at least as deep as the ChIP. (c) Crosslink longer (e.g. 10–15 min) and add a protein–protein crosslinker such as DSG before formaldehyde; or use an epitope tag with a validated antibody; check by ChIP-qPCR at expected sites before sequencing.
+
+**B7.** (a) Hyper-ChIPable regions: highly expressed promoters and genes give ChIP signal with almost any antibody (open chromatin, high protein density, sticky). The lack of the motif and the IgG signal both point that way. (b) ChIP in cells where Z is knocked out or degraded (the peaks should disappear); a second antibody against a different epitope, or an epitope-tagged Z with a tag-only control; check whether the motif of Z is enriched in the remaining peaks after removing those shared with IgG; CUT&RUN with the same antibody (much lower background).
+
+**B8.** (a) N-ChIP: histone marks survive without fixation and MNase gives clean, low-input libraries (or CUT&Tag). (b) X-ChIP: without crosslinking a short-lived TF is lost during digestion and washes. (c) N-ChIP: MNase gives mono-nucleosomes, so each read is one nucleosome. (d) X-ChIP with longer fixation and a double crosslinker: it does not bind DNA itself.
+
+**B9.** Differences in crosslinking efficiency or epitope accessibility between the sites, residence time (a longer-bound site is captured more often), local shearing (open chromatin), copy number (site A amplified), mappability (part of site B in a repeat), and, at very strong sites, duplicates removed. Meaningful: the same site compared between samples processed the same way (differential binding).
+:::
+
+::: {.callout-note collapse="true" title="Solutions — command line"}
+
+**C1.** CTCF ChIP 390 097 reads of 36 bp, characters `B`…`f`; CTCF input 476 372 reads, up to 28 bp, `C`…`]`: both **Phred+64** (no character below `;`, and `f` would be Q69 as +33). H3K36me3 98 689 reads of 51 bp, `$`…`A`; its input 131 839 reads of 51 bp, `$`…`?`: **Phred+33**, from an early Illumina instrument whose qualities top out at Q27–32 (`<` = Q27).
+
+**C2.** The four chains take about 2.5 minutes in all.
+
+| sample | aligned | on chrM | duplicates | final (chr21) |
+|---|---:|---:|---:|---:|
+| ctcf | 378 556 | 52 343 | 77 450 | 197 587 |
+| ctcf_input | 476 024 | 315 745 | 283 747 | 116 397 |
+| h3k36me3 | 93 077 | 132 | 786 | 70 741 |
+| h3k36me3_input | 125 258 | 25 201 | 8 788 | 73 652 |
+
+(a) The CTCF input has the most duplicates (283 747), almost all on chrM (*From reads to coverage*, C5b); the CTCF ChIP has 77 450, many at strong CTCF sites. The H3K36me3 ChIP has almost none (786): its reads are spread over large domains, so two fragments rarely share a start. (b) No: chrM reads are removed when the BAM is cut to chr21, before normalisation; the chrM fraction only reflects how much mitochondrial DNA went into each input (it would matter for CPM if chrM were kept).
+
+**C3.** CTCF: 359 paired peaks, predicted fragment length **100 bp**, one alternative (100). H3K36me3: 305 paired peaks, predicted **246 bp**, with 17 alternative lengths between 24 and 595 bp. MACS3 found "peaks" on both strands, but the shift between them is not stable: there is no well-defined fragment-length signal in a broad mark. For broad marks, set the fragment length yourself (from the sonication profile, or use paired-end data).
+
+**C4.** The two inputs are closest to the diagonal; the H3K36me3 input is the flattest. CTCF bends sharply at the very end: its top 1% of bins hold **30%** of the reads (input 8%). H3K36me3 bends gradually over a large part of the range: top 1% of bins only **10%** of its reads, but top 10% of bins **49%** (CTCF 53%, its input 32%). 44% of the H3K36me3 bins have no read at all (a sparse library). That gradual bend is the fingerprint of a broad mark.
+
+**C5.** H3K36me3 is enriched over the bodies of IFNAR1, IFNGR2, TMEM50B, GART, SON and DONSON, from a little after the TSS to the 3' end, and not between genes. In a single 50-bp bin there are only a few reads (the library has 70 741 reads on all of chr21): broad marks are visible only when you look at many kilobases at once.
+:::
+
+::: {.callout-note collapse="true" title="Solutions — R"}
+
+**R1.** (a) It counts the 5' ends of + and − strand reads at every base from 13 Mb to the end of chr21 and computes, for each shift k, the Pearson correlation between + strand counts at x and − strand counts at x + k, using only the positions with a + strand read for the sum of products (the others contribute zero). The first 13 Mb are the unassembled short arm and the centromere, with no reads. Reading the BAMs and computing all four curves takes about a minute. (b) CTCF: maximum **0.152 at 93 bp**, the fragment length. CTCF input: 0.0021 at 95 bp, 70 times lower: a trace of the strongest sites (open CTCF sites are over-represented in the input), but essentially flat. H3K36me3: 0.0022 at 294 bp and its input 0.0007 at 331 bp: both noise; there is no fragment-length peak. H3K36me3 is above its input at every shift because both strands fall in the same domains. (c) At the read length (row 2, k = 36) CTCF has 0.092, on the rising flank towards the fragment peak (0.15 at 100); with a fragment length close to the read length, the phantom peak is hidden in the shoulder.
+
+**R2.** (a) 72 active, 107 silent, 41 in between (220 in all). (b) CTCF input: **8.4×** the expected count within 500 bp of active TSSs, 0.96× at silent TSSs. H3K36me3 input: 1.06× and 0.83×. The first input is strongly biased towards open promoters, the second hardly. TSSs and genes have a strand, and so do reads; without `ignore.strand = TRUE`, only reads on the same strand as the gene are counted, half of them.
+
+**R3.** (a) Reads (5' ends) per kb of gene body per million reads in the library. A uniform library gives 24.9 on chr21. (b) 69 active and 49 silent genes longer than 5 kb. Active: H3K36me3 **75.6**, input 31.4 (2.4-fold enrichment). Silent: 23.4 and 27.4: no enrichment. The input is itself above average in active genes, so comparing the ChIP with the chromosome average would overstate the enrichment. (c) First 2 kb 30.5, last 2 kb **88.6**: H3K36me3 is deposited by SETD2, which travels with the elongating RNA polymerase II, so the mark accumulates towards the 3' end.
+
+**R4.** (a)
+
+| lag (kb) | 1 | 2 | 5 | 10 | 20 | 50 |
+|---|---|---|---|---|---|---|
+| CTCF | 0.310 | 0.225 | 0.182 | 0.165 | 0.133 | 0.110 |
+| H3K36me3 | 0.474 | 0.455 | 0.423 | 0.389 | 0.328 | 0.230 |
+| H3K36me3 input | 0.129 | 0.124 | 0.108 | 0.105 | 0.091 | 0.077 |
+
+(b) Everything that varies slowly along the chromosome changes the read density of all libraries together: gene density, GC content, mappability, open chromatin (and copy number in other cells). That gives the input and CTCF a slowly decaying baseline. H3K36me3 stays well above it out to tens of kilobases, the size of the transcribed genes it covers. The lecture's version of this plot uses ENCODE's fold-change tracks.
+:::
+
+## Where this leads
+
+- *Peak calling* turns these BAM files into peaks: MACS3's local λ from the input, narrow vs broad calling for CTCF and H3K36me3, and replicates (IDR).
+- *Annotation and differential binding* asks where peaks are relative to genes and how binding differs between cell types.
+- *CUT&RUN and CUT&Tag* replace fragmentation and immunoprecipitation by an antibody-tethered enzyme.
+
+## Key papers (optional further reading)
+
+*Not required reading and not examined.*
+
+- Solomon, Larsen & Varshavsky 1988, *Cell*. [Mapping protein-DNA interactions in vivo with formaldehyde: evidence that histone H4 is retained on a highly transcribed gene](https://doi.org/10.1016/s0092-8674(88)90469-2).
+- Johnson, Mortazavi, Myers & Wold 2007, *Science*. [Genome-wide mapping of in vivo protein-DNA interactions](https://doi.org/10.1126/science.1141319).
+- Barski et al. 2007, *Cell*. [High-resolution profiling of histone methylations in the human genome](https://doi.org/10.1016/j.cell.2007.05.009).
+- Park 2009, *Nat Rev Genet*. [ChIP-seq: advantages and challenges of a maturing technology](https://doi.org/10.1038/nrg2641).
+- Rhee & Pugh 2011, *Cell*. [Comprehensive genome-wide protein-DNA interactions detected at single-nucleotide resolution](https://doi.org/10.1016/j.cell.2011.11.013).
+- Teytelman et al. 2013, *PNAS*. [Highly expressed loci are vulnerable to misleading ChIP localization of multiple unrelated proteins](https://doi.org/10.1073/pnas.1316064110).

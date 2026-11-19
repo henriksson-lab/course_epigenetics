@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-662ae1889177880cb371f83234c0a158.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.7.30">
+
+  <meta name="author" content="Epigenetics">
+  <title>Epigenetics – Epigenomics and genetic variation</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-bf56578b9c06c165c166475cd19dbcd1.css">
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Epigenomics and genetic variation</h1>
+  <p class="subtitle">Why disease variants sit in regulatory DNA, and how chromatin data help find the causal variant, cell type and gene</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Epigenetics 
+</div>
+</div>
+</div>
+
+</section>
+<section id="about-this-lecture" class="slide level2">
+<h2>About this lecture</h2>
+<p>Genome-wide association studies (GWAS) have found tens of thousands of loci for diseases and traits. Almost all of them are <strong>non-coding</strong>. This lecture shows how chromatin maps turn such a locus into a testable hypothesis.</p>
+<ul>
+<li>GWAS in one slide; why the <strong>lead SNP</strong> is a tag, not the cause (linkage disequilibrium).</li>
+<li><strong>Enrichment</strong> of disease loci in cell-type regulatory elements: the 2×2 test, the background, windows vs LD, partitioned heritability.</li>
+<li><strong>Fine-mapping</strong>, and functional priors from chromatin.</li>
+<li><strong>Mechanisms</strong>: a variant in a TF motif; chromatin QTLs; <strong>allele-specific</strong> accessibility in one person.</li>
+<li>From variant to <strong>gene</strong>: colocalisation and enhancer–gene links.</li>
+</ul>
+<aside class="notes">
+<p>This unit is the meeting point of human genetics and epigenomics, and the reason a lot of chromatin data is generated today. Students know what a SNP is and probably what a GWAS is; we recap the minimum and spend the time on what chromatin adds. All real-data figures come from make-variants-figs.R: the GWAS Catalog (one file of genome-wide significant associations), ENCODE ATAC-seq peaks of GM12878, K562 and HepG2, the Corces et al.&nbsp;2016 blood cell types, JASPAR motifs, and the GM12878 ATAC reads the students aligned in <em>ATAC-seq processing and peak calling</em>. The links from elements to genes come from the previous unit, <em>Linking regulatory elements to genes</em>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-gwas-in-one-slide" class="slide level2 smaller">
+<h2>A GWAS in one slide</h2>
+
+<img data-src="fig01-gwas.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>Genotype millions of SNPs in many people; test each SNP for association with the trait; plot −log10 p along the genome.</li>
+<li>Genome-wide significance: p &lt; 5 × 10⁻⁸ (about one million independent tests). Typical odds ratios are 1.05–1.3.</li>
+<li>A significant locus contains <strong>many</strong> associated SNPs; the most significant one is reported as the <strong>lead SNP</strong>.</li>
+</ul>
+<aside class="notes">
+<p>A case–control GWAS compares allele frequencies between cases and controls (here 35% vs 30%, an odds ratio of about 1.26); quantitative traits use regression. The 5 × 10⁻⁸ threshold is a Bonferroni correction for roughly one million independent common variants in European genomes. Effects are small, so GWAS need tens to hundreds of thousands of people, and the result is a list of loci, each a peak of correlated SNPs. The GWAS Catalog (EBI/NHGRI) collects the reported associations from published studies: about 845 000 genome-wide significant SNP–trait associations, 334 000 unique SNPs, in the release we use. It records lead SNPs as reported by the authors, not the full summary statistics; for most analyses in research you would use full summary statistics.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="most-gwas-hits-are-non-coding" class="slide level2 smaller">
+<h2>Most GWAS hits are non-coding</h2>
+
+<img data-src="fig02-context.png" class="quarto-figure quarto-figure-center r-stretch" style="width:85.0%"><ul>
+<li>Only <strong>3.3%</strong> of the 333 556 genome-wide significant SNPs in the GWAS Catalog change a protein or a splice site; 65% are intronic, 23% intergenic.</li>
+<li>Fine-mapping of 21 autoimmune diseases came to the same conclusion: about <strong>90%</strong> of causal variants are non-coding (Farh et al.&nbsp;2015).</li>
+<li>So most disease variants must act by changing <strong>gene regulation</strong>: which elements, in which cells, controlling which genes?</li>
+</ul>
+<aside class="notes">
+<p>Context is the annotation of the reported SNP relative to genes (Ensembl variant consequence). Intronic does not mean “in the gene that matters”: introns contain enhancers for distant genes (<em>FTO</em> and <em>IRX3</em> in the previous unit). Two caveats make 3.3% an underestimate of coding mechanisms: the reported SNP is a tag, and a coding variant in LD with it may be the cause; and coding variants with large effects are rare and often missed by GWAS arrays. Even so, careful fine-mapping (Farh et al.&nbsp;2015) finds that about 90% of causal autoimmune variants are non-coding, and about 60% fall in immune-cell enhancers. This is why epigenomic maps are now a standard part of interpreting GWAS.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-lead-snp-is-a-tag" class="slide level2 smaller">
+<h2>The lead SNP is a tag</h2>
+
+<img data-src="fig03-ld.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>Nearby variants are inherited together on haplotypes: <strong>linkage disequilibrium</strong> (LD), measured by <span class="math inline">r^2</span>.</li>
+<li>A causal variant makes every SNP in LD with it look associated. The lead SNP is the best-measured tag, often not the cause.</li>
+<li>In Europeans, LD blocks span tens of kb (sometimes &gt; 100 kb), so a locus holds 10–100 candidate variants.</li>
+</ul>
+<aside class="notes">
+<p>Walk through the haplotypes: “causal”, s4 and “lead” carry the minor allele on exactly the same haplotypes, so their correlation is 1 and no association test can tell them apart; s2 is correlated with them (r² = 0.6) and will also be associated, more weakly. LD comes from shared ancestry: recombination has not yet separated nearby variants. It depends on the population (African genomes have shorter LD blocks, which is why multi-ancestry GWAS help fine-mapping). For annotation this means: checking whether the lead SNP lies in a peak is not enough; we must consider all the variants in LD with it. We will use a crude stand-in for this (a window around the lead SNP), and name the real tools (fine-mapping, S-LDSC).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="from-a-locus-to-a-mechanism" class="slide level2 smaller">
+<h2>From a locus to a mechanism</h2>
+
+<img data-src="fig04-roadmap.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>The questions are distinct, and each uses different data. Chromatin maps enter at almost every step (green).</li>
+<li>The end point is a hypothesis: variant → element → TF → gene → cell type, which an experiment can test.</li>
+</ul>
+<aside class="notes">
+<p>This is the map of the lecture. “Which variant” is statistical fine-mapping, helped by functional priors. “Which cell type” is enrichment: are the loci of a disease concentrated in the open chromatin of a particular cell type? “Which element” is the overlap of candidate variants with peaks. “How” asks what the variant does to the element: break a motif, change accessibility (a chromatin QTL), and whether we can see that within one person (allelic imbalance). “Which gene” uses the enhancer–gene methods of <em>Linking regulatory elements to genes</em> plus eQTL colocalisation. Experiments at the end: base editing of the variant, CRISPRi of the element, massively parallel reporter assays (MPRA) of both alleles.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="gwas-snps-sit-in-open-chromatin" class="slide level2 smaller">
+<h2>GWAS SNPs sit in open chromatin</h2>
+
+<img data-src="fig05-background.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"><ul>
+<li>Fraction of SNPs within 1 kb of the 50 000 strongest GM12878 ATAC peaks: random positions <strong>3.6%</strong>, all GWAS SNPs <strong>6.6%</strong>, autoimmune loci <strong>11.8%</strong>.</li>
+<li>GWAS SNPs of <em>any</em> trait are near open chromatin more often than random positions: they sit in gene-rich, active regions. The right background is <strong>other GWAS SNPs</strong>, not the genome.</li>
+</ul>
+<aside class="notes">
+<p>This is Maurano et al.&nbsp;2012 in miniature: disease and trait variants are concentrated in DNase I hypersensitive sites. But the second bar is the important one. All GWAS SNPs together are 1.8 times more often near a GM12878 peak than random positions, because GWAS arrays and associations concentrate near genes and in active regions, and because many traits involve blood. A test of “autoimmune loci vs random positions” would give 3.3-fold enrichment and would overstate the specificity; “autoimmune vs other GWAS SNPs” gives 1.8-fold for all GM12878 peaks, and more for cell-type-specific ones (next slides). LDL, schizophrenia and height loci are close to the background: their relevant cells are liver, brain and growth plate, not B cells. Loci are pruned so that each counts once (the strongest SNP; others within 250 kb dropped).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="enrichment-is-a-22-table" class="slide level2 smaller">
+<h2>Enrichment is a 2×2 table</h2>
+
+<img data-src="fig06-enrichment-2x2.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>Count loci near and not near the annotation; compare with the background rate. Binomial or Fisher test; report the <strong>enrichment</strong> and its uncertainty.</li>
+<li>The test is only as good as its background: matched for allele frequency, LD and distance to genes, or modelled genome-wide (S-LDSC).</li>
+</ul>
+<aside class="notes">
+<p>The same 2×2 logic as motif enrichment in <em>Motifs, motif enrichment and TF footprinting</em>: a property is more frequent in the foreground than in a background. Expected 21.6 of 770 loci near a GM12878-specific peak; observed 51. The binomial test treats loci as independent, which is why we prune them first. Tools: GREGOR and SNPsnap pick background SNPs matched for allele frequency, number of LD proxies and distance to the nearest gene; GARFIELD and S-LDSC (next slides) model LD explicitly. In a research project, use one of these rather than the crude version we run in the exercise; the crude version is good for understanding what the tools do.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="real-data-which-cells-open-chromatin" class="slide level2 smaller">
+<h2>Real data: which cell’s open chromatin?</h2>
+
+<img data-src="fig07-specific.png" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><ul>
+<li>Peaks among the 50 000 strongest that are found <strong>only</strong> in GM12878 (B cells), only in K562 (erythroid) or only in HepG2 (liver).</li>
+<li>Autoimmune loci: <strong>2.3×</strong> in GM12878-only peaks (p = 4 × 10⁻⁸). LDL loci: <strong>1.8×</strong> in HepG2-only peaks (p = 4 × 10⁻⁴). Peaks shared by all three: no enrichment.</li>
+</ul>
+<aside class="notes">
+<p>A double dissociation: autoimmune loci prefer B-cell-specific elements, LDL-cholesterol loci prefer liver-specific elements, schizophrenia and height prefer neither (their cell types are not here). Shared elements, mostly promoters and CTCF sites active everywhere, carry little cell-type information and no enrichment. LDL loci show a weaker signal in K562-only peaks (1.5×, p = 0.02); hepatocyte-like and erythroid cells share some programmes, and with ~40 loci per cell, the numbers are small. This is the logic Maurano et al.&nbsp;used to identify pathogenic cell types without prior knowledge, and Finucane et al.&nbsp;2015 did systematically with heritability.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="real-data-13-blood-cell-types" class="slide level2 smaller">
+<h2>Real data: 13 blood cell types</h2>
+
+<img data-src="fig08-corces-heatmap.png" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>The 25 000 most specific peaks of each cell type (Corces et al.&nbsp;2016). Lymphocytes light up for all four autoimmune diseases: <strong>MS 5.3×</strong> and <strong>RA 3.6×</strong> in CD4 T cells, <strong>SLE 3.4×</strong> in B cells.</li>
+<li>IBD also in monocytes (2.4×); LDL, schizophrenia and height: nothing in blood.</li>
+</ul>
+<aside class="notes">
+<p>The cell-type pattern matches what is known about these diseases: multiple sclerosis and rheumatoid arthritis loci are strongest in T cells (and MS also in B cells, consistent with the effect of B-cell depletion therapy); lupus is a B-cell disease with autoantibodies; IBD involves innate immune cells, and its monocyte signal fits Nasser et al.’s finding of the strongest enrichment in dendritic cells and macrophages. Progenitors show weak, mostly non-significant enrichment. Stars mark binomial p &lt; 0.05/91. Two warnings. Enrichment says where the variants act, not where the disease starts: a T-cell enrichment in MS does not prove that T cells initiate MS. And resting sorted cells miss states: many autoimmune variants act in stimulated T cells (Farh et al.&nbsp;2015), which were not profiled here.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="windows-instead-of-ld" class="slide level2 smaller">
+<h2>Windows instead of LD</h2>
+
+<img data-src="fig09-windows.png" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><ul>
+<li>The lead SNP itself in a peak: few loci (16 of 770), strongest enrichment (3.4×). A ±20 kb window: 46% of loci, enrichment 1.4×.</li>
+<li>A window is a crude proxy for LD: it includes unlinked SNPs and misses distant ones. Proper analyses use the LD proxies of each lead SNP (r² &gt; 0.8 in a reference panel) or fine-mapped credible sets.</li>
+</ul>
+<aside class="notes">
+<p>Why the trade-off: a narrow window misses causal variants that are in LD with the lead SNP but a few kb away, so the counts are small and noisy; a wide window catches them but also many peaks that are near by chance (the dashed background curve rises fast because peaks are common), so the enrichment drops towards 1. Every published method has to deal with this: Maurano et al.&nbsp;used LD proxies from the 1000 Genomes project; S-LDSC uses LD scores of all SNPs; fine-mapping replaces the lead SNP with a set of candidates and their probabilities. In the exercise we use ±1 kb and say so. A reference panel such as 1000 Genomes or the LDlink web service gives the r² of each proxy, ancestry by ancestry.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="partitioned-heritability-s-ldsc" class="slide level2 smaller">
+<h2>Partitioned heritability (S-LDSC)</h2>
+
+<img data-src="fig10-sldsc.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>Under polygenicity, a SNP’s association statistic grows with how many SNPs it tags (its <strong>LD score</strong>). Split the LD score by annotation to estimate the share of heritability from each.</li>
+<li>Uses <strong>all</strong> SNPs (summary statistics), conditions on ~50 baseline annotations, and reports enrichment = % heritability / % SNPs.</li>
+</ul>
+<aside class="notes">
+<p>This is the method behind most “which cell type” results in modern papers (Finucane et al.&nbsp;2015). Instead of counting lead SNPs, it regresses the chi-square statistics of all SNPs on their LD scores, split into annotation categories; the coefficient τ of an annotation measures the extra heritability per SNP. Because the model includes a baseline of general annotations (coding, conserved, promoters, all enhancers…), a cell-type-specific annotation must add information beyond “active chromatin in general”. Finucane et al.&nbsp;found large enrichment for conserved regions across traits, very large immune-disease enrichment in FANTOM5 enhancers, and central nervous system enrichment for traits such as BMI and educational attainment. The bars here are toy numbers to show the definition. The software (ldsc) needs full summary statistics and an LD reference, beyond the scope of the exercise.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="fine-mapping" class="slide level2 smaller">
+<h2>Fine-mapping</h2>
+
+<img data-src="fig11-finemap.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>Assume one causal variant: its <strong>posterior inclusion probability</strong> PIP = BF / Σ BF over the SNPs in the locus. A <strong>95% credible set</strong> collects the top SNPs until their PIPs sum to 0.95.</li>
+<li>A <strong>functional prior</strong> (higher prior for SNPs in open, acetylated elements of the relevant cells) can shrink the set. Here: 4 SNPs → 3, and SNP c gets PIP 0.79.</li>
+</ul>
+<aside class="notes">
+<p>The Bayes factor of a SNP compares the data under “this SNP is causal” with “no SNP is causal”, computed from the effect estimate and its standard error (Wakefield’s approximate Bayes factor). With a single causal variant and equal priors, PIPs are the Bayes factors normalised to sum to one. Methods such as SuSiE and FINEMAP allow several causal variants per locus; PAINTOR and PolyFun bring in functional annotations as priors, learned from data (for example from S-LDSC enrichment). Caution: if you then report “the fine-mapped variant lies in an enhancer”, part of that came from the prior; say how the prior was chosen. The by-hand exercise repeats this computation.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-variant-can-change-a-tf-motif" class="slide level2 smaller">
+<h2>A variant can change a TF motif</h2>
+
+<img data-src="fig13-motif-snp.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>Score the window with each allele, on both strands, over all windows that contain the variant; compare the best scores: Δ = alt − ref.</li>
+<li>A difference of −2.5 bits means the alternative allele matches <span class="math inline">2^{2.5} \approx 6</span> times worse (in odds against the background).</li>
+<li>Tools: motifbreakR, FIMO on both alleles; the PWMs and their scoring are from <em>Gene regulation and the cis-regulatory code</em>.</li>
+</ul>
+<aside class="notes">
+<p>This is the PWM scoring students did by hand in <em>Gene regulation and the cis-regulatory code</em>, applied twice. Only windows that overlap the variant can change; a motif of width w has w such windows per strand. A change from a strong match to a weak one suggests loss of binding, from no match to a match a gain. The log-odds difference is not a binding energy, but it correlates with changes in binding measured in allele-specific ChIP-seq. motifbreakR implements exactly this for a list of variants and a motif database, with thresholds on the relative score of the better allele. In the next two slides: one famous success, and a sober look at how often motif changes happen by chance.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-classic-rs12740374-at-the-sort1-locus" class="slide level2 smaller">
+<h2>A classic: rs12740374 at the <em>SORT1</em> locus</h2>
+
+<img data-src="fig14-sort1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:85.0%"><ul>
+<li>The minor allele <strong>T</strong> of rs12740374 (chr1:109 274 968, 3′ UTR region of <em>CELSR2</em>) creates a C/EBP binding site in a liver enhancer.</li>
+<li>More C/EBP binding → more <em>SORT1</em> in hepatocytes → lower LDL cholesterol and less myocardial infarction (Musunuru et al.&nbsp;2010).</li>
+</ul>
+<aside class="notes">
+<p>This was one of the first complete stories from a non-coding GWAS signal to a mechanism. The 1p13 locus is strongly associated with LDL cholesterol and coronary disease. Musunuru et al.&nbsp;showed that the minor allele creates a C/EBP site, increases enhancer activity and SORT1 expression in liver, and that changing SORT1 levels in mouse liver changes plasma LDL. The bars show the best score of five JASPAR C/EBP matrices over the windows containing the SNP: the T allele scores 7–13 bits higher than G (our motif scan in the exercise also calls it a gained C/EBP match at p &lt; 10⁻⁴). Note the gene: the variant lies in the 3′ UTR of CELSR2, next to PSRC1, but the target was SORT1, whose TSS is about 120 kb away; the link needed eQTL data in liver and experiments.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="real-data-motif-changes-are-everywhere" class="slide level2 smaller">
+<h2>Real data: motif changes are everywhere</h2>
+
+<img data-src="fig15-motif-scan.png" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>211 autoimmune GWAS SNPs in GM12878 ATAC peaks, against 879 JASPAR motifs (p &lt; 10⁻⁴): <strong>85%</strong> gain or lose at least one match. Random positions in the same peaks: <strong>81%</strong>.</li>
+<li>With 23 blood TF motifs: 15% vs 11% (not significantly different). Farh et al.: only 10–20% of fine-mapped causal variants change a recognisable motif.</li>
+</ul>
+<aside class="notes">
+<p>The left panel is the sobering control. A single base change in a 50-bp neighbourhood will almost always create or destroy a match for some of 879 motifs, many of them similar (TF families share motifs). So “the risk allele disrupts a motif for X” means little unless X is expressed and bound in the relevant cells, the change is large, and there is evidence that the variant changes binding or accessibility (the QTL and allelic data of the next slides). Restricting to TFs that matter in B cells (ETS, IRF, NF-κB, RUNX, EBF1, POU2F2, CTCF…) gives smaller numbers, but still no clear excess over random sites with this sample size. The right panel lists the blood-TF changes; CTCF dominates because its long motif has many near-matches. Note that the lead SNPs are tags: with credible sets instead of lead SNPs, the picture would be cleaner.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="chromatin-qtls" class="slide level2 smaller">
+<h2>Chromatin QTLs</h2>
+
+<img data-src="fig16-qtl.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>Measure a molecular trait in many genotyped people and test each nearby SNP: <strong>caQTL/dsQTL</strong> (accessibility), <strong>hQTL</strong> (histone marks), <strong>meQTL</strong> (DNA methylation), <strong>eQTL</strong> (expression).</li>
+<li>Degner et al.&nbsp;2012: 8902 dsQTLs in 70 lymphoblastoid cell lines; 16% are also eQTLs, and up to 55% of eQTL SNPs are dsQTLs.</li>
+</ul>
+<aside class="notes">
+<p>A chromatin QTL turns “the variant might change binding” into a measurement: across people, those with the GG genotype have a more open element. Lymphoblastoid cell lines like GM12878 were the workhorse because hundreds of genotyped lines exist (1000 Genomes, HapMap). Degner et al.&nbsp;measured DNase-seq in 70 Yoruba LCLs; dsQTLs were enriched in TF binding sites and often showed allele-specific binding, and many eQTLs could be explained by a change in accessibility. Kumasaka et al.&nbsp;2016 did the same with ATAC-seq (2707 caQTLs from a modest sample) and introduced RASQUAL, which combines differences between people with allelic imbalance within people. meQTLs are common too, and methylation often follows accessibility (a TF that cannot bind no longer protects its site from methylation); the methylation units return to this. QTLs are correlational at the level of the variant, LD again blurs which SNP is causal.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="allele-specific-accessibility-in-one-person" class="slide level2 smaller">
+<h2>Allele-specific accessibility in one person</h2>
+
+<img data-src="fig17-allelic.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>At a heterozygous SNP in a peak, reads from the two haplotypes are counted in <strong>one</strong> sample: same cells, same nucleus, only the allele differs. Imbalance → a <em>cis</em> effect.</li>
+<li>Test against 0.5 (binomial), but beware <strong>reference mapping bias</strong>: reads carrying the non-reference allele map less well.</li>
+</ul>
+<aside class="notes">
+<p>Allelic imbalance is the within-person version of a QTL, and it controls for everything that differs between people (environment, cell composition, batch). It needs only one heterozygous individual, which is why GM12878, with its high-quality phased genome (NA12878, Genome in a Bottle), is ideal. The pitfall is technical: a read that carries the alternative allele has one mismatch to the reference genome, so it is somewhat more likely to fail alignment or be filtered for low MAPQ, especially if another variant lies nearby. The result is a genome-wide excess of reference reads. WASP (van de Geijn et al.&nbsp;2015) re-maps each read with the allele flipped and discards reads that do not map to the same place; alternatively, align to a personal diploid genome. Copy-number changes and imprinting also cause imbalance unrelated to the variant.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="real-data-allelic-imbalance-in-gm12878" class="slide level2 smaller">
+<h2>Real data: allelic imbalance in GM12878</h2>
+
+<img data-src="fig18-allelic.png" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><ul>
+<li>437 heterozygous SNPs (GIAB) in chr21 ATAC peaks with ≥ 10 reads, from the replicates you aligned in <em>ATAC-seq processing</em>. Pooled reference fraction <strong>0.516</strong>: mapping bias.</li>
+<li><strong>62</strong> SNPs at FDR &lt; 10%. Neighbouring SNPs in the same peak agree (e.g.&nbsp;3 SNPs at 42.1 Mb, all reference-biased), as expected for a haplotype-level effect.</li>
+</ul>
+<aside class="notes">
+<p>The histogram is centred slightly above 0.5 (red line, 0.516), the signature of reference bias; with WASP it would move back towards 0.5. A test against the pooled fraction instead of 0.5 is a quick correction. Sixty-two significant SNPs is many for 437: some are real cis effects on accessibility, but several are complete (79 reference reads, 0 alternative at 44.196 Mb): that pattern suggests a deletion or loss of one haplotype in this cell line, or a genotyping error, rather than a regulatory variant. Lymphoblastoid lines are EBV-transformed and can carry copy-number changes, so check neighbouring SNPs and copy number before claiming a regulatory variant. The exercise reproduces these counts with bcftools and a binomial test in R.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="colocalisation" class="slide level2 smaller">
+<h2>Colocalisation</h2>
+
+<img data-src="fig19-coloc.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>A GWAS locus and an eQTL (or caQTL) for a gene in the same region: is it <strong>one</strong> causal variant, or two different ones in LD?</li>
+<li>coloc compares the association patterns and gives a posterior for “shared variant” vs “distinct variants”. A shared variant links the disease signal to the gene (or element).</li>
+</ul>
+<aside class="notes">
+<p>Overlap of two association peaks is not enough: in a region with long LD, a disease variant and an independent eQTL variant can produce overlapping peaks by chance, and many loci contain several eQTLs for different genes. Colocalisation methods (coloc, Giambartolomei et al.&nbsp;2014; eCAVIAR; SMR-HEIDI) test whether the two signals have the same shape, which they do only if one variant drives both. They need full summary statistics from both studies and the right tissue: an eQTL measured in whole blood may not exist in the relevant immune cell state. Large eQTL resources (GTEx for tissues, eQTL Catalogue, DICE and others for immune cell types) make this routine; the fraction of GWAS loci that colocalise with an eQTL is still surprisingly modest, one argument for context-specific regulation.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="from-variant-to-gene" class="slide level2 smaller">
+<h2>From variant to gene</h2>
+
+<img data-src="fig20-v2g.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>The gene containing or nearest to the variant is a guess (<em>Linking regulatory elements to genes</em>: right about half the time).</li>
+<li>Combine: fine-mapping, overlap with an element active in the enriched cell type, enhancer–gene links (ABC), colocalised eQTL, and a perturbation.</li>
+</ul>
+<aside class="notes">
+<p>The figure is a composite of the kinds of evidence. Nasser et al.&nbsp;2021 used ABC maps in 131 cell types to connect 5036 GWAS signals for 72 traits to genes, and showed that ABC links were more precise than nearest gene or eQTL alone for genes with known causal roles. One of their examples is an IBD risk variant in an enhancer that regulates <em>PPIF</em> in macrophages, the locus we analysed in GM12878 in the previous unit. Variant-to-gene pipelines such as Open Targets Genetics combine distance, QTLs, chromatin interactions and functional annotations into one score per gene, trained on gold-standard genes. Each line of evidence has false positives; agreement between independent ones is what makes an assignment credible.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-enrichment-test-in-r" class="slide level2">
+<h2>The enrichment test in R</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a aria-hidden="true" tabindex="-1"></a>near <span class="ot">&lt;-</span> <span class="cf">function</span>(chr, pos, peaks, <span class="at">w =</span> <span class="dv">1000</span>)                       <span class="co"># SNP within w bp of a peak?</span></span>
+<span id="cb1-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">overlapsAny</span>(<span class="fu">GRanges</span>(chr, <span class="fu">IRanges</span>(<span class="fu">pmax</span>(pos <span class="sc">-</span> w, <span class="dv">1</span>), pos <span class="sc">+</span> w)), peaks)</span>
+<span id="cb1-3"><a aria-hidden="true" tabindex="-1"></a>loci <span class="ot">&lt;-</span> leads[set <span class="sc">==</span> <span class="st">"autoimmune"</span>]                                <span class="co"># one lead SNP per locus</span></span>
+<span id="cb1-4"><a aria-hidden="true" tabindex="-1"></a>k  <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">near</span>(loci<span class="sc">$</span>chr, loci<span class="sc">$</span>pos, gm_only))                      <span class="co"># 51 of 770</span></span>
+<span id="cb1-5"><a aria-hidden="true" tabindex="-1"></a>p0 <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">near</span>(bg<span class="sc">$</span>chr, bg<span class="sc">$</span>pos, gm_only))                         <span class="co"># 0.028 for all GWAS SNPs</span></span>
+<span id="cb1-6"><a aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">enrichment =</span> k <span class="sc">/</span> <span class="fu">nrow</span>(loci) <span class="sc">/</span> p0,</span>
+<span id="cb1-7"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">p =</span> <span class="fu">binom.test</span>(k, <span class="fu">nrow</span>(loci), p0, <span class="at">alternative =</span> <span class="st">"greater"</span>)<span class="sc">$</span>p.value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Pruning, peaks and backgrounds as in <em>Genomic intervals</em>: one <code>overlapsAny</code> per question.</li>
+<li>Production tools: GREGOR, GARFIELD, S-LDSC (ldsc), with LD panels and matched backgrounds.</li>
+</ul>
+<aside class="notes">
+<p>This is the core of the exercise (R2). The loci were pruned first: within each trait set, keep the most significant SNP and drop any SNP within 250 kb of a kept one, a crude replacement for LD clumping (plink –clump does the same with r² from a reference panel). gm_only are the GM12878 peaks absent from the K562 and HepG2 top-50 000 sets; bg are all unique SNPs in the GWAS Catalog. The binomial test asks whether 51 successes in 770 trials is surprising when the success probability is 0.028. Everything here can be done with bedtools as well (the exercise’s command-line part).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="judging-claims" class="slide level2 smaller">
+<h2>Judging claims</h2>
+<ul>
+<li>“The lead SNP lies in an enhancer, so it is the causal variant.” It is a tag; check all SNPs in LD, fine-map, and look for QTL or allelic evidence.</li>
+<li>“Disease loci are enriched in T-cell enhancers, so the disease starts in T cells.” Enrichment shows where variants act, not where the disease is initiated; other cell types and states may not have been profiled.</li>
+<li>“The risk allele disrupts a motif for TF X.” About as many random sites do; is X expressed and bound there, and does the variant change accessibility or binding?</li>
+<li>“40% of our loci overlap open chromatin (vs 4% of random positions).” Compare with other GWAS SNPs and matched backgrounds, and consider the window used.</li>
+<li>“This allele shows 3:1 imbalance in one sample.” Mapping bias, copy number and coverage first; replicate across individuals.</li>
+</ul>
+<aside class="notes">
+<p>These claims all appear in papers. Ask students to identify which slide of the lecture addresses each. Common thread: each piece of evidence is weak alone (LD, enrichment backgrounds, chance motif matches, technical imbalance), and convincing stories combine several independent lines, ideally ending with an experiment on the variant itself (base editing or a reporter assay of both alleles).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="summary" class="slide level2 smaller">
+<h2>Summary</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>idea</th>
+<th>key fact</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>GWAS hits</td>
+<td>~3% coding or splice; most act through gene regulation</td>
+</tr>
+<tr class="even">
+<td>LD</td>
+<td>the lead SNP tags a block of correlated variants; it is often not causal</td>
+</tr>
+<tr class="odd">
+<td>enrichment</td>
+<td>2×2 against <strong>other GWAS SNPs</strong> (matched), not random positions</td>
+</tr>
+<tr class="even">
+<td>this data</td>
+<td>autoimmune loci 2.3× in B-cell-specific peaks; LDL 1.8× in liver-specific; MS 5.3× in CD4 T cells</td>
+</tr>
+<tr class="odd">
+<td>windows</td>
+<td>narrow = few loci, strong enrichment; wide = more loci, diluted</td>
+</tr>
+<tr class="even">
+<td>S-LDSC</td>
+<td>heritability enrichment from all SNPs, conditional on a baseline</td>
+</tr>
+<tr class="odd">
+<td>fine-mapping</td>
+<td>PIP = BF / Σ BF (one causal variant); functional priors sharpen credible sets</td>
+</tr>
+<tr class="even">
+<td>motifs</td>
+<td>Δ score of two alleles; most sites change some motif by chance</td>
+</tr>
+<tr class="odd">
+<td>QTLs, allelic</td>
+<td>caQTL across people, imbalance within one person; beware mapping bias</td>
+</tr>
+<tr class="even">
+<td>variant → gene</td>
+<td>colocalisation + enhancer–gene links + perturbation</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>Students should be able to: compute r² from haplotype frequencies; set up and evaluate an enrichment 2×2 table with an appropriate background; compute PIPs and a credible set from Bayes factors; score both alleles with a PWM; test allelic imbalance with a binomial test and recognise mapping bias; and judge claims about causal variants. The next units take a different angle on the same problem: machine-learning models that predict the effect of a variant directly from sequence (<em>What did the model learn? Variant effects</em>).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="key-papers-optional-further-reading" class="slide level2 smaller">
+<h2>Key papers (optional further reading)</h2>
+<p><em>Not required reading and not examined. For those who want the primary literature.</em></p>
+<ul>
+<li>Musunuru et al.&nbsp;2010, <em>Nature</em>. <a href="https://doi.org/10.1038/nature09266">From noncoding variant to phenotype via SORT1 at the 1p13 cholesterol locus</a>. A complete mechanism, from GWAS signal to C/EBP site to liver gene.</li>
+<li>Maurano et al.&nbsp;2012, <em>Science</em>. <a href="https://doi.org/10.1126/science.1222794">Systematic localization of common disease-associated variation in regulatory DNA</a>. Disease variants concentrate in DNase I hypersensitive sites of relevant cells.</li>
+<li>Degner et al.&nbsp;2012, <em>Nature</em>. <a href="https://doi.org/10.1038/nature10808">DNase I sensitivity QTLs are a major determinant of human expression variation</a>. Chromatin QTLs in lymphoblastoid cell lines.</li>
+<li>Finucane et al.&nbsp;2015, <em>Nat Genet</em>. <a href="https://doi.org/10.1038/ng.3404">Partitioning heritability by functional annotation using genome-wide association summary statistics</a>. Stratified LD score regression.</li>
+<li>Farh et al.&nbsp;2015, <em>Nature</em>. <a href="https://doi.org/10.1038/nature13835">Genetic and epigenetic fine mapping of causal autoimmune disease variants</a>. 90% non-coding, 60% in immune enhancers, few in motifs.</li>
+<li>Schaid, Chen &amp; Larson 2018, <em>Nat Rev Genet</em>. <a href="https://doi.org/10.1038/s41576-018-0016-z">From genome-wide associations to candidate causal variants by statistical fine-mapping</a>. Review of fine-mapping methods.</li>
+</ul>
+
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'visible',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: false,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+            const codeEl = trigger.previousElementSibling.cloneNode(true);
+            for (const childEl of codeEl.children) {
+              if (isCodeAnnotation(childEl)) {
+                childEl.remove();
+              }
+            }
+            return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
