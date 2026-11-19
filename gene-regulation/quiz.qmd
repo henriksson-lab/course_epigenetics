@@ -1,0 +1,95 @@
+---
+title: "Quiz: gene regulation"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+Short questions on regulatory elements, transcription factors and motifs. Try each on paper first, then open the answer.
+
+---
+
+**Q1.** Banerji, Rusconi and Schaffner moved the SV40 72-bp element 3.3 kb downstream of the β-globin gene and flipped its orientation. Transcription stayed high. Which two properties of enhancers does this show, and what control showed that the element acts in *cis*?
+
+::: {.callout-note collapse="true" title="Answer"}
+Distance independence (it works kilobases away, upstream or downstream) and orientation independence. Acting in *cis*: the element had to be on the same DNA molecule as the gene; SV40 DNA supplied on a separate molecule did not enhance.
+:::
+
+---
+
+**Q2.** A gene's promoter has a CpG observed/expected ratio of 0.9 and is marked by H3K4me3 in almost every tissue. A second gene's promoter has a ratio of 0.2 and a TATA box. Which is more likely a housekeeping gene, and which a tissue-specific one?
+
+::: {.callout-note collapse="true" title="Answer"}
+The CpG-island promoter (o/e 0.9, marked everywhere) is typical of housekeeping (and developmental) genes; the CpG-poor promoter with a TATA box is typical of a tissue-specific gene, marked only where it is expressed.
+:::
+
+---
+
+**Q3.** An element 40 kb from gene A and 300 kb from gene B carries H3K4me1 and H3K27ac, has an ATAC-seq peak and produces short bidirectional RNAs. What is it, and which gene does it regulate?
+
+::: {.callout-tip collapse="true" title="Hint"}
+Think of the ZRS and *SHH*.
+:::
+
+::: {.callout-note collapse="true" title="Answer"}
+An active enhancer (open core, H3K4me1 + H3K27ac, eRNAs). Its target cannot be read from these data: enhancers often skip the nearest gene. Use 3D contacts (Hi-C, Capture-C), correlation with expression across samples, or a perturbation (CRISPRi of the element) to find out.
+:::
+
+---
+
+**Q4.** From 10 aligned sites a column has 7 A, 1 C, 2 G and 0 T. With a pseudocount of 1 per base and a uniform background, what are the log-odds weights of A and T? Why not use zero for T?
+
+::: {.callout-note collapse="true" title="Answer"}
+$p_A = 8/14 = 0.571$, $w_A = \log_2(0.571/0.25) = +1.19$. $p_T = 1/14 = 0.071$, $w_T = \log_2(0.071/0.25) = -1.81$. Without a pseudocount $p_T = 0$ and $w_T = -\infty$: any site with T there would be rejected, although 10 sites cannot show that T is impossible.
+:::
+
+---
+
+**Q5.** What is the information content of a column with frequencies A 0.25, C 0.25, G 0.25, T 0.25? And of A 1.0? What does each look like in a sequence logo?
+
+::: {.callout-note collapse="true" title="Answer"}
+$2 + 4 \times 0.25 \log_2 0.25 = 2 - 2 = 0$ bits: an empty column. A 1.0: $2 + 1 \times \log_2 1 = 2$ bits: a single A of full height.
+:::
+
+---
+
+**Q6.** A TF motif is scanned with a threshold of $p < 10^{-5}$ per position and strand. About how many matches do you expect by chance in 1 Mb? In a 3.1 Gb genome?
+
+::: {.callout-note collapse="true" title="Answer"}
+$2 \times 10^6 \times 10^{-5} = 20$ per Mb; $2 \times 3.1 \times 10^9 \times 10^{-5} = 62\,000$ in the genome. More than the number of peaks of most TF ChIP-seq experiments.
+:::
+
+---
+
+**Q7.** In GM12878, 78% of CTCF peaks contain a CTCF motif match, but only 4% of CTCF matches on chr21 lie in a CTCF peak. Give three reasons why a motif match may not be bound.
+
+::: {.callout-note collapse="true" title="Answer"}
+Any three of: the match is in closed chromatin or wrapped on a nucleosome; the CpG in the motif is methylated (CTCF is methylation-sensitive); the match is weak (low score); a needed partner TF is absent; the TF's concentration only fills the best sites; many matches are chance hits in sequence the TF never samples. Matches in ATAC peaks were bound 39% of the time, matches outside 2%.
+:::
+
+---
+
+**Q8.** The plus strand of a region reads `…TTGCGCCCCCTGGTGGCAA…`. A CTCF scan reports a match on the minus strand. Write the matched site in the orientation of the JASPAR consensus (`GCCACCAGGGGGCGC`). Which way does it point on the chromosome?
+
+::: {.callout-note collapse="true" title="Answer"}
+The reverse complement of `GCGCCCCCTGGTGGC` is `GCCACCAGGGGGCGC`, the consensus. On a minus-strand match the motif reads right to left, so it points towards lower coordinates (←). It forms loops with + sites (→) to its left: convergent pairs.
+:::
+
+---
+
+**Q9.** A pioneer factor binds a site in closed chromatin in progenitor cells. Which assays would show (a) binding before opening, (b) opening, (c) activation of the enhancer?
+
+::: {.callout-note collapse="true" title="Answer"}
+(a) ChIP-seq or CUT&RUN of the pioneer TF gives a peak where ATAC-seq has none (yet). (b) ATAC-seq peak appears; nucleosomes are moved (MNase-seq). (c) H3K27ac (p300/CBP) and other TFs arrive; eRNAs; the target gene's expression rises.
+:::
+
+---
+
+**Q10.** A paper lists 900 "super-enhancers" in a lymphoma line and claims they form a distinct class of regulatory elements. What is the main criticism?
+
+::: {.callout-note collapse="true" title="Answer"}
+The cutoff is drawn on a continuous ranking of stitched H3K27ac (or Mediator) signal; there is no gap that separates a class. When super-enhancers are dissected genetically, their parts often act like ordinary enhancers whose effects add up. The ranking is useful (it highlights identity genes and oncogenes), but "a distinct class" needs functional evidence.
+:::

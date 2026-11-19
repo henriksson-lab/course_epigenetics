@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 430" width="1120" height="430" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="aink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker><marker id="agrey" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker><marker id="ared" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker><marker id="agreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker><marker id="ablue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a6f97"/></marker><marker id="aorange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e67e22"/></marker></defs>
+<rect width="1120" height="430" fill="#ffffff"/>
+<text x="30.0" y="30.0" font-size="17" fill="#1b2a3a" text-anchor="start" font-weight="bold">1. Truth</text>
+<text x="30.0" y="52.0" font-size="15" fill="#5b6b7a" text-anchor="start">every peak 2x more open; p5 4x</text>
+<rect x="40.0" y="254.0" width="20.0" height="36.0" rx="0" fill="#5b6b7a" stroke="none" stroke-width="1.5"/>
+<rect x="62.0" y="218.0" width="20.0" height="72.0" rx="0" fill="#c0392b" stroke="none" stroke-width="1.5"/>
+<text x="61.0" y="310.0" font-size="14" fill="#1b2a3a" text-anchor="middle">p1</text>
+<rect x="96.0" y="236.0" width="20.0" height="54.0" rx="0" fill="#5b6b7a" stroke="none" stroke-width="1.5"/>
+<rect x="118.0" y="182.0" width="20.0" height="108.0" rx="0" fill="#c0392b" stroke="none" stroke-width="1.5"/>
+<text x="117.0" y="310.0" font-size="14" fill="#1b2a3a" text-anchor="middle">p2</text>
+<rect x="152.0" y="218.0" width="20.0" height="72.0" rx="0" fill="#5b6b7a" stroke="none" stroke-width="1.5"/>
+<rect x="174.0" y="146.0" width="20.0" height="144.0" rx="0" fill="#c0392b" stroke="none" stroke-width="1.5"/>
+<text x="173.0" y="310.0" font-size="14" fill="#1b2a3a" text-anchor="middle">p3</text>
+<rect x="208.0" y="254.0" width="20.0" height="36.0" rx="0" fill="#5b6b7a" stroke="none" stroke-width="1.5"/>
+<rect x="230.0" y="218.0" width="20.0" height="72.0" rx="0" fill="#c0392b" stroke="none" stroke-width="1.5"/>
+<text x="229.0" y="310.0" font-size="14" fill="#1b2a3a" text-anchor="middle">p4</text>
+<rect x="264.0" y="236.0" width="20.0" height="54.0" rx="0" fill="#5b6b7a" stroke="none" stroke-width="1.5"/>
+<rect x="286.0" y="74.0" width="20.0" height="216.0" rx="0" fill="#c0392b" stroke="none" stroke-width="1.5"/>
+<text x="285.0" y="310.0" font-size="14" fill="#1b2a3a" text-anchor="middle">p5</text>
+<line x1="30.0" y1="290.0" x2="320.0" y2="290.0" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="34.0" y="336.0" font-size="15" fill="#5b6b7a" text-anchor="start">background: 720 vs 720</text>
+<text x="34.0" y="360.0" font-size="14" fill="#5b6b7a" text-anchor="start">control total 1000</text>
+<text x="34.0" y="380.0" font-size="14" fill="#c0392b" text-anchor="start">treated total 1400</text>
+<text x="400.0" y="30.0" font-size="17" fill="#1b2a3a" text-anchor="start" font-weight="bold">2. Sequenced to the same depth</text>
+<text x="400.0" y="52.0" font-size="15" fill="#5b6b7a" text-anchor="start">each library 1000 reads</text>
+<rect x="410.0" y="254.0" width="20.0" height="36.0" rx="0" fill="#5b6b7a" stroke="none" stroke-width="1.5"/>
+<rect x="432.0" y="238.7" width="20.0" height="51.3" rx="0" fill="#c0392b" stroke="none" stroke-width="1.5"/>
+<text x="431.0" y="310.0" font-size="14" fill="#1b2a3a" text-anchor="middle">p1</text>
+<rect x="466.0" y="236.0" width="20.0" height="54.0" rx="0" fill="#5b6b7a" stroke="none" stroke-width="1.5"/>
+<rect x="488.0" y="212.6" width="20.0" height="77.4" rx="0" fill="#c0392b" stroke="none" stroke-width="1.5"/>
+<text x="487.0" y="310.0" font-size="14" fill="#1b2a3a" text-anchor="middle">p2</text>
+<rect x="522.0" y="218.0" width="20.0" height="72.0" rx="0" fill="#5b6b7a" stroke="none" stroke-width="1.5"/>
+<rect x="544.0" y="187.4" width="20.0" height="102.6" rx="0" fill="#c0392b" stroke="none" stroke-width="1.5"/>
+<text x="543.0" y="310.0" font-size="14" fill="#1b2a3a" text-anchor="middle">p3</text>
+<rect x="578.0" y="254.0" width="20.0" height="36.0" rx="0" fill="#5b6b7a" stroke="none" stroke-width="1.5"/>
+<rect x="600.0" y="238.7" width="20.0" height="51.3" rx="0" fill="#c0392b" stroke="none" stroke-width="1.5"/>
+<text x="599.0" y="310.0" font-size="14" fill="#1b2a3a" text-anchor="middle">p4</text>
+<rect x="634.0" y="236.0" width="20.0" height="54.0" rx="0" fill="#5b6b7a" stroke="none" stroke-width="1.5"/>
+<rect x="656.0" y="136.1" width="20.0" height="153.9" rx="0" fill="#c0392b" stroke="none" stroke-width="1.5"/>
+<text x="655.0" y="310.0" font-size="14" fill="#1b2a3a" text-anchor="middle">p5</text>
+<line x1="400.0" y1="290.0" x2="690.0" y2="290.0" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="404.0" y="336.0" font-size="15" fill="#5b6b7a" text-anchor="start">background: 720 vs 514</text>
+<text x="404.0" y="360.0" font-size="14" fill="#c0392b" text-anchor="start">treated scaled by 1000 / 1400</text>
+<text x="404.0" y="380.0" font-size="14" fill="#c0392b" text-anchor="start">raw ratio 1.43 (p5: 2.86)</text>
+<text x="780.0" y="30.0" font-size="17" fill="#1b2a3a" text-anchor="start" font-weight="bold">3. Ratio treated / control</text>
+<text x="780.0" y="52.0" font-size="15" fill="#5b6b7a" text-anchor="start">after normalising by …</text>
+<text x="780.0" y="90.0" font-size="15" fill="#1b2a3a" text-anchor="start" font-weight="bold">all peaks (median ratio)</text>
+<text x="780.0" y="110.0" font-size="14" fill="#5b6b7a" text-anchor="start">size factor ratio 1.43</text>
+<text x="790.0" y="140.0" font-size="14" fill="#5b6b7a" text-anchor="middle">p1</text>
+<text x="790.0" y="162.0" font-size="16" fill="#c0392b" text-anchor="middle" font-weight="bold">1.0</text>
+<text x="850.0" y="140.0" font-size="14" fill="#5b6b7a" text-anchor="middle">p2</text>
+<text x="850.0" y="162.0" font-size="16" fill="#c0392b" text-anchor="middle" font-weight="bold">1.0</text>
+<text x="910.0" y="140.0" font-size="14" fill="#5b6b7a" text-anchor="middle">p3</text>
+<text x="910.0" y="162.0" font-size="16" fill="#c0392b" text-anchor="middle" font-weight="bold">1.0</text>
+<text x="970.0" y="140.0" font-size="14" fill="#5b6b7a" text-anchor="middle">p4</text>
+<text x="970.0" y="162.0" font-size="16" fill="#c0392b" text-anchor="middle" font-weight="bold">1.0</text>
+<text x="1030.0" y="140.0" font-size="14" fill="#5b6b7a" text-anchor="middle">p5</text>
+<text x="1030.0" y="162.0" font-size="16" fill="#c0392b" text-anchor="middle" font-weight="bold">2.0</text>
+<text x="780.0" y="210.0" font-size="15" fill="#1b2a3a" text-anchor="start" font-weight="bold">background bins</text>
+<text x="780.0" y="230.0" font-size="14" fill="#5b6b7a" text-anchor="start">size factor ratio 0.71</text>
+<text x="790.0" y="260.0" font-size="14" fill="#5b6b7a" text-anchor="middle">p1</text>
+<text x="790.0" y="282.0" font-size="16" fill="#2e8b57" text-anchor="middle" font-weight="bold">2.0</text>
+<text x="850.0" y="260.0" font-size="14" fill="#5b6b7a" text-anchor="middle">p2</text>
+<text x="850.0" y="282.0" font-size="16" fill="#2e8b57" text-anchor="middle" font-weight="bold">2.0</text>
+<text x="910.0" y="260.0" font-size="14" fill="#5b6b7a" text-anchor="middle">p3</text>
+<text x="910.0" y="282.0" font-size="16" fill="#2e8b57" text-anchor="middle" font-weight="bold">2.0</text>
+<text x="970.0" y="260.0" font-size="14" fill="#5b6b7a" text-anchor="middle">p4</text>
+<text x="970.0" y="282.0" font-size="16" fill="#2e8b57" text-anchor="middle" font-weight="bold">2.0</text>
+<text x="1030.0" y="260.0" font-size="14" fill="#5b6b7a" text-anchor="middle">p5</text>
+<text x="1030.0" y="282.0" font-size="16" fill="#2e8b57" text-anchor="middle" font-weight="bold">4.0</text>
+<text x="780.0" y="340.0" font-size="15" fill="#c0392b" text-anchor="start">Peak-based: global opening lost;</text>
+<text x="780.0" y="360.0" font-size="15" fill="#c0392b" text-anchor="start">p5 still found, but 2x not 4x.</text>
+<text x="780.0" y="384.0" font-size="15" fill="#2e8b57" text-anchor="start">Background-based: truth recovered,</text>
+<text x="780.0" y="404.0" font-size="15" fill="#2e8b57" text-anchor="start">if the background really is constant.</text>
+<text x="30.0" y="418.0" font-size="14" fill="#5b6b7a" text-anchor="start"></text>
+<rect x="404.0" y="404.0" width="14.0" height="14.0" rx="0" fill="#5b6b7a" stroke="none" stroke-width="1.5"/>
+<text x="424.0" y="416.0" font-size="14" fill="#1b2a3a" text-anchor="start">control</text>
+<rect x="494.0" y="404.0" width="14.0" height="14.0" rx="0" fill="#c0392b" stroke="none" stroke-width="1.5"/>
+<text x="514.0" y="416.0" font-size="14" fill="#1b2a3a" text-anchor="start">treated</text>
+</svg>

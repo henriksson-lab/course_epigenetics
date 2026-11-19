@@ -1,0 +1,370 @@
+---
+title: "Exercise: ATAC-seq"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+## Goal
+
+After this exercise you will be able to:
+
+- Compute a **fragment length** and the two **Tn5 insertion sites** from the positions of a read pair, by hand and from a BAM file.
+- Explain why ATAC-seq fragment lengths come in **nucleosome steps** with a 10.5-bp ripple, and read a fragment-length plot of a good and a bad library.
+- Compute the **chrM fraction** of a library, and see why a subset of the genome gives a misleading number.
+- Compute a **TSS enrichment score** with the ENCODE definition, from counts by hand and from real insertions in R.
+- Split fragments into **nucleosome-free** and **mono-nucleosome** classes and see the nucleosomes around promoters.
+
+## Background
+
+**Tagmentation.** Tn5 transposase loaded with two kinds of adapters (A and B) cuts accessible DNA and joins an adapter to each new end. Only fragments with an A at one end and a B at the other are amplified and sequenced.
+
+**Fragments and insertions.** In a properly paired read pair, the leftmost read is on the + strand and the other on the − strand. The fragment runs from the 5' end of the + read (its `POS`) to the 5' end of the − read (its `POS` + aligned length − 1). Its length is reported in SAM column 9, `TLEN`, positive for the leftmost mate and negative for the other. Each fragment end is one **Tn5 insertion** (to within a few bp; the exact +4 / −5 shift is in *ATAC-seq processing and peak calling*).
+
+**Fragment-length classes** (conventions vary a little between papers): nucleosome-free < 100 bp; mono-nucleosome ≈ 180–250 bp; di-nucleosome ≈ 315–473 bp.
+
+**TSS enrichment** (ENCODE): sum the insertions at each position from −2000 to +2000 bp around all TSSs (flipping − strand genes), divide by the mean per-bp count in the outer 100 bp at each end, and report the value at the centre. ENCODE's pipeline reports the maximum of this profile averaged in 10-bp bins. On GRCh38 with RefSeq TSSs: < 5 concerning, 5–7 acceptable, > 7 ideal.
+
+## Data
+
+ENCODE GM12878 ATAC-seq, replicate 1 ([ENCSR095QNB](https://www.encodeproject.org/experiments/ENCSR095QNB/)), paired-end 2 × 101 bp. To keep the exercise small, the files contain only the read pairs that ENCODE aligned to **chr21 or chrM**, as the original, untrimmed reads (adapters and all). We align them to a reference that contains only chr21 and chrM. This is a shortcut: genome-wide numbers (in particular the chrM fraction) are distorted, and we correct for that in C3.
+
+```bash
+data/download.sh atacseq-intro          # reads (~0.6 GB), chr21+chrM reference and bowtie2 index, GTF, bigWigs
+mkdir -p ~/epi/atac && cd ~/epi/atac
+D=/path/to/course/data                  # where download.sh put the files
+T=8                                     # threads
+```
+
+You need `fastp`, `bowtie2`, `samtools` (≥ 1.10), `deepTools` and R with `GenomicRanges`, `rtracklayer` and `ggplot2` (see *Install the software you need*). Trimming takes under a minute and the alignment 5–15 minutes with 8 threads; everything else runs in seconds to a minute. On the cluster, put C1–C2 in an `sbatch` script with `--cpus-per-task=8`.
+
+## By hand
+
+Do these on paper.
+
+**B1. From read positions to a fragment.** A properly paired read pair (both reads 100 bp after trimming, no clipping; positions are 1-based SAM `POS`):
+
+| read | flag | chrom | POS | strand |
+|---|---|---|---|---|
+| read 1 | 99 | chr21 | 33 500 101 | + |
+| read 2 | 147 | chr21 | 33 500 247 | − |
+
+(a) Where are the two 5' ends (the Tn5 insertion sites)? (b) How long is the fragment, and what are the `TLEN` values of the two reads? (c) Which class of fragment is it, and what does it most likely contain? (d) Another pair: read 1 on the − strand at `POS` 9 800 001, read 2 on the + strand at `POS` 9 800 001, both 62 bp after trimming. How long is this fragment, and why are the reads only 62 bp long?
+
+**B2. Why steps of ~200 bp?** The nucleosome core is 147 bp and the nucleosome repeat length in GM12878 is about 190 bp.
+
+(a) Explain in two sentences why Tn5 fragments cluster below 100 bp, near 200 bp and near 400 bp, but are rare at 120 bp.
+(b) Predict the approximate position of the tri-nucleosome peak.
+(c) Why does the mono-nucleosome peak sit at about 180–200 bp rather than at 147 bp?
+(d) Why is there hardly anything below 35 bp?
+
+**B3. chrM fraction.** `samtools idxstats` on a full (whole-genome) standard ATAC-seq library gives 40 M mapped reads, of which 12 M are on chrM.
+
+(a) What is the chrM fraction? How many nuclear reads are left?
+(b) ENCODE asks for 25 M non-duplicate, non-mitochondrial reads (single-end; for paired-end, 25 M fragments). Ignoring duplicates, how many reads must you sequence to get 25 M nuclear reads with this chrM fraction, and with an Omni-ATAC library that has 3% chrM?
+(c) In this exercise our files hold only chr21 and chrM reads. Suppose idxstats gives 1.5 M reads on chr21 and 0.4 M on chrM. A student reports a chrM fraction of 21%. What is wrong? chr21 holds about 1.5% of the nuclear genome: estimate the chrM fraction of the full library.
+
+**B4. TSS enrichment from counts.** Insertions from 2000 TSSs are summed per bp in a ±2 kb window. The outer 100 bp on the left contain 1 050 insertions in total, the outer 100 bp on the right 950. The 10-bp bin with the most insertions (just upstream of the TSS) holds 2 450.
+
+(a) What is the background (insertions per bp)? (b) What is the TSS enrichment (using the 10-bp bin)? (c) Is the library acceptable by ENCODE's GRCh38 thresholds? (d) A second library has the same background per bp (after scaling to depth) but only 400 insertions in that bin. Its enrichment? What might have happened? (e) Why do we normalise by the flanks rather than by the total number of reads?
+
+**B5. Two adapters.**
+
+(a) Tn5 is loaded with equal amounts of adapters A and B. What fraction of fragments carries A at one end and B at the other?
+(b) By mistake the Tn5 was loaded with 80% A and 20% B. What fraction is usable now?
+(c) In a single nucleus, an accessible site exists on two alleles. If each allele gives exactly one fragment covering the site, what is the probability that at least one of the two fragments can be sequenced? What does this mean for single-cell ATAC-seq?
+
+**B6. Read the plots.** Three libraries (schematic):
+
+- **Library X**: a tall peak at 50 bp, a smaller peak at 200 bp, a small bump at 400 bp, 10-bp ripples below 150 bp. TSS enrichment 18.
+- **Library Y**: almost all fragments shorter than 120 bp, smooth decay, no peak at 200 bp. TSS enrichment 6.
+- **Library Z**: peaks at 200, 400 and 600 bp that are taller than the peak at 50 bp. TSS enrichment 2.5.
+
+For each, say whether you would use it, and what most likely happened in the lab. Which single plot would have misled you for library Z?
+
+**B7. Judge the design.** A study compares ATAC-seq of tumour tissue (6 patients) and adjacent normal tissue (6 patients). All tumours were processed in one week and all normal samples three months later. The paper reports 8 000 regions that "gain accessibility in cancer, reflecting epigenetic reprogramming".
+
+Name two reasons why these regions might differ without any change of chromatin within a given cell type, and one change to the design or analysis that would help.
+
+## On the command line
+
+### C1 — Trim the adapters
+
+```bash
+fastp -i $D/gm12878_atac_rep1_R1.fastq.gz -I $D/gm12878_atac_rep1_R2.fastq.gz \
+      -o rep1_R1.trim.fastq.gz -O rep1_R2.trim.fastq.gz \
+      --adapter_sequence CTGTCTCTTATACACATCT --adapter_sequence_r2 CTGTCTCTTATACACATCT \
+      --length_required 20 -w $T -j rep1.fastp.json -h rep1.fastp.html 2> rep1.fastp.log
+grep -A3 "Filtering result" rep1.fastp.log
+grep -i "adapter" rep1.fastp.log
+```
+
+(a) How many read pairs are there? How many reads had adapter sequence trimmed? Open `rep1.fastp.html` and look at the insert-size plot that fastp estimates from the overlap of the two reads: does it look familiar?
+
+(b) `CTGTCTCTTATACACATCT` is the reverse complement of the Tn5 mosaic end. Why does a read contain it when the fragment is shorter than 100 bp? Draw it.
+
+### C2 — Align, mark duplicates, filter
+
+```bash
+bowtie2 --very-sensitive -X 2000 -p $T -x $D/bowtie2/hg38_chr21_chrM \
+        -1 rep1_R1.trim.fastq.gz -2 rep1_R2.trim.fastq.gz 2> rep1.bowtie2.log \
+  | samtools fixmate -m - - \
+  | samtools sort -@ 4 -o rep1.all.bam -
+samtools index rep1.all.bam
+samtools markdup -r -f rep1.markdup.txt -@ $T rep1.all.bam rep1.dedup.bam
+samtools index rep1.dedup.bam
+samtools view -b -f 2 -F 1804 -q 30 rep1.dedup.bam chr21 > rep1.chr21.bam
+samtools index rep1.chr21.bam
+cat rep1.bowtie2.log
+head -12 rep1.markdup.txt
+```
+
+(a) What is the overall alignment rate? What fraction of pairs aligned concordantly exactly once?
+
+(b) What does `-X 2000` do, and what would happen to the di- and tri-nucleosome fragments with bowtie2's default (500)?
+
+(c) What fraction of reads were duplicates? (The generic reasons and the `-F 1804` filter are explained in *From reads to coverage*.)
+
+### C3 — The chrM fraction
+
+```bash
+samtools idxstats rep1.all.bam | tee rep1.idxstats.txt
+for c in chr21 chrM; do echo $c $(samtools view -c -F 1804 -q 30 rep1.dedup.bam $c); done
+```
+
+`idxstats` prints chromosome, length, mapped reads, unmapped reads.
+
+(a) What fraction of the mapped reads is on chrM in our files?
+
+(b) As in B3c, estimate the chrM fraction of the full library, assuming chr21 carries a share of the nuclear reads equal to its share of the genome (46.7 Mb of 3.1 Gb). ENCODE's QC of the full library (all chromosomes) reports 13.9%. How close are you?
+
+(c) Compare the chrM share before and after removing duplicates and low-MAPQ reads (second command). Why could duplicates be more common on chrM?
+
+### C4 — Fragment lengths
+
+```bash
+samtools view -f 66 rep1.chr21.bam \
+  | awk '{ print ($9 < 0) ? -$9 : $9 }' | sort -n | uniq -c \
+  | awk -v OFS='\t' '{ print $2, $1 }' > rep1.fraglen.txt
+awk '{ n += $2 } $1 < 100 { s += $2 } END { print n, s / n }' rep1.fraglen.txt
+sort -k2,2nr rep1.fraglen.txt | head -3
+```
+
+(a) Why `-f 66`? (Decode the flag with `samtools flags 66`.) What would go wrong if you took column 9 of every read?
+
+(b) How many fragments are there, and what fraction is shorter than 100 bp? What is the most common length?
+
+### C5 — Fragments and insertion sites as BED
+
+```bash
+samtools view -f 66 rep1.chr21.bam \
+  | awk -v OFS='\t' '{ L = ($9 < 0) ? -$9 : $9; s = ($9 < 0) ? $8 : $4; print $3, s - 1, s - 1 + L, L }' \
+  | sort -k1,1 -k2,2n > rep1.fragments.bed
+awk -v OFS='\t' '{ print $1, $2, $2 + 1; print $1, $3 - 1, $3 }' rep1.fragments.bed \
+  | sort -k1,1 -k2,2n > rep1.insertions.bed
+head -3 rep1.fragments.bed; wc -l rep1.fragments.bed rep1.insertions.bed
+```
+
+(a) Explain the `awk` program: why `$8` when `TLEN` is negative, and why `s − 1`?
+
+(b) Check the first line by hand: is the fragment length (column 4) equal to end − start?
+
+(c) The insertion file has one base per fragment end, without the +4 / −5 shift. Why is that good enough for a TSS profile over ±2 kb, but not for footprinting?
+
+### C6 — A coverage track for IGV
+
+```bash
+bamCoverage -b rep1.chr21.bam -o rep1.cpm.bw --normalizeUsing CPM --extendReads --binSize 10 -p $T
+```
+
+Load `rep1.cpm.bw`, `$D/gm12878_atac_peaks.bed.gz`, `$D/gm12878_h3k4me3_fc.bigWig` and `$D/gm12878_h3k27ac_fc.bigWig` in IGV (genome hg38) and go to `chr21:44,870,000-44,950,000` (*ITGB2*, the β2 integrin of white blood cells). Where are the ATAC peaks relative to the H3K4me3 and H3K27ac signal? Find an ATAC peak with neither mark.
+
+## In R
+
+```r
+library(GenomicRanges); library(rtracklayer); library(ggplot2)
+D <- "/path/to/course/data"
+setwd("~/epi/atac")
+```
+
+### R1 — The fragment-length distribution
+
+```r
+fl <- read.table("rep1.fraglen.txt", col.names = c("len", "n"))
+sum(fl$n)
+ggplot(fl[fl$len <= 1000, ], aes(len, n)) + geom_line()
+ggplot(fl[fl$len <= 1000, ], aes(len, n)) + geom_line() + scale_y_log10()
+peak_in <- function(lo, hi) { x <- fl[fl$len >= lo & fl$len <= hi, ]; x$len[which.max(x$n)] }
+c(nfr = peak_in(30, 120), mono = peak_in(150, 280), di = peak_in(300, 480))
+c(nfr = sum(fl$n[fl$len < 100]), mono = sum(fl$n[fl$len >= 180 & fl$len <= 250])) / sum(fl$n)
+```
+
+(a) Describe the plot. Where are the nucleosome-free, mono- and di-nucleosome peaks?
+
+(b) What can you see on the log scale that you cannot see on the linear one?
+
+(c) The raw counts are noisy at the di-nucleosome peak. Smooth them with a running mean over 11 bp, `stats::filter(fl$n, rep(1/11, 11))`, and find the peak again. Note: `fl` must have one row per length with no gaps for this to be correct; check with `all(diff(fl$len) == 1)` over the range you use.
+
+### R2 — The 10.5-bp periodicity
+
+```r
+x <- merge(data.frame(len = 1:1000), fl, all.x = TRUE); x$n[is.na(x$n)] <- 0
+x$trend <- as.numeric(stats::filter(x$n, rep(1/31, 31)))
+p <- x[x$len >= 40 & x$len <= 150, ]
+p$ratio <- p$n / p$trend
+plot(p$len, p$ratio, type = "l"); abline(h = 1, col = "grey")
+mx <- p$len[which(diff(sign(diff(p$ratio))) == -2) + 1]
+mx; diff(mx); mean(diff(mx))
+```
+
+(a) What do you see after dividing by the trend? At which lengths are the maxima, and what is their mean spacing?
+
+(b) Some maxima are spurious wiggles 1–3 bp apart. Look at `diff(mx)`: how would you make the estimate more robust? (One option: keep only maxima that are the highest point within ±4 bp; another: `spec.pgram()` on `p$ratio - 1` and take `1 / freq` at the highest peak.)
+
+### R3 — TSS enrichment
+
+```r
+gtf <- import(file.path(D, "gencode.v46.basic.annotation.gtf.gz"))
+tx  <- gtf[gtf$type == "transcript" & gtf$transcript_type == "protein_coding" & seqnames(gtf) == "chr21"]
+tss <- unique(granges(resize(tx, width = 1, fix = "start")))
+length(tss)
+
+ins <- import("rep1.insertions.bed")                        # one base per insertion
+win <- resize(tss, 4001, fix = "center")                     # ±2 kb
+h   <- findOverlaps(ins, win, ignore.strand = TRUE)
+d   <- start(ins)[queryHits(h)] - start(tss)[subjectHits(h)]
+d   <- ifelse(as.character(strand(tss))[subjectHits(h)] == "-", -d, d)   # orient by strand
+prof <- tabulate(d + 2001, 4001)                             # insertions at -2000 ... +2000
+
+bg   <- mean(prof[c(1:100, 3902:4001)])                      # outer 100 bp at each end
+norm <- prof / bg
+bin10 <- tapply(norm, (seq_along(norm) - 1) %/% 10, mean)
+c(background = bg, centre = mean(norm[2001 + (-5:5)]), tss_enrichment = max(bin10))
+plot(-2000:2000, stats::filter(norm, rep(1/11, 11)), type = "l",
+     xlab = "distance to TSS (bp)", ylab = "insertions / flank mean")
+abline(h = c(1, 7), col = c("grey", "red"), lty = 2)
+```
+
+(a) How many TSSs are used? What is the background (insertions per bp), and what is the TSS enrichment? How does it compare with ENCODE's thresholds and with ENCODE's own value for this library (29.6, genome-wide, RefSeq TSSs)?
+
+(b) Remove the line that orients by strand and recompute. What happens to the shape of the profile, and why?
+
+(c) The maximum is not exactly at 0. Where is it, and what lies on either side of it (think of the NDR and the +1 nucleosome)?
+
+(d) Why do we use `unique()` on the TSSs? What would happen to the score if a highly expressed gene with 12 transcripts starting at the same base were counted 12 times?
+
+### R4 — Nucleosome-free versus mono-nucleosome fragments
+
+```r
+fr  <- import("rep1.fragments.bed")
+mid <- (start(fr) + end(fr)) %/% 2
+w   <- width(fr)
+prof_mid <- function(pos, flank = 1000) {
+  pts <- GRanges("chr21", IRanges(pos, width = 1))
+  h <- findOverlaps(pts, resize(tss, 2 * flank + 1, fix = "center"), ignore.strand = TRUE)
+  d <- pos[queryHits(h)] - start(tss)[subjectHits(h)]
+  d <- ifelse(as.character(strand(tss))[subjectHits(h)] == "-", -d, d)
+  p <- tabulate(d + flank + 1, 2 * flank + 1)
+  p / mean(p[c(1:100, (2 * flank - 98):(2 * flank + 1))])
+}
+nfr  <- prof_mid(mid[w < 100])
+mono <- prof_mid(mid[w >= 180 & w <= 250])
+sm <- function(v) stats::filter(v, rep(1/21, 21))
+par(mfrow = c(1, 2))
+plot(-1000:1000, sm(nfr),  type = "l", col = "darkgreen", main = "< 100 bp",   xlab = "distance to TSS", ylab = "relative")
+plot(-1000:1000, sm(mono), type = "l", col = "steelblue", main = "180-250 bp", xlab = "distance to TSS", ylab = "relative")
+which.max(sm(mono)[1001:2001]) - 1          # +1 nucleosome: distance of the downstream maximum
+```
+
+(a) Describe the two profiles. Where is the +1 nucleosome, and where is the −1?
+
+(b) Why use the fragment **centre** here rather than the insertion sites?
+
+(c) If you had only single-end reads, could you make these plots? Why not?
+
+## Hints
+
+::: {.callout-tip collapse="true" title="Hint 1 — read positions and TLEN (B1, C4, C5)"}
+SAM `POS` is the leftmost aligned base, 1-based, for reads on either strand. A − strand read's 5' end is its rightmost base: `POS` + aligned length − 1. `TLEN` is the distance from the leftmost to the rightmost aligned base of the pair, + for the leftmost mate. See the [SAM specification](https://samtools.github.io/hts-specs/SAMv1.pdf) (section 1.4) and [`samtools flags`](https://www.htslib.org/doc/samtools-flags.html) to decode flags.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 2 — fragment classes and the ladder (B2, B6, R1, R2)"}
+A fragment needs two insertions; Tn5 cannot insert into DNA wrapped on a nucleosome. Count how much DNA lies between two linkers separated by one, two or three nucleosomes. The 10.5-bp ripple is the helical repeat of DNA: Buenrostro et al. 2013, [Fig. 2](https://doi.org/10.1038/nmeth.2688). For running means see [`stats::filter`](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/filter.html); for the periodogram [`spec.pgram`](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/spec.pgram.html).
+:::
+
+::: {.callout-tip collapse="true" title="Hint 3 — chrM (B3, C3)"}
+If chr21 carries a fraction $f$ of the nuclear reads, the full library had about $n_{21} / f$ nuclear reads, and chrM fraction ≈ $n_M / (n_M + n_{21}/f)$. [`samtools idxstats`](https://www.htslib.org/doc/samtools-idxstats.html) counts reads per reference sequence from the index; [`samtools view -c`](https://www.htslib.org/doc/samtools-view.html) counts reads that pass filters.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 4 — TSS enrichment (B4, R3)"}
+Background = (sum of the two flank counts) / 200 bp. Enrichment = (count in the central bin / bin width) / background. ENCODE's definition and thresholds are on the [ATAC-seq standards page](https://www.encodeproject.org/atac-seq/) and the [terms page](https://www.encodeproject.org/data-standards/terms/). In R: [`resize`](https://rdrr.io/bioc/GenomicRanges/man/intra-range-methods.html), [`findOverlaps`](https://rdrr.io/bioc/GenomicRanges/man/findOverlaps-methods.html), [`tabulate`](https://stat.ethz.ch/R-manual/R-devel/library/base/html/tabulate.html).
+:::
+
+::: {.callout-tip collapse="true" title="Hint 5 — adapters and tools (B5, C1, C2)"}
+Each end independently gets A or B. [fastp](https://github.com/OpenGene/fastp) detects adapters from the overlap of paired reads and from the sequence you give. [bowtie2 manual](https://bowtie-bio.sourceforge.net/bowtie2/manual.shtml): `-X` is the maximum fragment length for a valid paired-end alignment. [`samtools fixmate -m`](https://www.htslib.org/doc/samtools-fixmate.html) adds the mate tags that [`samtools markdup`](https://www.htslib.org/doc/samtools-markdup.html) needs. [`bamCoverage`](https://deeptools.readthedocs.io/en/latest/content/tools/bamCoverage.html) with `--extendReads` fills in the whole fragment of a proper pair.
+:::
+
+## Solutions
+
+::: {.callout-note collapse="true" title="Solutions — by hand"}
+**B1.** (a) Read 1 is on the + strand, so its 5' end is its `POS`: **33 500 101**. Read 2 is on the − strand, so its 5' end is its rightmost base: 33 500 247 + 100 − 1 = **33 500 346**. (b) Fragment = 33 500 346 − 33 500 101 + 1 = **246 bp**; `TLEN` = +246 for read 1 and −246 for read 2. (c) Mono-nucleosome size (180–250 bp): most likely two insertions in the linkers on either side of one nucleosome. (d) Both reads cover the same 62 bases: the fragment is **62 bp**, nucleosome-free. The reads were 101 bp when sequenced, but after 62 bases they ran into the adapter of the other end, which fastp trimmed off.
+
+**B2.** (a) Tn5 inserts only into DNA that is not wrapped on a nucleosome. Two insertions in the same open stretch (NDR or long linker) give a short fragment; any fragment that contains a nucleosome must be at least ~147 bp plus some linker, so lengths between ~100 and ~150 bp need an unusual geometry and are rarer. Fragments spanning one or two nucleosomes are ~one or two repeats long. (b) About 3 × 190 ≈ 570 bp (in our data a weak shoulder at 550–600 bp, visible only on the log scale). (c) The fragment contains the 147-bp core plus parts of the linkers on both sides, where Tn5 cut: 147 + two partial linkers ≈ 180–210 bp. (d) Very short fragments are lost in the cleanup (columns and beads do not keep them), cannot be amplified efficiently, and give reads too short to align uniquely (we also drop reads < 20 bp after trimming). Two Tn5 dimers also cannot insert right next to each other.
+
+**B3.** (a) 12 / 40 = **30%**; 28 M nuclear reads. (b) 25 / 0.70 = **35.7 M** reads; with 3% chrM 25 / 0.97 = **25.8 M**: Omni-ATAC saves about 10 M reads per sample. (c) 0.4 / 1.9 = 21% is the share of chrM *among chr21 + chrM reads*, not among all reads. The full library had about 1.5 M / 0.015 = 100 M nuclear reads, so chrM ≈ 0.4 / (0.4 + 100) ≈ **0.4%**.
+
+**B4.** (a) (1050 + 950) / 200 = **10** insertions per bp. (b) 2450 / 10 bp = 245 per bp; 245 / 10 = **24.5**. (c) Yes, well above 7 ("ideal"). (d) 400 / 10 = 40 per bp; 40 / 10 = **4**: "concerning". Most insertions are background: dead or damaged cells, over-digestion, or a failed reaction (B6). (e) Total reads include chrM, peaks of every kind and background, and depend on depth; the flanks measure the background of *this* library at comparable positions, so the score is a pure signal-to-noise ratio that does not depend on sequencing depth.
+
+**B5.** (a) $2 \times 0.5 \times 0.5 =$ **50%**. (b) $2 \times 0.8 \times 0.2 =$ **32%**. (c) Each fragment is usable with probability ½, so $P(\text{at least one}) = 1 - 0.5^2 =$ **75%**. A quarter of accessible sites are missed in a single nucleus by chemistry alone, before any losses in cleanup, PCR or sequencing: single-cell ATAC data are inherently sparse (mostly 0 or 1 fragment per site per cell).
+
+**B6.** **X**: a good library: nucleosome-free peak, ladder, 10-bp ripple, high TSS enrichment. Use it. **Y**: over-tagmentation (too much Tn5 for the number of nuclei, or fewer nuclei than counted): the DNA is cut so often that nucleosomal fragments are rare; signal-to-noise is borderline (6). Usable for peaks with care; repeat with more nuclei if possible. **Z**: dead or dying cells. Apoptotic DNA is already cut into a nucleosome ladder, and DNA from damaged nuclei is tagmented everywhere, so the ladder is strong but there is almost no enrichment at TSSs (2.5, "concerning"). Do not use. The fragment-length plot alone would have made Z look like a fine library: always check the TSS profile too.
+
+**B7.** (1) **Cell composition**: tumours contain different cells (tumour cells, immune infiltrate, stroma) than normal tissue; sites specific to a more abundant cell type gain signal in bulk without any chromatin change in any one cell. (2) **Batch**: all tumours were processed together and all normals months later, so processing day (Tn5 lot, cell viability, nuclei counting, sequencing run) is completely confounded with the condition. Also: tumour copy-number gains increase signal over amplified regions. Helps: process tumour and normal samples together in randomised batches; sort cell populations or use single-cell ATAC or deconvolution; check QC (TSS enrichment, fragment sizes) per group; account for copy number. "Epigenetic reprogramming" is a claim about mechanism that the data do not show.
+:::
+
+::: {.callout-note collapse="true" title="Solutions — command line"}
+Run times on a shared server with 8 threads: C1 24 s, C2 11.5 min (bowtie2 `--very-sensitive` is slow; on a quiet laptop with 8 cores expect 5–15 min), duplicate marking 24 s, C3–C6 a few seconds each.
+
+**C1.** (a) 6 088 187 read pairs; 5 992 127 pairs (11 984 254 reads) pass the filters. Adapter was trimmed from **4 667 844 reads (38%)**: more than a third of the fragments are shorter than the 101-bp reads. fastp's insert-size estimate peaks at **42 bp**: the nucleosome-free peak again. (fastp reports a duplication rate of 56%, inflated by the many identical chrM fragments.) (b) Sequencing starts at one end of the fragment and continues for 101 cycles. If the fragment is only 60 bp, the last 41 cycles read the mosaic end and adapter on the other side. Untrimmed, those bases do not match the genome and the read fails end-to-end alignment.
+
+**C2.** (a) **99.65%** overall; **94.5%** of pairs concordantly exactly once, 4.4% more than once (multi-mappers; MAPQ < 30 removes most of them). Very high because these reads were selected as ones ENCODE had aligned to chr21 or chrM. (b) `-X 2000` sets the largest fragment that counts as a valid ("concordant", properly paired) alignment. With the default of 500 bp, the tri-nucleosome fragments and part of the di-nucleosome fragments would not be flagged as proper pairs (flag 2), and `-f 2` would remove them: the ladder would be cut off at 500 bp. (c) `markdup` flags 8 865 403 of 11 942 569 reads, **74%**, almost all on chrM (C3c).
+
+**C3.** (a) idxstats: chr21 1 111 555, chrM 10 831 014 mapped reads: **90.7%** on chrM. (b) $10.83 / (10.83 + 1.112 / 0.0151) = 10.83 / 84.6 =$ **12.8%**, close to ENCODE's 13.9% for the whole library. The assumption is rough (chr21 has an unmappable p-arm, and open chromatin is not uniform over chromosomes), but good enough. (c) After removing duplicates and MAPQ < 30: chr21 504 621, chrM 2 143 835 reads (81% chrM). On chr21, 20% of the reads were duplicates (632 859 → 504 621); on chrM, 80% (10.75 M → 2.14 M). chrM is only 16.6 kb and covered thousands of times, so two independent fragments with exactly the same two ends are common: many "duplicates" there are not PCR copies but saturation. (The same is true for very strong peaks in deep libraries.)
+
+**C4.** (a) `-f 66` = 2 + 64: properly paired **and** first in pair. Each fragment is counted once, and `TLEN` is taken with its absolute value because the first read can be either the left or the right mate. Taking column 9 from every read would count each fragment twice, and half the values would be negative. (b) **252 213** fragments; **28.7%** shorter than 100 bp; the most common length is **45 bp** (1 908 fragments).
+
+**C5.** (a) For each first-in-pair read: `L` = |TLEN|; the fragment starts at the leftmost mate's `POS`, which is the read's own `POS` if `TLEN` > 0 and the mate's position (`PNEXT`, column 8) if `TLEN` < 0. SAM positions are 1-based, BED starts are 0-based, hence `s − 1`; the BED end is start + length. (b) The first line is `chr21  5032522  5032580  58`: 5 032 580 − 5 032 522 = 58. (c) Over ±2 kb, a 4–5 bp offset is invisible (we even average over 10-bp bins). Footprints are dips of a few bp at a TF motif; there the exact position of each insertion matters, and the shift must be applied (*ATAC-seq processing and peak calling*).
+
+**C6.** (3 s.) At *ITGB2*, ATAC peaks sit at the two promoters (44.921 and 44.929 Mb, both with H3K4me3 and H3K27ac) and at several sites in the gene body and upstream with H3K27ac but little H3K4me3 (candidate enhancers). The histone signal is broader than the ATAC peak and often highest on its flanks: the marks are on the nucleosomes next to the open DNA. The ATAC peak at 44.893 Mb has neither mark: load `$D/gm12878_ctcf_peaks.bed.gz` and you find a CTCF peak right on it (chr21:44 892 886–44 893 046), an insulator or loop anchor rather than a promoter or enhancer.
+:::
+
+::: {.callout-note collapse="true" title="Solutions — R"}
+**R1.** (a) A tall nucleosome-free peak at **45 bp** with ripples, a broad mono-nucleosome peak near 200 bp and a weak di-nucleosome bump near 390 bp; 28.7% of fragments are < 100 bp and 16.1% are 180–250 bp. The raw `which.max` gives 45, **177** and **389** bp: the mono peak is flat-topped and noisy, so the raw maximum lands on one of the 10-bp spikes. (b) On the log scale the long tail is visible: the di-nucleosome bump, a weak shoulder at 550–600 bp (tri), and a smooth decay out to 1 kb. On the linear scale everything above 400 bp is squashed to the axis. (c) With an 11-bp running mean the peaks are at **45**, **210** and **391** bp. `fl` has no gaps up to 700 bp (`TRUE`), so the running mean is over 11 consecutive lengths.
+
+**R2.** (a) Below 150 bp the counts oscillate around the trend with maxima about every 10 bp (45, 54, 66, 75, 86, 95, 105, 115, 126 …), and the ripple continues into the mono-nucleosome peak (151, 167, 177, 187, 198 bp in the lecture figure). The naive maxima (`mx`) are 25 positions with a mean spacing of **4.3 bp**: many are 2–4-bp noise wiggles. (b) Keeping only maxima that are the highest within ±4 bp leaves 45, 54, 66, 75, 86, 95, 105, 115, 126, 132, 138: spacing **10.1 bp** between 45 and 126 (two spurious maxima at 132/138 drag the mean over all to 9.3). `spec.pgram()` puts the highest peak at a period of **10.0 bp** (10.3 with `pad = 9`, a finer frequency grid). Expected: the helical repeat, ~10.5 bp. With 250 000 fragments from one chromosome, ±0.5 bp is as precise as it gets.
+
+**R3.** (a) **602** TSSs; background **20.7** insertions per bp; centre (±5 bp) 33.1; **TSS enrichment 34.0** (maximum of the 10-bp bins). Far above 7 ("ideal"), and close to ENCODE's 29.6 for the full library (different TSS set, annotation and method; our chr21 subset is also small). (b) Without orientation the score is 32.8 and the profile becomes symmetric around 0: the upstream NDR peak of + strand genes and the downstream side of − strand genes are averaged, and the asymmetry (open upstream, +1 nucleosome downstream) disappears. (c) The highest 10-bp bin is at **−140 bp** (the 11-bp running mean peaks at −92 bp): the maximum is in the nucleosome-depleted region just upstream of the TSS, where TFs bind; downstream the signal drops where the +1 nucleosome sits. (d) A TSS shared by 12 transcripts would be counted 12 times: its insertions would weigh 12 times in the aggregate. Highly expressed genes tend to have many annotated transcripts and open promoters, so duplicates would inflate the score.
+
+**R4.** (a) Nucleosome-free fragment centres peak at about **−107 bp** (15.8 × the flanks) and fall sharply downstream of the TSS. Mono-nucleosome fragment centres dip at the TSS (7.4 ×) and peak at **+124 bp** (the +1 nucleosome) and at −91 bp upstream (14.1 ×). The upstream peak is not a clean −1 nucleosome: in a highly accessible promoter, two insertions on either side of the whole NDR also make a ~200-bp fragment. (b) A nucleosome sits in the middle of a mono-nucleosome fragment, between the two insertions: the centre estimates the dyad. Insertions mark where the DNA was *open*, i.e. the linkers either side. (c) No: single-end reads give one insertion per fragment and no fragment length, so you can neither split fragments by size nor find their centres.
+:::
+
+## Where this leads
+
+- *ATAC-seq processing and peak calling* shifts the insertions by +4 / −5, calls peaks with MACS3 and builds consensus peaks across replicates.
+- *Differential accessibility* counts fragments in peaks across samples and uses DESeq2, as in RNA-seq.
+- *Motifs, motif enrichment and TF footprinting* uses the insertion sites at base resolution, and has to deal with the Tn5 sequence bias.
+- Single-cell ATAC-seq uses the same fragments, one barcode per nucleus: the fragment-length and TSS-enrichment QC are computed per cell.
+
+## Key papers (optional further reading)
+
+*Not required reading and not examined.*
+
+- Boyle et al. 2008, *Cell*. [High-resolution mapping and characterization of open chromatin across the genome](https://doi.org/10.1016/j.cell.2007.12.014).
+- Thurman et al. 2012, *Nature*. [The accessible chromatin landscape of the human genome](https://doi.org/10.1038/nature11232).
+- Adey et al. 2010, *Genome Biol*. [Rapid, low-input, low-bias construction of shotgun fragment libraries by high-density in vitro transposition](https://doi.org/10.1186/gb-2010-11-12-r119).
+- Buenrostro et al. 2013, *Nat Methods*. [Transposition of native chromatin for fast and sensitive epigenomic profiling of open chromatin, DNA-binding proteins and nucleosome position](https://doi.org/10.1038/nmeth.2688).
+- Corces et al. 2017, *Nat Methods*. [An improved ATAC-seq protocol reduces background and enables interrogation of frozen tissues](https://doi.org/10.1038/nmeth.4396).
+- Grandi et al. 2022, *Nat Protoc*. [Chromatin accessibility profiling by ATAC-seq](https://doi.org/10.1038/s41596-022-00692-9).

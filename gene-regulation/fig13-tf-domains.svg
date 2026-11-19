@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 400" width="1120" height="400" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker><marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker><marker id="ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a8324a"/></marker><marker id="as" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker><marker id="ao" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e67e22"/></marker><marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a6f97"/></marker><marker id="ap" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b4fa0"/></marker><marker id="at" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a9d8f"/></marker><marker id="an" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8c564b"/></marker></defs>
+<rect width="1120" height="400" fill="#ffffff"/>
+<text x="20" y="30" font-size="17" text-anchor="start" font-weight="bold" fill="#1b2a3a">A TF is modular</text>
+<line x1="30" y1="110" x2="420" y2="110" stroke="#5b6b7a" stroke-width="3"/>
+<rect x="50" y="90" width="110" height="40" rx="8" fill="#2a9d8f" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="105" y="116" font-size="16" text-anchor="middle" font-weight="bold" fill="#ffffff">DBD</text>
+<rect x="185" y="94" width="70" height="32" rx="8" fill="#e9c46a" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="220" y="115" font-size="15" text-anchor="middle" font-weight="bold" fill="#1b2a3a">dimer</text>
+<path d="M285,110 q12,-22 24,0 t24,0 t24,0 t24,0 t24,0" fill="none" stroke="#e67e22" stroke-width="4"/>
+<text x="345" y="150" font-size="15" text-anchor="middle" font-weight="bold" fill="#e67e22">activation domain</text>
+<text x="345" y="168" font-size="14" text-anchor="middle" font-weight="normal" fill="#5b6b7a">(disordered)</text>
+<text x="105" y="150" font-size="15" text-anchor="middle" font-weight="bold" fill="#2a9d8f">DNA-binding</text>
+<text x="105" y="168" font-size="15" text-anchor="middle" font-weight="bold" fill="#2a9d8f">domain</text>
+<text x="30" y="230" font-size="15" text-anchor="start" font-weight="normal" fill="#1b2a3a">DBD: reads a 6–20 bp motif in the major groove</text>
+<text x="30" y="254" font-size="15" text-anchor="start" font-weight="normal" fill="#1b2a3a">dimerisation: homo- or heterodimers, longer sites</text>
+<text x="30" y="278" font-size="15" text-anchor="start" font-weight="normal" fill="#1b2a3a">activation domain: recruits co-activators</text>
+<text x="30" y="302" font-size="15" text-anchor="start" font-weight="normal" fill="#5b6b7a">(Mediator, p300/CBP, remodellers)</text>
+<text x="30" y="340" font-size="15" text-anchor="start" font-weight="normal" fill="#1b2a3a">Repressors carry a repression domain instead,</text>
+<text x="30" y="364" font-size="15" text-anchor="start" font-weight="normal" fill="#1b2a3a">e.g. KRAB in ~350 zinc-finger TFs</text>
+<line x1="470" y1="20" x2="470" y2="385" stroke="#d0d7de" stroke-width="1.5"/>
+<text x="500" y="30" font-size="17" text-anchor="start" font-weight="bold" fill="#1b2a3a">The ~1600 human TFs by DNA-binding domain (Lambert et al. 2018)</text>
+<text x="640" y="79" font-size="15" text-anchor="end" font-weight="normal" fill="#1b2a3a">C2H2 zinc finger</text>
+<rect x="650" y="64" width="283.86" height="22" rx="0" fill="#2a9d8f" stroke="none" stroke-width="1.5"/>
+<text x="941.86" y="81" font-size="15" text-anchor="start" font-weight="bold" fill="#1b2a3a">747</text>
+<text x="981.86" y="81" font-size="14" text-anchor="start" font-weight="normal" fill="#5b6b7a">CTCF, ZNFs, IKZF1</text>
+<text x="640" y="115" font-size="15" text-anchor="end" font-weight="normal" fill="#1b2a3a">homeodomain</text>
+<rect x="650" y="100" width="74.48" height="22" rx="0" fill="#2a9d8f" stroke="none" stroke-width="1.5"/>
+<text x="732.48" y="117" font-size="15" text-anchor="start" font-weight="bold" fill="#1b2a3a">196</text>
+<text x="772.48" y="117" font-size="14" text-anchor="start" font-weight="normal" fill="#5b6b7a">HOX, OCT2 (POU)</text>
+<text x="640" y="151" font-size="15" text-anchor="end" font-weight="normal" fill="#1b2a3a">bHLH</text>
+<rect x="650" y="136" width="41.04" height="22" rx="0" fill="#2a9d8f" stroke="none" stroke-width="1.5"/>
+<text x="699.04" y="153" font-size="15" text-anchor="start" font-weight="bold" fill="#1b2a3a">108</text>
+<text x="739.04" y="153" font-size="14" text-anchor="start" font-weight="normal" fill="#5b6b7a">MYC, E2A</text>
+<text x="640" y="187" font-size="15" text-anchor="end" font-weight="normal" fill="#1b2a3a">bZIP</text>
+<rect x="650" y="172" width="20.52" height="22" rx="0" fill="#2a9d8f" stroke="none" stroke-width="1.5"/>
+<text x="678.52" y="189" font-size="15" text-anchor="start" font-weight="bold" fill="#1b2a3a">54</text>
+<text x="718.52" y="189" font-size="14" text-anchor="start" font-weight="normal" fill="#5b6b7a">AP-1 (FOS/JUN)</text>
+<text x="640" y="223" font-size="15" text-anchor="end" font-weight="normal" fill="#1b2a3a">forkhead</text>
+<rect x="650" y="208" width="18.62" height="22" rx="0" fill="#2a9d8f" stroke="none" stroke-width="1.5"/>
+<text x="676.62" y="225" font-size="15" text-anchor="start" font-weight="bold" fill="#1b2a3a">49</text>
+<text x="716.62" y="225" font-size="14" text-anchor="start" font-weight="normal" fill="#5b6b7a">FOXA1, FOXP3</text>
+<text x="640" y="259" font-size="15" text-anchor="end" font-weight="normal" fill="#1b2a3a">nuclear receptor</text>
+<rect x="650" y="244" width="17.48" height="22" rx="0" fill="#2a9d8f" stroke="none" stroke-width="1.5"/>
+<text x="675.48" y="261" font-size="15" text-anchor="start" font-weight="bold" fill="#1b2a3a">46</text>
+<text x="715.48" y="261" font-size="14" text-anchor="start" font-weight="normal" fill="#5b6b7a">ESR1, GR</text>
+<text x="640" y="295" font-size="15" text-anchor="end" font-weight="normal" fill="#1b2a3a">HMG / Sox</text>
+<rect x="650" y="280" width="11.4" height="22" rx="0" fill="#2a9d8f" stroke="none" stroke-width="1.5"/>
+<text x="669.4" y="297" font-size="15" text-anchor="start" font-weight="bold" fill="#1b2a3a">30</text>
+<text x="709.4" y="297" font-size="14" text-anchor="start" font-weight="normal" fill="#5b6b7a">SOX2</text>
+<text x="640" y="331" font-size="15" text-anchor="end" font-weight="normal" fill="#1b2a3a">ETS</text>
+<rect x="650" y="316" width="10.26" height="22" rx="0" fill="#2a9d8f" stroke="none" stroke-width="1.5"/>
+<text x="668.26" y="333" font-size="15" text-anchor="start" font-weight="bold" fill="#1b2a3a">27</text>
+<text x="708.26" y="333" font-size="14" text-anchor="start" font-weight="normal" fill="#5b6b7a">PU.1, ETS1</text>
+<text x="640" y="367" font-size="15" text-anchor="end" font-weight="normal" fill="#1b2a3a">other / unknown</text>
+<rect x="650" y="352" width="145.16" height="22" rx="0" fill="#9fb3c2" stroke="none" stroke-width="1.5"/>
+<text x="803.16" y="369" font-size="15" text-anchor="start" font-weight="bold" fill="#1b2a3a">382</text>
+<text x="843.16" y="369" font-size="14" text-anchor="start" font-weight="normal" fill="#5b6b7a">EBF1, PAX5, IRF4, RUNX…</text>
+<text x="650" y="395" font-size="15" text-anchor="start" font-weight="normal" fill="#5b6b7a">1639 TFs in total; ~430 still without a known motif</text>
+</svg>

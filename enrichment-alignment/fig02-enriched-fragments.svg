@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 432" width="1120" height="432" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/>
+    </marker>
+  </defs>
+  <rect width="1120" height="432" fill="#ffffff"/>
+
+  <!-- LEFT: three assays -->
+  <text x="20" y="30" font-size="18" font-weight="bold" fill="#1b2a3a">Three assays …</text>
+
+  <!-- ChIP -->
+  <text x="20" y="92" font-size="17" font-weight="bold" fill="#1b2a3a">ChIP</text>
+  <line x1="120" y1="88" x2="440" y2="88" stroke="#1b2a3a" stroke-width="3"/>
+  <circle cx="200" cy="88" r="15" fill="#e9c46a" stroke="#1b2a3a" stroke-width="1.5"/>
+  <circle cx="380" cy="88" r="15" fill="#e9c46a" stroke="#1b2a3a" stroke-width="1.5"/>
+  <circle cx="290" cy="76" r="12" fill="#8c564b"/>
+  <!-- antibody Y -->
+  <g stroke="#2a6f97" stroke-width="3" fill="none" stroke-linecap="round">
+    <path d="M290,62 L290,48 M290,48 L280,36 M290,48 L300,36"/>
+  </g>
+  <!-- sonication cuts -->
+  <g stroke="#c0392b" stroke-width="2.5">
+    <line x1="243" y1="76" x2="251" y2="100"/>
+    <line x1="333" y1="76" x2="341" y2="100"/>
+  </g>
+  <text x="120" y="122" font-size="14" fill="#5b6b7a">crosslink, shear, pull down with an antibody</text>
+
+  <!-- ATAC -->
+  <text x="20" y="192" font-size="17" font-weight="bold" fill="#1b2a3a">ATAC</text>
+  <line x1="120" y1="188" x2="440" y2="188" stroke="#1b2a3a" stroke-width="3"/>
+  <circle cx="160" cy="188" r="15" fill="#e9c46a" stroke="#1b2a3a" stroke-width="1.5"/>
+  <circle cx="196" cy="188" r="15" fill="#e9c46a" stroke="#1b2a3a" stroke-width="1.5"/>
+  <circle cx="384" cy="188" r="15" fill="#e9c46a" stroke="#1b2a3a" stroke-width="1.5"/>
+  <!-- Tn5 dimer -->
+  <rect x="256" y="165" width="22" height="20" rx="6" fill="#2e8b57"/>
+  <rect x="302" y="165" width="22" height="20" rx="6" fill="#2e8b57"/>
+  <g stroke="#c0392b" stroke-width="2.5">
+    <line x1="263" y1="178" x2="271" y2="200"/>
+    <line x1="309" y1="178" x2="317" y2="200"/>
+  </g>
+  <text x="120" y="222" font-size="14" fill="#5b6b7a">Tn5 cuts and tags open (nucleosome-free) DNA</text>
+
+  <!-- CUT&Tag -->
+  <text x="20" y="292" font-size="17" font-weight="bold" fill="#1b2a3a">CUT&amp;Tag</text>
+  <line x1="120" y1="288" x2="440" y2="288" stroke="#1b2a3a" stroke-width="3"/>
+  <circle cx="200" cy="288" r="15" fill="#e9c46a" stroke="#1b2a3a" stroke-width="1.5"/>
+  <circle cx="380" cy="288" r="15" fill="#e9c46a" stroke="#1b2a3a" stroke-width="1.5"/>
+  <circle cx="290" cy="276" r="12" fill="#8c564b"/>
+  <g stroke="#2a6f97" stroke-width="3" fill="none" stroke-linecap="round">
+    <path d="M290,262 L290,250 M290,250 L280,240 M290,250 L300,240"/>
+  </g>
+  <rect x="301" y="230" width="20" height="16" rx="5" fill="#2e8b57"/>
+  <g stroke="#c0392b" stroke-width="2.5">
+    <line x1="243" y1="276" x2="251" y2="300"/>
+    <line x1="333" y1="276" x2="341" y2="300"/>
+  </g>
+  <text x="120" y="322" font-size="14" fill="#5b6b7a">antibody brings Tn5 to the target, cuts in place</text>
+
+  <!-- big arrow -->
+  <line x1="462" y1="190" x2="530" y2="190" stroke="#1b2a3a" stroke-width="2.5" marker-end="url(#arr)"/>
+
+  <!-- RIGHT: fragments -->
+  <text x="560" y="30" font-size="18" font-weight="bold" fill="#1b2a3a">… one product: DNA fragments, enriched at the target</text>
+  <!-- site marker -->
+  <rect x="810" y="52" width="40" height="252" fill="#8c564b" fill-opacity="0.10"/>
+  <text x="830" y="318" font-size="14" fill="#8c564b" text-anchor="middle">target site</text>
+  <!-- enriched fragments: grey body, dark ends = sequenced reads -->
+  <g>
+    <rect x="760" y="60" width="120" height="10" fill="#cfd8e0"/><rect x="760" y="60" width="30" height="10" fill="#1b2a3a"/>
+    <rect x="790" y="78" width="110" height="10" fill="#cfd8e0"/><rect x="870" y="78" width="30" height="10" fill="#1b2a3a"/>
+    <rect x="740" y="96" width="140" height="10" fill="#cfd8e0"/><rect x="740" y="96" width="30" height="10" fill="#1b2a3a"/>
+    <rect x="775" y="114" width="135" height="10" fill="#cfd8e0"/><rect x="880" y="114" width="30" height="10" fill="#1b2a3a"/>
+    <rect x="752" y="132" width="118" height="10" fill="#cfd8e0"/><rect x="752" y="132" width="30" height="10" fill="#1b2a3a"/>
+    <rect x="800" y="150" width="120" height="10" fill="#cfd8e0"/><rect x="890" y="150" width="30" height="10" fill="#1b2a3a"/>
+    <rect x="730" y="168" width="130" height="10" fill="#cfd8e0"/><rect x="730" y="168" width="30" height="10" fill="#1b2a3a"/>
+    <rect x="785" y="186" width="125" height="10" fill="#cfd8e0"/><rect x="880" y="186" width="30" height="10" fill="#1b2a3a"/>
+    <!-- background -->
+    <rect x="575" y="168" width="125" height="10" fill="#cfd8e0"/><rect x="670" y="168" width="30" height="10" fill="#1b2a3a"/>
+    <rect x="610" y="186" width="120" height="10" fill="#cfd8e0"/><rect x="610" y="186" width="30" height="10" fill="#1b2a3a"/>
+    <rect x="960" y="168" width="130" height="10" fill="#cfd8e0"/><rect x="960" y="168" width="30" height="10" fill="#1b2a3a"/>
+    <rect x="940" y="186" width="120" height="10" fill="#cfd8e0"/><rect x="1030" y="186" width="30" height="10" fill="#1b2a3a"/>
+  </g>
+  <!-- genome line -->
+  <line x1="560" y1="214" x2="1100" y2="214" stroke="#1b2a3a" stroke-width="3"/>
+  <!-- coverage -->
+  <path d="M560,296 L575,292 L730,292 L740,280 L760,250 L790,236 L830,230 L870,236 L900,250 L920,270 L940,288 L960,292 L1060,292 L1100,296 Z" fill="#8c564b" fill-opacity="0.35" stroke="#8c564b" stroke-width="2.2"/>
+  <line x1="560" y1="296" x2="1100" y2="296" stroke="#5b6b7a" stroke-width="1.2"/>
+  <text x="1100" y="252" font-size="14" fill="#5b6b7a" text-anchor="end">coverage</text>
+
+  <!-- legend for fragment drawing -->
+  <rect x="560" y="333" width="40" height="10" fill="#cfd8e0"/><rect x="560" y="333" width="14" height="10" fill="#1b2a3a"/>
+  <text x="610" y="343" font-size="14" fill="#1b2a3a">fragment; dark end = sequenced read (single-end: one end; paired-end: both)</text>
+  <text x="560" y="100" font-size="14" fill="#5b6b7a">many fragments</text>
+  <text x="560" y="118" font-size="14" fill="#5b6b7a">over the site …</text>
+  <text x="960" y="100" font-size="14" fill="#5b6b7a">… and a few</text>
+  <text x="960" y="118" font-size="14" fill="#5b6b7a">background fragments</text>
+  <text x="960" y="136" font-size="14" fill="#5b6b7a">everywhere</text>
+
+  <!-- bottom message -->
+  <rect x="20" y="364" width="1080" height="56" rx="6" fill="#f4f6f8" stroke="#cfd8e0"/>
+  <text x="560" y="389" font-size="16" fill="#1b2a3a" text-anchor="middle">Same processing for all three: find where each fragment came from, keep the trustworthy ones,</text>
+  <text x="560" y="410" font-size="16" fill="#1b2a3a" text-anchor="middle">count how many cover each position, and compare with the background.</text>
+</svg>

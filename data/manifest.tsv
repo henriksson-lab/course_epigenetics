@@ -1,15 +1,29 @@
 # id	url	description	used_by
-gm12878_h3k4me3_fc.bigWig	https://www.encodeproject.org/files/ENCFF927KAJ/@@download/ENCFF927KAJ.bigWig	GM12878 H3K4me3 fold change over control, pooled reps (ENCSR000AKA, Broad)	chromatin-intro
-gm12878_h3k27ac_fc.bigWig	https://www.encodeproject.org/files/ENCFF469WVA/@@download/ENCFF469WVA.bigWig	GM12878 H3K27ac fold change over control, pooled reps (ENCSR000AKC, Broad)	chromatin-intro
-gm12878_h3k4me1_fc.bigWig	https://www.encodeproject.org/files/ENCFF564KBE/@@download/ENCFF564KBE.bigWig	GM12878 H3K4me1 fold change over control, pooled reps (ENCSR000AKF, Broad)	chromatin-intro
+gm12878_h3k4me3_fc.bigWig	https://www.encodeproject.org/files/ENCFF927KAJ/@@download/ENCFF927KAJ.bigWig	GM12878 H3K4me3 fold change over control, pooled reps (ENCSR000AKA, Broad)	chromatin-intro, gene-regulation, atacseq-intro
+gm12878_h3k27ac_fc.bigWig	https://www.encodeproject.org/files/ENCFF469WVA/@@download/ENCFF469WVA.bigWig	GM12878 H3K27ac fold change over control, pooled reps (ENCSR000AKC, Broad)	chromatin-intro, gene-regulation, atacseq-intro
+gm12878_h3k4me1_fc.bigWig	https://www.encodeproject.org/files/ENCFF564KBE/@@download/ENCFF564KBE.bigWig	GM12878 H3K4me1 fold change over control, pooled reps (ENCSR000AKF, Broad)	chromatin-intro, gene-regulation
 gm12878_h3k36me3_fc.bigWig	https://www.encodeproject.org/files/ENCFF312MUY/@@download/ENCFF312MUY.bigWig	GM12878 H3K36me3 fold change over control, pooled reps (ENCSR000AKE, Broad)	chromatin-intro
 gm12878_h3k27me3_fc.bigWig	https://www.encodeproject.org/files/ENCFF919DOR/@@download/ENCFF919DOR.bigWig	GM12878 H3K27me3 fold change over control, pooled reps (ENCSR000AKD, Broad)	chromatin-intro
 gm12878_h3k9me3_fc.bigWig	https://www.encodeproject.org/files/ENCFF683HCZ/@@download/ENCFF683HCZ.bigWig	GM12878 H3K9me3 fold change over control, pooled reps (ENCSR000AOX, Broad)	chromatin-intro
-gm12878_ctcf_fc.bigWig	https://www.encodeproject.org/files/ENCFF485CGE/@@download/ENCFF485CGE.bigWig	GM12878 CTCF fold change over control, pooled reps (ENCSR000DZN, Stanford)	chromatin-intro, genomic-intervals
-gm12878_h3k4me3_peaks.bed.gz	https://www.encodeproject.org/files/ENCFF115YTM/@@download/ENCFF115YTM.bed.gz	GM12878 H3K4me3 replicated peaks, narrowPeak (ENCSR000AKA)	genomic-intervals
-gm12878_h3k27ac_peaks.bed.gz	https://www.encodeproject.org/files/ENCFF361XMX/@@download/ENCFF361XMX.bed.gz	GM12878 H3K27ac replicated peaks, narrowPeak (ENCSR000AKC)	genomic-intervals
-gm12878_ctcf_peaks.bed.gz	https://www.encodeproject.org/files/ENCFF796WRU/@@download/ENCFF796WRU.bed.gz	GM12878 CTCF conservative IDR thresholded peaks, narrowPeak (ENCSR000DZN)	genomic-intervals
-gencode.v46.basic.annotation.gtf.gz	https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_46/gencode.v46.basic.annotation.gtf.gz	GENCODE v46 basic gene annotation, GRCh38	genomic-intervals, chromatin-intro
-hg38.chrom.sizes	https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.chrom.sizes	hg38 chromosome sizes (genome file for bedtools)	genomic-intervals
-hg38_blacklist.bed.gz	https://www.encodeproject.org/files/ENCFF356LFX/@@download/ENCFF356LFX.bed.gz	ENCODE exclusion list (blacklist) v2 for GRCh38 (Amemiya et al. 2019)	genomic-intervals, enrichment-alignment
+gm12878_ctcf_fc.bigWig	https://www.encodeproject.org/files/ENCFF485CGE/@@download/ENCFF485CGE.bigWig	GM12878 CTCF fold change over control, pooled reps (ENCSR000DZN, Stanford)	chromatin-intro, genomic-intervals, gene-regulation, enrichment-alignment
+gm12878_h3k4me3_peaks.bed.gz	https://www.encodeproject.org/files/ENCFF115YTM/@@download/ENCFF115YTM.bed.gz	GM12878 H3K4me3 replicated peaks, narrowPeak (ENCSR000AKA)	genomic-intervals, gene-regulation
+gm12878_h3k27ac_peaks.bed.gz	https://www.encodeproject.org/files/ENCFF361XMX/@@download/ENCFF361XMX.bed.gz	GM12878 H3K27ac replicated peaks, narrowPeak (ENCSR000AKC)	genomic-intervals, gene-regulation
+gm12878_ctcf_peaks.bed.gz	https://www.encodeproject.org/files/ENCFF796WRU/@@download/ENCFF796WRU.bed.gz	GM12878 CTCF conservative IDR thresholded peaks, narrowPeak (ENCSR000DZN)	genomic-intervals, gene-regulation, enrichment-alignment, epigenomics-design, atacseq-intro, motifs-footprinting
+gencode.v46.basic.annotation.gtf.gz	https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_46/gencode.v46.basic.annotation.gtf.gz	GENCODE v46 basic gene annotation, GRCh38	genomic-intervals, chromatin-intro, gene-regulation, atacseq-intro, atacseq-analysis, differential-accessibility, motifs-footprinting
+hg38.chrom.sizes	https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.chrom.sizes	hg38 chromosome sizes (genome file for bedtools)	genomic-intervals, gene-regulation, enrichment-alignment, atacseq-analysis
+hg38_blacklist.bed.gz	https://www.encodeproject.org/files/ENCFF356LFX/@@download/ENCFF356LFX.bed.gz	ENCODE exclusion list (blacklist) v2 for GRCh38 (Amemiya et al. 2019)	genomic-intervals, enrichment-alignment, gene-regulation, epigenomics-design, atacseq-analysis, motifs-footprinting
 hg38_chr21.fa.gz	https://hgdownload.soe.ucsc.edu/goldenPath/hg38/chromosomes/chr21.fa.gz	hg38 chromosome 21 sequence (UCSC)	chromatin-intro
+gm12878_atac_peaks.bed.gz	https://www.encodeproject.org/files/ENCFF945SYZ/@@download/ENCFF945SYZ.bed.gz	GM12878 ATAC-seq IDR thresholded peaks, reps 1+2, narrowPeak (ENCSR095QNB, Snyder)	atacseq-analysis, motifs-footprinting, gene-regulation, atacseq-intro, epigenomics-design
+corces2016_atac_counts.txt.gz	https://ftp.ncbi.nlm.nih.gov/geo/series/GSE74nnn/GSE74912/suppl/GSE74912_ATACseq_All_Counts.txt.gz	Corces et al. 2016 haematopoiesis ATAC-seq: counts in 590k 500-bp peaks (hg19) x 132 samples (GEO GSE74912)	differential-accessibility, motifs-footprinting
+corces2016_rna_counts.txt.gz	https://ftp.ncbi.nlm.nih.gov/geo/series/GSE74nnn/GSE74246/suppl/GSE74246_RNAseq_All_Counts.txt.gz	Corces et al. 2016 haematopoiesis RNA-seq: gene counts (GEO GSE74246)	differential-accessibility
+hg19ToHg38.over.chain.gz	https://hgdownload.soe.ucsc.edu/goldenPath/hg19/liftOver/hg19ToHg38.over.chain.gz	UCSC liftOver chain hg19 -> hg38	differential-accessibility, motifs-footprinting
+hg38.fa.gz	https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.fa.gz	hg38 genome sequence (UCSC), for peak sequences in motif analysis	motifs-footprinting, gene-regulation
+hg38.fa.bgz	derived	hg38 bgzipped and indexed with samtools faidx (from hg38.fa.gz), for getSeq/motif analysis	gene-regulation, motifs-footprinting
+hg38_chr21_chrM.fa	prepare-reads.sh	hg38 chr21 + chrM reference (UCSC)	enrichment-alignment, epigenomics-design, atacseq-intro, atacseq-analysis, motifs-footprinting
+bowtie2/hg38_chr21_chrM	derived	bowtie2 index of hg38_chr21_chrM.fa	enrichment-alignment, epigenomics-design, atacseq-intro, atacseq-analysis, motifs-footprinting
+gm12878_ctcf_chip.fastq.gz	prepare-reads.sh	GM12878 CTCF ChIP-seq ENCSR000DZN rep1, SE 36 bp, Phred+64, reads ENCODE aligned to chr21/chrM	enrichment-alignment, epigenomics-design
+gm12878_ctcf_input.fastq.gz	prepare-reads.sh	input control ENCSR000EYX, SE 28 bp, Phred+64, reads ENCODE aligned to chr21/chrM	enrichment-alignment, epigenomics-design
+gm12878_atac_rep1_R1.fastq.gz	prepare-reads.sh	GM12878 ATAC-seq ENCSR095QNB rep1 R1, PE 2x101, pairs ENCODE aligned to chr21/chrM	epigenomics-design, atacseq-intro, atacseq-analysis, motifs-footprinting
+gm12878_atac_rep1_R2.fastq.gz	prepare-reads.sh	GM12878 ATAC-seq ENCSR095QNB rep1 R2	epigenomics-design, atacseq-intro, atacseq-analysis, motifs-footprinting
+gm12878_atac_rep2_R1.fastq.gz	prepare-reads.sh	GM12878 ATAC-seq ENCSR095QNB rep2 R1	epigenomics-design, atacseq-analysis
+gm12878_atac_rep2_R2.fastq.gz	prepare-reads.sh	GM12878 ATAC-seq ENCSR095QNB rep2 R2	epigenomics-design, atacseq-analysis

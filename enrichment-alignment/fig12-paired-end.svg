@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 410" width="1120" height="410" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="aB" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2a6f97"/>
+    </marker>
+    <marker id="aO" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#e67e22"/>
+    </marker>
+    <marker id="dim" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/>
+    </marker>
+  </defs>
+  <rect width="1120" height="410" fill="#ffffff"/>
+
+  <!-- x(bp) = 180 + 3*(bp-1001) ; 1001 -> 180, 1036 -> 285, 1165 -> 672, 1200 -> 777 -->
+  <text x="20" y="30" font-size="17" font-weight="bold" fill="#1b2a3a">Paired-end: both ends of the fragment are known</text>
+  <rect x="180" y="88" width="597" height="18" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.5"/>
+  <text x="478" y="102" font-size="14" fill="#1b2a3a" text-anchor="middle">fragment (insert)</text>
+  <!-- read 1 forward -->
+  <line x1="180" y1="70" x2="285" y2="70" stroke="#2a6f97" stroke-width="5" marker-end="url(#aB)"/>
+  <text x="180" y="56" font-size="15" fill="#2a6f97">read 1, POS 1001, FLAG 99</text>
+  <!-- read 2 reverse -->
+  <line x1="777" y1="124" x2="672" y2="124" stroke="#e67e22" stroke-width="5" marker-end="url(#aO)"/>
+  <text x="777" y="150" font-size="15" fill="#e67e22" text-anchor="end">read 2, POS 1165, FLAG 147</text>
+  <!-- ruler -->
+  <line x1="180" y1="182" x2="777" y2="182" stroke="#1b2a3a" stroke-width="1.8" marker-start="url(#dim)" marker-end="url(#dim)"/>
+  <text x="478" y="202" font-size="15" fill="#1b2a3a" text-anchor="middle">TLEN = 1200 − 1001 + 1 = 200 (read 1: +200, read 2: −200)</text>
+  <g stroke="#5b6b7a" stroke-width="1" stroke-dasharray="3,3">
+    <line x1="180" y1="76" x2="180" y2="176"/>
+    <line x1="777" y1="130" x2="777" y2="176"/>
+  </g>
+  <text x="180" y="232" font-size="14" fill="#5b6b7a" text-anchor="middle">1001</text>
+  <text x="777" y="232" font-size="14" fill="#5b6b7a" text-anchor="middle">1200 = 1165 + 36 − 1</text>
+
+  <!-- right: other orientation -->
+  <rect x="860" y="44" width="240" height="150" rx="8" fill="#f4f6f8" stroke="#cfd8e0"/>
+  <text x="876" y="70" font-size="15" font-weight="bold" fill="#1b2a3a">a fragment from the</text>
+  <text x="876" y="90" font-size="15" font-weight="bold" fill="#1b2a3a">other strand</text>
+  <text x="876" y="116" font-size="15" fill="#1b2a3a">read 2 forward: <tspan fill="#e67e22">163</tspan></text>
+  <text x="876" y="138" font-size="15" fill="#1b2a3a">read 1 reverse: <tspan fill="#2a6f97">83</tspan></text>
+  <text x="876" y="168" font-size="14" fill="#5b6b7a">reads face each other</text>
+  <text x="876" y="186" font-size="14" fill="#5b6b7a">in a proper pair</text>
+
+  <!-- single-end -->
+  <line x1="20" y1="254" x2="1100" y2="254" stroke="#cfd8e0" stroke-width="1.5"/>
+  <text x="20" y="284" font-size="17" font-weight="bold" fill="#1b2a3a">Single-end: only one end is known</text>
+  <line x1="180" y1="320" x2="285" y2="320" stroke="#2a6f97" stroke-width="5" marker-end="url(#aB)"/>
+  <rect x="180" y="332" width="597" height="18" fill="none" stroke="#1b2a3a" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <text x="478" y="346" font-size="14" fill="#5b6b7a" text-anchor="middle">fragment end unknown</text>
+  <text x="300" y="325" font-size="15" fill="#2a6f97">read, POS 1001, FLAG 0, TLEN 0</text>
+  <text x="820" y="326" font-size="15" fill="#1b2a3a">estimate the typical fragment</text>
+  <text x="820" y="346" font-size="15" fill="#1b2a3a">length from the data, then</text>
+  <text x="820" y="366" font-size="15" fill="#1b2a3a">extend every read by it</text>
+  <text x="20" y="396" font-size="14" fill="#5b6b7a">Paired-end gives each fragment exactly: needed for ATAC fragment sizes (nucleosome ladder) and for counting fragments, not reads.</text>
+</svg>

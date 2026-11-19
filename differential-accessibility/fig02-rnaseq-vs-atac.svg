@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 360" width="1120" height="360" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="aink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker><marker id="agrey" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker><marker id="ared" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker><marker id="agreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker><marker id="ablue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a6f97"/></marker><marker id="aorange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e67e22"/></marker></defs>
+<rect width="1120" height="360" fill="#ffffff"/>
+<text x="30.0" y="30.0" font-size="18" fill="#1b2a3a" text-anchor="start" font-weight="bold">RNA-seq</text>
+<text x="30.0" y="200.0" font-size="18" fill="#1b2a3a" text-anchor="start" font-weight="bold">ATAC-seq</text>
+<rect x="30.0" y="48.0" width="156.0" height="54.0" rx="8" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="108.0" y="81.0" font-size="16" fill="#1b2a3a" text-anchor="middle" font-weight="bold">reads (BAM)</text>
+<text x="108.0" y="124.0" font-size="14" fill="#5b6b7a" text-anchor="middle"></text>
+<rect x="30.0" y="218.0" width="156.0" height="54.0" rx="8" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="108.0" y="251.0" font-size="16" fill="#1b2a3a" text-anchor="middle" font-weight="bold">reads (BAM)</text>
+<text x="108.0" y="294.0" font-size="14" fill="#5b6b7a" text-anchor="middle"></text>
+<line x1="189.0" y1="75.0" x2="207.0" y2="75.0" stroke="#5b6b7a" stroke-width="2" marker-end="url(#agrey)"/>
+<line x1="189.0" y1="245.0" x2="207.0" y2="245.0" stroke="#5b6b7a" stroke-width="2" marker-end="url(#agrey)"/>
+<rect x="210.0" y="48.0" width="156.0" height="54.0" rx="8" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="288.0" y="81.0" font-size="16" fill="#1b2a3a" text-anchor="middle" font-weight="bold">count per gene</text>
+<text x="288.0" y="124.0" font-size="14" fill="#5b6b7a" text-anchor="middle">annotation is given (GTF)</text>
+<rect x="210.0" y="218.0" width="156.0" height="54.0" rx="8" fill="#fbeaea" stroke="#c0392b" stroke-width="2.2"/>
+<text x="288.0" y="251.0" font-size="16" fill="#1b2a3a" text-anchor="middle" font-weight="bold">count per peak</text>
+<text x="288.0" y="294.0" font-size="14" fill="#c0392b" text-anchor="middle">regions found in the data</text>
+<line x1="369.0" y1="75.0" x2="387.0" y2="75.0" stroke="#5b6b7a" stroke-width="2" marker-end="url(#agrey)"/>
+<line x1="369.0" y1="245.0" x2="387.0" y2="245.0" stroke="#5b6b7a" stroke-width="2" marker-end="url(#agrey)"/>
+<rect x="390.0" y="48.0" width="156.0" height="54.0" rx="8" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="468.0" y="81.0" font-size="16" fill="#1b2a3a" text-anchor="middle" font-weight="bold">gene × sample</text>
+<text x="468.0" y="124.0" font-size="14" fill="#5b6b7a" text-anchor="middle"></text>
+<rect x="390.0" y="218.0" width="156.0" height="54.0" rx="8" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="468.0" y="251.0" font-size="16" fill="#1b2a3a" text-anchor="middle" font-weight="bold">peak × sample</text>
+<text x="468.0" y="294.0" font-size="14" fill="#5b6b7a" text-anchor="middle"></text>
+<line x1="549.0" y1="75.0" x2="567.0" y2="75.0" stroke="#5b6b7a" stroke-width="2" marker-end="url(#agrey)"/>
+<line x1="549.0" y1="245.0" x2="567.0" y2="245.0" stroke="#5b6b7a" stroke-width="2" marker-end="url(#agrey)"/>
+<text x="468.0" y="170.0" font-size="15" fill="#2e8b57" text-anchor="middle" font-weight="bold">same</text>
+<line x1="468.0" y1="140.0" x2="468.0" y2="154.0" stroke="#2e8b57" stroke-width="2"/>
+<line x1="468.0" y1="180.0" x2="468.0" y2="212.0" stroke="#2e8b57" stroke-width="2" marker-end="url(#agreen)"/>
+<rect x="570.0" y="48.0" width="156.0" height="54.0" rx="8" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="648.0" y="81.0" font-size="16" fill="#1b2a3a" text-anchor="middle" font-weight="bold">size factors</text>
+<text x="648.0" y="124.0" font-size="14" fill="#5b6b7a" text-anchor="middle">most genes unchanged</text>
+<rect x="570.0" y="218.0" width="156.0" height="54.0" rx="8" fill="#fbeaea" stroke="#c0392b" stroke-width="2.2"/>
+<text x="648.0" y="251.0" font-size="16" fill="#1b2a3a" text-anchor="middle" font-weight="bold">size factors ?</text>
+<text x="648.0" y="294.0" font-size="14" fill="#c0392b" text-anchor="middle">most peaks unchanged?</text>
+<line x1="729.0" y1="75.0" x2="747.0" y2="75.0" stroke="#5b6b7a" stroke-width="2" marker-end="url(#agrey)"/>
+<line x1="729.0" y1="245.0" x2="747.0" y2="245.0" stroke="#5b6b7a" stroke-width="2" marker-end="url(#agrey)"/>
+<rect x="750.0" y="48.0" width="156.0" height="54.0" rx="8" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="828.0" y="81.0" font-size="16" fill="#1b2a3a" text-anchor="middle" font-weight="bold">NB GLM, Wald</text>
+<text x="828.0" y="124.0" font-size="14" fill="#5b6b7a" text-anchor="middle">DESeq2 / edgeR</text>
+<rect x="750.0" y="218.0" width="156.0" height="54.0" rx="8" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="828.0" y="251.0" font-size="16" fill="#1b2a3a" text-anchor="middle" font-weight="bold">NB GLM, Wald</text>
+<text x="828.0" y="294.0" font-size="14" fill="#5b6b7a" text-anchor="middle">DESeq2 / edgeR</text>
+<line x1="909.0" y1="75.0" x2="927.0" y2="75.0" stroke="#5b6b7a" stroke-width="2" marker-end="url(#agrey)"/>
+<line x1="909.0" y1="245.0" x2="927.0" y2="245.0" stroke="#5b6b7a" stroke-width="2" marker-end="url(#agrey)"/>
+<text x="828.0" y="170.0" font-size="15" fill="#2e8b57" text-anchor="middle" font-weight="bold">same</text>
+<line x1="828.0" y1="140.0" x2="828.0" y2="154.0" stroke="#2e8b57" stroke-width="2"/>
+<line x1="828.0" y1="180.0" x2="828.0" y2="212.0" stroke="#2e8b57" stroke-width="2" marker-end="url(#agreen)"/>
+<rect x="930.0" y="48.0" width="156.0" height="54.0" rx="8" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="1008.0" y="81.0" font-size="16" fill="#1b2a3a" text-anchor="middle" font-weight="bold">genes up / down</text>
+<text x="1008.0" y="124.0" font-size="14" fill="#5b6b7a" text-anchor="middle">→ GSEA</text>
+<rect x="930.0" y="218.0" width="156.0" height="54.0" rx="8" fill="#fbeaea" stroke="#c0392b" stroke-width="2.2"/>
+<text x="1008.0" y="251.0" font-size="16" fill="#1b2a3a" text-anchor="middle" font-weight="bold">peaks up / down</text>
+<text x="1008.0" y="294.0" font-size="14" fill="#c0392b" text-anchor="middle">→ nearest gene, motifs</text>
+<text x="30.0" y="338.0" font-size="15" fill="#c0392b" text-anchor="start">Red: what is different for accessibility. The statistics in the middle are the same.</text>
+</svg>

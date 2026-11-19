@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 330" width="1120" height="330" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="aink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker><marker id="agrey" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker><marker id="ared" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker><marker id="agreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker><marker id="ablue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a6f97"/></marker><marker id="aorange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e67e22"/></marker></defs>
+<rect width="1120" height="330" fill="#ffffff"/>
+<line x1="40.0" y1="200.0" x2="1080.0" y2="200.0" stroke="#5b6b7a" stroke-width="1.5"/>
+<line x1="120.0" y1="200.0" x2="330.0" y2="200.0" stroke="#1b2a3a" stroke-width="2"/>
+<rect x="120.0" y="192.0" width="20.0" height="16.0" rx="0" fill="#1b2a3a" stroke="none" stroke-width="1.5"/>
+<rect x="220.0" y="192.0" width="12.0" height="16.0" rx="0" fill="#1b2a3a" stroke="none" stroke-width="1.5"/>
+<rect x="318.0" y="192.0" width="12.0" height="16.0" rx="0" fill="#1b2a3a" stroke="none" stroke-width="1.5"/>
+<path d="M120,192 L120,176 L136,176" stroke="#1b2a3a" stroke-width="2" fill="none" marker-end="url(#aink)"/>
+<text x="225.0" y="228.0" font-size="15" fill="#1b2a3a" text-anchor="middle" font-style="italic">gene A</text>
+<line x1="420.0" y1="200.0" x2="700.0" y2="200.0" stroke="#1b2a3a" stroke-width="2"/>
+<rect x="420.0" y="192.0" width="16.0" height="16.0" rx="0" fill="#1b2a3a" stroke="none" stroke-width="1.5"/>
+<rect x="520.0" y="192.0" width="12.0" height="16.0" rx="0" fill="#1b2a3a" stroke="none" stroke-width="1.5"/>
+<rect x="688.0" y="192.0" width="12.0" height="16.0" rx="0" fill="#1b2a3a" stroke="none" stroke-width="1.5"/>
+<path d="M700,192 L700,176 L684,176" stroke="#1b2a3a" stroke-width="2" fill="none" marker-end="url(#aink)"/>
+<text x="560.0" y="228.0" font-size="15" fill="#1b2a3a" text-anchor="middle" font-style="italic">gene B</text>
+<line x1="880.0" y1="200.0" x2="1060.0" y2="200.0" stroke="#1b2a3a" stroke-width="2"/>
+<rect x="880.0" y="192.0" width="20.0" height="16.0" rx="0" fill="#1b2a3a" stroke="none" stroke-width="1.5"/>
+<rect x="960.0" y="192.0" width="12.0" height="16.0" rx="0" fill="#1b2a3a" stroke="none" stroke-width="1.5"/>
+<rect x="1048.0" y="192.0" width="12.0" height="16.0" rx="0" fill="#1b2a3a" stroke="none" stroke-width="1.5"/>
+<path d="M880,192 L880,176 L896,176" stroke="#1b2a3a" stroke-width="2" fill="none" marker-end="url(#aink)"/>
+<text x="970.0" y="228.0" font-size="15" fill="#1b2a3a" text-anchor="middle" font-style="italic">gene C</text>
+<rect x="586.0" y="148.0" width="28.0" height="22.0" rx="0" fill="#2a6f97" stroke="none" stroke-width="1.5"/>
+<text x="600.0" y="138.0" font-size="15" fill="#2a6f97" text-anchor="middle" font-weight="bold">B-specific peak</text>
+<path d="M614,159 L700,159" stroke="#2e8b57" stroke-width="2" fill="none" stroke-dasharray="5,4"/>
+<text x="712.0" y="154.0" font-size="15" fill="#2e8b57" text-anchor="start" font-weight="bold">nearest: gene B</text>
+<path d="M600,120 C640,25 840,25 880,168" stroke="#c0392b" stroke-width="2.5" fill="none" marker-end="url(#ared)"/>
+<text x="745.0" y="40.0" font-size="15" fill="#c0392b" text-anchor="middle" font-weight="bold">true target? gene C, via a 3D contact</text>
+<text x="40.0" y="280.0" font-size="15" fill="#1b2a3a" text-anchor="start">1. The nearest TSS is a guess: enhancers often skip genes, and one enhancer can regulate several.</text>
+<text x="40.0" y="304.0" font-size="15" fill="#1b2a3a" text-anchor="start">2. Intronic peaks are near their host gene by construction; in gene deserts the nearest TSS can be 1 Mb away.</text>
+</svg>

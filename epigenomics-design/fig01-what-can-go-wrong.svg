@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 332" width="1120" height="332" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker><marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker><marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker><marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a6f97"/></marker><marker id="ao" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e67e22"/></marker><marker id="ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8c564b"/></marker></defs>
+<rect width="1120" height="332" fill="#ffffff"/>
+<text x="14" y="118" font-size="13" fill="#c0392b" text-anchor="start" font-weight="bold">can go wrong</text>
+<text x="106" y="238" font-size="13" fill="#2e8b57" text-anchor="start" font-weight="bold">QC that catches it</text>
+<rect x="12" y="18" width="166" height="56" rx="6" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="2" />
+<text x="95.0" y="52" font-size="17" fill="#1b2a3a" text-anchor="middle" font-weight="bold">Samples</text>
+<line x1="179" y1="46" x2="194" y2="46" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ak)"/>
+<rect x="12" y="128" width="166" height="80" rx="6" fill="#fbeeee" stroke="#c0392b" stroke-width="1.5" />
+<text x="95.0" y="153" font-size="15" fill="#1b2a3a" text-anchor="middle"><tspan x="95.0" dy="0">design, batches,</tspan><tspan x="95.0" dy="19">how many replicates</tspan></text>
+<line x1="95.0" y1="210" x2="95.0" y2="242" stroke="#5b6b7a" stroke-width="2" marker-end="url(#ag)"/>
+<rect x="12" y="244" width="166" height="80" rx="6" fill="#eaf5ee" stroke="#2e8b57" stroke-width="1.5" />
+<text x="95.0" y="269" font-size="15" fill="#1b2a3a" text-anchor="middle"><tspan x="95.0" dy="0">replicate</tspan><tspan x="95.0" dy="19">concordance</tspan></text>
+<rect x="195" y="18" width="166" height="56" rx="6" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="2" />
+<text x="278.0" y="52" font-size="17" fill="#1b2a3a" text-anchor="middle" font-weight="bold">Chromatin</text>
+<line x1="362" y1="46" x2="377" y2="46" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ak)"/>
+<rect x="195" y="128" width="166" height="80" rx="6" fill="#fbeeee" stroke="#c0392b" stroke-width="1.5" />
+<text x="278.0" y="153" font-size="15" fill="#1b2a3a" text-anchor="middle"><tspan x="278.0" dy="0">uneven shearing,</tspan><tspan x="278.0" dy="19">copy number,</tspan><tspan x="278.0" dy="19">mappability</tspan></text>
+<line x1="278.0" y1="210" x2="278.0" y2="242" stroke="#5b6b7a" stroke-width="2" marker-end="url(#ag)"/>
+<rect x="195" y="244" width="166" height="80" rx="6" fill="#eaf5ee" stroke="#2e8b57" stroke-width="1.5" />
+<text x="278.0" y="269" font-size="15" fill="#1b2a3a" text-anchor="middle"><tspan x="278.0" dy="0">input control,</tspan><tspan x="278.0" dy="19">fingerprint</tspan></text>
+<rect x="378" y="18" width="166" height="56" rx="6" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="2" />
+<text x="461.0" y="52" font-size="17" fill="#1b2a3a" text-anchor="middle" font-weight="bold">IP / Tn5</text>
+<line x1="545" y1="46" x2="560" y2="46" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ak)"/>
+<rect x="378" y="128" width="166" height="80" rx="6" fill="#fbeeee" stroke="#c0392b" stroke-width="1.5" />
+<text x="461.0" y="153" font-size="15" fill="#1b2a3a" text-anchor="middle"><tspan x="461.0" dy="0">weak or cross-</tspan><tspan x="461.0" dy="19">reacting antibody;</tspan><tspan x="461.0" dy="19">mito reads (ATAC)</tspan></text>
+<line x1="461.0" y1="210" x2="461.0" y2="242" stroke="#5b6b7a" stroke-width="2" marker-end="url(#ag)"/>
+<rect x="378" y="244" width="166" height="80" rx="6" fill="#eaf5ee" stroke="#2e8b57" stroke-width="1.5" />
+<text x="461.0" y="269" font-size="15" fill="#1b2a3a" text-anchor="middle"><tspan x="461.0" dy="0">FRiP, cross-</tspan><tspan x="461.0" dy="19">correlation,</tspan><tspan x="461.0" dy="19">TSS enrichment</tspan></text>
+<rect x="561" y="18" width="166" height="56" rx="6" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="2" />
+<text x="644.0" y="52" font-size="17" fill="#1b2a3a" text-anchor="middle" font-weight="bold">Library (PCR)</text>
+<line x1="728" y1="46" x2="743" y2="46" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ak)"/>
+<rect x="561" y="128" width="166" height="80" rx="6" fill="#fbeeee" stroke="#c0392b" stroke-width="1.5" />
+<text x="644.0" y="153" font-size="15" fill="#1b2a3a" text-anchor="middle"><tspan x="644.0" dy="0">too little DNA:</tspan><tspan x="644.0" dy="19">few unique</tspan><tspan x="644.0" dy="19">molecules</tspan></text>
+<line x1="644.0" y1="210" x2="644.0" y2="242" stroke="#5b6b7a" stroke-width="2" marker-end="url(#ag)"/>
+<rect x="561" y="244" width="166" height="80" rx="6" fill="#eaf5ee" stroke="#2e8b57" stroke-width="1.5" />
+<text x="644.0" y="269" font-size="15" fill="#1b2a3a" text-anchor="middle"><tspan x="644.0" dy="0">NRF, PBC1, PBC2,</tspan><tspan x="644.0" dy="19">duplicates</tspan></text>
+<rect x="744" y="18" width="166" height="56" rx="6" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="2" />
+<text x="827.0" y="52" font-size="17" fill="#1b2a3a" text-anchor="middle" font-weight="bold">Sequencing</text>
+<line x1="911" y1="46" x2="926" y2="46" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ak)"/>
+<rect x="744" y="128" width="166" height="80" rx="6" fill="#fbeeee" stroke="#c0392b" stroke-width="1.5" />
+<text x="827.0" y="153" font-size="15" fill="#1b2a3a" text-anchor="middle"><tspan x="827.0" dy="0">too few reads,</tspan><tspan x="827.0" dy="19">adapters</tspan></text>
+<line x1="827.0" y1="210" x2="827.0" y2="242" stroke="#5b6b7a" stroke-width="2" marker-end="url(#ag)"/>
+<rect x="744" y="244" width="166" height="80" rx="6" fill="#eaf5ee" stroke="#2e8b57" stroke-width="1.5" />
+<text x="827.0" y="269" font-size="15" fill="#1b2a3a" text-anchor="middle"><tspan x="827.0" dy="0">depth, saturation,</tspan><tspan x="827.0" dy="19">read QC</tspan></text>
+<rect x="927" y="18" width="166" height="56" rx="6" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="2" />
+<text x="1010.0" y="52" font-size="17" fill="#1b2a3a" text-anchor="middle" font-weight="bold">Analysis</text>
+<rect x="927" y="128" width="166" height="80" rx="6" fill="#fbeeee" stroke="#c0392b" stroke-width="1.5" />
+<text x="1010.0" y="153" font-size="15" fill="#1b2a3a" text-anchor="middle"><tspan x="1010.0" dy="0">global change</tspan><tspan x="1010.0" dy="19">hidden by</tspan><tspan x="1010.0" dy="19">normalisation</tspan></text>
+<line x1="1010.0" y1="210" x2="1010.0" y2="242" stroke="#5b6b7a" stroke-width="2" marker-end="url(#ag)"/>
+<rect x="927" y="244" width="166" height="80" rx="6" fill="#eaf5ee" stroke="#2e8b57" stroke-width="1.5" />
+<text x="1010.0" y="269" font-size="15" fill="#1b2a3a" text-anchor="middle"><tspan x="1010.0" dy="0">spike-in,</tspan><tspan x="1010.0" dy="19">sanity checks</tspan></text>
+</svg>

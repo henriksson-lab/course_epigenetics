@@ -1,0 +1,479 @@
+---
+title: "Exercise: From reads to coverage"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+## Goal
+
+After this exercise you will be able to:
+
+- Decode base qualities and SAM FLAGs, compute a fragment length from a read pair, and compute CPM, RPGC and a fold change with a pseudocount, all on paper.
+- Run the full chain from raw FASTQ to a filtered BAM on real ChIP-seq data: [fastp](https://github.com/OpenGene/fastp) → [bowtie2](https://bowtie-bio.sourceforge.net/bowtie2/manual.shtml) → [samtools](https://www.htslib.org/doc/samtools.html) (sort, index, flagstat, idxstats, MAPQ/FLAG filter, markdup) → blacklist removal with [bedtools](https://bedtools.readthedocs.io/en/latest/content/tools/intersect.html), and keep a table of how many reads survive each step.
+- Make normalised coverage tracks (CPM, RPGC, ChIP over input) with [deepTools](https://deeptools.readthedocs.io/en/develop/) and look at them in [IGV](https://igv.org/doc/desktop/).
+- Read the BAM in R with [GenomicAlignments](https://bioconductor.org/packages/release/bioc/html/GenomicAlignments.html), and check your track against the one ENCODE made from the same experiment.
+
+## Background
+
+**Phred quality.** $Q = -10 \log_{10} p$, where $p$ is the probability that the base call is wrong; $p = 10^{-Q/10}$. In FASTQ, Q is stored as one character: ASCII code − 33 (all current data) or − 64 (Illumina files from about 2008–2011, like the ones here).
+
+**SAM FLAG** bits: 1 paired, 2 proper pair, 4 unmapped, 8 mate unmapped, 16 reverse strand, 32 mate reverse strand, 64 first in pair, 128 second in pair, 256 secondary, 512 QC fail, 1024 duplicate, 2048 supplementary. `POS` is the leftmost aligned base, 1-based. For a proper pair, `TLEN` = (rightmost base of the pair) − (leftmost base) + 1, positive for the leftmost read, negative for its mate.
+
+**Normalisation.** CPM = count × 10<sup>6</sup> / (reads in the library). RPGC divides the coverage by the average coverage, reads × fragment length / effective genome size. A fold change over input divides depth-scaled ChIP by depth-scaled input; a pseudocount (usually 1) is added to both so that empty bins give 0 on the log scale instead of ±∞.
+
+**The filtering chain** used in this course (the ENCODE recipe): MAPQ ≥ 30 and `-F 1804` → mark and remove duplicates → keep the chromosomes of interest (no chrM) → remove reads in blacklisted regions.
+
+## Data
+
+GM12878 CTCF ChIP-seq (ENCODE ENCSR000DZN, replicate 1, single-end 36 bp, sequenced 2011) and its input control (ENCSR000EYX, single-end 28 bp, 2009). To keep the exercise small, the FASTQ files contain only the reads that ENCODE aligned to **chr21 or chrM** against the whole genome: 390 097 ChIP reads and 476 372 input reads, untrimmed, with their original names and qualities (see `data/prepare-reads.sh`). The reference is chr21 + chrM of hg38. You also need the ENCODE blacklist, and for comparison ENCODE's CTCF fold-change bigWig and peaks.
+
+```bash
+data/download.sh enrichment-alignment     # FASTQ, reference, bowtie2 index, ENCODE files
+mkdir -p ~/epi/align && cd ~/epi/align
+D=/path/to/course/data                    # where download.sh put the files
+```
+
+You need `fastp`, `bowtie2`, `samtools` (1.10 or newer), `bedtools`, `deeptools`, `macs3` and IGV (see *Install the software you need*). The whole command-line part runs in about **2 minutes** with 8 threads on a laptop or a login node; on a cluster, put the commands in a script and submit it with `sbatch --cpus-per-task=8`.
+
+::: {.callout-warning title="A shortcut, and what it hides"}
+A real analysis aligns to the **whole** genome. Aligning to chr21 + chrM only would force reads from other chromosomes onto the most similar chr21 sequence; we avoid that by starting from reads that ENCODE already placed on chr21 or chrM. The consequence: alignment rates look almost perfect, library sizes are about 1% of the real ones, and some multi-mappers look more unique than they are (their other copies are on chromosomes we left out). The steps, commands and decisions are exactly those of a full analysis.
+:::
+
+## By hand
+
+Do these on paper.
+
+**B1. Base qualities.**
+
+(a) A Phred+33 quality string reads `II5#`. Give Q and the error probability of each base.
+
+(b) The first read of the CTCF ChIP file has the quality string `eeecceee^aY^^…dLYddd`. Why can this not be Phred+33? Decode `e` and `L` as Phred+64.
+
+(c) A 36 bp read has Q30 at every base. How many errors do you expect in the read? And at Q20? Out of 380 000 such reads, how many contain at least one error at Q30?
+
+**B2. FLAGs.** Decode each FLAG into its bits and say in words what the read is:
+
+`99`   `147`   `83`   `163`   `0`   `16`   `4`   `1123`
+
+(a) Which two of the first four belong to the same pair, and which strand is the fragment's leftmost read on?
+
+(b) Which of the eight reads are removed by `samtools view -F 1804`? Which by `-f 2`?
+
+**B3. Fragment length from a pair.**
+
+(a) Read 1: FLAG 99, POS 10 001, CIGAR `36M`. Read 2: FLAG 147, POS 10 181, CIGAR `36M`. How long is the fragment? What is TLEN in each of the two lines?
+
+(b) A read with FLAG 83 has POS 5 300 and CIGAR `50M`; its mate has POS 5 140. What is the fragment length, and the sign of TLEN in each line?
+
+**B4. Extending a single-end read.** A single-end read has FLAG 16, POS 2 000, CIGAR `36M`.
+
+(a) On which strand is the fragment's sequenced end, and at which position is the read's 5' end?
+
+(b) You extend the read to a 100 bp fragment. Which bases does the fragment cover (1-based)?
+
+**B5. CPM and RPGC.** After filtering, the ChIP BAM has 197 587 reads. A 10 bp bin at a CTCF site is overlapped by 120 extended reads.
+
+(a) What is the CPM of the bin?
+
+(b) The reads are extended to 100 bp and the effective genome size (chr21) is 40 088 619 bp. What is the average coverage, and what is the RPGC of a base covered by 120 fragments?
+
+(c) A second library has twice as many reads and 240 reads in the same bin. What are its CPM and RPGC? What does this show?
+
+**B6. Fold change and the pseudocount.** In 50 bp bins, after scaling the input to the ChIP's depth:
+
+| bin | ChIP | input (scaled) |
+|---|---|---|
+| A | 60 | 12 |
+| B | 3 | 0 |
+| C | 0 | 2 |
+| D | 0 | 0 |
+
+(a) Compute ChIP / input and $\log_2$((ChIP + 1) / (input + 1)) for each bin.
+
+(b) Bins A and B have similar log2 ratios. Is B as convincing as A? What would you change to make bin B more reliable?
+
+**B7. Duplicates.** Eight single-end reads on chr21 (POS, strand, CIGAR all `36M`):
+
+```
+r1 1000 +    r2 1000 +    r3 1000 −    r4 1003 +
+r5 1000 +    r6 1210 −    r7 1210 −    r8 1500 +
+```
+
+(a) Which reads would `samtools markdup` flag as duplicates? What is the duplicate fraction?
+
+(b) Why are r1 and r3 not duplicates of each other, although they have the same POS?
+
+(c) In the real ChIP data, 49% of the reads *inside* CTCF peaks on chr21 were flagged as duplicates, but only 4% outside peaks. Give two explanations. Why does this happen with single-end reads more than with paired-end reads?
+
+**B8. The order of the steps.**
+
+(a) Put these in a sensible order and give one reason for each position: blacklist removal, `bamCoverage`, adapter trimming, MAPQ/FLAG filter, alignment, duplicate marking, sorting.
+
+(b) In the input, 66% of the aligned reads are on chrM. A colleague makes the input's CPM track from the BAM *with* the chrM reads. Is the input signal on chr21 too high or too low? By how much, roughly?
+
+(c) Another colleague makes the ChIP track from `chip.sorted.bam` (no filtering at all). Name two things that will look different in the track.
+
+**B9. Read the figures** (lecture slides *Real data: MAPQ on chr21* and *Real data: the two strands around CTCF sites*).
+
+(a) In the MAPQ histogram, almost no reads have MAPQ between 2 and 29. Why is the distribution bimodal, and what does that imply for the choice of threshold?
+
+(b) The 5' ends of + strand reads peak about 50 bp to the left of the CTCF summits, those of − strand reads about 50 bp to the right. Estimate the fragment length. Why is there almost no read 5' end within ±18 bp of the summits?
+
+(c) After MAPQ filtering, a 5 kb satellite repeat on chr21 has no reads at all. A colleague concludes that CTCF does not bind there. Comment.
+
+## On the command line
+
+### C1 — Look at the reads
+
+```bash
+zcat $D/gm12878_ctcf_chip.fastq.gz | head -8
+zcat $D/gm12878_ctcf_input.fastq.gz | head -4
+zcat $D/gm12878_ctcf_chip.fastq.gz | awk 'NR % 4 == 2 { n++; len[length($0)]++ } END { print n; for (l in len) print l, len[l] }'
+zcat $D/gm12878_ctcf_chip.fastq.gz | awk 'NR % 4 == 0' | head -100000 | fold -w1 | LC_ALL=C sort | uniq -c | head -5
+```
+
+(a) How many reads are there, and how long are they? What do the read names tell you about the instrument?
+
+(b) Which characters occur in the quality lines (the last command lists the lowest ones)? Decide whether the file is Phred+33 or Phred+64 (B1b).
+
+### C2 — Convert the qualities and trim with fastp
+
+Old Phred+64 files are best converted to Phred+33 before anything else. Each quality character moves down by 31 (`@` → `!`, `h` → `I`):
+
+```bash
+for s in chip input; do
+  zcat $D/gm12878_ctcf_$s.fastq.gz | perl -pe 'tr/@-~/!-_/ if $. % 4 == 0' | gzip > $s.fastq.gz
+  fastp -w 8 -i $s.fastq.gz -o $s.trim.fastq.gz -h $s.fastp.html -j $s.fastp.json 2> $s.fastp.log
+done
+grep -A 7 "Filtering result" chip.fastp.log input.fastp.log
+```
+
+(a) How many reads did fastp remove from each file, and why? Were any adapters found? Would you expect adapters in 36 bp reads from sonicated ChIP fragments?
+
+(b) Open `chip.fastp.html` in a browser. How does the quality change along the read? Compare with the input.
+
+### C3 — The genome index
+
+The course data folder contains a prebuilt bowtie2 index for chr21 + chrM (`$D/bowtie2/`). This is how it was made (27 seconds with 8 threads; hours for the whole human genome, so for real work download a prebuilt one):
+
+```bash
+mkdir -p index
+bowtie2-build --threads 8 $D/hg38_chr21_chrM.fa index/hg38_chr21_chrM > index/build.log
+ls -lh index
+```
+
+### C4 — Align, sort, index
+
+```bash
+for s in chip input; do
+  bowtie2 -p 8 -x $D/bowtie2/hg38_chr21_chrM -U $s.trim.fastq.gz 2> $s.bowtie2.log \
+    | samtools sort -@ 4 -o $s.sorted.bam -
+  samtools index $s.sorted.bam
+done
+cat chip.bowtie2.log input.bowtie2.log
+samtools flagstat chip.sorted.bam
+samtools idxstats chip.sorted.bam
+samtools idxstats input.sorted.bam
+samtools view chip.sorted.bam | head -3
+```
+
+(a) What fraction of each library aligned exactly once, more than once, not at all? Why is the unaligned fraction so low here (see the warning box under *Data*)?
+
+(b) What fraction of the aligned reads are on chrM in the ChIP and in the input? chrM is 16.6 kb, chr21 46.7 Mb: how many times more reads per kb does chrM get in the input?
+
+(c) Decode the FLAG, POS, MAPQ and CIGAR of the first three alignments.
+
+### C5 — Filter, mark duplicates, remove the blacklist
+
+```bash
+zcat $D/hg38_blacklist.bed.gz > blacklist.bed
+for s in chip input; do
+  samtools view -b -q 30 -F 1804 -o $s.q30.bam $s.sorted.bam            # unique, mapped, primary
+  samtools markdup -s $s.q30.bam $s.markdup.bam 2> $s.markdup.txt       # flag duplicates (1024)
+  samtools index $s.markdup.bam
+  samtools view -b -F 1024 -o $s.dedup.bam $s.markdup.bam chr21         # drop duplicates and chrM
+  bedtools intersect -v -abam $s.dedup.bam -b blacklist.bed > $s.final.bam
+  samtools index $s.final.bam
+done
+grep -E "^READ|DUPLICATE SINGLE:" chip.markdup.txt input.markdup.txt
+for s in chip input; do
+  echo $s \
+    $(zcat $s.fastq.gz | awk 'END { print NR / 4 }') \
+    $(zcat $s.trim.fastq.gz | awk 'END { print NR / 4 }') \
+    $(samtools view -c -F 4 $s.sorted.bam) \
+    $(samtools view -c $s.q30.bam) \
+    $(samtools view -c -F 1024 $s.markdup.bam) \
+    $(samtools view -c $s.dedup.bam) \
+    $(samtools view -c $s.final.bam)
+done
+```
+
+(a) Fill in the table: reads left after each step (raw, after fastp, aligned, MAPQ ≥ 30 and `-F 1804`, duplicates removed, chr21 only, blacklist removed), as numbers and as a percentage of the raw reads, for ChIP and input.
+
+(b) What is the duplicate rate of each library? Where are the input's duplicates? (`samtools view -c -f 1024 input.markdup.bam chrM` and the same for `chr21`.)
+
+(c) How many reads did the blacklist remove? Which blacklisted regions on chr21 have the most input reads per kb, and how does that compare with the chr21 average (116 397 reads / 40 089 kb)?
+
+```bash
+bedtools intersect -c -a blacklist.bed -b input.dedup.bam \
+  | awk -v OFS='\t' '$4 > 0 { print $0, $4 / ($3 - $2) * 1000 }' | sort -k5,5gr | head -3
+```
+
+### C6 — How long are the fragments?
+
+Our reads are single-end, so the fragment length must be estimated from the shift between the strands (lecture: *Single-end reads need extending*):
+
+```bash
+macs3 predictd -i chip.final.bam -f BAM -g 40088619 2>&1 | grep "predicted fragment length"
+```
+
+What fragment length does MACS3 predict? We use it for `--extendReads` below.
+
+### C7 — Coverage tracks
+
+```bash
+for s in chip input; do
+  bamCoverage -b $s.final.bam -o $s.cpm.bw --normalizeUsing CPM --extendReads 100 --binSize 10 -p 8
+done
+bamCoverage -b chip.final.bam -o chip.rpgc.bw --normalizeUsing RPGC \
+  --effectiveGenomeSize 40088619 --extendReads 100 --binSize 10 -p 8
+bamCompare -b1 chip.final.bam -b2 input.final.bam -o chip_vs_input.log2.bw \
+  --operation log2 --scaleFactorsMethod readCount --pseudocount 1 \
+  --extendReads 100 --binSize 50 -p 8
+bamCompare -b1 chip.final.bam -b2 input.final.bam -o chip_vs_input.ratio.bw \
+  --operation ratio --scaleFactorsMethod readCount --pseudocount 1 \
+  --extendReads 100 --binSize 50 -p 8
+ls -lh *.bw
+```
+
+(a) Why is `--effectiveGenomeSize` 40 088 619 and not the length of chr21 (46 709 983)? (Hint: `grep -v ">" $D/hg38_chr21_chrM.fa | head -100000 | grep -c N` and think about what N means.)
+
+(b) The RPGC and CPM tracks differ only by a constant factor. Compute it from B5 and check it in IGV at any peak.
+
+### C8 — Look at it in IGV
+
+Open IGV, choose the genome **hg38**, and load `chip.cpm.bw`, `input.cpm.bw`, `chip_vs_input.log2.bw`, `$D/gm12878_ctcf_fc.bigWig`, `$D/gm12878_ctcf_peaks.bed.gz` and `chip.final.bam`. Go to `chr21:43,775,000-43,825,000`.
+
+(a) How many CTCF peaks are in the window? Do your ChIP track and ENCODE's fold change agree on where they are?
+
+(b) Zoom in to the peak at about 43 789 450 until you see single reads in the BAM track. Colour the reads by strand (right click → *Color alignments by* → *read strand*). Where are the + strand reads, where the − strand reads?
+
+(c) Why is your log2 ratio track so much noisier than ENCODE's fold change away from the peaks? (Count the input reads in the window: `samtools view -c input.final.bam chr21:43775000-43825000`.)
+
+## In R
+
+You need `GenomicAlignments` (with `Rsamtools`), `rtracklayer` and `GenomicRanges` (see *Install the software you need*). Run R in the folder with your BAM files:
+
+```r
+suppressPackageStartupMessages({ library(GenomicAlignments); library(rtracklayer) })
+D <- "/path/to/course/data"
+setwd("~/epi/align")
+```
+
+### R1 — Read the BAM and look at MAPQ
+
+```r
+aln <- readGAlignments("chip.sorted.bam", param = ScanBamParam(what = c("flag", "mapq")))
+aln
+table(seqnames(aln))
+mq <- mcols(aln[seqnames(aln) == "chr21"])$mapq
+table(cut(mq, c(-1, 1, 10, 29, 41, 42)))
+mean(mq >= 30)
+hist(mq, breaks = 0:43 - 0.5, main = "ChIP, chr21", xlab = "MAPQ")
+```
+
+(a) What fraction of the ChIP reads on chr21 have MAPQ 0 or 1, and what fraction MAPQ ≥ 30? Compare with `samtools view -c -q 30 chip.sorted.bam chr21`.
+
+(b) Repeat for `input.sorted.bam`. Which library has more multi-mappers on chr21, and why might that be (read length)?
+
+### R2 — Duplicates by hand
+
+A single-end read is a duplicate of another if they have the same chromosome, strand and 5' end.
+
+```r
+q30 <- granges(readGAlignments("chip.q30.bam"))
+five <- resize(q30, width = 1, fix = "start")       # the 5' end, strand-aware
+key <- paste(seqnames(five), start(five), strand(five))
+sum(duplicated(key)); mean(duplicated(key))
+tapply(duplicated(key), as.character(seqnames(five)), mean)
+```
+
+(a) How many duplicates do you find? Compare with `DUPLICATE SINGLE` in `chip.markdup.txt`.
+
+(b) Why is the duplicate rate on chrM so much higher than on chr21?
+
+### R3 — Coverage at a CTCF peak
+
+```r
+fin <- granges(readGAlignments("chip.final.bam"))
+ext <- resize(fin, width = 100, fix = "start")       # extend each read to 100 bp
+cpm <- coverage(ext)$chr21 * 1e6 / length(fin)
+bw  <- import("chip.cpm.bw", as = "RleList")$chr21
+win <- 43789200:43789700
+plot(win, as.numeric(cpm[win]), type = "l", lwd = 2, xlab = "chr21", ylab = "CPM")
+lines(win, as.numeric(bw[win]), col = "red")
+max(cpm[win]); max(bw[win])
+```
+
+(a) Does your hand-made CPM agree with `bamCoverage`? Where do they differ, and why? (bamCoverage counts the reads that overlap each 10 bp bin, not the coverage of each base.)
+
+(b) Repeat with `resize(fin, width = 36, fix = "start")` (no extension). What happens to the peak?
+
+### R4 — Strands around the CTCF summits
+
+```r
+pk <- import(file.path(D, "gm12878_ctcf_peaks.bed.gz"), format = "narrowPeak")
+pk <- pk[seqnames(pk) == "chr21"]
+summit <- GRanges("chr21", IRanges(start(pk) + pk$peak, width = 1))
+five <- resize(fin, width = 1, fix = "start")
+h <- findOverlaps(five, summit, maxgap = 300)
+d <- start(five)[queryHits(h)] - start(summit)[subjectHits(h)]
+s <- as.character(strand(five))[queryHits(h)]
+tapply(d, s, median)
+hist(d[s == "+"], breaks = 60, col = rgb(0.16, 0.44, 0.59, 0.5), main = "", xlab = "5' end - summit (bp)")
+hist(d[s == "-"], breaks = 60, col = rgb(0.9, 0.5, 0.13, 0.5), add = TRUE)
+```
+
+(a) What are the median offsets of the + and − strand 5' ends? Estimate the fragment length and compare with C6.
+
+(b) What fraction of all filtered ChIP reads is within 300 bp of a chr21 summit? (`length(unique(queryHits(h))) / length(fin)`.) This is close to the FRiP score of *Experimental design and QC*.
+
+### R5 — Your track against ENCODE's
+
+```r
+chr21 <- GRanges("chr21", IRanges(1, 46709983))
+bins <- tileGenome(c(chr21 = 46709983), tilewidth = 1000, cut.last.tile.in.chrom = TRUE)
+enc  <- import(file.path(D, "gm12878_ctcf_fc.bigWig"), which = chr21, as = "RleList")
+mine <- import("chip_vs_input.ratio.bw", as = "RleList")
+e <- binnedAverage(bins, enc["chr21"], "v")$v
+m <- binnedAverage(bins, mine["chr21"], "v")$v
+bl <- import(file.path(D, "hg38_blacklist.bed.gz"))
+ok <- !overlapsAny(bins, bl) & e > 0 & m > 0
+inpk <- overlapsAny(bins, pk)
+c(bins = sum(ok), all = cor(log2(e[ok]), log2(m[ok])), peaks = cor(log2(e[ok & inpk]), log2(m[ok & inpk])))
+plot(log2(e[ok]), log2(m[ok]), pch = ".", col = ifelse(inpk[ok], "red", "grey50"),
+     xlab = "log2 ENCODE fold change", ylab = "log2 our ChIP / input")
+abline(0, 1, lty = 2)
+```
+
+(a) How well do the two tracks agree over all 1-kb bins, and over the bins with a peak?
+
+(b) List three differences between the way you and ENCODE made the tracks that could explain the disagreement in the background.
+
+## Hints
+
+::: {.callout-tip collapse="true" title="Hint 1 — qualities (B1, C1, C2)"}
+$Q$ = ASCII code − offset; `I` = 73, `5` = 53, `#` = 35, `e` = 101, `L` = 76 (see an [ASCII table](https://en.wikipedia.org/wiki/ASCII#Printable_characters) and the [FASTQ format page](https://en.wikipedia.org/wiki/FASTQ_format#Encoding)). Phred+33 qualities rarely go above Q41 (`J`). The probability of no error in $n$ bases is $(1-p)^n$. In the conversion, Perl's `tr/@-~/!-_/` maps the character range `@`…`~` (ASCII 64–126) onto `!`…`_` (33–95), only on every fourth line (`$. % 4 == 0`). fastp's options are documented in its [README](https://github.com/OpenGene/fastp#all-options); by default it removes reads with more than 40% of bases below Q15, reads with more than 5 N, and reads shorter than 15 bases after trimming.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 2 — FLAG, POS, TLEN (B2–B4, C4)"}
+Subtract the largest power of two that fits, repeat. The [SAM specification](https://samtools.github.io/hts-specs/SAMv1.pdf) (section 1.4) defines every column; the Picard [explain-flags](https://broadinstitute.github.io/picard/explain-flags.html) page and `samtools flags 99` decode FLAGs for you. A − strand read is stored reverse-complemented: its 5' end is its *rightmost* base, POS + length − 1. `-F` removes reads with *any* of the bits, `-f` keeps reads with *all* of them ([samtools view](https://www.htslib.org/doc/samtools-view.html)).
+:::
+
+::: {.callout-tip collapse="true" title="Hint 3 — normalisation (B5, B6, C7)"}
+CPM per bin = reads overlapping the bin × 10<sup>6</sup> / reads in the BAM. RPGC = coverage / (reads × fragment length / effective genome size). The deepTools pages for [bamCoverage](https://deeptools.readthedocs.io/en/develop/content/tools/bamCoverage.html), [bamCompare](https://deeptools.readthedocs.io/en/develop/content/tools/bamCompare.html) and [effective genome size](https://deeptools.readthedocs.io/en/develop/content/feature/effectiveGenomeSize.html) give the formulas and the defaults. `bamCompare --scaleFactorsMethod readCount` scales the larger library down to the smaller one before adding the pseudocount.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 4 — duplicates, blacklist, order (B7, B8, C5)"}
+[samtools markdup](https://www.htslib.org/doc/samtools-markdup.html) compares the 5' end and strand (single-end) or both ends (paired-end), and keeps the copy with the highest base qualities; `-s` prints statistics. For paired-end reads it needs `samtools fixmate -m` on name-collated reads first. The blacklist is described in [Amemiya et al. 2019](https://doi.org/10.1038/s41598-019-45839-z); `bedtools intersect -v -abam` writes the reads that overlap *no* blacklisted region ([docs](https://bedtools.readthedocs.io/en/latest/content/tools/intersect.html)). For B8b: CPM divides by *all* reads in the BAM.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 5 — fragment length and IGV (B9, C6, C8)"}
+[macs3 predictd](https://macs3-project.github.io/MACS/docs/predictd.html) pairs strong + strand and − strand peaks and reports the most common distance between them; `-g` is the effective genome size. In [IGV](https://igv.org/doc/desktop/), bigWig and BED files load with *File → Load from File*; a BAM needs its `.bai` index next to it.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 6 — R (R1–R5)"}
+[`readGAlignments`](https://rdrr.io/bioc/GenomicAlignments/man/readGAlignments.html) with a [`ScanBamParam`](https://rdrr.io/bioc/Rsamtools/man/ScanBamParam-class.html) reads extra columns such as `mapq` and `flag`. `granges()` turns alignments into ranges; [`resize(..., fix = "start")`](https://rdrr.io/bioc/GenomicRanges/man/intra-range-methods.html) is strand-aware, so the "start" of a − strand read is its right end. [`coverage`](https://rdrr.io/bioc/GenomicRanges/man/coverage-methods.html) returns an `RleList` per chromosome. [`tileGenome` and `binnedAverage`](https://rdrr.io/bioc/GenomicRanges/man/tileGenome.html) make bins and average a signal over them; [`import`](https://rdrr.io/bioc/rtracklayer/man/BigWigFile.html) with `as = "RleList"` reads a bigWig.
+:::
+
+## Solutions
+
+All numbers below come from running the commands exactly as written (fastp 0.23.4, bowtie2 2.4.4, samtools 1.21, bedtools 2.30, deepTools 3.5.1, MACS3 3.1.0).
+
+::: {.callout-note collapse="true" title="Solutions — by hand"}
+
+**B1.** (a) `I` = 73 − 33 = Q40, $p = 10^{-4} = 0.0001$; `5` = Q20, $p = 0.01$; `#` = Q2, $p = 10^{-0.2} = 0.63$ (a "this base is useless" marker). (b) As +33, `e` would be 101 − 33 = Q68, far above anything a sequencer reports (+33 data top out around Q41). As +64: `e` = 101 − 64 = Q37 ($p = 2 \times 10^{-4}$), `L` = 76 − 64 = Q12 ($p = 0.063$). (c) $36 \times 0.001 = 0.036$ errors per read at Q30; $36 \times 0.01 = 0.36$ at Q20. The probability of at least one error at Q30 is $1 - 0.999^{36} = 0.035$, so about 13 400 of 380 000 reads. Aligners tolerate this with mismatches.
+
+**B2.** 99 = 64 + 32 + 2 + 1: read 1, mate reverse, proper pair. 147 = 128 + 16 + 2 + 1: read 2, reverse strand, proper pair. 83 = 64 + 16 + 2 + 1: read 1, reverse strand, proper pair. 163 = 128 + 32 + 2 + 1: read 2, mate reverse, proper pair (so read 2 is forward). 0: single-end, mapped, + strand. 16: single-end, − strand. 4: unmapped. 1123 = 1024 + 64 + 32 + 2 + 1: like 99, but flagged as a duplicate.
+(a) 99 and 147 are a pair (read 1 forward on the left, read 2 reverse on the right); 83 and 163 are a pair (read 2 forward on the left, read 1 reverse on the right). (b) `-F 1804` removes 4 (unmapped) and 1123 (duplicate). `-f 2` removes 0, 16, 4 (not proper pairs: single-end) and keeps the four proper-pair reads and 1123.
+
+**B3.** (a) Read 2 ends at 10 181 + 36 − 1 = 10 216. Fragment = 10 216 − 10 001 + 1 = **216 bp**; TLEN = +216 for read 1, −216 for read 2. (b) The mate (POS 5 140) is leftmost; the FLAG-83 read ends at 5 300 + 50 − 1 = 5 349. Fragment = 5 349 − 5 140 + 1 = **210 bp**; TLEN is −210 in the FLAG-83 line and +210 in its mate's line.
+
+**B4.** (a) The − strand: the read covers 2 000–2 035, and its 5' end (where sequencing started, the end of the fragment) is at **2 035**. (b) Extending towards smaller coordinates: **1 936–2 035**.
+
+**B5.** (a) $120 \times 10^6 / 197\,587 = 607$ CPM. (b) Average coverage $197\,587 \times 100 / 40\,088\,619 = 0.493$; RPGC $= 120 / 0.493 = 243$. (c) The same: $240 \times 10^6 / 395\,174 = 607$ CPM, and the average coverage doubles to 0.986, so RPGC 243. Both remove the effect of depth. The ratio RPGC / CPM = genome size / (fragment length × $10^6$) $= 40\,088\,619 / 10^8 = 0.40$, the same for every position (C7b).
+
+**B6.** (a) A: 60/12 = 5, log2(61/13) = **2.23**. B: 3/0 = ∞, log2(4/1) = **2.0**. C: 0/2 = 0, log2(1/3) = **−1.58**. D: 0/0 undefined, log2(1/1) = **0**. (b) No. Bin A rests on 72 reads, bin B on 3: one read more or less changes B's ratio a lot (2 reads would give 1.58, 4 reads 2.32). Use larger bins, a deeper or smoothed input (MACS-style local background over 1–10 kb), or require a minimum count. The pseudocount already pulls B down from ∞ to 2.
+
+**B7.** (a) r2 and r5 are duplicates of r1 (same 5' end 1000, + strand). r7 duplicates r6 (− strand; both have 5' end 1 245). r4 starts 3 bp later: not a duplicate. Three duplicates out of 8: **37.5%** (markdup keeps the copy with the best qualities and flags the others). (b) r3 is on the − strand: its 5' end is at 1 035 and it came from a different fragment, extending to the left. Duplicates must match position *and* strand. (c) PCR duplicates are concentrated where the reads are, but there is also a real effect: with single-end 36 bp reads, a ~200 bp peak offers only about 200 possible start positions per strand. With tens of thousands of fragments in a strong peak, independent fragments often share a start by chance (saturation), so dedup also removes real signal at the strongest peaks. With paired-end reads, two fragments must share *both* ends to be called duplicates, which is much rarer by chance.
+
+**B8.** (a) Trimming (before alignment, so adapters do not force mismatches) → alignment → sorting (markdup, indexing and region access need positions in order) → MAPQ/FLAG filter (judge duplicates only among reads you trust) → duplicate marking → blacklist removal (positional; can be anywhere after alignment, but before computing totals for normalisation) → `bamCoverage` (last, so the CPM denominator counts only the reads that are kept). (b) Too **low**: CPM divides by all reads in the BAM, including the chrM reads. With 66% on chrM, the chr21 signal is divided by about three times too many reads, so it is about **3× too low** (1/0.34 = 2.9), and a ChIP/input ratio is about 3× too high. (c) Multi-mapping reads pile up in repeats (signal where it cannot be trusted, and reads randomly placed between copies); duplicates inflate some positions into spikes; blacklisted regions show huge artefact peaks (e.g. 451 input reads at chr21:10.01 Mb); and the CPM denominator includes chrM and unmapped-to-chr21 reads, so all values are scaled differently.
+
+**B9.** (a) A read is either unique (MAPQ 42 when the second-best alignment is much worse) or has several equally good places (MAPQ 0–1). Intermediate values need a second-best alignment that is a little worse, which is rarer. So any threshold between about 5 and 30 removes almost the same reads. (b) About 50 + 50 = **100 bp** (the medians are −50 and +48). The protein occupies the DNA around the motif: fragment ends cannot fall where CTCF sits, so there is a footprint of about ±18 bp with almost no 5' ends. (c) No information is not evidence of absence: with MAPQ ≥ 30, reads in a repeat with several identical copies are removed, so the region is blind. To ask about binding there, you need longer or paired reads, multi-mapper-aware methods, or a different assay.
+:::
+
+::: {.callout-note collapse="true" title="Solutions — command line"}
+
+**C1.** (a) 390 097 ChIP reads of 36 bp; 476 372 input reads of 28 bp. The names (`MAGNUM:8:1:1064:11147#0/1`, `FC200NVAA_41408:7:1:760:865`) are old Illumina names: instrument, lane, tile, x and y position of the cluster, index (`#0`) and read number (`/1`). (b) The lowest characters are `B` (10 555 times in 100 000 reads), then `C`, `D`, `E`, `F`; the most common is `f`. There is no `!`, `#` or digit. `B` = 66: as Phred+64 that is Q2, the Illumina 1.5+ marker for an unusable read tail. The file is **Phred+64**.
+
+**C2.** (a) ChIP: 380 570 of 390 097 reads pass (9 514 removed as low quality, 13 for too many N); input: 476 024 of 476 372 pass (348 low quality). No adapters were detected or trimmed: the fragments (about 100–300 bp) are much longer than 28–36 bp reads, so read-through is very rare. In ATAC-seq with 2 × 100 bp reads it is common. Runtime: about 2 s per file with 8 threads. (b) ChIP: mean quality about Q37 at the start, Q35 at base 36; input: Q27 falling to Q24, and at the last base 16% of the input's bases are below Q20. (If you run fastp with `--phred64` on the original file instead of converting first, the filtering counts change from run to run with fastp 0.23.4, and the report shows qualities that are 31 too high. Converting explicitly avoids both.)
+
+**C3.** Six `.bt2` files, about 63 MB in total; 22–27 s with 8 threads.
+
+**C4.** (a) ChIP: 76.6% exactly once, 22.9% more than once, 0.53% (2 014) not at all. Input: 88.9% exactly once, 11.1% more than once, 0.00% not aligned. In real data 5–20% fail to align (contamination, adapter dimers, unplaced sequence); here the reads were preselected because ENCODE aligned them. Alignment took about 3 s per library. (b) ChIP: 52 343 of 378 556 aligned reads (13.8%) on chrM; input: 315 745 of 476 024 (66.3%). Reads per kb: input chrM $315\,745 / 16.6 = 19\,060$, chr21 $160\,279 / 46\,710 = 3.4$: about **5 600 times** more per kb on chrM. (c) All three are FLAG 0 (single-end, + strand, mapped) at chr21:5 010 117–5 010 694, CIGAR `36M` (36 aligned bases), with MAPQ 1, 0 and 1: `AS` equals `XS`, so each has an equally good second place. The start of chr21's long arm is full of segmental duplications. The second read also has 4 mismatches (`NM:i:4`, `AS:i:-20`).
+
+**C5.** (a)
+
+| step | ChIP | % | input | % |
+|---|---|---|---|---|
+| raw reads | 390 097 | 100 | 476 372 | 100 |
+| after fastp | 380 570 | 97.6 | 476 024 | 99.9 |
+| aligned | 378 556 | 97.0 | 476 024 | 99.9 |
+| MAPQ ≥ 30, `-F 1804` | 299 649 | 76.8 | 433 306 | 91.0 |
+| duplicates removed | 222 199 | 57.0 | 149 559 | 31.4 |
+| chr21 only | 198 704 | 50.9 | 117 384 | 24.6 |
+| blacklist removed | **197 587** | **50.7** | **116 397** | **24.4** |
+
+The whole of C5 takes about 10 s. (b) ChIP: 77 450 of 299 649 (25.8%); input: 283 747 of 433 306 (65.5%). The input's duplicates are almost all on chrM: 281 873 of 314 048 chrM reads (90%) against 1 874 of 119 258 chr21 reads (1.6%). The chrM is covered thousands of times over, so most possible start positions are taken many times: saturation, not just PCR. On chr21 the ChIP has 19.7% duplicates, concentrated in the peaks (B7c). (c) 1 117 ChIP and 987 input reads. Highest density: `chr21 8234456 8234568` (12 reads in 112 bp, 107 per kb) and `chr21 6369257 6372342` (215 reads in 3.1 kb, 70 per kb), against an average of 2.9 input reads per kb on chr21: 24–37 times too many, after MAPQ and duplicate filtering. (The 520 bp region at 10.01 Mb in the lecture figure had 451 input reads before filtering, but 448 of them had MAPQ 1: there the MAPQ filter already did the work.)
+
+**C6.** `predicted fragment length is 100 bps` (from 359 paired + and − strand peaks; about 1 s).
+
+**C7.** Each command takes 2–5 s. (a) The effective genome size is the part of the genome where reads can align. chr21 has 46 709 983 bases, of which 6 621 364 are N (unsequenced gaps, mostly the short arm and the centromere); 40 088 619 are A, C, G or T. A stricter value would also subtract unmappable repeats; deepTools lists such values for whole genomes and several read lengths. (b) RPGC / CPM = $40\,088\,619 / (100 \times 10^6) = 0.40$ (B5c); at the summit of the peak at chr21:43 789 481 the CPM track reads 1063 and the RPGC track 426.
+
+**C8.** (a) Three ENCODE peaks, at about 43.789, 43.811 and 43.817 Mb, each with a peak in both tracks. (b) + strand reads are piled up to the left of the summit, − strand reads to the right, about 100 bp apart (the lecture figure *Real data: the two strands around CTCF sites*). (c) The input has only 116 397 reads on all of chr21, about 3 per kb, and 377 reads in this 50 kb window: most 50 bp bins have 0 or 1 input read, so the ratio jumps between bins. ENCODE's fold change (MACS2) uses a local background from the input averaged over 1 kb and 10 kb, never lower than the genome-wide average, and pools two replicates.
+:::
+
+::: {.callout-note collapse="true" title="Solutions — R"}
+
+**R1.** (a) 326 213 ChIP reads on chr21; MAPQ 0–1: 72 811 (**22.3%**); MAPQ ≥ 30: **75.9%** (247 580 reads, the same as `samtools view -c -q 30 chip.sorted.bam chr21`). Reading the BAM takes about 2 s. (b) Input on chr21: 25.1% MAPQ 0–1, 74.4% ≥ 30: slightly more multi-mappers than the ChIP. The input reads are 28 bp, the ChIP reads 36 bp; a shorter read is unique in fewer places. (The ChIP is also enriched at CTCF sites, which are mostly in unique sequence.)
+
+**R2.** (a) 77 450 duplicates (25.8%): exactly the number `samtools markdup` reported. (b) chrM: 54.9% of the ChIP's chrM reads are duplicates, chr21: 19.7%. chrM is 16.6 kb with 52 069 filtered reads, about 3 per base: nearly every possible (start, strand) is used several times, even without PCR.
+
+**R3.** (a) The shapes agree, but bamCoverage's values are a little higher: at the summit (chr21:43 789 481) 194 extended reads cover the base, 194 × 10<sup>6</sup> / 197 587 = **982** CPM, while the bamCoverage track reads **1063**. bamCoverage counts every read that overlaps a 10 bp bin, even by one base, so a bin collects a few more reads than any single base in it. (b) Without extension the peak splits into two humps about 100 bp apart, with a dip at the summit (the + and − strand reads on either side), as in the lecture figure.
+
+**R4.** (a) Median offsets −50 bp (+ strand) and +48 bp (− strand): a fragment of about **98 bp**, in agreement with MACS3's 100 bp. (Reading the BAMs and the R steps take a few seconds each.) (b) 54 003 of 197 587 reads (**27.3%**) have their 5' end within 300 bp of one of the 405 summits on chr21. For a TF ChIP this is a good value (ENCODE's guidelines treat FRiP below 1% as a warning sign).
+
+**R5.** (a) 33 287 bins are used (not blacklisted, non-zero in both). Pearson correlation of the log2 values: **0.63** over all bins, **0.91** over the 466 bins that contain an ENCODE peak. The tracks agree on the peaks and much less on the background. (b) ENCODE pooled two replicates, we used one; ENCODE's MACS2 fold change uses a local background from the input smoothed over 1–10 kb (and a genome-wide floor), we divided 50 bp bins with a pseudocount of 1; ENCODE estimated its own fragment length and cropped the ChIP reads to 28 bp; and ENCODE used the whole genome, so some reads are placed differently.
+:::
+
+## Where this leads
+
+- *Experimental design and QC* turns the numbers in your C5 table into QC metrics: library complexity from duplicates, FRiP (R4b), fingerprints and strand cross-correlation.
+- *ChIP-seq peak calling* starts from `chip.final.bam` and `input.final.bam` and replaces the noisy per-bin ratio with MACS3's local Poisson background.
+- *ATAC-seq processing and peak calling* uses the same chain with paired-end reads, adapter trimming that really matters, chrM removal and the Tn5 shift.
+- The production version of all of this is nf-core/chipseq or nf-core/atacseq.
+
+## Key papers (optional further reading)
+
+*Not required reading and not examined.*
+
+- Langmead & Salzberg 2012, *Nat Methods*. [Fast gapped-read alignment with Bowtie 2](https://doi.org/10.1038/nmeth.1923).
+- Li et al. 2009, *Bioinformatics*. [The Sequence Alignment/Map format and SAMtools](https://doi.org/10.1093/bioinformatics/btp352).
+- Chen et al. 2018, *Bioinformatics*. [fastp: an ultra-fast all-in-one FASTQ preprocessor](https://doi.org/10.1093/bioinformatics/bty560).
+- Ramírez et al. 2016, *Nucleic Acids Res*. [deepTools2: a next generation web server for deep-sequencing data analysis](https://doi.org/10.1093/nar/gkw257).
+- Amemiya, Kundaje & Boyle 2019, *Sci Rep*. [The ENCODE Blacklist: identification of problematic regions of the genome](https://doi.org/10.1038/s41598-019-45839-z).
+- Robinson et al. 2011, *Nat Biotechnol*. [Integrative genomics viewer](https://doi.org/10.1038/nbt.1754).

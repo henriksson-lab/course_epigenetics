@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 330" width="1120" height="330" font-family="Helvetica, Arial, sans-serif">
+  <rect width="1120" height="330" fill="#ffffff"/>
+
+  <!-- RNA panel -->
+  <text x="20" y="32" font-size="18" font-weight="bold" fill="#1b2a3a">RNA-seq: reads from spliced mRNA</text>
+  <line x1="40" y1="110" x2="520" y2="110" stroke="#5b6b7a" stroke-width="2"/>
+  <rect x="60" y="96" width="110" height="28" fill="#2a6f97"/>
+  <rect x="260" y="96" width="90" height="28" fill="#2a6f97"/>
+  <rect x="430" y="96" width="70" height="28" fill="#2a6f97"/>
+  <text x="115" y="148" font-size="14" fill="#5b6b7a" text-anchor="middle">exon 1</text>
+  <text x="305" y="148" font-size="14" fill="#5b6b7a" text-anchor="middle">exon 2</text>
+  <text x="465" y="148" font-size="14" fill="#5b6b7a" text-anchor="middle">exon 3</text>
+  <!-- split read -->
+  <rect x="120" y="62" width="50" height="12" rx="2" fill="#e67e22"/>
+  <path d="M170,68 L260,68" stroke="#e67e22" stroke-width="2" stroke-dasharray="5,4" fill="none"/>
+  <rect x="260" y="62" width="50" height="12" rx="2" fill="#e67e22"/>
+  <text x="215" y="56" font-size="14" fill="#e67e22" text-anchor="middle">one read, split</text>
+  <text x="40" y="186" font-size="15" fill="#1b2a3a">Spliced aligner (<tspan font-family="Courier New, monospace">STAR</tspan>, <tspan font-family="Courier New, monospace">HISAT2</tspan>), or</text>
+  <text x="40" y="208" font-size="15" fill="#1b2a3a">pseudo-alignment to transcripts (<tspan font-family="Courier New, monospace">salmon</tspan>).</text>
+  <text x="40" y="230" font-size="15" fill="#1b2a3a">CIGAR <tspan font-family="Courier New, monospace">50M90N50M</tspan>: N = skipped intron.</text>
+  <text x="40" y="252" font-size="15" fill="#1b2a3a">Count reads per <tspan font-weight="bold">annotated gene</tspan>.</text>
+
+  <line x1="560" y1="20" x2="560" y2="270" stroke="#cfd8e0" stroke-width="1.5"/>
+
+  <!-- DNA panel -->
+  <text x="590" y="32" font-size="18" font-weight="bold" fill="#1b2a3a">ChIP / ATAC / CUT&amp;Tag: reads from DNA</text>
+  <line x1="600" y1="110" x2="1090" y2="110" stroke="#1b2a3a" stroke-width="3"/>
+  <rect x="700" y="62" width="100" height="12" rx="2" fill="#8c564b"/>
+  <rect x="760" y="80" width="100" height="12" rx="2" fill="#8c564b"/>
+  <rect x="930" y="62" width="100" height="12" rx="2" fill="#8c564b"/>
+  <!-- mismatch ticks -->
+  <rect x="738" y="60" width="4" height="16" fill="#c0392b"/>
+  <text x="740" y="52" font-size="14" fill="#c0392b" text-anchor="middle">mismatch</text>
+  <text x="845" y="148" font-size="14" fill="#5b6b7a" text-anchor="middle">genome, no annotation needed</text>
+  <text x="600" y="186" font-size="15" fill="#1b2a3a">Contiguous aligner (<tspan font-family="Courier New, monospace">bowtie2</tspan>, <tspan font-family="Courier New, monospace">BWA-MEM</tspan>).</text>
+  <text x="600" y="208" font-size="15" fill="#1b2a3a">Allows mismatches and small indels, no introns.</text>
+  <text x="600" y="230" font-size="15" fill="#1b2a3a">CIGAR <tspan font-family="Courier New, monospace">36M</tspan> for almost every read.</text>
+  <text x="600" y="252" font-size="15" fill="#1b2a3a">Find <tspan font-weight="bold">where the signal is</tspan>: regions come from the data.</text>
+
+  <rect x="20" y="282" width="1080" height="38" rx="6" fill="#f4f6f8" stroke="#cfd8e0"/>
+  <text x="560" y="307" font-size="15" fill="#1b2a3a" text-anchor="middle">Same: FASTQ in, BAM out, MAPQ, sorting and indexing. Different: no splicing, every position of the genome is a possible target.</text>
+</svg>

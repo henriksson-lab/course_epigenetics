@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 380" width="1120" height="380" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="aink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker><marker id="agrey" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker><marker id="ared" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker><marker id="agreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker><marker id="ablue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a6f97"/></marker><marker id="aorange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e67e22"/></marker></defs>
+<rect width="1120" height="380" fill="#ffffff"/>
+<rect x="30.0" y="20.0" width="252.0" height="340.0" rx="10" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="156.0" y="52.0" font-size="18" fill="#1b2a3a" text-anchor="middle" font-weight="bold">Library size</text>
+<text x="156.0" y="78.0" font-size="13" fill="#5b6b7a" text-anchor="middle">total reads in the library</text>
+<text x="46.0" y="120.0" font-size="15" fill="#2e8b57" text-anchor="start" font-weight="bold">assumes</text>
+<text x="46.0" y="144.0" font-size="15" fill="#1b2a3a" text-anchor="start">total signal per</text>
+<text x="46.0" y="165.0" font-size="15" fill="#1b2a3a" text-anchor="start">cell is the same</text>
+<text x="46.0" y="210.0" font-size="15" fill="#c0392b" text-anchor="start" font-weight="bold">misleads when</text>
+<text x="46.0" y="234.0" font-size="15" fill="#1b2a3a" text-anchor="start">FRiP differs</text>
+<text x="46.0" y="255.0" font-size="15" fill="#1b2a3a" text-anchor="start">between samples</text>
+<line x1="46.0" y1="296.0" x2="266.0" y2="296.0" stroke="#d0d7de" stroke-width="1.2"/>
+<text x="156.0" y="326.0" font-size="14" fill="#5b6b7a" text-anchor="middle" font-style="italic">CPM, DiffBind ≥ 3 default</text>
+<rect x="300.0" y="20.0" width="252.0" height="340.0" rx="10" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="426.0" y="52.0" font-size="18" fill="#1b2a3a" text-anchor="middle" font-weight="bold">Peak-based</text>
+<text x="426.0" y="78.0" font-size="13" fill="#5b6b7a" text-anchor="middle">median of ratios / TMM over peaks</text>
+<text x="316.0" y="120.0" font-size="15" fill="#2e8b57" text-anchor="start" font-weight="bold">assumes</text>
+<text x="316.0" y="144.0" font-size="15" fill="#1b2a3a" text-anchor="start">most peaks do</text>
+<text x="316.0" y="165.0" font-size="15" fill="#1b2a3a" text-anchor="start">not change</text>
+<text x="316.0" y="210.0" font-size="15" fill="#c0392b" text-anchor="start" font-weight="bold">misleads when</text>
+<text x="316.0" y="234.0" font-size="15" fill="#1b2a3a" text-anchor="start">global opening</text>
+<text x="316.0" y="255.0" font-size="15" fill="#1b2a3a" text-anchor="start">or closing</text>
+<line x1="316.0" y1="296.0" x2="536.0" y2="296.0" stroke="#d0d7de" stroke-width="1.2"/>
+<text x="426.0" y="326.0" font-size="14" fill="#5b6b7a" text-anchor="middle" font-style="italic">DESeq2, edgeR defaults</text>
+<rect x="570.0" y="20.0" width="252.0" height="340.0" rx="10" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="696.0" y="52.0" font-size="18" fill="#1b2a3a" text-anchor="middle" font-weight="bold">Background bins</text>
+<text x="696.0" y="78.0" font-size="13" fill="#5b6b7a" text-anchor="middle">TMM on 10-kb bins, peaks ignored</text>
+<text x="586.0" y="120.0" font-size="15" fill="#2e8b57" text-anchor="start" font-weight="bold">assumes</text>
+<text x="586.0" y="144.0" font-size="15" fill="#1b2a3a" text-anchor="start">background reads</text>
+<text x="586.0" y="165.0" font-size="15" fill="#1b2a3a" text-anchor="start">are constant</text>
+<text x="586.0" y="210.0" font-size="15" fill="#c0392b" text-anchor="start" font-weight="bold">misleads when</text>
+<text x="586.0" y="234.0" font-size="15" fill="#1b2a3a" text-anchor="start">signal-to-noise</text>
+<text x="586.0" y="255.0" font-size="15" fill="#1b2a3a" text-anchor="start">differs (FRiP)</text>
+<line x1="586.0" y1="296.0" x2="806.0" y2="296.0" stroke="#d0d7de" stroke-width="1.2"/>
+<text x="696.0" y="326.0" font-size="14" fill="#5b6b7a" text-anchor="middle" font-style="italic">csaw normFactors</text>
+<rect x="840.0" y="20.0" width="252.0" height="340.0" rx="10" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1.5"/>
+<text x="966.0" y="52.0" font-size="18" fill="#1b2a3a" text-anchor="middle" font-weight="bold">Spike-in / reference</text>
+<text x="966.0" y="78.0" font-size="13" fill="#5b6b7a" text-anchor="middle">exogenous chromatin or DNA</text>
+<text x="856.0" y="120.0" font-size="15" fill="#2e8b57" text-anchor="start" font-weight="bold">assumes</text>
+<text x="856.0" y="144.0" font-size="15" fill="#1b2a3a" text-anchor="start">spike added per</text>
+<text x="856.0" y="165.0" font-size="15" fill="#1b2a3a" text-anchor="start">cell, evenly</text>
+<text x="856.0" y="210.0" font-size="15" fill="#c0392b" text-anchor="start" font-weight="bold">misleads when</text>
+<text x="856.0" y="234.0" font-size="15" fill="#1b2a3a" text-anchor="start">pipetting, cell</text>
+<text x="856.0" y="255.0" font-size="15" fill="#1b2a3a" text-anchor="start">counts are off</text>
+<line x1="856.0" y1="296.0" x2="1076.0" y2="296.0" stroke="#d0d7de" stroke-width="1.2"/>
+<text x="966.0" y="326.0" font-size="14" fill="#5b6b7a" text-anchor="middle" font-style="italic">e.g. Drosophila chromatin</text>
+</svg>

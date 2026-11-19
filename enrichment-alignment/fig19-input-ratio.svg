@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 400" width="1120" height="400" font-family="Helvetica, Arial, sans-serif">
+  <rect width="1120" height="400" fill="#ffffff"/>
+
+  <!-- tracks: x from 150 to 700 -->
+  <text x="20" y="30" font-size="17" font-weight="bold" fill="#1b2a3a">Divide by the input control</text>
+  <!-- ChIP -->
+  <text x="20" y="80" font-size="15" font-weight="bold" fill="#8c564b">ChIP</text>
+  <text x="20" y="98" font-size="13" fill="#5b6b7a">CPM</text>
+  <line x1="150" y1="110" x2="700" y2="110" stroke="#5b6b7a" stroke-width="1"/>
+  <path d="M150,110 L150,104 L230,104 L245,60 L265,60 L280,104 L420,104 L420,82 L560,82 L560,104 L700,104 L700,110 Z" fill="#8c564b" fill-opacity="0.4" stroke="#8c564b" stroke-width="2"/>
+  <!-- input -->
+  <text x="20" y="170" font-size="15" font-weight="bold" fill="#5b6b7a">input</text>
+  <text x="20" y="188" font-size="13" fill="#5b6b7a">CPM</text>
+  <line x1="150" y1="200" x2="700" y2="200" stroke="#5b6b7a" stroke-width="1"/>
+  <path d="M150,200 L150,194 L420,194 L420,172 L560,172 L560,194 L700,194 L700,200 Z" fill="#5b6b7a" fill-opacity="0.35" stroke="#5b6b7a" stroke-width="2"/>
+  <!-- ratio -->
+  <text x="20" y="260" font-size="15" font-weight="bold" fill="#1b2a3a">log2 ratio</text>
+  <text x="20" y="278" font-size="13" fill="#5b6b7a">ChIP / input</text>
+  <line x1="150" y1="270" x2="700" y2="270" stroke="#5b6b7a" stroke-width="1" stroke-dasharray="4,3"/>
+  <path d="M150,270 L230,270 L245,226 L265,226 L280,270 L700,270" fill="none" stroke="#1b2a3a" stroke-width="2.4"/>
+  <text x="708" y="274" font-size="13" fill="#5b6b7a">0</text>
+
+  <!-- labels -->
+  <text x="255" y="50" font-size="14" fill="#8c564b" text-anchor="middle">binding site</text>
+  <text x="490" y="74" font-size="14" fill="#1b2a3a" text-anchor="middle">also in the input:</text>
+  <text x="490" y="162" font-size="14" fill="#1b2a3a" text-anchor="middle">copy gain, open chromatin, bias</text>
+  <text x="490" y="262" font-size="14" fill="#2e8b57" text-anchor="middle">cancels out</text>
+
+  <!-- right panel: pseudocount + bins -->
+  <rect x="740" y="44" width="360" height="190" rx="8" fill="#f4f6f8" stroke="#cfd8e0"/>
+  <text x="756" y="70" font-size="16" font-weight="bold" fill="#1b2a3a">Pseudocount</text>
+  <text x="756" y="96" font-size="15" fill="#1b2a3a">a bin with ChIP 4, input 0:</text>
+  <text x="756" y="118" font-size="15" fill="#1b2a3a">4 / 0 = ∞</text>
+  <text x="756" y="144" font-size="15" fill="#1b2a3a">log2((4 + 1) / (0 + 1)) = 2.3</text>
+  <text x="756" y="170" font-size="15" fill="#1b2a3a">log2((0 + 1) / (0 + 1)) = 0</text>
+  <text x="756" y="200" font-size="14" fill="#5b6b7a">Small counts give noisy ratios: the</text>
+  <text x="756" y="220" font-size="14" fill="#5b6b7a">pseudocount shrinks them towards 0.</text>
+
+  <rect x="740" y="250" width="360" height="138" rx="8" fill="#f4f6f8" stroke="#cfd8e0"/>
+  <text x="756" y="276" font-size="16" font-weight="bold" fill="#1b2a3a">Bin size</text>
+  <text x="756" y="302" font-size="15" fill="#1b2a3a">small bins (10–50 bp): sharp, noisy,</text>
+  <text x="756" y="322" font-size="15" fill="#1b2a3a">large files. Large bins (1 kb): smooth,</text>
+  <text x="756" y="342" font-size="15" fill="#1b2a3a">blurs narrow TF peaks.</text>
+  <text x="756" y="370" font-size="14" fill="#5b6b7a">Ratios need bigger bins than coverage.</text>
+
+  <text x="20" y="330" font-size="15" fill="#1b2a3a">Input = the same chromatin, sheared, <tspan font-style="italic">without</tspan> the antibody: it shows</text>
+  <text x="20" y="352" font-size="15" fill="#1b2a3a">what the background looks like, region by region.</text>
+  <text x="20" y="380" font-size="14" fill="#5b6b7a">Both tracks are depth-scaled first (CPM or by a scale factor), then divided.</text>
+</svg>

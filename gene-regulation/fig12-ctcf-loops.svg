@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 340" width="1120" height="340" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker><marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker><marker id="ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a8324a"/></marker><marker id="as" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker><marker id="ao" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e67e22"/></marker><marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a6f97"/></marker><marker id="ap" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b4fa0"/></marker><marker id="at" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a9d8f"/></marker><marker id="an" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8c564b"/></marker></defs>
+<rect width="1120" height="340" fill="#ffffff"/>
+<text x="200" y="40" font-size="17" text-anchor="middle" font-weight="bold" fill="#6b4fa0">1. cohesin loads</text>
+<line x1="20" y1="250" x2="380" y2="250" stroke="#1b2a3a" stroke-width="2.5"/>
+<ellipse cx="200" cy="250" rx="16" ry="26" fill="none" stroke="#6b4fa0" stroke-width="4"/>
+<polygon points="73,236.4 96.8,236.4 108.7,250 96.8,263.6 73,263.6" fill="#8c564b" stroke="#1b2a3a" stroke-width="1.2"/>
+<polygon points="327,236.4 303.2,236.4 291.3,250 303.2,263.6 327,263.6" fill="#8c564b" stroke="#1b2a3a" stroke-width="1.2"/>
+<text x="570" y="40" font-size="17" text-anchor="middle" font-weight="bold" fill="#6b4fa0">2. extrudes a growing loop</text>
+<path d="M390,250 H540 L561,210 C489.0,110.0 651.0,110.0 579,210 L600,250 H750" fill="none" stroke="#1b2a3a" stroke-width="2.5"/>
+<ellipse cx="570" cy="210" rx="26" ry="11" fill="none" stroke="#6b4fa0" stroke-width="4"/>
+<line x1="530" y1="228" x2="500" y2="228" stroke="#6b4fa0" stroke-width="2" marker-end="url(#ap)"/>
+<line x1="610" y1="228" x2="640" y2="228" stroke="#6b4fa0" stroke-width="2" marker-end="url(#ap)"/>
+<polygon points="443,236.4 466.8,236.4 478.7,250 466.8,263.6 443,263.6" fill="#8c564b" stroke="#1b2a3a" stroke-width="1.2"/>
+<polygon points="697,236.4 673.2,236.4 661.3,250 673.2,263.6 697,263.6" fill="#8c564b" stroke="#1b2a3a" stroke-width="1.2"/>
+<text x="940" y="40" font-size="17" text-anchor="middle" font-weight="bold" fill="#8c564b">3. stalls at convergent CTCF sites</text>
+<path d="M760,250 H838 L931,210 C773.5,-8.75 1106.5,-8.75 949,210 L1042,250 H1120" fill="none" stroke="#1b2a3a" stroke-width="2.5"/>
+<ellipse cx="940" cy="210" rx="26" ry="11" fill="none" stroke="#6b4fa0" stroke-width="4"/>
+<polygon points="813,236.4 836.8,236.4 848.7,250 836.8,263.6 813,263.6" fill="#8c564b" stroke="#1b2a3a" stroke-width="1.2"/>
+<polygon points="1067,236.4 1043.2,236.4 1031.3,250 1043.2,263.6 1067,263.6" fill="#8c564b" stroke="#1b2a3a" stroke-width="1.2"/>
+<text x="1100" y="312" font-size="15" text-anchor="end" font-weight="normal" fill="#5b6b7a">CTCF motifs point into the loop (→ … ←); the anchors are the corner dots of a Hi-C map</text>
+<text x="90" y="286" font-size="15" text-anchor="middle" font-weight="bold" fill="#8c564b">CTCF →</text>
+<text x="310" y="286" font-size="15" text-anchor="middle" font-weight="bold" fill="#8c564b">← CTCF</text>
+</svg>

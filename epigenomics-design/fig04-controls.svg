@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 392" width="1120" height="392" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker><marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker><marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker><marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a6f97"/></marker><marker id="ao" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e67e22"/></marker><marker id="ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8c564b"/></marker></defs>
+<rect width="1120" height="392" fill="#ffffff"/>
+<rect x="20" y="10" width="340" height="372" rx="10" fill="none" stroke="#c9d3dc" stroke-width="1.5" />
+<text x="190" y="38" font-size="18" fill="#7f8c99" text-anchor="middle" font-weight="bold">Input DNA</text>
+<rect x="390" y="10" width="340" height="372" rx="10" fill="none" stroke="#c9d3dc" stroke-width="1.5" />
+<text x="560" y="38" font-size="18" fill="#e67e22" text-anchor="middle" font-weight="bold">IgG (mock IP)</text>
+<rect x="760" y="10" width="340" height="372" rx="10" fill="none" stroke="#c9d3dc" stroke-width="1.5" />
+<text x="930" y="38" font-size="18" fill="#2a6f97" text-anchor="middle" font-weight="bold">No control</text>
+<line x1="115" y1="70" x2="173" y2="70" stroke="#1b2a3a" stroke-width="2.5"/>
+<circle cx="144" cy="70" r="8" fill="#2a9d8f" stroke="none" stroke-width="1.5"/>
+<line x1="185" y1="88" x2="243" y2="88" stroke="#1b2a3a" stroke-width="2.5"/>
+<circle cx="214" cy="88" r="8" fill="#2a9d8f" stroke="none" stroke-width="1.5"/>
+<line x1="135" y1="110" x2="193" y2="110" stroke="#1b2a3a" stroke-width="2.5"/>
+<circle cx="164" cy="110" r="8" fill="#2a9d8f" stroke="none" stroke-width="1.5"/>
+<line x1="210" y1="122" x2="268" y2="122" stroke="#1b2a3a" stroke-width="2.5"/>
+<circle cx="239" cy="122" r="8" fill="#2a9d8f" stroke="none" stroke-width="1.5"/>
+<text x="190" y="150" font-size="14" fill="#5b6b7a" text-anchor="middle" font-style="italic"><tspan x="190" dy="0">same cells, crosslinked and sheared,</tspan><tspan x="190" dy="18">no antibody: sequence it all</tspan></text>
+<line x1="485" y1="70" x2="543" y2="70" stroke="#1b2a3a" stroke-width="2.5"/>
+<circle cx="514" cy="70" r="8" fill="#2a9d8f" stroke="none" stroke-width="1.5"/>
+<line x1="555" y1="88" x2="613" y2="88" stroke="#1b2a3a" stroke-width="2.5"/>
+<circle cx="584" cy="88" r="8" fill="#2a9d8f" stroke="none" stroke-width="1.5"/>
+<line x1="505" y1="110" x2="563" y2="110" stroke="#1b2a3a" stroke-width="2.5"/>
+<circle cx="534" cy="110" r="8" fill="#2a9d8f" stroke="none" stroke-width="1.5"/>
+<line x1="580" y1="122" x2="638" y2="122" stroke="#1b2a3a" stroke-width="2.5"/>
+<circle cx="609" cy="122" r="8" fill="#2a9d8f" stroke="none" stroke-width="1.5"/>
+<path d="M460,102 L460,86 L449,72 M460,86 L471,72" fill="none" stroke="#9aa5b1" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M658,102 L658,86 L647,72 M658,86 L669,72" fill="none" stroke="#9aa5b1" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="560" y="150" font-size="14" fill="#5b6b7a" text-anchor="middle" font-style="italic"><tspan x="560" dy="0">same protocol with a non-specific</tspan><tspan x="560" dy="18">antibody: very little DNA comes back</tspan></text>
+<text x="930" y="110" font-size="42" fill="#2a6f97" text-anchor="middle" font-style="italic">λ</text>
+<text x="930" y="150" font-size="14" fill="#5b6b7a" text-anchor="middle" font-style="italic"><tspan x="930" dy="0">ATAC-seq, CUT&amp;Tag: background</tspan><tspan x="930" dy="18">estimated from the sample itself</tspan></text>
+<text x="40" y="200" font-size="14" fill="#2e8b57" text-anchor="start" font-weight="bold">corrects</text>
+<text x="40" y="222" font-size="15" fill="#1b2a3a" text-anchor="start"><tspan x="40" dy="0">shearing bias (open chromatin),</tspan><tspan x="40" dy="19">copy number, mappability,</tspan><tspan x="40" dy="19">GC and sequencing biases</tspan></text>
+<text x="410" y="200" font-size="14" fill="#2e8b57" text-anchor="start" font-weight="bold">corrects</text>
+<text x="410" y="222" font-size="15" fill="#1b2a3a" text-anchor="start"><tspan x="410" dy="0">the same, plus non-specific</tspan><tspan x="410" dy="19">binding to beads and antibody</tspan></text>
+<text x="780" y="200" font-size="14" fill="#2e8b57" text-anchor="start" font-weight="bold">corrects</text>
+<text x="780" y="222" font-size="15" fill="#1b2a3a" text-anchor="start"><tspan x="780" dy="0">nothing explicitly: a genome-wide</tspan><tspan x="780" dy="19">or local background rate (λ) from</tspan><tspan x="780" dy="19">the sample's own reads</tspan></text>
+<text x="40" y="312" font-size="14" fill="#c0392b" text-anchor="start" font-weight="bold">caveat</text>
+<text x="40" y="334" font-size="15" fill="#1b2a3a" text-anchor="start"><tspan x="40" dy="0">has no antibody, so does not model</tspan><tspan x="40" dy="19">non-specific IP; sequence at least</tspan><tspan x="40" dy="19">as deep as the ChIP</tspan></text>
+<text x="410" y="312" font-size="14" fill="#c0392b" text-anchor="start" font-weight="bold">caveat</text>
+<text x="410" y="334" font-size="15" fill="#1b2a3a" text-anchor="start"><tspan x="410" dy="0">low DNA yield → low complexity,</tspan><tspan x="410" dy="19">noisy; a poor IgG is worse</tspan><tspan x="410" dy="19">than a good input</tspan></text>
+<text x="780" y="312" font-size="14" fill="#c0392b" text-anchor="start" font-weight="bold">caveat</text>
+<text x="780" y="334" font-size="15" fill="#1b2a3a" text-anchor="start"><tspan x="780" dy="0">no protection against copy number</tspan><tspan x="780" dy="19">or mappability: blacklist and</tspan><tspan x="780" dy="19">compare conditions instead</tspan></text>
+</svg>

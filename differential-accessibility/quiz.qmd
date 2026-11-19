@@ -1,0 +1,99 @@
+---
+title: "Quiz: differential accessibility"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+Short questions on count matrices, normalisation, design and interpretation of differential accessibility. Try each on paper first, then open the answer.
+
+---
+
+**Q1.** In RNA-seq the features to count come from a GTF file. Where do the features come from in a differential accessibility analysis, and why must all samples be counted in the same set?
+
+::: {.callout-tip collapse="true" title="Hint"}
+Think about what happens to a peak that was called in sample 1 but not in sample 2.
+:::
+
+::: {.callout-note collapse="true" title="Answer"}
+From the data: peaks called in the samples and combined into one **consensus** set (merged, or fixed-width around summits). Every sample must be counted in the same regions, otherwise rows do not correspond: a peak missing from one sample's own peak list still has reads there (maybe fewer), and those reads are exactly what the test needs. A peak "absent" from a sample's peak calls is a low count, not a missing value.
+:::
+
+---
+
+**Q2.** Three samples have counts 30, 60 and 120 in peak A, and 10, 20 and 40 in peak B. Compute the geometric mean of each peak and the ratios of each count to it. If these were the only two peaks, what would the size factors be?
+
+::: {.callout-tip collapse="true" title="Hint"}
+$30 \cdot 60 \cdot 120 = 216\,000 = 60^3$.
+:::
+
+::: {.callout-note collapse="true" title="Answer"}
+Peak A: geometric mean 60, ratios 0.5, 1, 2. Peak B: $(8000)^{1/3} = 20$, ratios 0.5, 1, 2. The medians are 0.5, 1 and 2: these are the size factors. After normalisation both peaks are identical across samples (60 and 20).
+:::
+
+---
+
+**Q3.** A treatment opens chromatin at almost every peak by about 2-fold, and the libraries are sequenced to the same depth. You run DESeq2 with default size factors. What do you expect to see in the MA plot, and why?
+
+::: {.callout-note collapse="true" title="Answer"}
+A cloud centred at log2 fold change 0 and few differential peaks. The median-of-ratios size factors assume that the typical peak does not change, so they absorb the global 2-fold opening (the treated sample gets a larger size factor). Only peaks that change *more or less than the typical peak* appear as differential, and with a shrunken effect. To see the global change you need a reference that does not change with the treatment: background bins (if the background is constant), a spike-in, or known invariant regions.
+:::
+
+---
+
+**Q4.** Library 1 has 30 million fragments and FRiP 0.30; library 2 has 30 million fragments and FRiP 0.15. Both come from the same cell type. What is the expected ratio of counts in a typical peak? Would you normalise by total fragments or within peaks, and why?
+
+::: {.callout-note collapse="true" title="Answer"}
+$30 \times 0.30 = 9$ M vs $30 \times 0.15 = 4.5$ M fragments in peaks: a typical peak has **2 times** more fragments in library 1. Same cell type, so the difference in FRiP is most likely technical (signal-to-noise of the library), and normalising within peaks (median of ratios, TMM, or reads in peaks) is right. Total-fragment normalisation would make every peak look 2-fold more open in library 1.
+:::
+
+---
+
+**Q5.** Three donors each give a treated and an untreated sample. Write the DESeq2 design formula. What is the meaning of the coefficient you test, and how many residual degrees of freedom are there?
+
+::: {.callout-note collapse="true" title="Answer"}
+`~ donor + treatment` (the variable of interest last). The `treatment` coefficient is the log2 fold change treated vs untreated **within a donor**, averaged over donors. Six samples, four coefficients (intercept, two donor terms, treatment): $6 - 4 = 2$ residual degrees of freedom.
+:::
+
+---
+
+**Q6.** Donor 5483 has two B-cell ATAC libraries made from the same sorted cells (A and B). What should you do with them before DESeq2, and what goes wrong if you treat them as two biological replicates?
+
+::: {.callout-note collapse="true" title="Answer"}
+They are technical replicates: sum their counts into one sample (`collapseReplicates`). Treated as two donors, they make the variance between donors look smaller than it is (two libraries of one person agree better than two people do), so dispersions are underestimated and $p$-values too small: pseudo-replication. The donor also gets twice the weight.
+:::
+
+---
+
+**Q7.** A peak has baseMean 3, MLE log2 fold change 5.8 and padj 0.4; after apeglm shrinkage its log2 fold change is 0.3. Another has baseMean 900, log2 fold change −1.6 (shrunk −1.6), padj $10^{-12}$. Interpret both.
+
+::: {.callout-note collapse="true" title="Answer"}
+The first has very few reads: the 5.8 is a noisy estimate (e.g. 0 vs 4 fragments), not significant, and shrinkage pulls it towards 0 because its standard error is large. No evidence of a difference. The second is well measured: $2^{1.6} \approx 3$ times **less** accessible in the numerator group (more open in the reference group), highly significant; shrinkage does not change it. With the threshold padj < 0.05 and |LFC| > 1 it is differential.
+:::
+
+---
+
+**Q8.** In the B vs CD4 T-cell comparison, 8% of B-specific peaks but 20% of all tested peaks lie within 1 kb of a TSS. Explain the difference. What does it imply for linking differential peaks to genes?
+
+::: {.callout-note collapse="true" title="Answer"}
+Promoters tend to be accessible in many cell types (housekeeping and poised promoters), so they are less often differential; cell-type-specific regulation is mostly in distal enhancers. Most differential peaks therefore have no gene of their own: "nearest gene" is a guess, often tens or hundreds of kb away, and the true target may be a more distant gene contacted in 3D. Use the nearest gene as a label, not as a conclusion.
+:::
+
+---
+
+**Q9.** You use the Corces peaks, which were called on hg19, with a GRCh38 gene annotation. What must you do first, and what can go wrong?
+
+::: {.callout-note collapse="true" title="Answer"}
+Lift the peaks to GRCh38 with liftOver (chain file hg19ToHg38). Some peaks fail to map (deleted or rearranged regions: 159 of 590 650 here), some split into pieces (1375) or change width; drop those. Without lifting, bedtools or GenomicRanges would happily overlap hg19 peaks with hg38 genes and give wrong nearest genes, with no error message (*Genomic intervals*).
+:::
+
+---
+
+**Q10.** A study compares ATAC-seq of tumour and normal tissue from different patients, with tumours sequenced in 2019 and normal tissue in 2022. It reports 40 000 differential peaks with DESeq2 default normalisation. Name two problems with the design and one with the normalisation.
+
+::: {.callout-note collapse="true" title="Answer"}
+Design: (1) condition is **confounded with batch** (year of sequencing), so batch effects cannot be separated from tumour vs normal; (2) samples are **unpaired** (different patients) and tissues are **mixtures** of cell types: differences in cell-type composition (immune infiltration, stroma) appear as differential peaks. Normalisation: tumours often have different global accessibility and different signal-to-noise (FRiP) from normal tissue; peak-based size factors assume most peaks do not change, which may not hold, and a global difference would be hidden or distorted. Check FRiP and the MA plot, and compare with another normalisation.
+:::

@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 420" width="1120" height="420" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/>
+    </marker>
+  </defs>
+  <rect width="1120" height="420" fill="#ffffff"/>
+
+  <!-- left: raw counts -->
+  <text x="20" y="30" font-size="17" font-weight="bold" fill="#1b2a3a">Raw counts: depends on sequencing depth</text>
+  <!-- sample A: 15 M reads; peak height 30 -->
+  <text x="20" y="80" font-size="15" fill="#1b2a3a">sample A</text>
+  <text x="20" y="98" font-size="13" fill="#5b6b7a">15 M reads</text>
+  <line x1="120" y1="120" x2="480" y2="120" stroke="#5b6b7a" stroke-width="1"/>
+  <path d="M120,120 L240,120 L240,105 L270,90 L300,90 L330,105 L330,120 L480,120 Z" fill="#8c564b" fill-opacity="0.4" stroke="#8c564b" stroke-width="2"/>
+  <text x="285" y="82" font-size="14" fill="#1b2a3a" text-anchor="middle">30 reads</text>
+  <!-- sample B: 30 M reads; peak height 60 -->
+  <text x="20" y="170" font-size="15" fill="#1b2a3a">sample B</text>
+  <text x="20" y="188" font-size="13" fill="#5b6b7a">30 M reads</text>
+  <line x1="120" y1="210" x2="480" y2="210" stroke="#5b6b7a" stroke-width="1"/>
+  <path d="M120,210 L240,210 L240,180 L270,150 L300,150 L330,180 L330,210 L480,210 Z" fill="#8c564b" fill-opacity="0.4" stroke="#8c564b" stroke-width="2"/>
+  <text x="285" y="142" font-size="14" fill="#1b2a3a" text-anchor="middle">60 reads</text>
+
+  <line x1="490" y1="150" x2="560" y2="150" stroke="#1b2a3a" stroke-width="2.2" marker-end="url(#arr)"/>
+
+  <!-- right: CPM -->
+  <text x="580" y="30" font-size="17" font-weight="bold" fill="#1b2a3a">Scaled by depth: comparable</text>
+  <line x1="600" y1="120" x2="960" y2="120" stroke="#5b6b7a" stroke-width="1"/>
+  <path d="M600,120 L720,120 L720,105 L750,90 L780,90 L810,105 L810,120 L960,120 Z" fill="#8c564b" fill-opacity="0.4" stroke="#8c564b" stroke-width="2"/>
+  <line x1="600" y1="210" x2="960" y2="210" stroke="#5b6b7a" stroke-width="1"/>
+  <path d="M600,210 L720,210 L720,195 L750,180 L780,180 L810,195 L810,210 L960,210 Z" fill="#8c564b" fill-opacity="0.4" stroke="#8c564b" stroke-width="2"/>
+  <text x="980" y="100" font-size="15" fill="#1b2a3a">A: 30 / 15 = 2.0 CPM</text>
+  <text x="980" y="190" font-size="15" fill="#1b2a3a">B: 60 / 30 = 2.0 CPM</text>
+
+  <!-- formulas -->
+  <rect x="20" y="238" width="530" height="170" rx="8" fill="#f4f6f8" stroke="#cfd8e0"/>
+  <text x="36" y="264" font-size="16" font-weight="bold" fill="#1b2a3a">CPM: counts per million mapped reads</text>
+  <text x="36" y="292" font-size="15" fill="#1b2a3a">CPM = count × 10<tspan baseline-shift="super" font-size="11">6</tspan> / (reads in the BAM)</text>
+  <text x="36" y="318" font-size="15" fill="#1b2a3a">Same idea as CPM in RNA-seq. The value depends on</text>
+  <text x="36" y="338" font-size="15" fill="#1b2a3a">the bin size (a count per bin, not per base).</text>
+  <text x="36" y="372" font-size="14" fill="#5b6b7a">Also: BPM (bins per million, like TPM), RPKM.</text>
+  <text x="36" y="392" font-size="14" fill="#5b6b7a">All assume total signal is comparable between samples.</text>
+
+  <rect x="570" y="238" width="530" height="170" rx="8" fill="#f4f6f8" stroke="#cfd8e0"/>
+  <text x="586" y="264" font-size="16" font-weight="bold" fill="#1b2a3a">RPGC: reads per genomic content ("1×")</text>
+  <text x="586" y="292" font-size="15" fill="#1b2a3a">scale so that the average coverage is 1:</text>
+  <text x="586" y="318" font-size="15" fill="#1b2a3a">mean depth = reads × fragment length / genome size</text>
+  <text x="586" y="344" font-size="15" fill="#1b2a3a">15 M × 200 bp / 2.9 Gb = 1.03 ×</text>
+  <text x="586" y="372" font-size="15" fill="#1b2a3a">a base covered by 40 fragments: 40 / 1.03 = 38.7</text>
+  <text x="586" y="396" font-size="14" fill="#5b6b7a">i.e. 38.7 times the genome average. Needs the effective genome size.</text>
+</svg>

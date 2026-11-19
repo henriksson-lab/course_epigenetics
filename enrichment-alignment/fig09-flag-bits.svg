@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 450" width="1120" height="450" font-family="Helvetica, Arial, sans-serif">
+  <rect width="1120" height="450" fill="#ffffff"/>
+
+  <!-- table header -->
+  <text x="20" y="30" font-size="17" font-weight="bold" fill="#1b2a3a">FLAG = a sum of bits</text>
+  <g font-size="15" font-weight="bold" fill="#5b6b7a">
+    <text x="30" y="62">bit</text>
+    <text x="100" y="62">meaning</text>
+    <text x="520" y="62" text-anchor="middle">99</text>
+    <text x="590" y="62" text-anchor="middle">147</text>
+    <text x="660" y="62" text-anchor="middle">83</text>
+    <text x="730" y="62" text-anchor="middle">163</text>
+    <text x="800" y="62" text-anchor="middle">1804</text>
+  </g>
+  <line x1="20" y1="72" x2="840" y2="72" stroke="#1b2a3a" stroke-width="1.5"/>
+
+  <!-- rows: y = 94 + 28*i -->
+  <g font-size="15" fill="#1b2a3a">
+    <text x="30" y="94">1</text><text x="100" y="94">read is paired</text>
+    <text x="30" y="122">2</text><text x="100" y="122">mapped in a proper pair</text>
+    <text x="30" y="150">4</text><text x="100" y="150">read unmapped</text>
+    <text x="30" y="178">8</text><text x="100" y="178">mate unmapped</text>
+    <text x="30" y="206">16</text><text x="100" y="206">read on the reverse strand</text>
+    <text x="30" y="234">32</text><text x="100" y="234">mate on the reverse strand</text>
+    <text x="30" y="262">64</text><text x="100" y="262">first in pair (read 1)</text>
+    <text x="30" y="290">128</text><text x="100" y="290">second in pair (read 2)</text>
+    <text x="30" y="318">256</text><text x="100" y="318">secondary alignment</text>
+    <text x="30" y="346">512</text><text x="100" y="346">failed platform QC</text>
+    <text x="30" y="374">1024</text><text x="100" y="374">PCR or optical duplicate</text>
+    <text x="30" y="402">2048</text><text x="100" y="402">supplementary (chimeric)</text>
+  </g>
+  <!-- alternating row shading under -->
+  <!-- ticks: 99 = 1+2+32+64 ; 147 = 1+2+16+128 ; 83 = 1+2+16+64 ; 163 = 1+2+32+128 ; 1804 = 4+8+256+512+1024 -->
+  <g fill="#2a6f97">
+    <!-- 99 -->
+    <circle cx="520" cy="89" r="7"/><circle cx="520" cy="117" r="7"/><circle cx="520" cy="229" r="7"/><circle cx="520" cy="257" r="7"/>
+    <!-- 147 -->
+    <circle cx="590" cy="89" r="7"/><circle cx="590" cy="117" r="7"/><circle cx="590" cy="201" r="7"/><circle cx="590" cy="285" r="7"/>
+    <!-- 83 -->
+    <circle cx="660" cy="89" r="7"/><circle cx="660" cy="117" r="7"/><circle cx="660" cy="201" r="7"/><circle cx="660" cy="257" r="7"/>
+    <!-- 163 -->
+    <circle cx="730" cy="89" r="7"/><circle cx="730" cy="117" r="7"/><circle cx="730" cy="229" r="7"/><circle cx="730" cy="285" r="7"/>
+  </g>
+  <g fill="#c0392b">
+    <circle cx="800" cy="145" r="7"/><circle cx="800" cy="173" r="7"/><circle cx="800" cy="313" r="7"/><circle cx="800" cy="341" r="7"/><circle cx="800" cy="369" r="7"/>
+  </g>
+  <line x1="20" y1="414" x2="840" y2="414" stroke="#1b2a3a" stroke-width="1.5"/>
+  <line x1="485" y1="44" x2="485" y2="414" stroke="#cfd8e0" stroke-width="1.5"/>
+
+  <!-- right: worked example -->
+  <rect x="870" y="44" width="236" height="370" rx="8" fill="#f4f6f8" stroke="#cfd8e0"/>
+  <text x="886" y="72" font-size="16" font-weight="bold" fill="#1b2a3a">Decode 99</text>
+  <g font-size="15" fill="#1b2a3a">
+    <text x="886" y="98">99 − 64 = 35 → read 1</text>
+    <text x="886" y="122">35 − 32 = 3 → mate reverse</text>
+    <text x="886" y="146">3 − 2 = 1 → proper pair</text>
+    <text x="886" y="170">1 − 1 = 0 → paired</text>
+  </g>
+  <text x="886" y="200" font-size="15" fill="#2a6f97">read 1, forward strand,</text>
+  <text x="886" y="220" font-size="15" fill="#2a6f97">mate reverse: the left end</text>
+  <text x="886" y="240" font-size="15" fill="#2a6f97">of a proper pair. Its mate: 147.</text>
+  <line x1="886" y1="262" x2="1090" y2="262" stroke="#cfd8e0" stroke-width="1.5"/>
+  <text x="886" y="288" font-size="16" font-weight="bold" fill="#1b2a3a">Filter: -F 1804</text>
+  <g font-size="15" fill="#1b2a3a">
+    <text x="886" y="314">drop reads with any of</text>
+    <text x="886" y="336">4 + 8 + 256 + 512 + 1024</text>
+    <text x="886" y="358">-f 2 keeps proper pairs</text>
+  </g>
+  <text x="886" y="394" font-size="14" fill="#5b6b7a">Single-end: 0 (+) or 16 (−).</text>
+
+  <text x="20" y="440" font-size="14" fill="#5b6b7a">Read the flag as the largest bits first. Online: broadinstitute.github.io/picard/explain-flags.html; or samtools flags 99.</text>
+</svg>

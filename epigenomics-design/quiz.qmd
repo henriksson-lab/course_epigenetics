@@ -1,0 +1,99 @@
+---
+title: "Quiz: experimental design and QC"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+Short questions on replicates, controls, normalisation and QC metrics. Try each on paper first, then open the answer.
+
+---
+
+**Q1.** A ChIP-seq library has 20 M uniquely mapped reads (before duplicate removal) at 15 M distinct positions; 12 M positions have exactly one read and 2 M have exactly two. Compute NRF, PBC1 and PBC2. Is the library acceptable by the ENCODE standards?
+
+::: {.callout-tip collapse="true" title="Hint"}
+NRF = distinct / reads; PBC1 = one-read positions / distinct; PBC2 = one-read / two-read positions. ENCODE ideal: > 0.9, > 0.9, > 10.
+:::
+
+::: {.callout-note collapse="true" title="Answer"}
+NRF $= 15/20 = 0.75$, PBC1 $= 12/15 = 0.80$, PBC2 $= 12/2 = 6$. NRF is "acceptable" (0.5–0.8), PBC1 and PBC2 indicate mild bottlenecking (0.8–0.9 and 3–10). Usable, but sequencing deeper will mostly add duplicates.
+:::
+
+---
+
+**Q2.** A TF ChIP-seq has 25 M filtered reads, 200 000 of which fall in peaks. What is the FRiP? What would you check before deciding that the experiment failed?
+
+::: {.callout-note collapse="true" title="Answer"}
+FRiP $= 0.2 / 25 = 0.8\%$, below ENCODE's 1% guideline. Before rejecting it: how many peaks are there (a factor with few genuine sites can have a low FRiP and still be good), the fingerprint against the input, the cross-correlation (RSC), the replicate agreement, and whether the expected motif is enriched at the peak summits.
+:::
+
+---
+
+**Q3.** Name three sources of reads that are present in a ChIP-seq library but have nothing to do with the antibody's target. Which of them does an input control correct for, and which does it not?
+
+::: {.callout-note collapse="true" title="Answer"}
+Open chromatin shears more easily (more fragments at promoters); copy-number gains (more DNA, more reads); mappability and repeats (no reads, or pile-ups in collapsed repeats); GC and PCR bias. The input, made from the same sheared chromatin without an antibody, shows all of these. It does not model DNA that binds non-specifically to the antibody or the beads: an IgG control does, but it often yields too little DNA for a good library.
+:::
+
+---
+
+**Q4.** In a fingerprint plot, sample S1 lies almost on the diagonal, and sample S2 stays near 0 until $x = 0.8$ and then rises to 1. At $x = 0.9$, S2 is at 0.35. What are S1 and S2 likely to be? What fraction of S2's reads are in the top 10% of bins?
+
+::: {.callout-note collapse="true" title="Answer"}
+S1 is an input (or a failed ChIP): reads spread evenly over the bins. S2 is an enriched ChIP. The top 10% of bins (from 0.9 to 1) hold $1 - 0.35 = 65\%$ of S2's reads.
+:::
+
+---
+
+**Q5.** A single-end 50 bp ChIP-seq has strand cross-correlation 0.12 at 50 bp, 0.10 at its maximum (220 bp), and a minimum of 0.08. Compute NSC and RSC. What do the two peaks of the curve mean, and is this a good experiment?
+
+::: {.callout-tip collapse="true" title="Hint"}
+NSC = CC(fragment) / min; RSC = (CC(fragment) − min) / (CC(read) − min).
+:::
+
+::: {.callout-note collapse="true" title="Answer"}
+NSC $= 0.10/0.08 = 1.25$; RSC $= 0.02/0.04 = 0.5$. The peak at 220 bp is the fragment length (enrichment around binding sites); the peak at 50 bp is the "phantom" read-length peak caused by mappability, present in every library. Here the phantom peak is higher than the fragment peak (RSC < 0.8): weak enrichment. ENCODE would repeat a TF ChIP like this; for a broad histone mark a flat curve is less worrying.
+:::
+
+---
+
+**Q6.** H3K79me2 ChIP-Rx with *Drosophila* spike-in. Control: 30 M reads, 1.5 M on the fly genome; DOT1L inhibitor: 30 M reads, 6 M on the fly genome. A gene body has 3000 reads in the control and 2400 after treatment. Compare the change with CPM normalisation and with spike-in normalisation.
+
+::: {.callout-note collapse="true" title="Answer"}
+CPM per human reads: $3000/28.5 = 105$ and $2400/24 = 100$: a 5% drop, "no real change". Spike-in: $\alpha = 1/1.5 = 0.67$ and $1/6 = 0.167$; $3000 \times 0.67 = 2000$ and $2400 \times 0.167 = 400$: a **5-fold** loss. The inhibitor removed most H3K79me2 everywhere; depth normalisation redistributes what is left and hides it.
+:::
+
+---
+
+**Q7.** Wild-type samples were sequenced in January and knockout samples in March, three of each. Why can DESeq2 not estimate the knockout effect with `~ batch + genotype`? What would happen with `~ genotype`?
+
+::: {.callout-note collapse="true" title="Answer"}
+Batch and genotype are perfectly confounded: the batch column of the design matrix equals the genotype column, so the two effects cannot be separated (the matrix is not of full rank and DESeq2 refuses to fit it). With `~ genotype` the model fits, but every difference between January and March (reagents, antibody lot, sequencing run) is reported as an effect of the knockout. Only a new design helps: process both genotypes in each batch.
+:::
+
+---
+
+**Q8.** A paper reports peaks "reproducible in two pseudoreplicates" from a single ChIP-seq sample per condition and concludes that 3000 binding sites differ between conditions. What do pseudoreplicates show, and what do they not show?
+
+::: {.callout-note collapse="true" title="Answer"}
+Pseudoreplicates are random halves of the reads of one library. Agreement between them shows that a peak is supported by enough reads (counting noise is small). They share the same cells, chromatin, IP and library, so they say nothing about biological or experimental variability. With n = 1 per condition there is no estimate of that variability, and no valid test of differences between conditions.
+:::
+
+---
+
+**Q9.** ATAC-seq experiments usually have no input control, and nobody computes strand cross-correlation for them. Why is this acceptable, and which QC metrics take their place?
+
+::: {.callout-note collapse="true" title="Answer"}
+There is no natural control: Tn5 cutting of open chromatin *is* the signal, and the background is estimated from the sample itself (genome-wide and local rates in MACS). Paired-end reads measure every fragment length directly, so cross-correlation is not needed. ATAC-specific QC: TSS enrichment (signal to noise; ENCODE > 7 ideal for GRCh38), the fragment-size distribution (nucleosome-free peak and mono-nucleosome peak), the mitochondrial fraction, FRiP (> 0.3), library complexity, and agreement between biological replicates.
+:::
+
+---
+
+**Q10.** A collaborator wants to rescue a ChIP-seq library with 70% duplicates by sequencing it four times deeper. Will that work?
+
+::: {.callout-note collapse="true" title="Answer"}
+No. 70% duplicates means the library contains few distinct molecules (low complexity, typically from too little immunoprecipitated DNA and many PCR cycles). Deeper sequencing mostly reads the same molecules again: the duplicate rate rises further and the number of usable reads grows very little. Make a new library from more starting material (or pool IPs), with fewer PCR cycles.
+:::

@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 300" width="1120" height="300" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker><marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker><marker id="ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a8324a"/></marker><marker id="as" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker><marker id="ao" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e67e22"/></marker><marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a6f97"/></marker><marker id="ap" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b4fa0"/></marker><marker id="at" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a9d8f"/></marker><marker id="an" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8c564b"/></marker></defs>
+<rect width="1120" height="300" fill="#ffffff"/>
+<text x="147.5" y="34" font-size="17" text-anchor="middle" font-weight="bold" fill="#1b2a3a">open DNA</text>
+<line x1="25" y1="170" x2="270" y2="170" stroke="#1b2a3a" stroke-width="2.2"/>
+<rect x="122.5" y="164" width="50" height="12" rx="0" fill="#2a9d8f" stroke="none" stroke-width="1.5"/>
+<path d="M122.5,163 C118.5,123 176.5,123 172.5,163 Z" fill="#2a9d8f" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="147.5" y="146.0" font-size="14" text-anchor="middle" font-weight="bold" fill="#ffffff">TF</text>
+<text x="147.5" y="262" font-size="16" text-anchor="middle" font-weight="bold" fill="#2e8b57">bound</text>
+<line x1="287" y1="20" x2="287" y2="280" stroke="#d0d7de" stroke-width="1.5"/>
+<text x="427.5" y="34" font-size="17" text-anchor="middle" font-weight="bold" fill="#1b2a3a">on a nucleosome</text>
+<line x1="305" y1="170" x2="550" y2="170" stroke="#1b2a3a" stroke-width="2.2"/>
+<ellipse cx="427.5" cy="170" rx="55" ry="34" fill="#c9d8e6" stroke="#1b2a3a" stroke-width="1.5"/>
+<rect x="402.5" y="198" width="50" height="10" rx="0" fill="#2a9d8f" stroke="none" stroke-width="1.5"/>
+<text x="427.5" y="228" font-size="14" text-anchor="middle" font-weight="normal" fill="#5b6b7a">motif faces the histones</text>
+<path d="M484.5,120 C480.5,84 534.5,84 530.5,120 Z" fill="#2a9d8f" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="507.5" y="105.0" font-size="14" text-anchor="middle" font-weight="bold" fill="#ffffff">TF</text>
+<line x1="487.5" y1="100" x2="467.5" y2="126" stroke="#a8324a" stroke-width="3"/>
+<line x1="467.5" y1="100" x2="487.5" y2="126" stroke="#a8324a" stroke-width="3"/>
+<text x="427.5" y="262" font-size="16" text-anchor="middle" font-weight="bold" fill="#a8324a">mostly not bound</text>
+<line x1="567" y1="20" x2="567" y2="280" stroke="#d0d7de" stroke-width="1.5"/>
+<text x="707.5" y="34" font-size="17" text-anchor="middle" font-weight="bold" fill="#1b2a3a">CpG in the motif methylated</text>
+<line x1="585" y1="170" x2="830" y2="170" stroke="#1b2a3a" stroke-width="2.2"/>
+<rect x="682.5" y="164" width="50" height="12" rx="0" fill="#8c564b" stroke="none" stroke-width="1.5"/>
+<line x1="707.5" y1="164" x2="707.5" y2="144" stroke="#1b2a3a" stroke-width="2"/>
+<circle cx="707.5" cy="138" r="7" fill="#1b2a3a" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="721.5" y="142" font-size="14" text-anchor="start" font-weight="normal" fill="#1b2a3a">mCpG</text>
+<path d="M677.5,95 C673.5,57 741.5,57 737.5,95 Z" fill="#8c564b" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="707.5" y="79.0" font-size="13" text-anchor="middle" font-weight="bold" fill="#ffffff">CTCF</text>
+<line x1="695.5" y1="104" x2="719.5" y2="126" stroke="#a8324a" stroke-width="3"/>
+<line x1="719.5" y1="104" x2="695.5" y2="126" stroke="#a8324a" stroke-width="3"/>
+<text x="707.5" y="262" font-size="16" text-anchor="middle" font-weight="bold" fill="#a8324a">not bound (CTCF)</text>
+<line x1="847" y1="20" x2="847" y2="280" stroke="#d0d7de" stroke-width="1.5"/>
+<text x="987.5" y="34" font-size="17" text-anchor="middle" font-weight="bold" fill="#1b2a3a">with a partner</text>
+<line x1="865" y1="170" x2="1110" y2="170" stroke="#1b2a3a" stroke-width="2.2"/>
+<rect x="937.5" y="164" width="40" height="12" rx="0" fill="#9fd3c9" stroke="none" stroke-width="1.5"/>
+<rect x="997.5" y="164" width="40" height="12" rx="0" fill="#6b4fa0" stroke="none" stroke-width="1.5"/>
+<path d="M936.5,163 C932.5,125 982.5,125 978.5,163 Z" fill="#2a9d8f" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="957.5" y="147.0" font-size="14" text-anchor="middle" font-weight="bold" fill="#ffffff">A</text>
+<path d="M996.5,163 C992.5,125 1042.5,125 1038.5,163 Z" fill="#6b4fa0" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="1017.5" y="147.0" font-size="14" text-anchor="middle" font-weight="bold" fill="#ffffff">B</text>
+<line x1="979.5" y1="140" x2="995.5" y2="140" stroke="#1b2a3a" stroke-width="3"/>
+<text x="987.5" y="200" font-size="14" text-anchor="middle" font-weight="normal" fill="#5b6b7a">weak A site · strong B site</text>
+<text x="987.5" y="262" font-size="16" text-anchor="middle" font-weight="bold" fill="#2e8b57">weak site, bound together</text>
+</svg>

@@ -391,7 +391,7 @@ Enrichment = observed / mean of the shuffles. Empirical $p = (k + 1) / (N + 1)$,
 
 - *From reads to coverage* makes the peaks and bigWigs we used here from raw reads.
 - *Differential accessibility* merges peaks from many samples into a consensus set (C6) and counts reads in it.
-- *Motifs and footprinting* uses windows around summits (B2) and GC-matched backgrounds, a better null than C7.
+- *Motifs, motif enrichment and TF footprinting* uses windows around summits (B2) and GC-matched backgrounds, a better null than C7.
 - *Linking regulatory elements to genes* replaces "nearest gene" (C5b) with contacts and activity.
 
 ## Key papers (optional further reading)

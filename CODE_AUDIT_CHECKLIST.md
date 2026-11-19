@@ -20,6 +20,28 @@ Record fixes in the Git history.
 - [ ] `genomic-intervals/exercise.qmd` — added 2026-11-17; bash and R chunks run against data/, numbers in solutions from those runs (2026-11-17); needs independent audit
 - [ ] `genomic-intervals/make-intervals-figs.R` — added 2026-11-17; needs audit (calls bedtools)
 - [ ] `data/download.sh` — added 2026-11-17
+- [ ] `gene-regulation/lec.qmd` — added 2026-11-18; needs audit
+- [ ] `gene-regulation/exercise.qmd` — added 2026-11-18; chunks run as written by its author; needs independent audit
+- [ ] `gene-regulation/make-generegulation-figs.R` — added 2026-11-18; needs audit
+- [ ] `enrichment-alignment/lec.qmd` — added 2026-11-18; needs audit
+- [ ] `enrichment-alignment/exercise.qmd` — added 2026-11-18; chunks run as written by its author; needs independent audit
+- [ ] `enrichment-alignment/make-enrichalign-figs.R` — added 2026-11-18; needs audit
+- [ ] `epigenomics-design/lec.qmd` — added 2026-11-18; needs audit
+- [ ] `epigenomics-design/exercise.qmd` — added 2026-11-18; chunks run as written by its author; command-line and R parts re-run independently 2026-11-19, numbers agree; needs independent audit
+- [ ] `epigenomics-design/make-design-figs.R` — added 2026-11-18; needs audit
+- [ ] `atacseq-intro/lec.qmd` — added 2026-11-18; needs audit
+- [ ] `atacseq-intro/exercise.qmd` — added 2026-11-18; chunks run as written by its author; needs independent audit
+- [ ] `atacseq-intro/make-atacintro-figs.R` — added 2026-11-18; needs audit
+- [ ] `atacseq-analysis/lec.qmd` — added 2026-11-18; needs audit
+- [ ] `atacseq-analysis/exercise.qmd` — added 2026-11-18; chunks run as written by its author; needs independent audit
+- [ ] `atacseq-analysis/make-atacanalysis-figs.R` — added 2026-11-18; needs audit
+- [ ] `differential-accessibility/lec.qmd` — added 2026-11-18; needs audit
+- [ ] `differential-accessibility/exercise.qmd` — added 2026-11-18; chunks run as written by its author; needs independent audit
+- [ ] `differential-accessibility/make-diffacc-figs.R` — added 2026-11-18; needs audit
+- [ ] `motifs-footprinting/lec.qmd` — added 2026-11-18; needs audit
+- [ ] `motifs-footprinting/exercise.qmd` — added 2026-11-18; chunks run as written by its author; needs independent audit
+- [ ] `motifs-footprinting/make-motifs-figs.R` — added 2026-11-18; needs audit
+- [ ] `data/prepare-reads.sh`, `data/filter_fastq_by_names.py` — added 2026-11-18 (read-name `/1` fix 2026-11-18)
 
 ## Build and presentation code
 

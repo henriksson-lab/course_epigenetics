@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 330" width="1120" height="330" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a6f97"/></marker><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker></defs>
+<rect width="1120" height="330" fill="white"/>
+<rect x="8" y="8" width="218" height="314" rx="8" fill="#f4f6f8" stroke="#d9dee3"/>
+<text x="117.0" y="34" text-anchor="middle" font-size="17" font-weight="bold" fill="#1b2a3a">Multi-mappers</text>
+<text x="117.0" y="54" text-anchor="middle" font-size="14" fill="#5b6b7a">low MAPQ</text>
+<text x="117.0" y="232" text-anchor="middle" font-size="15" fill="#1b2a3a">same sequence twice:</text>
+<text x="117.0" y="251" text-anchor="middle" font-size="15" fill="#1b2a3a">where did the read</text>
+<text x="117.0" y="270" text-anchor="middle" font-size="15" fill="#1b2a3a">come from?</text>
+<text x="117.0" y="310" text-anchor="middle" font-size="14" font-family="Menlo, Consolas, monospace" fill="#5b6b7a">samtools view -q 30</text>
+<line x1="22" y1="170" x2="212" y2="170" stroke="#1b2a3a" stroke-width="2"/>
+<rect x="34" y="162" width="68" height="16" fill="#e67e22" fill-opacity="0.6"/>
+<line x1="40" y1="140" x2="96" y2="140" stroke="#c0392b" stroke-width="3" stroke-dasharray="6 4" marker-end="url(#ar)"/>
+<text x="68" y="198" text-anchor="middle" font-size="14" fill="#5b6b7a">repeat</text>
+<rect x="132" y="162" width="68" height="16" fill="#e67e22" fill-opacity="0.6"/>
+<line x1="138" y1="140" x2="194" y2="140" stroke="#c0392b" stroke-width="3" stroke-dasharray="6 4" marker-end="url(#ar)"/>
+<text x="166" y="198" text-anchor="middle" font-size="14" fill="#5b6b7a">repeat</text>
+<text x="117.0" y="112" text-anchor="middle" font-size="22" font-weight="bold" fill="#c0392b">?</text>
+<rect x="232" y="8" width="218" height="314" rx="8" fill="#f4f6f8" stroke="#d9dee3"/>
+<text x="341.0" y="34" text-anchor="middle" font-size="17" font-weight="bold" fill="#1b2a3a">Improper pairs</text>
+<text x="341.0" y="54" text-anchor="middle" font-size="14" fill="#5b6b7a">not flag 0x2</text>
+<text x="341.0" y="232" text-anchor="middle" font-size="15" fill="#1b2a3a">mates too far apart,</text>
+<text x="341.0" y="251" text-anchor="middle" font-size="15" fill="#1b2a3a">wrong orientation,</text>
+<text x="341.0" y="270" text-anchor="middle" font-size="15" fill="#1b2a3a">or mate unmapped</text>
+<text x="341.0" y="310" text-anchor="middle" font-size="14" font-family="Menlo, Consolas, monospace" fill="#5b6b7a">samtools view -f 2</text>
+<line x1="246" y1="170" x2="436" y2="170" stroke="#1b2a3a" stroke-width="2"/>
+<line x1="256" y1="96" x2="306" y2="96" stroke="#2a6f97" stroke-width="3" marker-end="url(#ab)"/>
+<line x1="376" y1="96" x2="426" y2="96" stroke="#2a6f97" stroke-width="3" marker-end="url(#ab)"/>
+<text x="341.0" y="84" text-anchor="middle" font-size="14" fill="#5b6b7a">same direction</text>
+<line x1="256" y1="140" x2="296" y2="140" stroke="#2a6f97" stroke-width="3" marker-end="url(#ab)"/>
+<line x1="430" y1="140" x2="390" y2="140" stroke="#2a6f97" stroke-width="3" marker-end="url(#ab)"/>
+<text x="341.0" y="128" text-anchor="middle" font-size="14" fill="#5b6b7a">&gt; 2 kb apart</text>
+<line x1="302" y1="140" x2="384" y2="140" stroke="#5b6b7a" stroke-width="1.2" stroke-dasharray="3 4"/>
+<rect x="456" y="8" width="218" height="314" rx="8" fill="#f4f6f8" stroke="#d9dee3"/>
+<text x="565.0" y="34" text-anchor="middle" font-size="17" font-weight="bold" fill="#1b2a3a">Mitochondrial reads</text>
+<text x="565.0" y="54" text-anchor="middle" font-size="14" fill="#5b6b7a">chrM</text>
+<text x="565.0" y="232" text-anchor="middle" font-size="15" fill="#1b2a3a">many mtDNA copies,</text>
+<text x="565.0" y="251" text-anchor="middle" font-size="15" fill="#1b2a3a">no nucleosomes: up to</text>
+<text x="565.0" y="270" text-anchor="middle" font-size="15" fill="#1b2a3a">half of all reads</text>
+<text x="565.0" y="310" text-anchor="middle" font-size="14" font-family="Menlo, Consolas, monospace" fill="#5b6b7a">drop chrM</text>
+<circle cx="565.0" cy="140" r="44" fill="none" stroke="#1b2a3a" stroke-width="3"/>
+<line x1="615.0" y1="140.0" x2="629.0" y2="140.0" stroke="#2a6f97" stroke-width="3"/>
+<line x1="610.0" y1="161.7" x2="622.7" y2="167.8" stroke="#2a6f97" stroke-width="3"/>
+<line x1="596.2" y1="179.1" x2="604.9" y2="190.0" stroke="#2a6f97" stroke-width="3"/>
+<line x1="576.1" y1="188.7" x2="579.2" y2="202.4" stroke="#2a6f97" stroke-width="3"/>
+<line x1="553.9" y1="188.7" x2="550.8" y2="202.4" stroke="#2a6f97" stroke-width="3"/>
+<line x1="533.8" y1="179.1" x2="525.1" y2="190.0" stroke="#2a6f97" stroke-width="3"/>
+<line x1="520.0" y1="161.7" x2="507.3" y2="167.8" stroke="#2a6f97" stroke-width="3"/>
+<line x1="515.0" y1="140.0" x2="501.0" y2="140.0" stroke="#2a6f97" stroke-width="3"/>
+<line x1="520.0" y1="118.3" x2="507.3" y2="112.2" stroke="#2a6f97" stroke-width="3"/>
+<line x1="533.8" y1="100.9" x2="525.1" y2="90.0" stroke="#2a6f97" stroke-width="3"/>
+<line x1="553.9" y1="91.3" x2="550.8" y2="77.6" stroke="#2a6f97" stroke-width="3"/>
+<line x1="576.1" y1="91.3" x2="579.2" y2="77.6" stroke="#2a6f97" stroke-width="3"/>
+<line x1="596.2" y1="100.9" x2="604.9" y2="90.0" stroke="#2a6f97" stroke-width="3"/>
+<line x1="610.0" y1="118.3" x2="622.7" y2="112.2" stroke="#2a6f97" stroke-width="3"/>
+<text x="565.0" y="145" text-anchor="middle" font-size="15" fill="#1b2a3a">16.6 kb</text>
+<rect x="680" y="8" width="218" height="314" rx="8" fill="#f4f6f8" stroke="#d9dee3"/>
+<text x="789.0" y="34" text-anchor="middle" font-size="17" font-weight="bold" fill="#1b2a3a">PCR duplicates</text>
+<text x="789.0" y="54" text-anchor="middle" font-size="14" fill="#5b6b7a">same start and end</text>
+<text x="789.0" y="232" text-anchor="middle" font-size="15" fill="#1b2a3a">one molecule copied</text>
+<text x="789.0" y="251" text-anchor="middle" font-size="15" fill="#1b2a3a">by PCR: counts once</text>
+<text x="789.0" y="310" text-anchor="middle" font-size="14" font-family="Menlo, Consolas, monospace" fill="#5b6b7a">samtools markdup -r</text>
+<line x1="694" y1="186" x2="884" y2="186" stroke="#1b2a3a" stroke-width="2"/>
+<line x1="728" y1="92" x2="850" y2="92" stroke="#2a6f97" stroke-width="5"/>
+<line x1="728" y1="116" x2="850" y2="116" stroke="#c0392b" stroke-width="5" stroke-opacity="0.55"/>
+<line x1="728" y1="140" x2="850" y2="140" stroke="#c0392b" stroke-width="5" stroke-opacity="0.55"/>
+<line x1="728" y1="164" x2="850" y2="164" stroke="#c0392b" stroke-width="5" stroke-opacity="0.55"/>
+<line x1="728" y1="80" x2="728" y2="186" stroke="#5b6b7a" stroke-dasharray="3 3"/>
+<line x1="850" y1="80" x2="850" y2="186" stroke="#5b6b7a" stroke-dasharray="3 3"/>
+<text x="789.0" y="205" text-anchor="middle" font-size="14" fill="#5b6b7a">4 fragments, 1 kept</text>
+<rect x="904" y="8" width="218" height="314" rx="8" fill="#f4f6f8" stroke="#d9dee3"/>
+<text x="1013.0" y="34" text-anchor="middle" font-size="17" font-weight="bold" fill="#1b2a3a">Blacklisted regions</text>
+<text x="1013.0" y="54" text-anchor="middle" font-size="14" fill="#5b6b7a">ENCODE exclusion list</text>
+<text x="1013.0" y="232" text-anchor="middle" font-size="15" fill="#1b2a3a">artefactual signal in</text>
+<text x="1013.0" y="251" text-anchor="middle" font-size="15" fill="#1b2a3a">every assay (satellites,</text>
+<text x="1013.0" y="270" text-anchor="middle" font-size="15" fill="#1b2a3a">rDNA, collapsed repeats)</text>
+<text x="1013.0" y="310" text-anchor="middle" font-size="14" font-family="Menlo, Consolas, monospace" fill="#5b6b7a">bedtools intersect -v</text>
+<line x1="918" y1="186" x2="1108" y2="186" stroke="#1b2a3a" stroke-width="2"/>
+<rect x="974" y="72" width="78" height="114" fill="#c0392b" fill-opacity="0.12"/>
+<polyline points="918,184 944,180 964,176 978,120 990,86 1004,80 1020,92 1034,110 1050,176 1074,181 1108,184" fill="none" stroke="#1b2a3a" stroke-width="2.2"/>
+<text x="1013.0" y="205" text-anchor="middle" font-size="14" fill="#c0392b">excluded region</text>
+</svg>

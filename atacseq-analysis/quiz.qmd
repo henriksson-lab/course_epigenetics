@@ -1,0 +1,103 @@
+---
+title: "Quiz: ATAC-seq processing and peak calling"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+Short questions on processing ATAC-seq reads, calling peaks and combining replicates. Try each on paper first, then open the answer.
+
+---
+
+**Q1.** A read pair from an ATAC-seq library aligns as read 1 on the + strand at BED `[52 000, 52 100)` and read 2 on the − strand at BED `[52 310, 52 410)`. Give the fragment length and the two Tn5 insertion sites (BED, after the +4/−5 shift).
+
+::: {.callout-tip collapse="true" title="Hint"}
+The + read's 5' end is its start; the − read's 5' end is its end.
+:::
+
+::: {.callout-note collapse="true" title="Answer"}
+Fragment `[52 000, 52 410)`, 410 bp. Insertions at $52\,000 + 4 = 52\,004$ and $52\,410 - 5 = 52\,405$ (BED `52004 52005` and `52405 52406`), 401 bp apart.
+:::
+
+---
+
+**Q2.** Why is the shift +4 on one strand and −5 on the other, when Tn5 cuts symmetrically?
+
+::: {.callout-note collapse="true" title="Answer"}
+Tn5 cuts the two strands 9 bp apart and both fragments keep a copy of those 9 bp. The insertion is the centre of the 9 bp: 4 bases in from either end. From a + read's BED start (the first of the 9 bases) that is +4. A − read's 5' end is the last of the 9 bases, but BED stores the end as the boundary *after* it, so the centre is end − 5. In 1-based coordinates both are 4 bases (+4 and −4).
+:::
+
+---
+
+**Q3.** Bowtie2 is run with its default maximum fragment length (500 bp) and only properly paired reads are kept. Which part of the ATAC-seq fragment-size distribution is lost, and does it matter for peak calling?
+
+::: {.callout-note collapse="true" title="Answer"}
+Fragments longer than 500 bp, that is the di- and tri-nucleosome fragments, become "not concordant" and are removed. For peak calling on nucleosome-free regions it matters little (the short fragments carry most of the signal), but you lose part of the library and the nucleosome ladder, which is a QC readout and the input to nucleosome-positioning analyses. Use `-X 2000`.
+:::
+
+---
+
+**Q4.** In 10 kb around a candidate peak MACS3 counts 800 insertions. The window used for counting is 150 bp. The genome-wide expectation is $\lambda_\text{BG} = 5$. There is no control. What is $\lambda_\text{local}$? The peak has $k = 30$; is it more or less significant than it would be against $\lambda_\text{BG}$?
+
+::: {.callout-tip collapse="true" title="Hint"}
+Scale the 10-kb count to 150 bp. Without a control MACS3 uses $\lambda_\text{BG}$ and the 10-kb window.
+:::
+
+::: {.callout-note collapse="true" title="Answer"}
+$\lambda_\text{10k} = 800 \times 150 / 10\,000 = 12$, so $\lambda_\text{local} = \max(5, 12) = 12$. The peak is less significant than against $\lambda_\text{BG}$: $P(X \ge 30 \mid 12)$ is much larger than $P(X \ge 30 \mid 5)$. The local background is high (an open region, an amplified segment); the peak must stand out from its neighbourhood, not from the genome average.
+:::
+
+---
+
+**Q5.** Two ways to call ATAC-seq peaks with MACS3 are `-f BAMPE` and a BED of insertion sites with `--nomodel --shift -75 --extsize 150`. In one sentence each, what is piled up?
+
+::: {.callout-note collapse="true" title="Answer"}
+`BAMPE`: whole fragments, from the start of one read to the end of its mate. Insertion mode: a 150-bp window centred on each Tn5 cut site (two per fragment), ignoring the DNA between the cuts.
+:::
+
+---
+
+**Q6.** After deduplicating with `samtools markdup -r`, a student calls peaks on insertion sites with MACS3's default `--keep-dup 1`. What goes wrong?
+
+::: {.callout-note collapse="true" title="Answer"}
+`--keep-dup 1` keeps one tag per position and strand. Insertion sites from different fragments often hit the same base at strong sites (Tn5 has sequence preferences), and they are all independent events, so the strongest peaks are flattened. Duplicates were already removed at the fragment level, where they can be recognised (same start and same end); use `--keep-dup all`.
+:::
+
+---
+
+**Q7.** Sample A has 20 million insertions after filtering, 7.2 million of them in peaks. Sample B, from the same cell type and with the same peak caller settings, has a FRiP of 0.11. Compute FRiP for A. What could explain B?
+
+::: {.callout-note collapse="true" title="Answer"}
+FRiP(A) = 7.2 / 20 = 0.36, above ENCODE's 0.3. A FRiP of 0.11 means most of B's insertions fall in closed chromatin: dead or damaged cells (naked DNA is accessible everywhere), over-transposition, or poor nuclei preparation. Check the fragment-size distribution and TSS enrichment for B before using it.
+:::
+
+---
+
+**Q8.** Replicate 1 has 50 000 peaks, replicate 2 has 30 000. 27 000 of replicate 2's peaks overlap a replicate-1 peak. A colleague says "90% of peaks are reproducible". Why is that a weak statement, and what is a better analysis?
+
+::: {.callout-note collapse="true" title="Answer"}
+The number depends on the thresholds and is asymmetric: 90% of replicate 2's peaks overlap replicate 1, but at most 54% of replicate 1's 50 000 peaks can overlap replicate 2. A lenient replicate 1 catches almost anything. Better: call both leniently, rank the peaks, and ask how far down the ranking the two replicates agree (IDR, or a rank-consistency curve); report the number of peaks that pass a reproducibility threshold.
+:::
+
+---
+
+**Q9.** Three samples have peaks with summits at positions 10 000 (score 22), 10 300 (score 35) and 10 650 (score 18). Build the fixed-width (500 bp) consensus with iterative overlap removal. How many peaks remain, and where are they?
+
+::: {.callout-tip collapse="true" title="Hint"}
+Windows are summit ± 250. Start with the highest score; drop what overlaps it; continue with the next highest that is left.
+:::
+
+::: {.callout-note collapse="true" title="Answer"}
+Windows: `[9750, 10250)`, `[10050, 10550)`, `[10400, 10900)`. Keep 10 300 (35); it overlaps both others, so both are dropped. One peak remains: `[10050, 10550)`. (A plain `bedtools merge` would give one 1150-bp region `[9750, 10900)`.)
+:::
+
+---
+
+**Q10.** A paper calls ATAC-seq peaks on the full BAM, without removing mitochondrial reads, and reports the 20 "most accessible regions" in the genome. What do you expect to find in that list?
+
+::: {.callout-note collapse="true" title="Answer"}
+The mitochondrial genome. mtDNA has no nucleosomes and many copies per cell, so its pileup is far above any nuclear region; the top peaks will all be on chrM (and possibly in blacklisted repeats). Remove chrM reads and blacklisted regions before peak calling, and look at the top of a peak list in a browser.
+:::

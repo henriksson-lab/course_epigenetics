@@ -1,0 +1,442 @@
+---
+title: "Exercise: Gene regulation and TF motifs"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+## Goal
+
+After this exercise you will be able to:
+
+- Build a **position weight matrix** (PWM) from aligned binding sites with pseudocounts, and score sequences with it on both strands, by hand.
+- Compute the **information content** of a motif column and read a **sequence logo**.
+- Estimate how many **chance matches** a motif has in a region or a genome, and use that to judge claims about TF binding.
+- Fetch a matrix from [JASPAR](https://jaspar.elixir.no/) in R, scan peak sequences and backgrounds with [motifmatchr](https://bioconductor.org/packages/motifmatchr), and measure **enrichment**, **centrality** and the fraction of **bound** matches.
+
+## Background
+
+**PWM.** From $N$ aligned sites, count each base $b$ at each position $j$ ($n_{b,j}$), add a pseudocount, and divide: $p_{b,j} = (n_{b,j} + 1) / (N + 4)$ with a pseudocount of 1 per base. The log-odds weight against a background frequency $q_b$ is $w_{b,j} = \log_2 (p_{b,j} / q_b)$. The score of a sequence window is the sum of the weights of its bases. Scan both strands: the minus strand is the reverse complement.
+
+**Information content** of column $j$ against a uniform background: $IC_j = 2 + \sum_b p_{b,j} \log_2 p_{b,j}$ bits, between 0 (no preference) and 2 (one base only). A logo stacks the letters of each column to height $IC_j$.
+
+**Chance matches.** An exact $k$-mer occurs with probability $4^{-k}$ per position and strand in random sequence. For a PWM scanned at a $p$-value threshold $p$, a sequence of length $L$ has about $2Lp$ matches by chance. Roughly, a motif with $I$ bits of information is found about once every $2^I$ bp per strand.
+
+**Bound or not.** A TF binds only a small fraction of its motif matches: accessibility, nucleosomes, DNA methylation, partner TFs and TF concentration decide which.
+
+## Data
+
+GM12878 CTCF peaks (ENCODE, IDR conservative, narrowPeak), GM12878 ATAC-seq peaks, the hg38 genome as a bgzipped, indexed FASTA (`hg38.fa.bgz` with `.fai` and `.gzi`, so that any region can be read without unpacking the whole file), the hg38 chromosome sizes and the ENCODE blacklist. From the course repository:
+
+```bash
+data/download.sh gene-regulation
+mkdir -p ~/epi/generegulation && cd ~/epi/generegulation
+D=/path/to/course/data                  # where download.sh put the files
+```
+
+You need `samtools` (1.10 or newer), `bedtools` and, in R, the Bioconductor packages `JASPAR2024`, `TFBSTools`, `motifmatchr`, `universalmotif`, `Rsamtools`, `Biostrings`, `GenomicRanges` and `rtracklayer` (see *Install the software you need*). The R part runs in about two minutes on a laptop.
+
+*Simplification:* we use one matrix per TF and a single $p$-value threshold ($10^{-4}$, uniform background). *Motifs, motif enrichment and TF footprinting* does this properly, with motif databases, enrichment statistics and footprints.
+
+## By hand
+
+Do these on paper. A calculator for $\log_2$ helps: $\log_2 x = \ln x / \ln 2$; $\log_2 3 = 1.585$, $\log_2 (2/3) = -0.585$, $\log_2 (1/3) = -1.585$.
+
+**B1. Build a PWM.** Eight binding sites of a GATA-like factor, aligned:
+
+```
+AGATAA   TGATAA   AGATAG   AGATAA
+TGATAG   AGATTA   AGATAA   CGATAA
+```
+
+(a) Write the 4 × 6 count matrix (rows A, C, G, T).
+
+(b) Convert it to frequencies with a pseudocount of 1 per base. Why is a pseudocount needed here?
+
+(c) Compute the log-odds weights against a uniform background ($q_b = 0.25$). Write down the weight matrix; you will need it in B2.
+
+**B2. Score sequences.** Using your weights from B1:
+
+(a) Score `AGATAA`, `TGATAG`, `AGCTAA` and `GGGGGG`. What are the highest and the lowest possible scores?
+
+(b) A sequence on the plus strand reads `TTATCT`. What does it score as written? What does it score on the minus strand? Where is the motif, and which way does it point?
+
+(c) With a threshold of 6 bits, which of the five sequences are matches?
+
+**B3. Information content.**
+
+(a) Compute $IC$ for column 1 and for column 2 of your PWM (with the pseudocounts).
+
+(b) What would $IC$ of column 2 be without pseudocounts? Why does the pseudocount matter so much more with 8 sites than with 913 (the number of sites behind the JASPAR CTCF matrix)?
+
+(c) A column is 50% A and 50% G, never C or T. What is its $IC$? How tall is each letter in the logo?
+
+**B4. How many matches by chance?** Take the human genome as $3.1 \times 10^9$ bp of random sequence with equal base frequencies.
+
+(a) How often do you expect the exact 6-mer `AGATAA` per Mb (both strands)? In the whole genome?
+
+(b) Repeat for the E-box `CACGTG`. Why is the answer half of (a)? (Write out its reverse complement.)
+
+(c) A PWM is scanned with a threshold of $p < 10^{-4}$ per position and strand. How many matches do you expect on chr21 (40 Mb of sequence) and in the genome? GM12878 has 44 217 CTCF peaks: what is the largest possible fraction of genome-wide CTCF matches that can be bound?
+
+(d) The CTCF matrix has 16.1 bits of information. Using the rule of thumb, about how often does a CTCF site of that quality occur by chance?
+
+**B5. Strand and orientation.** A scan of chr1 with the CTCF matrix reports four matches (1-based start, strand):
+
+```
+site 1   1 000 001   +
+site 2   1 180 001   −
+site 3   1 400 001   −
+site 4   1 650 001   +
+```
+
+(a) The JASPAR consensus is `GCCACCAGGGGGCGC`. Write the plus-strand sequence of the genome at site 2 if it matched the consensus perfectly.
+
+(b) Draw the four sites as arrows. Which pairs are **convergent**? Loop extrusion by cohesin predicts loops between which sites?
+
+(c) Site 2 is deleted. Which loop do you now expect?
+
+**B6. Read a logo.** Look at the CTCF logo on the *Information content and sequence logos* slide (JASPAR MA0139.2, 913 sites).
+
+(a) Which three positions carry the most information? About how many bits each?
+
+(b) Position 9 has G (566 sites) and A (333 sites). What does a mixed column mean for binding? Is a site with A at position 9 a "mutant" site?
+
+(c) Why are the end columns low?
+
+(d) A logo built from only 20 sites without pseudocounts looks "cleaner", with taller columns. Is that motif more specific?
+
+**B7. Judge the claims.**
+
+(a) "The CTCF motif is the main determinant of CTCF binding, so CTCF binds essentially every match to its motif." Use your answer to B4c and the chr21 numbers from the lecture (8583 matches, 369 inside a CTCF peak) to judge the claim.
+
+(b) A paper reports: "TF X has 600 000 motif matches but only 12 000 ChIP-seq peaks. Therefore 98% of its sites are silenced by DNA methylation." What else could explain the gap? What experiment would test the methylation claim?
+
+(c) A student finds the PU.1 motif in 22% of GM12878 ATAC peaks and concludes that PU.1 binds 22% of the open chromatin in B cells. What is missing from this reasoning? (In the lecture: 12% of GC-matched background windows also have a match.)
+
+**B8. Read the figure.** You ChIP two TFs, Y and Z, and plot the position of the best match to each one's motif relative to the summit, as on the centrality slide. Y gives a sharp peak at 0; Z gives a flat histogram, although Z's motif is found in 40% of its peaks (15% in background). Give two explanations for Z.
+
+## On the command line
+
+### C1 — Sequences around the CTCF summits
+
+```bash
+zcat $D/gm12878_ctcf_peaks.bed.gz \
+  | awk -v OFS='\t' '{ s = $2 + $10; print $1, s - 100, s + 100, "peak" NR }' > ctcf_win.bed
+head -2 ctcf_win.bed
+
+grep -P '^chr([0-9]+|X)\t' $D/hg38.chrom.sizes > genome.txt
+zcat $D/hg38_blacklist.bed.gz > blacklist.bed
+bedtools shuffle -i ctcf_win.bed -g genome.txt -chrom -excl blacklist.bed -seed 1 > shuf_win.bed
+
+for f in ctcf_win shuf_win; do
+  awk '{ print $1 ":" $2 + 1 "-" $3 }' $f.bed > $f.regions
+  samtools faidx -n 1000 -r $f.regions $D/hg38.fa.bgz | grep -v '>' | tr acgtn ACGTN > $f.txt
+done
+wc -l ctcf_win.txt shuf_win.txt
+grep -c N shuf_win.txt
+```
+
+(a) Explain the `awk` in the first command: which column is the summit, and why is the window `s − 100` to `s + 100`? Why does the second `awk` add 1 to the start?
+
+(b) The genome file is soft-masked (repeats in lower case). What does `tr acgtn ACGTN` do, and what would go wrong without it?
+
+(c) How many shuffled windows contain an N, and why can that happen?
+
+### C2 — Counting words is not motif scanning
+
+```bash
+for f in ctcf_win shuf_win; do
+  echo $f \
+    $(grep -c -E 'CCCTC|GAGGG' $f.txt) \
+    $(grep -c -E 'CCA[CG][CT]AG[AG][GT]GG|CC[AC][CT]CT[AG][CG]TGG' $f.txt) \
+    $(awk '{ gc += gsub(/[GC]/, ""); n += 200 } END { printf "%.3f", gc / n }' $f.txt)
+done
+```
+
+(a) The columns are: windows containing `CCCTC` (on either strand), windows containing an 11-bp degenerate CTCF core (either strand), and GC content. Fill in a table and compute the fraction for each.
+
+(b) CTCF is named "CCCTC-binding factor". Why is `CCCTC` a poor test for CTCF sites? Estimate how often a 5-mer occurs in 200 bp of random sequence (both strands).
+
+(c) Why do the shuffled windows have lower GC content than the peak windows, and why does that matter for (a)?
+
+## In R
+
+```r
+library(JASPAR2024); library(TFBSTools); library(RSQLite)
+library(GenomicRanges); library(rtracklayer); library(Rsamtools); library(Biostrings)
+library(motifmatchr); library(universalmotif)
+D <- "/path/to/course/data"
+```
+
+### R1 — The CTCF matrix from JASPAR
+
+```r
+jaspar <- dbConnect(SQLite(), db(JASPAR2024()))
+ctcf_m <- getMatrixByID(jaspar, "MA0139.2")
+ctcf_m
+cnt <- Matrix(ctcf_m)            # counts: 4 rows (A, C, G, T) x 15 columns
+cnt
+colSums(cnt)                     # number of sites in each column
+```
+
+(a) How many sites is the matrix built from, and from what kind of experiment? (Look at the `type` tag.)
+
+(b) Why are the column sums not all equal?
+
+### R2 — Frequencies, log-odds, information content and the logo
+
+```r
+p   <- (cnt + 0.25) / colSums(cnt + 0.25)  # pseudocount 0.25 per base (1 per column)
+lo  <- log2(p / 0.25)                       # log-odds against a uniform background
+ic  <- 2 + colSums(p * log2(p))             # information content per column (bits)
+round(lo, 2)
+round(ic, 2); sum(ic)
+consensus <- paste(rownames(cnt)[apply(cnt, 2, which.max)], collapse = "")
+consensus
+view_motifs(convert_motifs(ctcf_m, "universalmotif"), use.type = "ICM")
+```
+
+(a) Which columns have the highest information content? Compare with your answers to B6.
+
+(b) What is the total information content, and what does the rule of thumb in B4d give?
+
+(c) What is the largest and the smallest weight in `lo`? Explain the smallest.
+
+### R3 — Sequences around the summits
+
+```r
+ctcf <- import(file.path(D, "gm12878_ctcf_peaks.bed.gz"), format = "narrowPeak")
+summit <- GRanges(seqnames(ctcf), IRanges(start(ctcf) + ctcf$peak, width = 1))
+win <- resize(summit, width = 200, fix = "center")
+genome <- FaFile(file.path(D, "hg38.fa.bgz"))
+seqs <- getSeq(genome, win)
+seqs
+mean(letterFrequency(seqs, "GC", as.prob = TRUE))
+```
+
+Check that the summit computed here is the same base as in C1. (`start()` in R is 1-based; see *Genomic intervals*.)
+
+### R4 — Is the motif enriched in the peaks?
+
+```r
+flank <- getSeq(genome, shift(win, 3000))                 # 3 kb to the right
+shuf  <- shuffle_sequences(seqs, k = 2, rng.seed = 1)     # same dinucleotides, order destroyed
+mean(letterFrequency(flank, "GC", as.prob = TRUE))
+mean(letterFrequency(shuf,  "GC", as.prob = TRUE))
+frac_with_match <- function(s)
+  mean(motifMatches(matchMotifs(ctcf_m, s, p.cutoff = 1e-4, bg = "even"))[, 1])
+c(peaks = frac_with_match(seqs), flank = frac_with_match(flank), shuffled = frac_with_match(shuf))
+```
+
+(a) What fraction of peaks, flanking windows and shuffled peaks contain a match?
+
+(b) The two backgrounds control for different things. What does each keep from the peaks, and what does it lose? Which gives the more conservative enrichment, and why?
+
+(c) Compare with B4c: how many chance matches do you expect in a 200-bp window at $p < 10^{-4}$? Does that fit the backgrounds?
+
+### R5 — Strong and weak peaks
+
+```r
+hit <- motifMatches(matchMotifs(ctcf_m, seqs, p.cutoff = 1e-4, bg = "even"))[, 1]
+q <- cut(rank(ctcf$signalValue, ties.method = "first"), 4, labels = c("Q1 weakest", "Q2", "Q3", "Q4 strongest"))
+tapply(hit, q, mean)
+tapply(ctcf$signalValue, q, median)
+```
+
+What fraction of peaks has a match in each quarter? Give two reasons why a CTCF peak could lack a match.
+
+### R6 — Where in the peak is the motif?
+
+Listing every match position is slow for 44 000 sequences, so take a random 5000 peaks and a 500-bp window:
+
+```r
+set.seed(1)
+pick <- sample(length(summit), 5000)
+s500 <- getSeq(genome, resize(summit[pick], 500, fix = "center"))
+pos  <- matchMotifs(ctcf_m, s500, p.cutoff = 1e-4, bg = "even", out = "positions")[[1]]
+hits <- data.frame(seq = rep(seq_along(pos), lengths(pos)), start = unlist(start(pos)),
+                   strand = unlist(lapply(pos, function(x) mcols(x)$strand)),
+                   score = unlist(lapply(pos, function(x) mcols(x)$score)))
+best <- hits[order(-hits$score), ]
+best <- best[!duplicated(best$seq), ]                # best match per peak
+best$centre <- best$start + 7 - 250.5                # motif centre relative to the summit
+nrow(best) / 5000
+mean(abs(best$centre) <= 50)
+table(best$strand)
+hist(best$centre, breaks = seq(-250, 250, 10), main = "CTCF motif position in peaks",
+     xlab = "distance of the best match from the summit (bp)")
+```
+
+(a) What fraction of the 5000 peaks has a match in ±250 bp, and what fraction of best matches lies within 50 bp of the summit?
+
+(b) Why `+ 7` and `− 250.5`? (The motif is 15 bp; the window positions run from 1 to 500.)
+
+(c) Are the matches mostly on one strand? What would you expect, and why does strand still matter for CTCF (B5)?
+
+### R7 — Most matches are not bound
+
+```r
+chr21 <- getSeq(genome, GRanges("chr21", IRanges(1, seqlengths(genome)["chr21"])))
+L <- sum(letterFrequency(chr21, "ACGT"))
+m21 <- matchMotifs(ctcf_m, chr21, p.cutoff = 1e-4, bg = "even", out = "positions")[[1]][[1]]
+length(m21); 2 * L * 1e-4                                # found vs expected by chance
+sites21 <- GRanges("chr21", IRanges(start(m21), end(m21)))
+atac <- import(file.path(D, "gm12878_atac_peaks.bed.gz"), format = "narrowPeak")
+bound <- overlapsAny(sites21, ctcf)
+open  <- overlapsAny(sites21, atac)
+c(n = length(sites21), bound = sum(bound), frac_bound = mean(bound))
+tapply(bound, open, mean)
+c(peaks_chr21 = sum(seqnames(ctcf) == "chr21"),
+  with_match = sum(overlapsAny(ctcf[seqnames(ctcf) == "chr21"], sites21)))
+```
+
+(a) How many matches are on chr21, and how many did you expect (B4c)?
+
+(b) What fraction of matches lies in a CTCF peak? Among matches in ATAC peaks, and outside them?
+
+(c) What fraction of chr21 CTCF peaks contains a match? Write one sentence that states both (b) and (c): is the motif necessary, sufficient, both or neither?
+
+### R8 — Check your hand calculations
+
+```r
+sites <- DNAStringSet(c("AGATAA", "TGATAA", "AGATAG", "AGATAA", "TGATAG", "AGATTA", "AGATAA", "CGATAA"))
+pfm <- consensusMatrix(sites)[c("A", "C", "G", "T"), ]
+pfm
+lo8 <- log2(((pfm + 1) / (8 + 4)) / 0.25)
+round(lo8, 2)
+score <- function(x) sum(lo8[cbind(match(strsplit(x, "")[[1]], rownames(lo8)), 1:6)])
+sapply(c("AGATAA", "TGATAG", "AGCTAA", "GGGGGG", "TTATCT"), score)
+score(as.character(reverseComplement(DNAString("TTATCT"))))
+```
+
+Do the numbers agree with B1 and B2?
+
+## Hints
+
+::: {.callout-tip collapse="true" title="Hint 1 — PWMs and logos (B1–B3, B6, R2)"}
+Work column by column. With 8 sites and a pseudocount of 1 per base, every frequency is $(n + 1)/12$, so only four values occur: 1/12, 2/12, 3/12 … 9/12. For the information content, $-p \log_2 p$ is 0.5 for $p = 0.5$, 0.5 for $p = 0.25$, 0.311 for $p = 0.75$, 0.431 for $p = 1/6$, 0.299 for $p = 1/12$. The original papers: [Stormo 2000](https://doi.org/10.1093/bioinformatics/16.1.16) (PWMs), [Schneider & Stephens 1990](https://doi.org/10.1093/nar/18.20.6097) (logos).
+:::
+
+::: {.callout-tip collapse="true" title="Hint 2 — chance matches and strands (B4, B5)"}
+Expected count = (number of positions) × (strands) × (probability per position and strand). A palindromic word (equal to its own reverse complement) is the same match on both strands, so it should be counted once. A match on the − strand reads the motif on the reverse complement: write the consensus, then reverse it and complement each base. Convergent CTCF sites: a + site on the left and a − site on the right, pointing towards each other (see the CTCF loop-extrusion slide and [Rao et al. 2014](https://doi.org/10.1016/j.cell.2014.11.021)).
+:::
+
+::: {.callout-tip collapse="true" title="Hint 3 — command line (C1, C2)"}
+Column 10 of a narrowPeak file is the summit offset from the start ([format](https://genome.ucsc.edu/FAQ/FAQformat.html#format12)). [`samtools faidx`](https://www.htslib.org/doc/samtools-faidx.html) reads regions written as `chr:start-end` (1-based, inclusive) from a bgzipped, indexed FASTA; `-r` takes them from a file and `-n` sets the line length. [`bedtools shuffle`](https://bedtools.readthedocs.io/en/latest/content/tools/shuffle.html) with `-chrom -excl` is the restricted shuffle of *Genomic intervals*. In a regular expression `[CG]` means C or G.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 4 — JASPAR and motifmatchr (R1–R7)"}
+[`JASPAR2024`](https://bioconductor.org/packages/JASPAR2024) is a database package; [`TFBSTools::getMatrixByID`](https://bioconductor.org/packages/TFBSTools) reads one matrix from it, and the matrix page is on the [JASPAR website](https://jaspar.elixir.no/matrix/MA0139.2/). [`motifmatchr::matchMotifs`](https://bioconductor.org/packages/motifmatchr) scans sequences: `out = "matches"` (default) gives TRUE/FALSE per sequence, `out = "positions"` the coordinates, strand and score of every match; `bg = "even"` uses a uniform background, `p.cutoff` the threshold. [`Rsamtools::FaFile`](https://bioconductor.org/packages/Rsamtools) and `getSeq` read sequences of a GRanges from an indexed FASTA. [`universalmotif`](https://bioconductor.org/packages/universalmotif) has `shuffle_sequences()` (with `k = 2` it keeps dinucleotide counts) and `view_motifs()`. [`Biostrings`](https://bioconductor.org/packages/Biostrings) has `letterFrequency()`, `consensusMatrix()` and `reverseComplement()`.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 5 — judging claims (B7, B8)"}
+Compare the number of matches with the number of peaks, and ask what else differs between bound and unbound matches: accessibility, nucleosomes, methylation, partners, TF level. For a causal claim about methylation, think of an experiment that changes methylation and measures binding (e.g. a DNMT inhibitor or DNMT knockout, or methylation-sensitive binding in vitro). For enrichment, always compare with a background with the same composition.
+:::
+
+## Solutions
+
+::: {.callout-note collapse="true" title="Solutions — by hand"}
+
+**B1.** (a) Counts (columns 1–6):
+
+```
+A   5  0  8  0  7  6
+C   1  0  0  0  0  0
+G   0  8  0  0  0  2
+T   2  0  0  8  1  0
+```
+
+(b) $p = (n + 1)/12$: column 1 is A 0.50, C 0.17, G 0.08, T 0.25; columns 2–4 have 0.75 for the consensus base and 0.08 for the others; column 5 is A 0.67, T 0.17, C and G 0.08; column 6 is A 0.58, G 0.25, C and T 0.08. Without a pseudocount every unseen base has frequency 0 and weight $-\infty$, so a single unseen base would veto a site. Eight sites are far too few to call a base impossible.
+
+(c) Weights $\log_2(p / 0.25)$:
+
+```
+A   1.00  -1.58   1.58  -1.58   1.42   1.22
+C  -0.58  -1.58  -1.58  -1.58  -1.58  -1.58
+G  -1.58   1.58  -1.58  -1.58  -1.58   0.00
+T   0.00  -1.58  -1.58   1.58  -0.58  -1.58
+```
+
+**B2.** (a) `AGATAA` = 1.00 + 1.58 + 1.58 + 1.58 + 1.42 + 1.22 = **8.39** (the maximum: the best base in every column). `TGATAG` = 0 + 1.58 + 1.58 + 1.58 + 1.42 + 0 = **6.17**. `AGCTAA` = 1.00 + 1.58 − 1.58 + 1.58 + 1.42 + 1.22 = **5.22**. `GGGGGG` = −1.58 + 1.58 − 1.58 − 1.58 − 1.58 + 0 = **−4.75**. Minimum: −1.58 in every column = **−9.51**.
+(b) As written, `TTATCT` scores 0 − 1.58 + 1.58 − 1.58 − 0.58 − 1.58 = **−1.58**. Its reverse complement is `AGATAA`, which scores **8.39**: the motif is on the minus strand, reading right to left on the genome.
+(c) `AGATAA`, `TGATAG`, and `TTATCT` on the minus strand pass 6 bits. `AGCTAA` (5.22) is a near miss: a single mismatch at a 1.58-bit position.
+
+**B3.** (a) Column 1: $p = (0.50, 0.17, 0.08, 0.25)$; $\sum -p\log_2 p = 0.5 + 0.431 + 0.299 + 0.5 = 1.73$, so $IC = 2 - 1.73 = $ **0.27 bits**. Column 2: $p = (0.75, 0.08, 0.08, 0.08)$; $0.311 + 3 \times 0.299 = 1.21$, $IC = $ **0.79 bits**.
+(b) Without pseudocounts column 2 is 100% G: **2 bits**. With 8 sites the pseudocount (4 extra "observations") is a third of the data; with 913 sites it is 0.4%. CTCF's column 3 (C in 903 of 913 sites) has 1.9 bits with or without it.
+(c) $\sum -p\log_2 p = 0.5 + 0.5 = 1$, $IC = $ **1 bit**. The stack is 1 bit tall; A and G are each 0.5 bit.
+
+**B4.** (a) $4^{-6} = 1/4096$ per position and strand. Per Mb: $2 \times 10^6 / 4096 \approx$ **490**. Genome: $2 \times 3.1 \times 10^9 / 4096 \approx$ **1.5 million**.
+(b) `CACGTG` is its own reverse complement (a palindrome): each occurrence is found on both strands but is one site, so about **245 per Mb** and 760 000 per genome.
+(c) chr21: $2 \times 40 \times 10^6 \times 10^{-4} = $ **8000** (8018 for the exact 40.1 Mb; 8583 found in R7). Genome: $2 \times 3.1 \times 10^9 \times 10^{-4} \approx$ **620 000**. Even if every one of the 44 217 peaks held a different match, at most $44\,217 / 620\,000 \approx$ **7%** of matches could be bound.
+(d) $2^{16.1} \approx 70\,000$ bp per strand, so about one per 35 kb counting both strands: roughly **30 per Mb**, **90 000** in the genome. Still twice the number of CTCF peaks.
+
+**B5.** (a) A − strand match means the consensus reads on the reverse complement. The plus strand at site 2 reads the reverse complement of `GCCACCAGGGGGCGC`, which is **`GCGCCCCCTGGTGGC`**.
+(b) Sites: 1 →, 2 ←, 3 ←, 4 →. Convergent pairs (→ … ←): **1–2** and **1–3**. Site 4 points away from all the others to its right (none). Cohesin extruding from between 1 and 2 stalls at 1 and 2: the loop is **1–2**. 1–3 can form if cohesin passes site 2 (CTCF is not bound at every site in every cell).
+(c) Without site 2, cohesin stalls at 1 and **3**: a larger loop 1–3. (Deleting or inverting CTCF sites re-wires loops in exactly this way.)
+
+**B6.** (a) Positions **3** (C), **8** (G) and **11** (G), each about **1.9 bits** (R2: 1.90, 1.91, 1.82). Position 7 (A, 1.55 bits) is next.
+(b) Both G and A are tolerated at position 9; G is preferred, but a site with A is a normal site with a slightly lower score, not a mutant. A logo shows a distribution of preferences, not one "correct" sequence.
+(c) The edges of the motif contact the protein less, and the alignment of sites is less precise at the edges.
+(d) No. With 20 sites and no pseudocount, unseen bases get frequency 0 and columns look like 2 bits by sampling alone. The apparent specificity is an artefact of the small sample.
+
+**B7.** (a) The claim fails. On chr21 only 369 of 8583 matches (4.3%) are in a CTCF peak; genome-wide at most 7% could be (B4c). The motif is close to *necessary* (79% of peaks have a match, R7) but far from *sufficient*: accessibility, nucleosomes, methylation and the rest of the chromatin context decide.
+(b) Most matches are expected by chance (B4); most lie in closed chromatin or on nucleosomes; many are weak; X may need a partner; ChIP detects only sites occupied in many cells at once; and X's concentration may limit occupancy. To test methylation: compare binding before and after removing DNA methylation (DNMT1/3A/3B knockout or a DNMT inhibitor) and check whether new peaks appear at matches that were methylated; or test methylated vs unmethylated DNA in vitro.
+(c) A background. 12% of GC-matched random windows also have a PU.1 match, so most of the 22% would be there by chance; the enrichment is 1.8×. A match is also not binding: PU.1 ChIP-seq is needed to say where PU.1 is bound.
+
+**B8.** Z may bind DNA **indirectly**, through a partner whose motif is at the summit, while Z's motif is enriched in the peaks because Z and its partner co-occur in the same regulatory regions. Or Z's matrix is wrong or describes a related TF whose motif is common in such regions (e.g. a GC-rich motif in GC-rich peaks). An antibody problem (the ChIP pulls down another protein) gives the same picture.
+:::
+
+::: {.callout-note collapse="true" title="Solutions — command line"}
+
+**C1.** (a) `$2 + $10` is the summit as a BED boundary (start + offset). `s − 100` to `s + 100` is 200 bases in BED, centred on the summit base (`s` to `s + 1`). `samtools faidx` regions are 1-based and inclusive, so the BED start needs + 1 (*Genomic intervals*). The first window is `chr12 53676133 53676333`. (b) It turns the lower-case (repeat-masked) bases into upper case. Without it, `grep` for `CCCTC` would miss every site in a repeat, and the GC count with `[GC]` would skip lower-case bases. (c) **1813** of 44 217 shuffled windows contain an N: the shuffle avoids the blacklist but not the assembly gaps (runs of N). Adding the gaps to the exclusion file would fix it.
+
+**C2.** (a)
+
+| | `CCCTC`/`GAGGG` | 11-bp core | GC |
+|---|---|---|---|
+| CTCF peaks | 25 506 (**57.7%**) | 9635 (**21.8%**) | 0.514 |
+| shuffled windows | 12 176 (**27.5%**) | 86 (**0.19%**) | 0.396 |
+
+(b) A 5-mer has probability $4^{-5} \approx 0.001$ per position and strand; 200 bp × 2 strands gives about 0.39 expected occurrences, so about a third of random windows contain one ($1 - e^{-0.39} \approx 0.32$; observed 27.5%, lower because of the AT-rich background). Enrichment 2×, with a third of the background positive: useless for calling sites. The 11-bp core is much more specific but too strict: it misses many real sites that differ at one position. A PWM with a threshold sits between the two.
+(c) Peaks are in GC-rich, gene-dense DNA; the shuffled windows are anywhere in the genome (41% GC). A GC-rich word like `CCCTC` is more frequent in GC-rich DNA anyway, so part of the difference in (a) is composition. R4 uses backgrounds that control for this.
+:::
+
+::: {.callout-note collapse="true" title="Solutions — R"}
+
+**R1.** (a) **913** sites, from ChIP-seq (`type: ChIP-seq`), human. (b) Some sites in the alignment were shorter or did not cover the outer columns, so the sums fall from 913 to 908 towards the right end.
+
+**R2.** (a) Columns 3 (1.90), 8 (1.91) and 11 (1.82); then 7 (1.55) and 2 (1.27). Columns 1 and 6 are weakest (0.34, 0.37). (b) Total **16.1 bits**; consensus `GCCACCAGGGGGCGC`. $2^{16.1} \approx 70\,000$ bp per strand (B4d). (c) Largest about +1.99 (C at position 3); smallest **−9.83** (C at position 8, G at position 3, C at position 11): bases never seen get only the pseudocount: in column 8 (911 sites) $p = 0.25/912$, and $\log_2(p/0.25) = \log_2(1/912) \approx -9.8$. motifmatchr builds its own weights with a pseudocount of 0.8 in total, so its scores differ slightly from `lo`.
+
+**R3.** 44 217 sequences of 200 bp, GC content **0.514** (the genome average is 0.41). The summit is `start + peak` in R because `start()` is already the file start + 1, the same base as C1's BED `s`–`s + 1`.
+
+**R4.** (a) Peaks **78.5%**, flanking windows **5.4%**, shuffled peaks **8.8%**. (b) Flanks keep the regional context (same chromosome, nearby DNA) but not the composition: their GC is 0.445, lower than the peaks' 0.514. Shuffling keeps the exact dinucleotide composition of each peak, including GC and CpG, but destroys any real sequence structure such as repeats. The shuffled background has more chance matches (8.8%) because the CTCF motif is GC-rich, so it gives the smaller, more conservative enrichment: about 9-fold against shuffled, 15-fold against flanks. (c) $2 \times 186 \times 10^{-4} \approx 0.037$ expected matches per window (186 positions for a 15-bp motif), so about 4% of uniform random windows; GC-rich windows have more, as both backgrounds show.
+
+**R5.** Q1 weakest **61.5%**, Q2 74.1%, Q3 86.2%, Q4 strongest **92.1%** (median signalValue 35, 81, 160, 256). Peaks without a match: CTCF bound indirectly or through a weaker or different variant of its motif (JASPAR has other CTCF matrices, e.g. with an upstream module); false-positive peaks among the weakest; or a motif just outside the 200-bp window.
+
+**R6.** (a) **79.8%** of the 5000 peaks have a match within ±250 bp; **94.3%** of best matches are within 50 bp of the summit. (b) A 15-bp match starting at position `start` has its centre at `start + 7`; the summit lies between positions 250 and 251 of the 500-bp window (centre 250.5). (c) 2054 on + and 1936 on −: about half each, as expected because CTCF sites occur in both orientations in the genome. The strand still matters biologically: it gives the orientation of each site, which decides which loops can form (B5).
+
+**R7.** (a) **8583** matches; **8018** expected by chance at a uniform background. (b) **369** (**4.3%**) in a CTCF peak. Of matches in ATAC peaks, **38.8%** are bound; outside, **2.2%**. (c) 320 of 405 chr21 CTCF peaks (**79%**) contain a match. "Four in five CTCF peaks contain a CTCF motif, but only one in twenty-three motif matches is bound: the motif is close to necessary but far from sufficient for binding." (Necessary only approximately: a fifth of peaks lack a match at this threshold.)
+
+**R8.** The count matrix, the weights and the scores agree with B1 and B2: 8.39, 6.17, 5.22, −4.75, −1.58, and 8.39 for the reverse complement of `TTATCT`.
+:::
+
+## Where this leads
+
+- The ATAC-seq and ChIP-seq blocks produce the peaks that we scanned here, from raw reads.
+- *Motifs, motif enrichment and TF footprinting* turns R4 into a proper test over hundreds of matrices (HOMER, MEME-SEA, chromVAR) and looks for TF footprints in ATAC data.
+- The *3D genome* units show the CTCF loops of B5 in Hi-C maps.
+- The machine-learning units train a network to tell CTCF peaks from GC-matched background: its first layer learns PWM-like filters.
+
+## Key papers (optional further reading)
+
+*Not required reading and not examined.*
+
+- Stormo 2000, *Bioinformatics*. [DNA binding sites: representation and discovery](https://doi.org/10.1093/bioinformatics/16.1.16). PWMs, log-odds scores and information content, from the person who introduced them.
+- Schneider & Stephens 1990, *Nucleic Acids Res*. [Sequence logos: a new way to display consensus sequences](https://doi.org/10.1093/nar/18.20.6097). The logo.
+- Wasserman & Sandelin 2004, *Nat Rev Genet*. [Applied bioinformatics for the identification of regulatory elements](https://doi.org/10.1038/nrg1315). Why most predicted sites are not functional.
+- Rauluseviciute et al. 2024, *Nucleic Acids Res*. [JASPAR 2024: 20th anniversary of the open-access database of transcription factor binding profiles](https://doi.org/10.1093/nar/gkad1059). The matrix database used here.
+- Lambert et al. 2018, *Cell*. [The human transcription factors](https://doi.org/10.1016/j.cell.2018.01.029). Which TFs exist, and which have known motifs.

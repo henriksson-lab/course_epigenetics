@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 360" width="1120" height="360" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker><marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker><marker id="ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a8324a"/></marker><marker id="as" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker><marker id="ao" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e67e22"/></marker><marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a6f97"/></marker><marker id="ap" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b4fa0"/></marker><marker id="at" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a9d8f"/></marker><marker id="an" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8c564b"/></marker></defs>
+<rect width="1120" height="360" fill="#ffffff"/>
+<path d="M40,240 H470 C380,-40 710,-40 620,240 H1080" fill="none" stroke="#1b2a3a" stroke-width="2.5"/>
+<rect x="360" y="230" width="75" height="20" rx="0" fill="#d5ecdf" stroke="#2e8b57" stroke-width="2"/>
+<rect x="620" y="230" width="45" height="20" rx="0" fill="#1b2a3a" stroke="#1b2a3a" stroke-width="1.5"/>
+<path d="M665,230 V202 H699" fill="none" stroke="#1b2a3a" stroke-width="2.5" marker-end="url(#ak)"/>
+<rect x="665" y="228" width="55" height="24" rx="0" fill="#5b6b7a" stroke="#1b2a3a" stroke-width="1.5"/>
+<rect x="800" y="228" width="30" height="24" rx="0" fill="#5b6b7a" stroke="#1b2a3a" stroke-width="1.5"/>
+<rect x="960" y="228" width="50" height="24" rx="0" fill="#5b6b7a" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="345" y="228" font-size="15" text-anchor="end" font-weight="bold" fill="#2e8b57">enhancer</text>
+<text x="745" y="204" font-size="15" text-anchor="start" font-weight="normal" fill="#5b6b7a">gene</text>
+<line x1="375" y1="194" x2="330" y2="194" stroke="#2e8b57" stroke-width="2" marker-end="url(#ag)"/>
+<line x1="420" y1="194" x2="460" y2="194" stroke="#2e8b57" stroke-width="2" marker-end="url(#ag)"/>
+<path d="M375,230 V194" fill="none" stroke="#2e8b57" stroke-width="2"/>
+<path d="M420,230 V194" fill="none" stroke="#2e8b57" stroke-width="2"/>
+<text x="345" y="180" font-size="15" text-anchor="start" font-weight="bold" fill="#2e8b57">eRNAs</text>
+<ellipse cx="545" cy="120" rx="105" ry="16" fill="none" stroke="#6b4fa0" stroke-width="4"/>
+<text x="665" y="112" font-size="15" text-anchor="start" font-weight="bold" fill="#6b4fa0">cohesin ring (holds the loop)</text>
+<ellipse cx="375" cy="264" rx="13" ry="13" fill="#2a9d8f" stroke="#1b2a3a" stroke-width="1.2"/>
+<ellipse cx="400" cy="264" rx="13" ry="13" fill="#6b4fa0" stroke="#1b2a3a" stroke-width="1.2"/>
+<ellipse cx="423" cy="264" rx="13" ry="13" fill="#2a6f97" stroke="#1b2a3a" stroke-width="1.2"/>
+<text x="345" y="270" font-size="15" text-anchor="end" font-weight="bold" fill="#1b2a3a">TFs</text>
+<ellipse cx="645" cy="266" rx="34" ry="18" fill="#c7e3d2" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="645" y="271" font-size="14" text-anchor="middle" font-weight="bold" fill="#1b2a3a">Pol II</text>
+<rect x="370" y="286" width="295" height="40" rx="18" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.8"/>
+<text x="517" y="312" font-size="15" text-anchor="middle" font-weight="bold" fill="#1b2a3a">Mediator (~30 subunits)</text>
+<text x="30" y="30" font-size="17" text-anchor="start" font-weight="bold" fill="#1b2a3a">Enhancer–promoter communication</text>
+<text x="1080" y="300" font-size="15" text-anchor="end" font-weight="normal" fill="#5b6b7a">TFs on the enhancer contact Mediator,</text>
+<text x="1080" y="320" font-size="15" text-anchor="end" font-weight="normal" fill="#5b6b7a">Mediator contacts Pol II at the promoter</text>
+</svg>

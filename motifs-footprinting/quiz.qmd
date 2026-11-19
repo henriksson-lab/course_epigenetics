@@ -1,0 +1,99 @@
+---
+title: "Quiz: motifs, motif enrichment and TF footprinting"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+Short questions on motif matches, enrichment, chromVAR and footprints. Try each on paper first, then open the answer.
+
+---
+
+**Q1.** You scan 200-bp peaks for a motif at a match threshold of $p = 10^{-4}$. How many chance matches do you expect per peak, and in 20 000 peaks?
+
+::: {.callout-tip collapse="true" title="Hint"}
+Count the windows on both strands.
+:::
+
+::: {.callout-note collapse="true" title="Answer"}
+About $2 \times 200 = 400$ windows per peak, so $400 \times 10^{-4} = 0.04$ chance matches per peak, and about $0.04 \times 20\,000 = 800$ in 20 000 peaks. A motif in 4% of peaks is therefore what chance alone gives.
+:::
+
+---
+
+**Q2.** 1000 target peaks, 200 with a match; 9000 background peaks, 900 with a match. Compute the odds ratio and the number of target matches expected under the null.
+
+::: {.callout-tip collapse="true" title="Hint"}
+$\mathrm{OR} = ad / bc$. Under the null the target is a random draw from all 10 000 peaks.
+:::
+
+::: {.callout-note collapse="true" title="Answer"}
+$a = 200, b = 800, c = 900, d = 8100$. $\mathrm{OR} = (200 \times 8100) / (800 \times 900) = 1\,620\,000 / 720\,000 = 2.25$. Expected: $1000 \times 1100 / 10\,000 = 110$; observed 200, so the motif is enriched (20% vs 10%). The p-value comes from Fisher's exact test, equivalently the hypergeometric distribution.
+:::
+
+---
+
+**Q3.** You test 900 motifs. What p-value threshold does Bonferroni give at 5%? Why is "612 motifs significant at FDR 5%" from 20 000 target peaks not a useful result on its own?
+
+::: {.callout-note collapse="true" title="Answer"}
+$0.05 / 900 \approx 5.6 \times 10^{-5}$. With 20 000 target peaks, tiny differences in motif frequency become significant, and motifs of one family (and GC-rich or AT-rich motifs) are counted many times over. Rank by effect size (odds ratio, fractions with a match), group motifs by family, and check the background.
+:::
+
+---
+
+**Q4.** Peaks that gain accessibility after a treatment are compared with random genomic windows, and CTCF, SP1 and NRF1 motifs come out as highly enriched. Is the treatment acting through these TFs? What background would you use instead?
+
+::: {.callout-note collapse="true" title="Answer"}
+Probably not. These motifs are typical of open chromatin and GC-rich promoters in general; random genomic windows are mostly closed and AT-rich, so any set of peaks is "enriched" for them. Use peaks that did not change (all tested peaks) as background, ideally GC-matched. Then CTCF in particular usually comes out *depleted*, because its sites are open in every condition.
+:::
+
+---
+
+**Q5.** The top motifs in B-cell-specific peaks are SPIB, SPI1 (PU.1) and SPIC, all ETS factors with nearly the same motif. Which TF binds? How would you find out?
+
+::: {.callout-note collapse="true" title="Answer"}
+The motif cannot tell: family members share a DNA-binding domain and motif. Check which family members are expressed (RNA-seq of the same cells; in B cells both PU.1 and SPIB are), and measure binding directly (ChIP-seq or CUT&RUN for the candidates), or perturb them (knock-out, degradation) and see which peaks close.
+:::
+
+---
+
+**Q6.** In a chromVAR analysis the motif GATA1::TAL1 has z = +60 in erythroblasts and z = −20 in B cells. What does each value mean?
+
+::: {.callout-note collapse="true" title="Answer"}
+In erythroblasts, reads in peaks with the GATA motif are far more frequent than expected from the average sample and from background peaks with the same GC content and accessibility: GATA-motif peaks are specifically open, consistent with GATA1 activity. In B cells they are less accessible than expected relative to background peaks. A negative z says nothing about mechanism: it does not mean that a GATA factor represses those peaks in B cells, only that they are relatively closed.
+:::
+
+---
+
+**Q7.** Why does chromVAR compare each motif with background peaks matched for GC content and average accessibility?
+
+::: {.callout-note collapse="true" title="Answer"}
+Samples differ technically: one library may have more reads in GC-rich peaks (PCR) or in strong peaks (better signal-to-noise). These effects would change the reads in a motif's peaks without any change in TF activity. Background peaks with the same GC and accessibility are affected in the same way, so standardising against them (the z-score) removes the technical part.
+:::
+
+---
+
+**Q8.** An aggregate ATAC-seq profile around 2000 bound CTCF motif sites shows about 0.8 insertions per site at ±30 bp, 0.3 over the motif, and 0.4 at ±100 bp. Sketch it and name the features. What would the profile look like at 2000 CTCF motif sites in closed chromatin?
+
+::: {.callout-note collapse="true" title="Answer"}
+Two flanking peaks at ±30 bp (open, nucleosome-free DNA next to the bound protein), a dip over the motif (the footprint: CTCF blocks Tn5), and a lower level further out (decreasing accessibility towards the nucleosomes). Centre/flank $\approx 0.3/0.8 \approx 0.4$. At closed sites: flat and close to zero, because Tn5 hardly inserts in closed chromatin. There is no peak to have a footprint in.
+:::
+
+---
+
+**Q9.** A narrow 2-bp spike in the middle of a footprint is seen at bound sites and equally at unbound sites with the same motif. What is it, and how is it handled?
+
+::: {.callout-note collapse="true" title="Answer"}
+Tn5 sequence bias: Tn5 prefers to insert at certain sequences, and the motif has the same sequence at every site, so the preference repeats at every site and adds up in the aggregate. It is not caused by the protein. Correct by comparing with insertions expected from sequence alone (Tn5 on naked DNA, a k-mer bias model as in TOBIAS ATACorrect, or a learned bias model as in chromBPNet), or always compare bound with unbound sites of the same motif.
+:::
+
+---
+
+**Q10.** "ChIP-seq shows that the glucocorticoid receptor binds 5000 sites, but ATAC-seq shows no footprint at them, so the ChIP-seq peaks must be false." Is the conclusion justified?
+
+::: {.callout-note collapse="true" title="Answer"}
+No. A footprint needs the TF to occupy the site for a large part of the tagmentation reaction. Factors with short residence times (seconds), such as the glucocorticoid receptor, bind and leave quickly, so Tn5 mostly finds the site free and no dip forms, although the TF binds and opens the region (Sung et al. 2014). Absence of a footprint is not evidence of absence of binding.
+:::

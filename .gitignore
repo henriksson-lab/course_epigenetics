@@ -21,3 +21,11 @@
 !/data/manifest.tsv
 !/data/download.sh
 !/data/README.md
+!/data/prepare-*.sh
+!/data/*.py
+!/data/filter_fastq_by_names.py
+!/data/prepare-*.R
+
+# Work folders written by figure scripts
+/atacseq-analysis/atac-work/
+*/atac-work/

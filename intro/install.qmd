@@ -16,7 +16,7 @@ the course environment:
 
 ```bash
 mamba create -n epigenetics -c conda-forge -c bioconda \
-  samtools bedtools bowtie2 macs3 deeptools fastp multiqc
+  "samtools>=1.16" htslib bedtools bowtie2 macs3 deeptools fastp multiqc ucsc-bedgraphtobigwig
   # ... add tools here as the material is written
 mamba activate epigenetics
 ```
@@ -36,13 +36,17 @@ Install a recent [R](https://cran.r-project.org/) (4.4 or newer) and
 [RStudio Desktop](https://posit.co/download/rstudio-desktop/).
 
 ```r
-install.packages(c("tidyverse", "BiocManager", "torch", "patchwork"))
+install.packages(c("tidyverse", "BiocManager", "torch", "patchwork", "ggrepel", "pheatmap", "data.table"))
 torch::install_torch()   # downloads the libtorch backend once (CPU version)
 BiocManager::install(c(
   "GenomicRanges",   # genomic intervals
   "rtracklayer",     # read/write BED, narrowPeak, GTF, bigWig
   "Biostrings",      # DNA sequences, CpG counts (What is epigenetics?)
-  "DESeq2"           # differential accessibility / binding
+  "Rsamtools",       # indexed FASTA and BAM access
+  "GenomicAlignments", # reads from BAM files
+  "DESeq2", "edgeR", "apeglm",   # differential accessibility
+  "JASPAR2024", "TFBSTools", "motifmatchr", "universalmotif", "RSQLite",  # motifs
+  "chromVAR"         # motif accessibility per sample
   # ... add Bioconductor packages here as the material is written
 ))
 ```

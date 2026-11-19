@@ -1,0 +1,488 @@
+---
+title: "Exercise: ATAC-seq processing and peak calling"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+## Goal
+
+After this exercise you will be able to:
+
+- Turn a read pair into its two **Tn5 insertion sites** by hand (+4/−5) and on the command line.
+- Choose a **local λ** and compute a **Poisson p-value** for a candidate peak, and explain what a q-value adds.
+- Process paired-end ATAC-seq reads from FASTQ to a filtered BAM with [fastp](https://github.com/OpenGene/fastp), [Bowtie2](https://bowtie-bio.sourceforge.net/bowtie2/manual.shtml) and [samtools](https://www.htslib.org/doc/samtools.html), and say what each filter removes.
+- Call peaks with [MACS3](https://macs3-project.github.io/MACS/) on fragments and on insertion sites, and compare the two.
+- Compute **FRiP**, compare your peaks with ENCODE's, and judge **replicate agreement** by rank consistency.
+- Build a **fixed-width consensus peak set** (500 bp around summits, iterative overlap removal) in R and annotate it relative to TSSs.
+
+## Background
+
+**Insertion sites.** Tn5 cuts the two DNA strands 9 bp apart, and both resulting fragments carry a copy of those 9 bp. The insertion is taken as the centre of the 9 bp: in BED coordinates the **start + 4** of a read on the + strand and the **end − 5** of a read on the − strand. A properly paired fragment `[s, e)` therefore has insertion sites at bases `s + 4` and `e − 5`.
+
+**Peak calling.** MACS3 piles up reads (or windows around insertions) and, at each position, compares the pileup $k$ with an expected count $\lambda$ under background, $p = P(X \ge k)$ for $X \sim \text{Poisson}(\lambda)$. The expectation is local: $\lambda_\text{local} = \max(\lambda_\text{BG}, \lambda_\text{1k}, \lambda_\text{5k}, \lambda_\text{10k})$, where each $\lambda$ is the count in a window around the position, scaled to the size of the counting window. Without a control (ATAC-seq), MACS3 uses $\lambda_\text{BG}$ and the 10-kb window of the sample itself. P-values are converted to q-values (Benjamini–Hochberg).
+
+**Replicates and consensus.** Overlap between two replicates' peak lists depends on the thresholds; **IDR** instead asks how far down the ranked lists the two replicates agree. To count reads in many samples you need one set of regions: either merged peaks or **fixed-width peaks** (summit ± 250 bp) where overlapping peaks are resolved by keeping the most significant one.
+
+## Data
+
+ENCODE ATAC-seq of the lymphoblastoid cell line GM12878 (experiment [ENCSR095QNB](https://www.encodeproject.org/experiments/ENCSR095QNB/), GRCh38), two biological replicates, paired-end 2 × 100 bp. To keep the exercise small we use only the read pairs that ENCODE aligned to **chromosome 21 or the mitochondrial genome**; the reads themselves are the original, untrimmed reads. You also need the chr21 + chrM reference with its Bowtie2 index, ENCODE's IDR peaks for the same experiment, the blacklist, the GENCODE annotation and chromosome sizes.
+
+| file | content |
+|---|---|
+| `gm12878_atac_rep{1,2}_R{1,2}.fastq.gz` | reads, replicate 1 (6.1 M pairs, 2 × 290 MB) and 2 (4.1 M pairs, 2 × 200 MB) |
+| `hg38_chr21_chrM.fa`, `bowtie2/hg38_chr21_chrM.*` | reference and index |
+| `gm12878_atac_peaks.bed.gz` | ENCODE IDR thresholded peaks, replicates 1 + 2 ([ENCFF945SYZ](https://www.encodeproject.org/files/ENCFF945SYZ/)) |
+| `hg38_blacklist.bed.gz`, `hg38.chrom.sizes`, `gencode.v46.basic.annotation.gtf.gz` | from *Genomic intervals* |
+
+```bash
+data/download.sh atacseq-analysis     # peaks; the reads and index come with the course data
+mkdir -p ~/epi/atac && cd ~/epi/atac
+D=/path/to/course/data                # where the course data are
+T=8                                   # threads
+```
+
+You need `fastp`, `bowtie2`, `samtools` (1.16 or later), `bedtools`, `macs3` and, for the optional bigWig, `bedGraphToBigWig` (see *Install the software you need*). The whole command-line part takes 10–25 minutes with 8 threads, almost all of it alignment; on the cluster, put C1–C2 in an `sbatch` script with `--cpus-per-task=8 --mem=8G`.
+
+*Honest simplification:* we align to chr21 + chrM only, so reads from other chromosomes cannot mis-align here, and the effective genome size we give MACS3 is that of chr21.
+
+## By hand
+
+Do these on paper.
+
+**B1. Tn5 shift.** A read pair, as shown by `samtools view` (1-based `POS`):
+
+```
+read 1   flag 99    chr21   POS 10001   CIGAR 50M   (+ strand)
+read 2   flag 147   chr21   POS 10231   CIGAR 50M   (− strand)
+```
+
+(a) Write both reads as BED intervals. How long is the fragment (`TLEN`)?
+
+(b) Give the two insertion sites as one-base BED intervals. How far apart are they?
+
+(c) After adapter trimming, a − strand read has `POS 20001` and `CIGAR 30M`. Where is its insertion site?
+
+(d) A script shifts every − strand read by subtracting 5 from its **start**. Where would the insertion from read 2 end up, and how far is that from the correct site? What would it be for an untrimmed 100-bp read?
+
+(e) Why +4 but −5? What are the two offsets in 1-based coordinates?
+
+**B2. The genome-wide λ.** After filtering, a sample has 2 000 000 insertion sites on chr21, whose mappable length is about 40 Mb. MACS3 replaces each insertion by a 150-bp window.
+
+(a) What is $\lambda_\text{BG}$, the expected number of windows covering a position under uniform background?
+
+(b) What would $\lambda_\text{BG}$ be if you forgot to set the genome size and MACS3 used the human genome (2.7 × 10⁹)?
+
+(c) Why does this mistake change the peaks less than you might expect? (Think about $\lambda_\text{local}$.)
+
+**B3. Local λ and a Poisson p-value.** At a candidate peak summit the pileup is $k = 18$. $\lambda_\text{BG} = 4.0$. The 10-kb window around the summit contains 600 insertions. A ChIP-seq-style control gives $\lambda_\text{1k} = 6.0$ and $\lambda_\text{5k} = 7.5$. Upper-tail Poisson probabilities $P(X \ge k \mid \lambda)$:
+
+| $k$ \\ $\lambda$ | 4 | 6 | 7.5 | 9 |
+|---|---|---|---|---|
+| 12 | 9.2e-04 | 2.0e-02 | 7.9e-02 | 0.20 |
+| 15 | 2.0e-05 | 1.4e-03 | 1.0e-02 | 0.041 |
+| 18 | 2.5e-07 | 5.7e-05 | 7.9e-04 | 0.0053 |
+| 21 | 1.9e-09 | 1.5e-06 | 3.9e-05 | 0.00044 |
+
+(a) Compute $\lambda_\text{10k}$ (scale the 10-kb count to the 150-bp window).
+
+(b) What is $\lambda_\text{local}$ with the control? Without a control (ATAC-seq, MACS3)?
+
+(c) What p-value does the peak get? What would it have got against $\lambda_\text{BG}$ alone?
+
+(d) Why does MACS take the **maximum** of the λ estimates, not the mean?
+
+**B4. p-values and q-values.** MACS3 tests about 10⁶ independent windows on chr21. 2000 windows have $p < 10^{-4}$.
+
+(a) How many windows would you expect below $p < 10^{-4}$ if there were no real peaks at all?
+
+(b) Estimate the fraction of false discoveries among the 2000 (this is roughly the Benjamini–Hochberg q-value at that cutoff).
+
+(c) Why is `-p 0.01` a bad final threshold, but a good input for IDR?
+
+**B5. FRiP.** Replicate A: 3 100 000 insertions after filtering, 1 050 000 inside peaks.
+
+(a) Compute FRiP. Does it pass the ENCODE standard (> 0.3, > 0.2 acceptable)?
+
+(b) You call peaks again with `-p 0.01` instead of `-q 0.01`; FRiP rises to 0.41. Is the library better now? What does this tell you about comparing FRiP between studies?
+
+**B6. Replicate overlap.** Replicate 1 has 4000 peaks, replicate 2 has 5000. 3200 of replicate 1's peaks overlap a replicate-2 peak; 3350 of replicate 2's peaks overlap a replicate-1 peak.
+
+(a) Give the fraction reproduced in each direction. Why are 3200 and 3350 not the same number?
+
+(b) You lower the threshold in replicate 1 to get 8000 peaks; now 3900 of them overlap replicate 2. What happened to the fraction, and why?
+
+(c) Explain in two sentences what IDR does differently.
+
+**B7. A fixed-width consensus by hand.** Summits (BED position of the summit base) and scores (−log10 p, already normalised between samples) from two samples on chr1:
+
+| sample | summit | score |
+|---|---|---|
+| S1 | 1000 | 40 |
+| S1 | 1350 | 12 |
+| S1 | 5000 | 25 |
+| S2 | 1200 | 30 |
+| S2 | 4700 | 18 |
+| S2 | 5600 | 9 |
+
+(a) Write the 500-bp windows `[summit − 250, summit + 250)`.
+
+(b) Apply iterative overlap removal: which windows are kept?
+
+(c) What would `bedtools merge` of the six windows return? Compare the number and the widths of the regions.
+
+(d) Give two reasons why fixed-width peaks are easier to use for a count matrix than merged peaks.
+
+**B8. Judge the methods.** A study merges the MACS3 peaks of 40 samples with `bedtools merge` and reports "120 000 accessible regions, median width 1.8 kb". The peaks of each sample had a median width of 450 bp. What most likely happened, and what would you suggest?
+
+**B9. Read the figure.** In the lecture's rank-consistency plot (replicate 1 vs 2, *Real data: do the replicates agree?*), about how many of replicate 1's strongest peaks can you take before fewer than 90% of them are found in replicate 2? Compare with the number of ENCODE IDR peaks on chr21 (1784) and with the number of replicate-1 peaks at q < 0.01 (1262).
+
+## On the command line
+
+### C1 — Trim and align
+
+The same block for both replicates (5–12 min per replicate with 8 threads, depending on the machine):
+
+```bash
+for r in rep1 rep2; do
+  fastp -w $T -l 20 \
+    -i $D/gm12878_atac_${r}_R1.fastq.gz -I $D/gm12878_atac_${r}_R2.fastq.gz \
+    -o ${r}_R1.trim.fq.gz -O ${r}_R2.trim.fq.gz \
+    --adapter_sequence CTGTCTCTTATACACATCT --adapter_sequence_r2 CTGTCTCTTATACACATCT \
+    -j ${r}.fastp.json -h ${r}.fastp.html 2> ${r}.fastp.log
+  bowtie2 -p $T --very-sensitive -X 2000 -x $D/bowtie2/hg38_chr21_chrM \
+    -1 ${r}_R1.trim.fq.gz -2 ${r}_R2.trim.fq.gz 2> ${r}.bowtie2.log \
+    | samtools fixmate -m -u - - | samtools sort -@ 4 -o ${r}.raw.bam
+  samtools index ${r}.raw.bam
+done
+```
+
+(a) Open `rep1.fastp.html` (or read `rep1.fastp.log`). How many read pairs went in? What fraction of reads had adapter bases trimmed? fastp also reports an "insert size peak": why is it so short?
+
+(b) From `rep1.bowtie2.log`: what fraction of pairs aligned concordantly exactly once, and overall?
+
+(c) Rerun the bowtie2 command for replicate 1 without `-X 2000` (send the output to `/dev/null`, keep the log). How does the concordant fraction change? Which fragments are now discordant?
+
+### C2 — Filter
+
+```bash
+for r in rep1 rep2; do
+  samtools idxstats ${r}.raw.bam | cut -f1,3          # mapped reads per chromosome
+  samtools view -u -q 30 -f 2 -F 1804 ${r}.raw.bam chr21 \
+    | samtools collate -u -O - | samtools fixmate -m -u - - \
+    | samtools view -u -f 2 - | samtools sort -u - \
+    | samtools markdup -r -s - ${r}.dedup.bam 2> ${r}.markdup.txt
+  samtools index ${r}.dedup.bam
+  echo $r $(samtools view -c -f 64 ${r}.dedup.bam) fragments
+done
+```
+
+(a) What fraction of mapped reads are on chrM in each replicate? Why so many (and why is this fraction inflated in our subset)?
+
+(b) Explain each part of the filter: `-q 30`, `-f 2`, `-F 1804` (decode it with [the flag explainer](https://www.htslib.org/doc/samtools-flags.html)), the region `chr21`. Why `collate` + `fixmate` + `view -f 2` again after the first filter?
+
+(c) From `rep1.markdup.txt`: what fraction of the filtered pairs were duplicates?
+
+(d) Fill in the read pairs per step for replicate 1: in → after trimming → properly paired → on chr21 → MAPQ ≥ 30 (both mates) → not duplicates. Where are the biggest losses?
+
+### C3 — Insertion sites
+
+```bash
+zcat $D/hg38_blacklist.bed.gz > blacklist.bed
+for r in rep1 rep2; do
+  samtools sort -n -u ${r}.dedup.bam | bedtools bamtobed -bedpe -i - 2> /dev/null \
+    | awk -v OFS='\t' '{ s = ($2 < $5 ? $2 : $5); e = ($3 > $6 ? $3 : $6)
+                         print $1, s + 4, s + 5, ".", ".", "+"
+                         print $1, e - 5, e - 4, ".", ".", "+" }' \
+    | bedtools intersect -v -a - -b blacklist.bed \
+    | sort -k1,1 -k2,2n > ${r}.ins.bed
+  wc -l ${r}.ins.bed
+done
+head -4 rep1.ins.bed
+```
+
+(a) Explain the `awk` program. Why `s + 4, s + 5` and `e − 5, e − 4`? Why is every line given the strand `+`?
+
+(b) How many insertion sites per replicate? Why is the number slightly less than twice the number of fragments?
+
+(c) *Optional:* make a CPM-scaled bigWig of the insertions and look at it in IGV with ENCODE's peaks:
+
+```bash
+grep -w -e chr21 -e chrM $D/hg38.chrom.sizes > chrom.sizes
+n=$(wc -l < rep1.ins.bed)
+bedtools genomecov -i rep1.ins.bed -g chrom.sizes -bg -scale $(echo "1000000 / $n" | bc -l) > rep1.ins.cpm.bedGraph
+bedGraphToBigWig rep1.ins.cpm.bedGraph chrom.sizes rep1.ins.cpm.bw
+```
+
+### C4 — Call peaks in two modes
+
+```bash
+mkdir -p macs
+for r in rep1 rep2; do
+  macs3 callpeak -t ${r}.dedup.bam -f BAMPE -g 4.0e7 --keep-dup all -q 0.01 \
+    -n ${r}_frag --outdir macs 2> ${r}_frag.macs.log
+  macs3 callpeak -t ${r}.ins.bed -f BED --nomodel --shift -75 --extsize 150 \
+    -g 4.0e7 --keep-dup all -q 0.01 -n ${r}_cuts --outdir macs 2> ${r}_cuts.macs.log
+  macs3 callpeak -t ${r}.ins.bed -f BED --nomodel --shift -75 --extsize 150 \
+    -g 4.0e7 --keep-dup all -p 0.01 -n ${r}_cuts_p01 --outdir macs 2> ${r}_cuts_p01.macs.log
+done
+wc -l macs/*_peaks.narrowPeak
+for f in macs/*_peaks.narrowPeak; do
+  echo $f $(awk '{ w += $3 - $2 } END { print w / NR }' $f) $(bedtools intersect -u -a $f -b blacklist.bed | wc -l)
+done
+```
+
+(a) How many peaks does each call give? Which mode gives more peaks at q < 0.01, and which gives wider peaks? Why?
+
+(b) How many peaks overlap the blacklist? (We removed blacklisted insertions, but not for the `BAMPE` call.)
+
+(c) In `rep1_frag.macs.log`, find the mean fragment size MACS3 reports in `BAMPE` mode and compare with the fragment-size distribution of *ATAC-seq: Tn5, fragment sizes, nucleosome ladder*. Find the line `Range for calculating regional lambda`: which window does MACS3 use, and why no 1-kb window?
+
+(d) How many peaks does the lenient `-p 0.01` call give? Why would you never report this set as "the peaks"?
+
+### C5 — FRiP
+
+```bash
+for r in rep1 rep2; do
+  n=$(wc -l < ${r}.ins.bed)
+  k=$(bedtools intersect -u -a ${r}.ins.bed -b macs/${r}_cuts_peaks.narrowPeak | wc -l)
+  echo $r $k $n $(echo "$k / $n" | bc -l)
+done
+```
+
+(a) What is FRiP in each replicate? Does it pass ENCODE's standard?
+
+(b) Compute FRiP for replicate 1 with ENCODE's peaks instead of your own. Why is it different?
+
+### C6 — Compare with ENCODE and between replicates
+
+```bash
+zcat $D/gm12878_atac_peaks.bed.gz | awk '$1 == "chr21"' | sort -k1,1 -k2,2n > encode_chr21.bed
+wc -l encode_chr21.bed
+for m in frag cuts; do
+  for r in rep1 rep2; do
+    p=macs/${r}_${m}_peaks.narrowPeak
+    echo $r $m $(wc -l < $p) \
+      $(bedtools intersect -u -a $p -b encode_chr21.bed | wc -l) \
+      $(bedtools intersect -u -a encode_chr21.bed -b $p | wc -l)
+  done
+done
+bedtools intersect -u -a macs/rep1_cuts_peaks.narrowPeak -b macs/rep2_cuts_peaks.narrowPeak | wc -l
+bedtools intersect -u -a macs/rep2_cuts_peaks.narrowPeak -b macs/rep1_cuts_peaks.narrowPeak | wc -l
+```
+
+(a) What fraction of your peaks overlap an ENCODE peak (precision-like), and what fraction of ENCODE's chr21 peaks you recover (recall-like)? Which mode agrees better with ENCODE, and why might it?
+
+(b) What fraction of replicate 1's peaks overlap replicate 2, and vice versa?
+
+### C7 — A naive consensus by merging
+
+```bash
+cat macs/rep1_cuts_peaks.narrowPeak macs/rep2_cuts_peaks.narrowPeak | cut -f1-3 \
+  | sort -k1,1 -k2,2n | bedtools merge > merged.bed
+wc -l merged.bed
+awk '{ print $3 - $2 }' merged.bed | sort -n | awk '{ a[NR] = $1 } END { print "median", a[int(NR/2)], "max", a[NR] }'
+```
+
+How many merged regions, and what are their median and maximum width? Keep the numbers for R2.
+
+## In R
+
+You need `GenomicRanges`, `rtracklayer` and `ggplot2`. Work in the same folder as the command-line part:
+
+```r
+library(GenomicRanges); library(rtracklayer); library(ggplot2)
+D <- "/path/to/course/data"
+setwd("~/epi/atac")
+np <- function(f) import(f, format = "narrowPeak")
+```
+
+### R1 — Replicate consistency by rank
+
+```r
+p1 <- np("macs/rep1_cuts_p01_peaks.narrowPeak"); p2 <- np("macs/rep2_cuts_p01_peaks.narrowPeak")
+c(length(p1), length(p2))
+p1 <- p1[order(-p1$pValue)]; p2 <- p2[order(-p2$pValue)]       # strongest first
+# for each rep-1 peak: the best overlapping rep-2 peak (or NA)
+h <- findOverlaps(p1, p2)
+best <- tapply(subjectHits(h), queryHits(h), min)               # p2 is sorted, so min index = best
+m <- data.frame(rank1 = seq_along(p1), p1 = p1$pValue, rank2 = NA, p2 = NA)
+m$rank2[as.integer(names(best))] <- best
+m$p2[as.integer(names(best))] <- p2$pValue[best]
+# correspondence at the top: of the top N rep-1 peaks, what fraction is found in rep 2?
+N <- c(250, 500, 750, 1000, 1250, 1500, nrow(m))
+data.frame(N, found = sapply(N, function(n) mean(!is.na(m$rank2[1:n]))))
+ggplot(m[!is.na(m$p2), ], aes(p1, p2)) + geom_point(alpha = 0.2, size = 0.6) +
+  scale_x_log10() + scale_y_log10() + labs(x = "-log10 p, replicate 1", y = "-log10 p, replicate 2")
+cor(m$p1, m$p2, use = "complete.obs", method = "spearman")
+```
+
+(a) How many lenient peaks per replicate? What fraction of replicate 1's top 1000, top 4000 and all peaks are found in replicate 2?
+
+(b) Where does the curve start to fall fast? Compare with your q < 0.01 peak count (C4) and with ENCODE's chr21 IDR peaks.
+
+(c) What is the Spearman correlation of the matched scores? Why is it much lower than the agreement among the top peaks?
+
+### R2 — A fixed-width consensus with iterative overlap removal
+
+```r
+fixed <- function(p, sample) {
+  s <- GRanges(seqnames(p), IRanges(start(p) + p$peak, width = 1))   # summit base (1-based)
+  w <- resize(s, 500, fix = "center")                                # 500 bp around it
+  w$score <- p$pValue / sum(p$pValue) * 1e6                          # score per million
+  w$sample <- sample
+  w
+}
+keep_best <- function(gr) {
+  gr <- gr[order(-gr$score)]
+  ov <- as.list(findOverlaps(gr, gr))           # for each peak, the peaks it overlaps
+  keep <- logical(length(gr)); gone <- logical(length(gr))
+  for (i in seq_along(gr)) {
+    if (gone[i]) next
+    keep[i] <- TRUE
+    gone[ov[[i]]] <- TRUE                       # itself and every overlapping peak
+  }
+  sort(gr[keep])
+}
+q1 <- np("macs/rep1_cuts_peaks.narrowPeak"); q2 <- np("macs/rep2_cuts_peaks.narrowPeak")
+per_sample <- c(keep_best(fixed(q1, "rep1")), keep_best(fixed(q2, "rep2")))
+cons <- keep_best(per_sample)
+length(cons); table(width(cons))
+# reproducible: overlapped by a fixed-width peak of both replicates
+n_rep <- sapply(split(per_sample, per_sample$sample), function(x) overlapsAny(cons, x))
+cons_rep <- cons[rowSums(n_rep) == 2]
+length(cons_rep)
+merged <- import("merged.bed")
+c(merged = length(merged), median_width = median(width(merged)))
+export(cons_rep, "consensus_500bp.bed")
+```
+
+(a) Why does `fixed()` use `start(p) + p$peak` (check with *Genomic intervals*: is that the 1-based summit position)?
+
+(b) How many 500-bp peaks are kept per sample, in the consensus, and in the reproducible consensus? Compare with the merged set from C7 (number and widths).
+
+(c) Why is the score normalised per million before peaks from different samples are compared?
+
+(d) Check that no two peaks in `cons` overlap (last line of R3's code, or run it now).
+
+### R3 — Where are the peaks?
+
+```r
+gtf <- import(file.path(D, "gencode.v46.basic.annotation.gtf.gz"))
+tx  <- gtf[gtf$type == "transcript" & gtf$transcript_type == "protein_coding" & seqnames(gtf) == "chr21"]
+tss <- unique(resize(tx, width = 1, fix = "start"))
+d <- mcols(distanceToNearest(cons_rep, tss, ignore.strand = TRUE))$distance
+mean(d <= 1000)
+enc <- import(file.path(D, "gm12878_atac_peaks.bed.gz"), format = "narrowPeak")
+enc <- enc[seqnames(enc) == "chr21"]
+mean(mcols(distanceToNearest(enc, tss, ignore.strand = TRUE))$distance <= 1000)
+# by strength: deciles of the consensus score
+cons_rep$decile <- cut(rank(-cons_rep$score), 10, labels = 1:10)
+tapply(d <= 1000, cons_rep$decile, mean)
+c(length(tss), mean(overlapsAny(tss, cons_rep, maxgap = 1000)))
+sum(countOverlaps(cons, cons) > 1)                # R2 (d)
+```
+
+(a) What fraction of the reproducible consensus peaks lie within 1 kb of a protein-coding TSS? And of ENCODE's chr21 peaks?
+
+(b) How does the promoter fraction change from the strongest to the weakest decile? What are the distal peaks likely to be?
+
+(c) What fraction of chr21 protein-coding TSSs (unique positions) have a consensus peak within 1 kb? GM12878 does not express every gene: is the answer plausible?
+
+## Hints
+
+::: {.callout-tip collapse="true" title="Hint 1 — the Tn5 shift (B1, C3)"}
+SAM `POS` is 1-based: BED start = `POS − 1`. A read's BED end = BED start + aligned length (sum of `M`, `D`, `=`, `X` in the CIGAR). On the + strand the 5' end is the start, on the − strand the end. Insertion = start + 4 (+ strand) or end − 5 (− strand), written as a one-base BED interval `[x, x + 1)`. See Buenrostro et al. 2013 and [`bedtools bamtobed -bedpe`](https://bedtools.readthedocs.io/en/latest/content/tools/bamtobed.html); the deepTools tool [`alignmentSieve --ATACshift`](https://deeptools.readthedocs.io/en/latest/content/tools/alignmentSieve.html) does the same on a BAM.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 2 — λ and Poisson (B2, B3, B4)"}
+$\lambda_\text{BG} = N \times w / G$ for $N$ reads, window $w$ and genome size $G$. A count in a larger window $W$ is scaled to $w$: $\lambda_W = n_W \times w / W$. $\lambda_\text{local}$ is the maximum. Expected false positives at a cutoff = number of tests × cutoff. See the [MACS3 callpeak documentation](https://macs3-project.github.io/MACS/docs/callpeak.html) (`--slocal`, `--llocal`, `-g`) and Zhang et al. 2008.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 3 — filters (C2)"}
+`samtools view -q 30` keeps MAPQ ≥ 30, `-f 2` keeps proper pairs, `-F 1804` removes unmapped (4), mate unmapped (8), secondary (256), QC-fail (512) and duplicates (1024). After filtering single reads, some pairs have lost a mate; [`samtools fixmate`](https://www.htslib.org/doc/samtools-fixmate.html) on name-grouped reads ([`collate`](https://www.htslib.org/doc/samtools-collate.html)) clears their proper-pair flag, so the second `view -f 2` drops them. [`samtools markdup`](https://www.htslib.org/doc/samtools-markdup.html) needs the `MC`/`ms` tags that `fixmate -m` adds and coordinate-sorted input; `-r` removes duplicates, `-s` prints statistics.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 4 — MACS3 (C4)"}
+`-f BAMPE` uses whole fragments from a paired-end BAM. For a BED of insertions, `--nomodel --shift -75 --extsize 150` makes a 150-bp window centred on each line's 5' end (the start, for strand `+`). `--keep-dup all` because duplicates were removed already. `-g` is the effective genome size. Output formats are described under [callpeak outputs](https://macs3-project.github.io/MACS/docs/callpeak.html#output-files); the narrowPeak columns in *Genomic intervals*.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 5 — overlaps and FRiP (B5, B6, C5, C6)"}
+Count each interval once with [`bedtools intersect -u`](https://bedtools.readthedocs.io/en/latest/content/tools/intersect.html). The two directions of an overlap differ because one peak can overlap several in the other set. FRiP is defined in the [ENCODE ATAC-seq standards](https://www.encodeproject.org/atac-seq/#standards). IDR: Li et al. 2011 and the [idr package](https://github.com/nboley/idr).
+:::
+
+::: {.callout-tip collapse="true" title="Hint 6 — fixed-width peaks (B7, R2)"}
+Sort by score; take the best; remove everything that overlaps it ([`findOverlaps`](https://rdrr.io/bioc/GenomicRanges/man/findOverlaps-methods.html) of the set with itself); continue with the best peak not yet removed. [`resize(x, 500, fix = "center")`](https://rdrr.io/bioc/GenomicRanges/man/intra-range-methods.html) makes the windows. Corces et al. 2018 (Methods, "peak calling") describe the procedure.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 7 — annotation (R3)"}
+[`distanceToNearest`](https://rdrr.io/bioc/GenomicRanges/man/nearest-methods.html) gives 0 for overlaps. Build TSSs as in *Genomic intervals* (R2) and restrict to chr21, since our peaks are only there.
+:::
+
+## Solutions
+
+::: {.callout-note collapse="true" title="Solutions — by hand"}
+**B1.** (a) Read 1: BED `[10000, 10050)`; read 2: BED `[10230, 10280)`. Fragment `[10000, 10280)`, TLEN 280. (b) $10000 + 4 = 10004$ → `chr21 10004 10005`; $10280 - 5 = 10275$ → `chr21 10275 10276`; 271 bp apart. (c) BED `[20000, 20030)`, insertion $20030 - 5 = 20025$. (d) $10230 - 5 = 10225$, 50 bp from the correct 10275: the error equals the read length, so 100 bp for an untrimmed 100-bp read. (e) The centre of the 9-bp duplication is 4 bases in from either end. From a BED start (the first of the 9 bases) that is +4; the BED end is the boundary after the last base, so the centre is end − 5. In 1-based closed coordinates: start + 4 and end − 4.
+
+**B2.** (a) $2\,000\,000 \times 150 / 4 \times 10^7 = 7.5$. (b) $2\,000\,000 \times 150 / 2.7 \times 10^9 \approx 0.11$, about 70 times too small. (c) $\lambda_\text{local}$ is the maximum of $\lambda_\text{BG}$ and the 10-kb window of the sample; on chr21 the 10-kb window (and thus the data themselves) sets the background almost everywhere there are reads, so the too-small $\lambda_\text{BG}$ rarely wins. It would matter in sparse regions, where weak noise would now pass the test.
+
+**B3.** (a) $600 \times 150 / 10\,000 = 9.0$. (b) With a control: $\max(4.0, 6.0, 7.5, 9.0) = 9.0$. Without a control MACS3 uses $\max(\lambda_\text{BG}, \lambda_\text{10k}) = 9.0$ too. (c) $P(X \ge 18 \mid 9) = 0.0053$; against $\lambda_\text{BG} = 4$ it would be $2.5 \times 10^{-7}$. The peak sits in a region of high background; against its neighbourhood it is only weakly significant, and would not pass a cutoff of $q < 0.01$ after testing millions of positions. (d) The maximum is conservative: if any scale shows high background (a broad open domain, a copy-number gain, a mappability artefact), the candidate must exceed it. A mean would let local biases through.
+
+**B4.** (a) $10^6 \times 10^{-4} = 100$. (b) About $100 / 2000 = 0.05$, i.e. q ≈ 0.05: about 5% of these windows are expected to be noise. (c) At $p < 0.01$ you expect $10^4$ false windows on chr21 alone, so most of the peaks are noise. IDR needs exactly that: a long ranked list including noise, so that it can see where replicate agreement breaks down.
+
+**B5.** (a) $1\,050\,000 / 3\,100\,000 = 0.34$: passes (> 0.3). (b) No: the library is the same; more lenient peaks cover more of the genome and catch more insertions, so FRiP rises. FRiP is only comparable between samples with the same peak-calling settings, or when counted in one fixed reference peak set.
+
+**B6.** (a) 3200/4000 = 80% of replicate 1, 3350/5000 = 67% of replicate 2. They differ because overlap is not one-to-one: one wide peak in one set can overlap two narrow peaks in the other, and the sets have different sizes. (b) 3900/8000 = 49%: the 4000 extra peaks are weaker and mostly noise or real but weak sites below replicate 2's threshold, so the fraction falls. The overlap fraction measures the threshold as much as the data. (c) IDR ranks the peaks of both replicates (called leniently) and fits a mixture of a reproducible component, in which ranks are correlated, and an irreproducible one, in which they are not. Each peak gets the probability of being irreproducible, and the cutoff is set on that (e.g. IDR ≤ 0.05), independent of the original p-value thresholds.
+
+**B7.** (a) S1: `[750, 1250)`, `[1100, 1600)`, `[4750, 5250)`; S2: `[950, 1450)`, `[4450, 4950)`, `[5350, 5850)`. (b) Order 40, 30, 25, 18, 12, 9. Keep 1000 (40); it overlaps 1200 (30) and 1350 (12): drop them. Keep 5000 (25); it overlaps 4700 (18): drop. 5600 (9) does not overlap 5000's window (`5350 > 5250`): keep. Result: three windows, `[750, 1250)`, `[4750, 5250)`, `[5350, 5850)`. (c) `[750, 1600)`, `[4450, 5250)`, `[5350, 5850)`: also three regions here, but 850, 800 and 500 bp wide, and not centred on a summit. (d) Equal widths make counts comparable between regions and samples (no length effect); centring on the summit keeps the most informative part; overlapping peaks of different samples do not chain into long regions; adding samples does not change the existing regions' boundaries.
+
+**B8.** Chaining: with 40 samples, peaks of slightly different positions overlap each other in a chain, and merge joins neighbouring elements into long regions, so the "median width" is a property of the merging, not of the biology. Suggest fixed-width summit-centred peaks with iterative overlap removal (or at least requiring presence in several samples and splitting long regions).
+
+**B9.** About 1450 peaks (the curve is 94% at 1250, 89% at 1500, 82% for all 1739). That is a little more than the 1262 peaks at q < 0.01 and fewer than ENCODE's 1784 IDR peaks on chr21, which come from deeper, pooled data and include multi-mapping reads (see C6).
+:::
+
+::: {.callout-note collapse="true" title="Solutions — command line"}
+Numbers from our run (fastp 0.23.4, Bowtie2 2.4.4, samtools 1.21, bedtools 2.30.0, MACS3 3.1.0; 8 threads).
+
+**C1.** (a) Replicate 1: 6 088 187 read pairs; fastp trimmed adapter bases from 4 667 844 of 12 176 374 reads (38%), and dropped 96 060 pairs (low quality, too short); 5 992 127 pairs remain. Replicate 2: 4 125 115 pairs, 40% of reads trimmed, 4 049 389 remain. The "insert size peak" (42 bp for replicate 1) is estimated only from pairs whose two reads overlap, i.e. from fragments shorter than about 200 bp (two 100-bp reads); it is not the mode of the fragment-size distribution. Runtime: fastp 15–25 s, Bowtie2 4–12 min per replicate on 8 threads (on a busy server). (b) Replicate 1: 94.5% concordantly exactly once, 4.4% more than once, 99.65% overall. (c) Without `-X 2000`: 90.8% + 4.0% = 94.7% concordant instead of 98.9%; about 250 000 more pairs are not concordant (most of them now align "discordantly"): the fragments longer than 500 bp, i.e. the di- and tri-nucleosome fragments.
+
+**C2.** (a) Replicate 1: 10.83 M of 11.94 M mapped reads on chrM (91%); replicate 2: 7.05 M of 8.07 M (87%). mtDNA has no nucleosomes and many copies per cell. The fraction is inflated because our files contain only chr21 and chrM reads: in the whole replicate-1 library (38.2 M pairs) the 5.4 M chrM pairs are 14%. (b) `-q 30`: unique alignments; `-f 2`: proper pairs; `-F 1804` = 4 + 8 + 256 + 512 + 1024: unmapped, mate unmapped, secondary, QC fail, duplicate; `chr21`: only reads on chr21 (drops chrM; needs the index). The first filter works read by read, so a pair can lose one mate (e.g. one mate has MAPQ < 30); `collate` brings mates together, `fixmate` marks a read without its mate as unpaired (flag 0x2 cleared) and refreshes the mate tags, and `view -f 2` drops these orphans, so only complete pairs remain. (c) `DUPLICATE PAIR: 127704` reads of 632 658, i.e. 63 852 of 316 329 pairs (20%). (d) Replicate 1: 6.09 M → 5.99 M after trimming → 5.93 M properly paired → 0.55 M on chr21 (5.38 M on chrM) → 0.32 M with MAPQ ≥ 30 for both mates → 0.25 M (252 477) non-duplicate fragments. Replicate 2: 4.13 M → 4.05 M → 4.01 M → 0.51 M → 0.29 M → 0.26 M (256 180). Largest losses: chrM, then MAPQ (43% of the chr21 pairs, from repeats and duplicated segments of chr21), then duplicates. C2 takes about 10 s.
+
+**C3.** (a) `bamtobed -bedpe` writes one line per pair: chromosome, start and end of mate 1, then of mate 2 (BED coordinates). The fragment runs from the smaller start `s` to the larger end `e`. The + strand read's 5' end is `s` (insertion base `s + 4`, BED `s+4 s+5`); the − strand read's 5' end is the last base, `e − 1`, so the insertion is `e − 5` (BED `e−5 e−4`). Strand `+` makes MACS3 treat each line's start as the 5' end in C4 (with `--shift -75`). (b) Replicate 1: 482 606 insertions from 252 477 fragments; replicate 2: 496 031 from 256 180. Slightly fewer than twice the fragments because insertions in blacklisted regions were removed. (c) The bigWig is about 2 MB; in IGV the insertion track looks spiky at base resolution and smooth when zoomed out.
+
+**C4.** (a) q < 0.01: fragments (`BAMPE`) 685 (rep 1) and 697 (rep 2) peaks, mean width 741 and 791 bp; insertion sites 1262 and 1323 peaks, mean width 362 and 353 bp. Insertion mode gives about twice as many, narrower peaks: each cut contributes a 150-bp window centred on itself, so neighbouring sites stay separate, while whole fragments (mean 256 bp, some much longer) smear signal across neighbouring sites and merge them. Each MACS3 call takes about a second here. (b) 4 `BAMPE` peaks per replicate overlap the blacklist, but only 1–2 insertion-mode peaks (and those only partly). (c) "mean fragment size is determined as 255.6 bp" (replicate 1), larger than the nucleosome-free mode because the di- and tri-nucleosome fragments pull the mean up. "Range for calculating regional lambda is: 10000 bps": without a control MACS3 uses only the 10-kb window of the sample (plus λ<sub>BG</sub>); a 1-kb window around a peak measured in the sample itself would be dominated by the peak. (d) 1739 (rep 1) and 1909 (rep 2) peaks at p < 0.01. With roughly 10<sup>6</sup>–10<sup>7</sup> positions tested, p < 0.01 lets through many false positives (B4); this set is only an input for IDR or rank analyses.
+
+**C5.** (a) Replicate 1: 272 758 / 482 606 = **0.57**; replicate 2: 237 863 / 496 031 = **0.48**. Both pass the ENCODE standard (> 0.3). (b) With ENCODE's chr21 peaks: 278 226 / 482 606 = 0.58 for replicate 1, slightly higher, because ENCODE's set has more and wider peaks (median 891 bp vs 290 bp).
+
+**C6.** (a) 1784 ENCODE peaks on chr21. Insertion mode: 932 of 1262 (74%) and 981 of 1323 (74%) of our peaks overlap an ENCODE peak; 1585 (89%) and 1572 (88%) of the ENCODE peaks overlap one of ours. Fragment mode: 580 of 685 (85%) and 576 of 697 (83%) of ours in ENCODE, but only 1477 (83%) and 1469 (82%) of ENCODE recovered. Fragment mode is more "precise" because it calls fewer, stronger peaks; insertion mode recovers more of ENCODE's peaks, as expected since ENCODE also calls on insertions (shift −75, extsize 150). Most ENCODE peaks we miss lie at 43–44 Mb and 5–8 Mb, where chr21 sequence occurs more than once: we keep only uniquely aligned reads (MAPQ ≥ 30), ENCODE's pipeline keeps reads with up to four alignments and assigns them at random. (b) 1081 of 1262 replicate-1 peaks (86%) overlap replicate 2; 1093 of 1323 replicate-2 peaks (83%) overlap replicate 1.
+
+**C7.** 1442 merged regions, median width 289 bp, maximum 1820 bp. With two replicates of the same cell line, merging changes little; chaining becomes a problem with many samples (B8).
+:::
+
+::: {.callout-note collapse="true" title="Solutions — R"}
+**R1.** (a) 1739 and 1909 lenient peaks. Of replicate 1's top 1000, 97.3% are found in replicate 2; top 1250: 93.8%; top 1500: 88.5%; all 1739: 82.2%; the top 750 are 99.3% reproduced. (b) The curve is flat to about 1000 peaks and drops faster after about 1300–1500, similar to the 1262 peaks at q < 0.01, and below ENCODE's 1784 IDR peaks on chr21 (made from more reads, including multi-mappers). (c) Spearman correlation 0.82 among matched peaks. The correlation is computed over all matched peaks, including the many weak ones whose scores are mostly noise; agreement among the strongest peaks is near perfect. This is why IDR models the ranks as a mixture rather than using one correlation.
+
+**R2.** (a) MACS3 writes the summit as an offset from the 0-based start; `rtracklayer` has added 1 to the start, so `start(p) + p$peak` is the 1-based position of the summit base (*Genomic intervals*, R1b). (b) 1262 and 1323 peaks become 1116 and 1123 non-overlapping 500-bp peaks per replicate (nearby peaks whose 500-bp windows overlap are resolved); the joint consensus has 1286 peaks, all 500 bp wide (`table(width(cons))`), and 958 of them overlap a peak from both replicates. The merged set (C7) has 1442 regions of variable width (median 289 bp, up to 1820 bp). (c) −log10 p grows with sequencing depth: a deeper sample would win every overlap. Dividing by the sample's total score puts the samples on the same scale before they compete. (d) 0: no two consensus peaks overlap.
+
+**R3.** (a) 17.3% of the 958 reproducible consensus peaks are within 1 kb of a protein-coding TSS; 25.8% of ENCODE's chr21 peaks. (b) Strongest decile 70%, second 25%, the rest 5–15%: the strongest accessible sites are promoters, and the large majority of weaker peaks are distal: candidate enhancers, CTCF sites and other regulatory elements, plus some noise. (c) 59% of the 602 distinct protein-coding TSS positions on chr21 have a consensus peak within 1 kb. Plausible: a B-cell line expresses perhaps half to two thirds of protein-coding genes, and the rest have closed promoters; alternative TSSs of one gene are also counted separately. The R part runs in under a minute.
+:::
+
+## Where this leads
+
+- *Differential accessibility* starts from a count matrix over fixed-width 500-bp peaks like the consensus you built in R2 (the Corces et al. 2016 haematopoiesis data) and tests it with DESeq2.
+- *Motifs, motif enrichment and TF footprinting* uses the summits and the base-resolution insertion sites: there the +4/−5 shift matters.
+- *Peak calling* (ChIP-seq) uses the same MACS3 model with an input control, where the 1-kb and 5-kb windows come from the control.
+
+## Key papers (optional further reading)
+
+*Not required reading and not examined.*
+
+- Buenrostro et al. 2013, *Nat Methods*. [Transposition of native chromatin for fast and sensitive epigenomic profiling of open chromatin, DNA-binding proteins and nucleosome position](https://doi.org/10.1038/nmeth.2688).
+- Zhang et al. 2008, *Genome Biol*. [Model-based Analysis of ChIP-Seq (MACS)](https://doi.org/10.1186/gb-2008-9-9-r137).
+- Li et al. 2011, *Ann Appl Stat*. [Measuring reproducibility of high-throughput experiments](https://doi.org/10.1214/11-AOAS466).
+- Corces et al. 2018, *Science*. [The chromatin accessibility landscape of primary human cancers](https://doi.org/10.1126/science.aav1898).
+- Yan et al. 2020, *Genome Biol*. [From reads to insight: a hitchhiker's guide to ATAC-seq data analysis](https://doi.org/10.1186/s13059-020-1929-3).
+- Ewels et al. 2020, *Nat Biotechnol*. [The nf-core framework for community-curated bioinformatics pipelines](https://doi.org/10.1038/s41587-020-0439-x).

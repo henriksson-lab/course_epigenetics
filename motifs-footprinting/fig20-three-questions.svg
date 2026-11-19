@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 360" width="1120" height="360" font-family="Helvetica, Arial, sans-serif">
+  <rect width="1120" height="360" fill="#ffffff"/>
+  <rect x="20" y="20" width="1080" height="56" rx="8" fill="#eaf1f7" stroke="#2a6f97" stroke-width="1.5"/>
+  <text x="560" y="45" font-size="17" font-weight="bold" fill="#1b2a3a" text-anchor="middle">motif database (JASPAR, CIS-BP, HOCOMOCO) + peaks + reads</text>
+  <text x="560" y="66" font-size="15" fill="#5b6b7a" text-anchor="middle">all three ask "which TF?" from a motif, so all three share the family problem</text>
+  <g>
+    <rect x="20" y="96" width="345" height="250" rx="10" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1.5"/>
+    <text x="192" y="126" font-size="18" font-weight="bold" fill="#1b2a3a" text-anchor="middle">Motif enrichment</text>
+    <text x="40" y="158" font-size="15" font-weight="bold" fill="#1b2a3a">input</text>
+    <text x="40" y="180" font-size="15" fill="#1b2a3a">a set of peaks (e.g. B-up) and a background</text>
+    <text x="40" y="212" font-size="15" font-weight="bold" fill="#1b2a3a">answer</text>
+    <text x="40" y="234" font-size="15" fill="#1b2a3a">which motifs are over-represented</text>
+    <text x="40" y="266" font-size="15" font-weight="bold" fill="#1b2a3a">tools</text>
+    <text x="40" y="288" font-size="15" fill="#1b2a3a">HOMER, MEME SEA / AME / STREME,</text>
+    <text x="40" y="310" font-size="15" fill="#1b2a3a">motifmatchr + Fisher</text>
+  </g>
+  <g>
+    <rect x="387" y="96" width="345" height="250" rx="10" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1.5"/>
+    <text x="560" y="126" font-size="18" font-weight="bold" fill="#1b2a3a" text-anchor="middle">Motif accessibility</text>
+    <text x="407" y="158" font-size="15" font-weight="bold" fill="#1b2a3a">input</text>
+    <text x="407" y="180" font-size="15" fill="#1b2a3a">a count matrix: peaks × samples or cells</text>
+    <text x="407" y="212" font-size="15" font-weight="bold" fill="#1b2a3a">answer</text>
+    <text x="407" y="234" font-size="15" fill="#1b2a3a">per sample: are motif peaks more or less</text>
+    <text x="407" y="256" font-size="15" fill="#1b2a3a">open than expected?</text>
+    <text x="407" y="288" font-size="15" font-weight="bold" fill="#1b2a3a">tools</text>
+    <text x="407" y="310" font-size="15" fill="#1b2a3a">chromVAR (also in ArchR, Signac)</text>
+  </g>
+  <g>
+    <rect x="755" y="96" width="345" height="250" rx="10" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1.5"/>
+    <text x="927" y="126" font-size="18" font-weight="bold" fill="#1b2a3a" text-anchor="middle">Footprinting</text>
+    <text x="775" y="158" font-size="15" font-weight="bold" fill="#1b2a3a">input</text>
+    <text x="775" y="180" font-size="15" fill="#1b2a3a">Tn5 insertions at base resolution (deep)</text>
+    <text x="775" y="212" font-size="15" font-weight="bold" fill="#1b2a3a">answer</text>
+    <text x="775" y="234" font-size="15" fill="#1b2a3a">is this site (or this motif on average)</text>
+    <text x="775" y="256" font-size="15" fill="#1b2a3a">protected by a bound protein?</text>
+    <text x="775" y="288" font-size="15" font-weight="bold" fill="#1b2a3a">tools</text>
+    <text x="775" y="310" font-size="15" fill="#1b2a3a">TOBIAS, HINT-ATAC, chromBPNet</text>
+  </g>
+</svg>

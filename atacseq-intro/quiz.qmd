@@ -1,0 +1,103 @@
+---
+title: "Quiz: ATAC-seq"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+Short questions on Tn5, fragment lengths and ATAC-seq QC. Try each on paper first, then open the answer.
+
+---
+
+**Q1.** What does ATAC-seq measure, and why does a peak of ATAC signal usually mark regulatory DNA?
+
+::: {.callout-tip collapse="true" title="Hint"}
+Where can a large enzyme reach the DNA in a nucleus?
+:::
+
+::: {.callout-note collapse="true" title="Answer"}
+It measures where the Tn5 transposase could insert its adapters into the DNA of intact nuclei: **accessibility**. DNA wrapped on nucleosomes or packed in compact chromatin is protected. Active promoters, enhancers and insulators have a nucleosome-depleted region where transcription factors bind, so Tn5 inserts there often and the reads pile up into a peak.
+:::
+
+---
+
+**Q2.** "Tagmentation" combines two steps of ordinary library preparation. Which two, and what is the main practical advantage?
+
+::: {.callout-note collapse="true" title="Answer"}
+**Fragmentation** of the DNA and **adapter ligation**: Tn5 cuts the DNA and joins an adapter to each new end in one reaction. No sonication, end repair or ligation, so the protocol is fast (hours) and needs little material (hundreds to tens of thousands of cells), and it is done on native chromatin in the nucleus.
+:::
+
+---
+
+**Q3.** A read pair has read 1 on the + strand at `POS` 2 000 001 and read 2 on the − strand at `POS` 2 000 151; both reads are 100 bp. How long is the fragment, and at which positions did Tn5 insert (ignore the +4 / −5 shift)?
+
+::: {.callout-tip collapse="true" title="Hint"}
+The 5' end of a − strand read is its rightmost base.
+:::
+
+::: {.callout-note collapse="true" title="Answer"}
+Insertions at 2 000 001 (5' end of read 1) and 2 000 250 (5' end of read 2: 2 000 151 + 100 − 1). Fragment length 2 000 250 − 2 000 001 + 1 = **250 bp**, `TLEN` = +250 for read 1 and −250 for read 2. A mono-nucleosome fragment.
+:::
+
+---
+
+**Q4.** Why do ATAC-seq fragment lengths show peaks below 100 bp, near 200 bp and near 400 bp?
+
+::: {.callout-note collapse="true" title="Answer"}
+Tn5 inserts into nucleosome-free DNA and linkers, not into DNA wrapped on a nucleosome. Two insertions in the same open region give a short (< 100 bp) fragment; two insertions in linkers on either side of one nucleosome give ~147 bp plus linker ≈ 200 bp; around two nucleosomes ≈ 400 bp. The steps are the nucleosome repeat length (~190 bp).
+:::
+
+---
+
+**Q5.** Tn5 is loaded with two adapter types, A and B, in equal amounts. What fraction of fragments can be amplified and sequenced? Why?
+
+::: {.callout-note collapse="true" title="Answer"}
+**50%.** Each end gets A or B at random, so fragments are A–B, B–A, A–A or B–B with probability ¼ each. PCR needs one primer site of each kind, and the sequencer reads from A and from B, so only A–B and B–A fragments ($2 \times \tfrac12 \times \tfrac12$) are amplified exponentially and sequenced.
+:::
+
+---
+
+**Q6.** A library has 30 M mapped reads, 9 M of them on chrM. What is the chrM fraction, why is it so high, and what protocol change would reduce it?
+
+::: {.callout-note collapse="true" title="Answer"}
+9 / 30 = **30%**. Mitochondrial DNA has no nucleosomes (all of it is accessible) and is present in hundreds to thousands of copies per cell, so it attracts many Tn5 insertions once the lysis lets Tn5 into the mitochondria. **Omni-ATAC** (different detergents plus a wash step that removes much of the cytoplasm) typically brings it down to a few percent. Remove chrM reads before peak calling either way.
+:::
+
+---
+
+**Q7.** Insertions around 5000 TSSs are summed per bp over ±2 kb. The outer 100 bp at each end contain 600 and 400 insertions; the highest 10-bp bin near the TSS contains 1 200. Compute the TSS enrichment. Is the library acceptable by ENCODE's GRCh38 thresholds?
+
+::: {.callout-tip collapse="true" title="Hint"}
+Background = (600 + 400) / 200 insertions per bp.
+:::
+
+::: {.callout-note collapse="true" title="Answer"}
+Background = 1000 / 200 = 5 per bp. Central bin = 1200 / 10 = 120 per bp. TSS enrichment = 120 / 5 = **24**: well above 7, "ideal" (ENCODE: < 5 concerning, 5–7 acceptable, > 7 ideal, for RefSeq TSSs on GRCh38).
+:::
+
+---
+
+**Q8.** Library P has a strong nucleosome ladder (peaks at ~200, ~400, ~600 bp, taller than the peak below 100 bp) and a TSS enrichment of 2. Library Q has almost only fragments shorter than 120 bp, no 200-bp peak, and a TSS enrichment of 6. What probably went wrong with each?
+
+::: {.callout-note collapse="true" title="Answer"}
+**P**: many dead or dying cells. Apoptotic DNA is cut between nucleosomes and gives a ladder by itself; the DNA of damaged nuclei is tagmented everywhere, so there is little enrichment at TSSs. The fragment plot alone would look fine; the TSS profile reveals the problem. **Q**: over-tagmentation: too much Tn5 for the number of nuclei (or too few nuclei counted), so fragments are short and the nucleosome information is lost; signal-to-noise is only borderline.
+:::
+
+---
+
+**Q9.** In the TSS-enrichment profile of a good library, short (< 100 bp) fragments peak right at the TSS, while mono-nucleosome (180–250 bp) fragment centres peak about 150 bp downstream and dip at the TSS. Explain.
+
+::: {.callout-note collapse="true" title="Answer"}
+Active promoters have a **nucleosome-depleted region** just upstream of and at the TSS: short fragments come from two insertions inside it. Mono-nucleosome fragments contain one nucleosome, so their centres mark nucleosome positions: the well-positioned **+1 nucleosome** just downstream of the TSS (and the −1 upstream), and a dip where there is no nucleosome.
+:::
+
+---
+
+**Q10.** A paper compares bulk ATAC-seq of whole blood from patients and healthy donors and concludes that "the disease rewires the epigenome of immune cells". Which alternative explanation must be ruled out first?
+
+::: {.callout-note collapse="true" title="Answer"}
+A change in **cell-type composition**. Blood is a mixture (neutrophils, T cells, B cells, monocytes …), each with its own accessible sites. If patients have more of one cell type, its specific sites gain signal in bulk without any change of chromatin within a cell type. Sorted populations, deconvolution, or single-cell ATAC-seq address this. (Batch effects from processing patients and controls on different days are the second thing to check.)
+:::

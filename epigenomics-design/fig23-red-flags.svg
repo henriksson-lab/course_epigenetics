@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 330" width="1120" height="330" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker><marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker><marker id="agr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker><marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a6f97"/></marker><marker id="ao" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e67e22"/></marker><marker id="ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8c564b"/></marker></defs>
+<rect width="1120" height="330" fill="#ffffff"/>
+<rect x="40" y="10" width="540" height="310" rx="10" fill="#f4f6f8" stroke="#c9d3dc" stroke-width="1.5" />
+<text x="60" y="40" font-size="16" fill="#5b6b7a" text-anchor="start" font-weight="bold">Methods (an invented example)</text>
+<text x="60" y="74" font-size="18" fill="#1b2a3a"><tspan>H3K27me3 ChIP-seq was done on control and</tspan></text>
+<text x="60" y="105" font-size="18" fill="#1b2a3a"><tspan>EZH2-inhibitor-treated cells </tspan><tspan fill="#c0392b" font-weight="bold" text-decoration="underline">(one sample each)</tspan><tspan fill="#c0392b" font-size="12" dy="-7">1</tspan><tspan dy="7"></tspan><tspan>.</tspan></text>
+<text x="60" y="136" font-size="18" fill="#1b2a3a"><tspan>Control cells were processed in </tspan><tspan fill="#c0392b" font-weight="bold" text-decoration="underline">March</tspan><tspan fill="#c0392b" font-size="12" dy="-7">2</tspan><tspan dy="7"></tspan><tspan>, treated</tspan></text>
+<text x="60" y="167" font-size="18" fill="#1b2a3a"><tspan>cells in </tspan><tspan fill="#c0392b" font-weight="bold" text-decoration="underline">May</tspan><tspan fill="#c0392b" font-size="12" dy="-7">2</tspan><tspan dy="7"></tspan><tspan>. Reads were aligned with Bowtie2</tspan></text>
+<text x="60" y="198" font-size="18" fill="#1b2a3a"><tspan>and </tspan><tspan fill="#c0392b" font-weight="bold" text-decoration="underline">normalised to reads per million</tspan><tspan fill="#c0392b" font-size="12" dy="-7">3</tspan><tspan dy="7"></tspan><tspan>. Peaks</tspan></text>
+<text x="60" y="229" font-size="18" fill="#1b2a3a"><tspan>were called with MACS2 </tspan><tspan fill="#c0392b" font-weight="bold" text-decoration="underline">without a control</tspan><tspan fill="#c0392b" font-size="12" dy="-7">4</tspan><tspan dy="7"></tspan><tspan>.</tspan></text>
+<text x="60" y="260" font-size="18" fill="#1b2a3a"><tspan>Libraries had </tspan><tspan fill="#c0392b" font-weight="bold" text-decoration="underline">38–61% duplicate reads</tspan><tspan fill="#c0392b" font-size="12" dy="-7">5</tspan><tspan dy="7"></tspan><tspan>; the</tspan></text>
+<text x="60" y="291" font-size="18" fill="#1b2a3a"><tspan>fraction of reads in peaks was </tspan><tspan fill="#c0392b" font-weight="bold" text-decoration="underline">2%</tspan><tspan fill="#c0392b" font-size="12" dy="-7">6</tspan><tspan dy="7"></tspan><tspan>.</tspan></text>
+<circle cx="640" cy="49" r="12" fill="#c0392b" stroke="none" stroke-width="1.5"/>
+<text x="640" y="54" font-size="14" fill="#ffffff" text-anchor="middle" font-weight="bold">1</text>
+<text x="664" y="54" font-size="18" fill="#1b2a3a" text-anchor="start">no replicates: no variance, no test</text>
+<circle cx="640" cy="96" r="12" fill="#c0392b" stroke="none" stroke-width="1.5"/>
+<text x="640" y="101" font-size="14" fill="#ffffff" text-anchor="middle" font-weight="bold">2</text>
+<text x="664" y="101" font-size="18" fill="#1b2a3a" text-anchor="start">condition = batch: confounded</text>
+<circle cx="640" cy="143" r="12" fill="#c0392b" stroke="none" stroke-width="1.5"/>
+<text x="640" y="148" font-size="14" fill="#ffffff" text-anchor="middle" font-weight="bold">3</text>
+<text x="664" y="148" font-size="18" fill="#1b2a3a" text-anchor="start">global change hidden by RPM</text>
+<circle cx="640" cy="190" r="12" fill="#c0392b" stroke="none" stroke-width="1.5"/>
+<text x="640" y="195" font-size="14" fill="#ffffff" text-anchor="middle" font-weight="bold">4</text>
+<text x="664" y="195" font-size="18" fill="#1b2a3a" text-anchor="start">no input: copy number, shearing</text>
+<circle cx="640" cy="237" r="12" fill="#c0392b" stroke="none" stroke-width="1.5"/>
+<text x="640" y="242" font-size="14" fill="#ffffff" text-anchor="middle" font-weight="bold">5</text>
+<text x="664" y="242" font-size="18" fill="#1b2a3a" text-anchor="start">low complexity: few molecules</text>
+<circle cx="640" cy="284" r="12" fill="#c0392b" stroke="none" stroke-width="1.5"/>
+<text x="640" y="289" font-size="14" fill="#ffffff" text-anchor="middle" font-weight="bold">6</text>
+<text x="664" y="289" font-size="18" fill="#1b2a3a" text-anchor="start">very low for a broad mark</text>
+</svg>

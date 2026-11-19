@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 400" width="1120" height="400" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/>
+    </marker>
+    <marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/>
+    </marker>
+  </defs>
+  <rect width="1120" height="400" fill="#ffffff"/>
+
+  <!-- left: full genome -->
+  <text x="20" y="30" font-size="17" font-weight="bold" fill="#1b2a3a">Real analysis: the whole genome</text>
+  <g font-size="14" fill="#5b6b7a">
+    <text x="20" y="74">chr7</text><text x="20" y="114">chr21</text><text x="20" y="154">chrM</text><text x="20" y="194">others</text>
+  </g>
+  <line x1="80" y1="70" x2="500" y2="70" stroke="#5b6b7a" stroke-width="3"/>
+  <line x1="80" y1="110" x2="500" y2="110" stroke="#1b2a3a" stroke-width="3"/>
+  <line x1="80" y1="150" x2="200" y2="150" stroke="#1b2a3a" stroke-width="3"/>
+  <line x1="80" y1="190" x2="500" y2="190" stroke="#5b6b7a" stroke-width="3" stroke-dasharray="10,6"/>
+  <!-- similar sequence on chr7 and chr21 -->
+  <rect x="300" y="62" width="60" height="16" fill="#6b4fa0" fill-opacity="0.35" stroke="#6b4fa0"/>
+  <rect x="380" y="102" width="60" height="16" fill="#6b4fa0" fill-opacity="0.35" stroke="#6b4fa0"/>
+  <rect x="310" y="44" width="40" height="10" rx="2" fill="#2e8b57"/>
+  <text x="300" y="52" font-size="14" fill="#2e8b57" text-anchor="end">read from chr7: best match chr7</text>
+  <text x="80" y="232" font-size="15" fill="#1b2a3a">Each read competes for its best place in the</text>
+  <text x="80" y="252" font-size="15" fill="#1b2a3a">whole genome; MAPQ reflects every copy.</text>
+
+  <line x1="560" y1="20" x2="560" y2="270" stroke="#cfd8e0" stroke-width="1.5"/>
+
+  <!-- right: small reference -->
+  <text x="590" y="30" font-size="17" font-weight="bold" fill="#1b2a3a">This course: reference = chr21 + chrM only</text>
+  <g font-size="14" fill="#5b6b7a">
+    <text x="590" y="114">chr21</text><text x="590" y="154">chrM</text>
+  </g>
+  <line x1="650" y1="110" x2="1070" y2="110" stroke="#1b2a3a" stroke-width="3"/>
+  <line x1="650" y1="150" x2="770" y2="150" stroke="#1b2a3a" stroke-width="3"/>
+  <rect x="950" y="102" width="60" height="16" fill="#6b4fa0" fill-opacity="0.35" stroke="#6b4fa0"/>
+  <rect x="960" y="70" width="40" height="10" rx="2" fill="#c0392b"/>
+  <line x1="980" y1="82" x2="980" y2="98" stroke="#c0392b" stroke-width="2" marker-end="url(#arrR)"/>
+  <text x="940" y="64" font-size="14" fill="#c0392b" text-anchor="end">a chr7 read has nowhere else</text>
+  <text x="940" y="82" font-size="14" fill="#c0392b" text-anchor="end">to go: wrong place, high MAPQ</text>
+  <text x="650" y="196" font-size="15" fill="#1b2a3a">To avoid this, the course FASTQ files contain only</text>
+  <text x="650" y="216" font-size="15" fill="#1b2a3a">reads that ENCODE aligned to chr21 or chrM</text>
+  <text x="650" y="236" font-size="15" fill="#1b2a3a">against the <tspan font-weight="bold">whole</tspan> genome.</text>
+
+  <rect x="20" y="282" width="1080" height="106" rx="6" fill="#f4f6f8" stroke="#cfd8e0"/>
+  <text x="36" y="308" font-size="15" font-weight="bold" fill="#1b2a3a">What that shortcut changes</text>
+  <text x="36" y="332" font-size="15" fill="#1b2a3a">• Almost every read aligns: real ChIP has unmapped and non-human reads, ours were filtered out in advance.</text>
+  <text x="36" y="354" font-size="15" fill="#1b2a3a">• Multi-mappers that ENCODE happened to place on chr21 come along; their copies elsewhere are missing, so MAPQ can be too high.</text>
+  <text x="36" y="376" font-size="15" fill="#1b2a3a">• Total read counts are 1–2% of the real library: fine for CPM within chr21, not for genome-wide comparisons.</text>
+</svg>

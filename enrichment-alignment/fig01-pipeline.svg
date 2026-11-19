@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 270" width="1120" height="270" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/>
+    </marker>
+  </defs>
+  <rect width="1120" height="270" fill="#ffffff"/>
+
+  <!-- step boxes: x, width 150, gap 37 -->
+  <g stroke="#1b2a3a" stroke-width="2" fill="#eaf1f7">
+    <rect x="12" y="40" width="150" height="74" rx="8"/>
+    <rect x="199" y="40" width="150" height="74" rx="8"/>
+    <rect x="386" y="40" width="150" height="74" rx="8"/>
+    <rect x="573" y="40" width="150" height="74" rx="8"/>
+    <rect x="760" y="40" width="150" height="74" rx="8"/>
+    <rect x="947" y="40" width="160" height="74" rx="8" fill="#f4f6f8"/>
+  </g>
+  <g font-size="17" font-weight="bold" fill="#1b2a3a" text-anchor="middle">
+    <text x="87" y="70">trim</text>
+    <text x="274" y="70">align</text>
+    <text x="461" y="70">sort + index</text>
+    <text x="648" y="70">filter</text>
+    <text x="835" y="70">coverage</text>
+    <text x="1027" y="70">look + call</text>
+  </g>
+  <g font-size="15" fill="#5b6b7a" text-anchor="middle" font-family="Courier New, monospace">
+    <text x="87" y="96">fastp</text>
+    <text x="274" y="96">bowtie2</text>
+    <text x="461" y="96">samtools</text>
+    <text x="648" y="96">samtools</text>
+    <text x="835" y="96">deepTools</text>
+    <text x="1027" y="96">IGV, MACS3</text>
+  </g>
+
+  <!-- arrows between boxes -->
+  <g stroke="#1b2a3a" stroke-width="2.2" marker-end="url(#arr)">
+    <line x1="163" y1="77" x2="197" y2="77"/>
+    <line x1="350" y1="77" x2="384" y2="77"/>
+    <line x1="537" y1="77" x2="571" y2="77"/>
+    <line x1="724" y1="77" x2="758" y2="77"/>
+    <line x1="911" y1="77" x2="945" y2="77"/>
+  </g>
+
+  <!-- files below -->
+  <g font-size="15" fill="#1b2a3a" text-anchor="middle">
+    <text x="87" y="146">FASTQ</text>
+    <text x="274" y="146">SAM / BAM</text>
+    <text x="461" y="146">sorted BAM</text>
+    <text x="648" y="146">clean BAM</text>
+    <text x="835" y="146">bigWig</text>
+    <text x="1027" y="146">peaks (BED)</text>
+  </g>
+  <g font-size="13" fill="#5b6b7a" text-anchor="middle">
+    <text x="87" y="166">reads + qualities</text>
+    <text x="274" y="166">position, FLAG, MAPQ</text>
+    <text x="461" y="166">+ .bai index</text>
+    <text x="648" y="166">MAPQ, flags, dups,</text>
+    <text x="648" y="183">blacklist removed</text>
+    <text x="835" y="166">normalised signal</text>
+    <text x="1027" y="166">later units</text>
+  </g>
+
+  <!-- question row -->
+  <rect x="12" y="206" width="1095" height="52" rx="6" fill="#f4f6f8" stroke="#cfd8e0"/>
+  <g font-size="15" fill="#1b2a3a" text-anchor="middle" font-style="italic">
+    <text x="87" y="237">adapters?</text>
+    <text x="274" y="237">where from?</text>
+    <text x="461" y="237">fast lookup</text>
+    <text x="648" y="237">trust which reads?</text>
+    <text x="835" y="237">how much, vs what?</text>
+    <text x="1027" y="237">enriched where?</text>
+  </g>
+</svg>

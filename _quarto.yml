@@ -72,6 +72,64 @@ website:
                 href: genomic-intervals/quiz.qmd
               - text: "Exercise"
                 href: genomic-intervals/exercise.qmd
+          - section: "Gene regulation"
+            contents:
+              - text: "Lecture (slides)"
+                href: gene-regulation/lec.qmd
+              - text: "Quiz"
+                href: gene-regulation/quiz.qmd
+              - text: "Exercise"
+                href: gene-regulation/exercise.qmd
+          - section: "From reads to coverage"
+            contents:
+              - text: "Lecture (slides)"
+                href: enrichment-alignment/lec.qmd
+              - text: "Quiz"
+                href: enrichment-alignment/quiz.qmd
+              - text: "Exercise"
+                href: enrichment-alignment/exercise.qmd
+          - section: "Experimental design and QC"
+            contents:
+              - text: "Lecture (slides)"
+                href: epigenomics-design/lec.qmd
+              - text: "Quiz"
+                href: epigenomics-design/quiz.qmd
+              - text: "Exercise"
+                href: epigenomics-design/exercise.qmd
+      - section: "Chromatin accessibility (ATAC-seq)"
+        contents:
+          - section: "ATAC-seq: Tn5, fragment sizes, nucleosome ladder"
+            contents:
+              - text: "Lecture (slides)"
+                href: atacseq-intro/lec.qmd
+              - text: "Quiz"
+                href: atacseq-intro/quiz.qmd
+              - text: "Exercise"
+                href: atacseq-intro/exercise.qmd
+          - section: "ATAC-seq processing and peak calling"
+            contents:
+              - text: "Lecture (slides)"
+                href: atacseq-analysis/lec.qmd
+              - text: "Quiz"
+                href: atacseq-analysis/quiz.qmd
+              - text: "Exercise"
+                href: atacseq-analysis/exercise.qmd
+          - section: "Differential accessibility"
+            contents:
+              - text: "Lecture (slides)"
+                href: differential-accessibility/lec.qmd
+              - text: "Quiz"
+                href: differential-accessibility/quiz.qmd
+              - text: "Exercise"
+                href: differential-accessibility/exercise.qmd
+          - section: "Motifs, motif enrichment and TF footprinting"
+            contents:
+              - text: "Lecture (slides)"
+                href: motifs-footprinting/lec.qmd
+              - text: "Quiz"
+                href: motifs-footprinting/quiz.qmd
+              - text: "Exercise"
+                href: motifs-footprinting/exercise.qmd
       # ----------------------------------------------------------------------
       # Order is defined HERE, not in folder names. To reorder a unit, move its
       # block; never rename its folder. Folders are named by topic, never by

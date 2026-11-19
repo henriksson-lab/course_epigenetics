@@ -20,19 +20,19 @@ Open questions are marked **[?]**.
 | Slug | Unit | Status | Notes |
 |---|---|---|---|
 | `chromatin-intro` | What is epigenetics? Chromatin, nucleosomes, histone marks, DNA methylation | written | Definitions (mitotic heritability vs "everything on top of the sequence"); writers/readers/erasers; euchromatin vs heterochromatin; the assays of the course in one map |
-| `gene-regulation` | Promoters, enhancers, insulators, transcription factors | core | Pioneer factors; TF binding motifs; enhancer–promoter communication; sets up ATAC, ChIP and Hi-C |
+| `gene-regulation` | Promoters, enhancers, insulators, transcription factors | written | Pioneer factors; TF binding motifs; enhancer–promoter communication; sets up ATAC, ChIP and Hi-C |
 | `genomic-intervals` | Genomic intervals on the command line and in R | written | BED/narrowPeak/bigWig/BAM; 0- vs 1-based; `bedtools`; `GenomicRanges`; genome builds and liftOver |
-| `enrichment-alignment` | From reads to coverage for enrichment assays | core | Bowtie2; MAPQ and multi-mappers; duplicates; blacklist; paired-end fragments; coverage and normalisation (CPM, RPGC) with deepTools; IGV |
-| `epigenomics-design` | Experimental design and QC for epigenomic assays | core | Replicates, input/IgG controls, spike-ins; QC metrics shared across assays (FRiP, fingerprint, library complexity); ENCODE standards |
+| `enrichment-alignment` | From reads to coverage for enrichment assays | written | Bowtie2; MAPQ and multi-mappers; duplicates; blacklist; paired-end fragments; coverage and normalisation (CPM, RPGC) with deepTools; IGV |
+| `epigenomics-design` | Experimental design and QC for epigenomic assays | written | Replicates, input/IgG controls, spike-ins; QC metrics shared across assays (FRiP, fingerprint, library complexity); ENCODE standards |
 
 ## Block B: Chromatin accessibility (ATAC-seq)
 
 | Slug | Unit | Status | Notes |
 |---|---|---|---|
-| `atacseq-intro` | ATAC-seq: Tn5, fragment sizes, nucleosome ladder | core | Also DNase-seq and MNase-seq in brief; TSS enrichment; mitochondrial reads |
-| `atacseq-analysis` | ATAC-seq processing and peak calling | core | Tn5 shift; MACS3 for ATAC; consensus peaks; nf-core/atacseq |
-| `differential-accessibility` | Differential accessibility | core | Counts in peaks → DESeq2 (what they know); normalisation pitfalls (background vs peak-based); DiffBind/csaw |
-| `motifs-footprinting` | Motifs, motif enrichment and TF footprinting | core | PWMs; HOMER/MEME; chromVAR deviations; footprinting (TOBIAS) and its caveats |
+| `atacseq-intro` | ATAC-seq: Tn5, fragment sizes, nucleosome ladder | written | Also DNase-seq and MNase-seq in brief; TSS enrichment; mitochondrial reads |
+| `atacseq-analysis` | ATAC-seq processing and peak calling | written | Tn5 shift; MACS3 for ATAC; consensus peaks; nf-core/atacseq |
+| `differential-accessibility` | Differential accessibility | written | Counts in peaks → DESeq2 (what they know); normalisation pitfalls (background vs peak-based); DiffBind/csaw |
+| `motifs-footprinting` | Motifs, motif enrichment and TF footprinting | written | PWMs; HOMER/MEME; chromVAR deviations; footprinting (TOBIAS) and its caveats |
 
 ## Block C: Protein–DNA binding and histone marks (ChIP-seq and successors)
 

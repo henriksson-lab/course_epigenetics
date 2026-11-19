@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 470" width="1120" height="470" font-family="Helvetica, Arial, sans-serif">
+  <rect width="1120" height="470" fill="#ffffff"/>
+
+  <text x="20" y="30" font-size="17" font-weight="bold" fill="#1b2a3a">One line of SAM = one alignment (a CTCF ChIP read on chr21)</text>
+  <g font-size="15" font-weight="bold" fill="#5b6b7a">
+    <text x="20" y="62">col</text><text x="70" y="62">field</text><text x="170" y="62">value</text><text x="620" y="62">meaning</text>
+  </g>
+  <line x1="20" y1="72" x2="1100" y2="72" stroke="#1b2a3a" stroke-width="1.5"/>
+  <g fill="#f4f6f8">
+    <rect x="20" y="76" width="1080" height="28"/>
+    <rect x="20" y="132" width="1080" height="28"/>
+    <rect x="20" y="188" width="1080" height="28"/>
+    <rect x="20" y="244" width="1080" height="28"/>
+    <rect x="20" y="300" width="1080" height="28"/>
+    <rect x="20" y="356" width="1080" height="28"/>
+  </g>
+  <!-- rows: baseline y = 96 + 28*i -->
+  <g font-size="15" fill="#5b6b7a">
+    <text x="30" y="96">1</text><text x="30" y="124">2</text><text x="30" y="152">3</text><text x="30" y="180">4</text>
+    <text x="30" y="208">5</text><text x="30" y="236">6</text><text x="30" y="264">7–9</text><text x="30" y="292">10</text>
+    <text x="30" y="320">11</text><text x="30" y="348">12+</text><text x="30" y="376">12+</text>
+  </g>
+  <g font-size="15" font-weight="bold" fill="#1b2a3a">
+    <text x="70" y="96">QNAME</text><text x="70" y="124">FLAG</text><text x="70" y="152">RNAME</text><text x="70" y="180">POS</text>
+    <text x="70" y="208">MAPQ</text><text x="70" y="236">CIGAR</text><text x="70" y="264">mate</text><text x="70" y="292">SEQ</text>
+    <text x="70" y="320">QUAL</text><text x="70" y="348">tags</text><text x="70" y="376"></text>
+  </g>
+  <g font-size="15" font-family="Courier New, monospace" fill="#2a6f97">
+    <text x="170" y="96">MAGNUM:8:106:9974:4920#0/1</text>
+    <text x="170" y="124">0</text>
+    <text x="170" y="152">chr21</text>
+    <text x="170" y="180">33000068</text>
+    <text x="170" y="208">42</text>
+    <text x="170" y="236">36M</text>
+    <text x="170" y="264">*  0  0</text>
+    <text x="170" y="292">TAGGCCATGTTGTTAATAAAGTGGCCATCTAGACAA</text>
+    <text x="170" y="320">FGEGFFBFFEGGGGGDDFFDFEFFFFFDFDGGAGAF</text>
+    <text x="170" y="348">AS:i:0  NM:i:0  MD:Z:36</text>
+    <text x="170" y="376">AS:i:-5 XS:i:-5 NM:i:1</text>
+  </g>
+  <g font-size="15" fill="#1b2a3a">
+    <text x="620" y="96">read name, as in the FASTQ</text>
+    <text x="620" y="124">bit flags: 0 = mapped, forward strand, single-end</text>
+    <text x="620" y="152">reference sequence (chromosome)</text>
+    <text x="620" y="180">leftmost aligned base, <tspan font-weight="bold">1-based</tspan></text>
+    <text x="620" y="208">mapping quality: is this the right place?</text>
+    <text x="620" y="236">36 bases aligned (M), no gaps or clipping</text>
+    <text x="620" y="264">mate chromosome, mate POS, TLEN (paired-end only)</text>
+    <text x="620" y="292">the read, on the + strand of the reference</text>
+    <text x="620" y="320">Phred+33 qualities (converted from +64)</text>
+    <text x="620" y="348">alignment score, mismatches, mismatch positions</text>
+    <text x="620" y="376">an Alu read: best (AS) = second best (XS) → MAPQ 1</text>
+  </g>
+  <line x1="20" y1="388" x2="1100" y2="388" stroke="#1b2a3a" stroke-width="1.5"/>
+
+  <text x="20" y="420" font-size="15" fill="#1b2a3a">A − strand read (FLAG 16) is stored reverse-complemented, and POS is still its <tspan font-style="italic">leftmost</tspan> base: its 5' end is at POS + length − 1.</text>
+  <text x="20" y="446" font-size="15" fill="#1b2a3a">BAM = the same, compressed and binary; sorted by position and indexed (<tspan font-family="Courier New, monospace">.bai</tspan>) so a region can be read without the rest.</text>
+</svg>

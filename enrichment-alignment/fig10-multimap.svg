@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 400" width="1120" height="400" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/>
+    </marker>
+  </defs>
+  <rect width="1120" height="400" fill="#ffffff"/>
+
+  <!-- genome line with two repeat copies -->
+  <text x="20" y="30" font-size="17" font-weight="bold" fill="#1b2a3a">Where did the read come from?</text>
+  <line x1="40" y1="170" x2="1090" y2="170" stroke="#1b2a3a" stroke-width="3"/>
+  <rect x="380" y="160" width="200" height="20" fill="#6b4fa0" fill-opacity="0.35" stroke="#6b4fa0" stroke-width="1.5"/>
+  <rect x="820" y="160" width="200" height="20" fill="#6b4fa0" fill-opacity="0.35" stroke="#6b4fa0" stroke-width="1.5"/>
+  <text x="480" y="200" font-size="14" fill="#6b4fa0" text-anchor="middle">repeat copy 1</text>
+  <text x="920" y="200" font-size="14" fill="#6b4fa0" text-anchor="middle">repeat copy 2 (identical)</text>
+  <text x="150" y="200" font-size="14" fill="#5b6b7a" text-anchor="middle">unique sequence</text>
+
+  <!-- read A unique -->
+  <rect x="110" y="120" width="80" height="12" rx="2" fill="#2e8b57"/>
+  <text x="150" y="110" font-size="15" fill="#2e8b57" text-anchor="middle">read A</text>
+  <text x="150" y="60" font-size="15" fill="#1b2a3a" text-anchor="middle">one good place</text>
+  <text x="150" y="80" font-size="15" font-weight="bold" fill="#2e8b57" text-anchor="middle">MAPQ 42</text>
+
+  <!-- read B in repeat: two equal places -->
+  <rect x="440" y="120" width="80" height="12" rx="2" fill="#c0392b"/>
+  <rect x="880" y="120" width="80" height="12" rx="2" fill="#c0392b" fill-opacity="0.35" stroke="#c0392b" stroke-dasharray="4,3"/>
+  <text x="480" y="110" font-size="15" fill="#c0392b" text-anchor="middle">read B</text>
+  <text x="920" y="110" font-size="15" fill="#c0392b" text-anchor="middle">equally good</text>
+  <path d="M525,118 Q700,70 875,118" fill="none" stroke="#5b6b7a" stroke-width="1.8" stroke-dasharray="5,4" marker-end="url(#arr)"/>
+  <text x="700" y="60" font-size="15" fill="#1b2a3a" text-anchor="middle">two equally good places: reported at one, chosen at random</text>
+  <text x="700" y="80" font-size="15" font-weight="bold" fill="#c0392b" text-anchor="middle">MAPQ 0 or 1</text>
+
+  <!-- mappability track -->
+  <text x="20" y="250" font-size="15" font-weight="bold" fill="#1b2a3a">mappability</text>
+  <text x="20" y="270" font-size="13" fill="#5b6b7a">1 / (number of places</text>
+  <text x="20" y="286" font-size="13" fill="#5b6b7a">a k-mer occurs)</text>
+  <line x1="230" y1="290" x2="1090" y2="290" stroke="#5b6b7a" stroke-width="1"/>
+  <path d="M230,290 V240 H380 V265 H580 V240 H820 V265 H1020 V240 H1090 V290 Z" fill="#2a6f97" fill-opacity="0.3" stroke="#2a6f97" stroke-width="2"/>
+  <text x="222" y="244" font-size="13" fill="#5b6b7a" text-anchor="end">1</text>
+  <text x="222" y="269" font-size="13" fill="#5b6b7a" text-anchor="end">0.5</text>
+  <text x="222" y="294" font-size="13" fill="#5b6b7a" text-anchor="end">0</text>
+
+  <rect x="20" y="314" width="1080" height="76" rx="6" fill="#f4f6f8" stroke="#cfd8e0"/>
+  <text x="36" y="340" font-size="15" fill="#1b2a3a">bowtie2 MAPQ ≈ confidence that the position is right (phred-like, max 42). Filtering MAPQ ≥ 30 keeps unique reads and</text>
+  <text x="36" y="362" font-size="15" fill="#1b2a3a">empties repeats: no signal there is <tspan font-style="italic">no information</tspan>, not "no binding". Longer reads and paired ends are unique</text>
+  <text x="36" y="384" font-size="15" fill="#1b2a3a">in more of the genome: about half of the human genome is repeat-derived, and most of it is still mappable with 100 bp.</text>
+</svg>
