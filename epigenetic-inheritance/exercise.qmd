@@ -1,0 +1,294 @@
+---
+title: "Exercise: Epigenetic inheritance"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+## Goal
+
+After this exercise you will be able to:
+
+- Say which generation in a design was exposed, and whether an effect is intergenerational or transgenerational.
+- Read the design of a study claiming epigenetic inheritance and name what it controls and what it does not.
+- Do the arithmetic behind the claims: expected false positives, overlaps between generations, power, epimutation counts.
+- Show by simulation in R how multiple testing, litter effects, genetic confounding and small samples create "inheritance" where there is none.
+
+## Background
+
+**The F0–F3 rule.** An exposure of a pregnant F0 female reaches the F1 embryo and the F1's germ cells (the future F2). The first generation that was never exposed is **F3**. For an exposure of a father, or of a female before pregnancy, it is **F2**.
+
+**Expected false positives.** With $m$ independent tests at level $\alpha$ and no true effects, about $m\alpha$ tests are significant, and the probability of at least one is $1 - (1-\alpha)^m$. The probability that one null test is significant in each of $k$ independent experiments is $\alpha^k$.
+
+**Power and "too much success".** If each of $n$ independent experiments has power $p$ to detect a true effect, the probability that all $n$ are significant is $p^n$.
+
+**Unit of replication.** In animal studies the exposure is given to F0 parents, so litters (or F0 animals) are the independent units, not the pups.
+
+## Data
+
+No download is needed. The R part simulates study designs with known truth, so you can see what the analysis does when there is **no** inheritance. The numbers in the By-hand questions come from published papers (cited in the lecture).
+
+## By hand
+
+**B1. Which generation?** For each design, say which generation is the first that was never exposed, and whether the reported result is intergenerational or transgenerational.
+
+(a) Pregnant mice are given a high-fat diet; F2 offspring have higher blood glucose.
+(b) Male mice are stressed before mating; F1 offspring are more anxious.
+(c) Male mice are stressed before mating; F2 offspring are more anxious.
+(d) Pregnant rats are exposed to a fungicide; F3 males have lower sperm counts.
+(e) Women who were in utero during a famine have children (F2) with higher adiposity.
+
+**B2. The Dutch Hunger Winter study.** Heijmans et al. (2008) compared 60 people conceived during the 1944–45 famine with their same-sex siblings. Mean *IGF2* DMR methylation was 0.488 (exposed) and 0.515 (siblings).
+
+(a) Compute the absolute and the relative difference.
+(b) The difference was 0.48 SD of the controls. What is the SD of methylation among the siblings?
+(c) What does the sibling design control for? Name two things it does not control for.
+(d) Is this evidence of transgenerational inheritance? Explain with the F0–F3 rule.
+
+**B3. Överkalix by numbers.** A study of 300 grandchildren tests the food supply of each of the 4 grandparents, against 3 causes of death, separately in grandsons, granddaughters and both.
+
+(a) How many tests is that? How many p < 0.05 would you expect if nothing is true?
+(b) If the tests were independent, what is the probability of at least one p < 0.05?
+(c) A replication in a 40× larger cohort reports, for the one pre-specified finding, HR = 1.55 (95% CI 1.02–2.35). What does the confidence interval tell you? Why is this replication more informative than the original finding, even though its p-value is not small?
+
+**B4. Overlap across generations.** An array study tests 450 000 CpGs in F1, F2 and F3 (exposed vs control), with no true effects, and calls a CpG "differentially methylated" at p < 0.01.
+
+(a) How many DM CpGs do you expect per generation?
+(b) How many in both F1 and F2? In all three?
+(c) The paper reports "43 CpGs that remain differentially methylated from F1 to F3". Is that more than chance? What should the authors have done?
+
+**B5. Litters.** A study exposes 3 pregnant mice and keeps 3 controls. Each has a litter of 8; all 48 pups are phenotyped, and the exposed pups differ with p = 0.003 (t-test, 24 vs 24).
+
+(a) What is the true number of independent units per group?
+(b) Why can the pup-level p-value be misleading? Give a biological reason why litters differ.
+(c) Propose a better analysis and a better design.
+
+**B6. Too much success.** A paper reports 8 independent experiments, each with about 10 animals per group, all significant. Assume each experiment had power 0.6.
+
+(a) What is the probability that all 8 are significant?
+(b) With power 0.5? What would you conclude?
+
+**B7. Epimutations vs mutations.** Arabidopsis has about $1.35 \times 10^8$ bp and, for this question, assume $2 \times 10^6$ methylated CG sites per haploid genome. Use $7 \times 10^{-9}$ mutations per bp per generation and $10^{-4}$ epimutations per CG site per generation.
+
+(a) How many new mutations and how many new CG epimutations do you expect per haploid genome per generation?
+(b) Does a rate of 10⁻⁴ per site per generation imply that a particular epiallele disappears within a few generations? If that were its constant reversion probability, what would the mean waiting time be? Why are epimutations a source of heritable variation?
+
+**B8. Read the reprogramming figure.** Look at the figure *Two waves of reprogramming in mammals* in the lecture.
+
+(a) At which two stages is methylation lowest?
+(b) Imprints survive one wave and not the other. Which, and why does that make sense for their function?
+(c) A methylation mark set by a father's diet in his sperm: what must happen for it to reach his grandchildren?
+
+**B9. Judge three claims.** For each, state what was shown, name the most important alternative route (genetics, shared environment, behaviour, direct exposure, chance), and propose one design change.
+
+(a) "Grandchildren of men who smoked before puberty are heavier: smoking is inherited epigenetically" (a cohort study of 166 fathers, many outcomes).
+(b) "Offspring of male mice fed a high-fat diet have impaired glucose tolerance; injecting sperm RNA from these males into normal zygotes reproduces it."
+(c) "Mothers who licked their pups more had pups with lower methylation at the glucocorticoid-receptor promoter; this methylation is inherited."
+
+**B10. Plants vs mammals.** Give two biological reasons why transgenerational epigenetic inheritance is common in plants and rare in mammals.
+
+## In R
+
+Only base R and **ggplot2** (optional) are needed. Every simulation is seeded, so you get the numbers in the solutions.
+
+### R1 — Genome-wide tests across three generations
+
+```r
+set.seed(1)
+n_cpg <- 20000; n <- 8                     # 20 000 CpGs, 8 exposed and 8 control animals
+mu <- rbeta(n_cpg, 2, 2)                   # each CpG has its own typical methylation level
+g  <- rep(c(TRUE, FALSE), each = n)        # TRUE = exposed
+rowt <- function(M, g) {                   # Welch t-test p-value for every row of M
+  a <- M[, g]; b <- M[, !g]
+  va <- apply(a, 1, var) / ncol(a); vb <- apply(b, 1, var) / ncol(b)
+  t  <- (rowMeans(a) - rowMeans(b)) / sqrt(va + vb)
+  df <- (va + vb)^2 / (va^2 / (ncol(a) - 1) + vb^2 / (ncol(b) - 1))
+  2 * pt(-abs(t), df)
+}
+p <- sapply(c("F1", "F2", "F3"), function(gen)
+  rowt(matrix(rnorm(n_cpg * 2 * n, mean = mu, sd = 0.05), nrow = n_cpg), g))
+colSums(p < 0.05)
+table(generations_significant = rowSums(p < 0.05))
+colSums(apply(p, 2, p.adjust, method = "BH") < 0.05)
+hist(p[, "F1"], breaks = 20, main = "F1, no true effect", xlab = "p-value")
+```
+
+(a) There is no true effect anywhere. How many CpGs reach p < 0.05 in each generation? Compare with the expected number.
+
+(b) How many are significant in two and in all three generations? Compare with $20000 \times 0.05^2$ and $20000 \times 0.05^3$.
+
+(c) How many survive Benjamini–Hochberg correction? Describe the p-value histogram: what would it look like if some CpGs had a true effect?
+
+(d) Change the threshold to 0.001. How many CpGs are significant in all three generations now?
+
+### R2 — Litters, not pups
+
+```r
+set.seed(2)
+one_study <- function(n_litters = 4, pups = 6, sd_litter = 1, sd_pup = 1) {
+  litter <- rep(1:(2 * n_litters), each = pups)
+  group  <- rep(c("control", "exposed"), each = n_litters * pups)
+  y <- rnorm(2 * n_litters, 0, sd_litter)[litter] + rnorm(length(litter), 0, sd_pup)  # no exposure effect
+  m <- tapply(y, litter, mean); gl <- tapply(group, litter, `[`, 1)
+  c(pups    = t.test(y[group == "exposed"], y[group == "control"])$p.value,
+    litters = t.test(m[gl == "exposed"], m[gl == "control"])$p.value)
+}
+p2 <- replicate(2000, one_study())
+rowMeans(p2 < 0.05)
+sapply(c(0, 0.25, 0.5, 1), function(s) mean(replicate(2000, one_study(sd_litter = s))["pups", ] < 0.05))
+```
+
+(a) What is the false-positive rate when each pup is treated as independent, and when litter means are compared?
+
+(b) How does the false-positive rate depend on the SD between litters? Why is it correct when that SD is 0?
+
+(c) Change `n_litters = 12, pups = 2`. What happens to the pup-level false-positive rate, and why?
+
+### R3 — Confounding by genotype
+
+```r
+set.seed(3)
+n <- 400
+region  <- rep(c("north", "south"), each = n / 2)        # the famine hit the north
+exposed <- region == "north"
+snp  <- rbinom(n, 2, ifelse(region == "north", 0.45, 0.25))   # allele frequency differs by region
+meth <- 0.50 + 0.04 * snp + rnorm(n, 0, 0.05)                 # methylation depends on genotype only
+summary(lm(meth ~ exposed))$coefficients
+summary(lm(meth ~ exposed + snp))$coefficients
+tapply(snp, region, mean)
+```
+
+(a) What does the naive model conclude about the grandchildren of the famine region?
+
+(b) What happens when genotype is in the model? Why?
+
+(c) In a real cohort you rarely know the causal SNP. Name two designs or analyses that reduce this kind of confounding.
+
+### R4 — Forking paths in a small historical cohort
+
+```r
+set.seed(4)
+one_cohort <- function(n = 300) {
+  food <- matrix(rbinom(n * 4, 1, 0.3), n, 4, dimnames = list(NULL, c("PGF", "PGM", "MGF", "MGM")))
+  sex  <- sample(c("M", "F"), n, replace = TRUE)
+  outc <- cbind(allcause = rbinom(n, 1, 0.5), cvd = rbinom(n, 1, 0.2), diabetes = rbinom(n, 1, 0.05))
+  p <- c()
+  for (gp in colnames(food)) for (o in colnames(outc)) for (s in c("M", "F", "both")) {
+    keep <- if (s == "both") rep(TRUE, n) else sex == s
+    tab <- table(factor(food[keep, gp], 0:1), factor(outc[keep, o], 0:1))
+    p[paste(gp, o, s)] <- fisher.test(tab)$p.value
+  }
+  p
+}
+res <- replicate(500, one_cohort())
+nrow(res)
+mean(apply(res, 2, min) < 0.05)
+mean(colSums(res < 0.05))
+sort(res[, 1])[1:3]
+```
+
+(a) How many tests does one cohort get? In what fraction of null cohorts is at least one p < 0.05?
+
+(b) Compare with your answer to B3(b). Why is the simulated fraction lower than $1 - 0.95^{36}$? (Hint: Fisher's exact test with rare outcomes.)
+
+(c) Look at the three smallest p-values of the first cohort. Write the headline a newspaper might make of the smallest.
+
+### R5 — Power and the winner's curse
+
+```r
+set.seed(5)
+eff <- c(F1 = 1, F2 = 0.5, F3 = 0.25)     # a real effect that halves every generation (SD units)
+sim <- sapply(eff, function(e) replicate(4000, {
+  x <- rnorm(10, e); y <- rnorm(10)
+  c(p = t.test(x, y)$p.value, d = mean(x) - mean(y)) }), simplify = "array")
+power <- apply(sim["p", , ] < 0.05, 2, mean)
+power
+sapply(names(eff), function(gn) mean(sim["d", sim["p", , gn] < 0.05, gn]))
+power.t.test(delta = 0.25, sd = 1, power = 0.8)$n
+power["F3"]^3
+```
+
+(a) What is the power to detect the effect in F1, F2 and F3 with 10 animals per group?
+
+(b) Among studies that find a significant F3 effect, what is the average estimated effect? Why is it larger than the true 0.25?
+
+(c) How many animals per group would 80% power in F3 require?
+
+(d) Three independent labs each test F3 with n = 10. What is the probability that all three find p < 0.05, even though the effect is real?
+
+## Hints
+
+::: {.callout-tip collapse="true" title="Hint 1 — generations (B1)"}
+Ask where the germ cells of each generation were when the exposure happened. Primordial germ cells form in the embryo during pregnancy; sperm form in the adult father.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 2 — expected counts (B3, B4)"}
+Expected false positives $= m \alpha$; in all of $k$ independent generations $= m \alpha^k$; at least one $= 1 - (1 - \alpha)^m$. See [the Benjamini–Hochberg procedure](https://doi.org/10.1111/j.2517-6161.1995.tb02031.x) for FDR control.
+:::
+
+::: {.callout-tip collapse="true" title="Hint 3 — designs (B5, B9)"}
+Go through the six routes in the lecture figure *Many routes, one claim*: germline mark, direct exposure, genes, shared environment, parental behaviour, chance. Which ones does the design close?
+:::
+
+::: {.callout-tip collapse="true" title="Hint 4 — R functions (R1–R5)"}
+[`replicate`](https://rdrr.io/r/base/lapply.html) repeats a simulation; [`t.test`](https://rdrr.io/r/stats/t.test.html), [`fisher.test`](https://rdrr.io/r/stats/fisher.test.html) and [`lm`](https://rdrr.io/r/stats/lm.html) are the tests; [`p.adjust`](https://rdrr.io/r/stats/p.adjust.html) corrects for multiple testing; [`power.t.test`](https://rdrr.io/r/stats/power.t.test.html) computes power or sample size. For mixed models with litter as a random effect, see [`lme4::lmer`](https://cran.r-project.org/package=lme4).
+:::
+
+## Solutions
+
+::: {.callout-note collapse="true" title="Solutions — by hand"}
+
+**B1.** (a) First unexposed is F3; an F2 effect is intergenerational (F2 was exposed as germ cells in the F1 fetus). (b) First unexposed is F2; F1 effect is intergenerational. (c) F2 was never exposed: transgenerational (if the design excludes other routes). (d) F3 after a pregnancy exposure: transgenerational. (e) The women (F1) were exposed in utero, and their eggs (F2) were already forming then: intergenerational.
+
+**B2.** (a) $0.515 - 0.488 = 0.027$ absolute; $0.027 / 0.515 = 5.2\%$ relative. (b) $0.027 / 0.48 \approx 0.056$. (c) Controls half the genetic background, the family's social environment and (roughly) birth period. It does not control for differences between siblings in other early-life conditions, for the half of the genome not shared, or for reverse causation through health; and blood composition may differ. (d) No. The exposed people were embryos at the time: an F1 effect of direct exposure. It shows a lasting effect of the prenatal environment.
+
+**B3.** (a) $4 \times 3 \times 3 = 36$ tests; $36 \times 0.05 = 1.8$ expected false positives. (b) $1 - 0.95^{36} = 0.84$. (c) The interval excludes 1, barely: the effect could be anywhere from 2% to 135% higher mortality. It is more informative because the hypothesis was specified in advance (one test, not 36), and the sample is 40× larger. The other original findings (diabetes, cardiovascular) did not replicate.
+
+**B4.** (a) $450\,000 \times 0.01 = 4500$. (b) Both F1 and F2: $450\,000 \times 0.01^2 = 45$; all three: $450\,000 \times 0.01^3 = 0.45$. (c) 43 in all three would be far more than 0.45, so not explained by independent chance alone, but consider why tests might not be independent: the same control animals or batch used across generations, the same array batch, cell-type composition or litter structure shared between generations. The authors should correct for multiple testing (FDR), balance exposed and control animals from each generation across processing batches, use independent controls, and replicate in new animals.
+
+**B5.** (a) 3 per group: the exposure was given to the mothers. (b) Pups in a litter share a mother, uterus, milk and cage, and litter size differs; litters differ for reasons unrelated to the exposure, and the t-test counts that difference 8 times. (c) Analyse litter means (n = 3 vs 3), or a mixed model with litter as a random effect; better, use many more litters (e.g. 10–15 per group), cross-foster, and randomise exposure to dams.
+
+**B6.** (a) $0.6^8 = 0.017$. (b) $0.5^8 = 0.0039$. Eight successes in a row with such power are unlikely even if the effect is real: suspect unreported experiments, flexible analysis, or overestimated effects (Francis 2014 made exactly this argument, with p = 0.004).
+
+**B7.** (a) Mutations: $7 \times 10^{-9} \times 1.35 \times 10^8 \approx 0.9$ per haploid genome per generation. Epimutations: $10^{-4} \times 2 \times 10^6 = 200$. (b) No: the high genome-wide count reflects millions of sites. With a constant per-site reversion probability of 10⁻⁴, the geometric waiting time has mean 1/10⁻⁴ = **10 000 generations**. Actual gain and loss rates differ and depend on genomic context. Epimutations supply many new heritable variants, and some persist long enough for selection to act; their greater reversibility than DNA mutations does not make all epialleles short-lived.
+
+**B8.** (a) In the blastocyst (preimplantation embryo) and in primordial germ cells as they enter the gonad. (b) Imprints survive wave 1 (they must be kept in every cell of the body of that generation) and are erased in wave 2 (so they can be reset according to the sex of the individual whose gametes are being made). (c) It must survive in the zygote and through preimplantation demethylation (wave 1) into the embryo, then survive or be rebuilt through PGC erasure (wave 2) in the F1 germline, and still have an effect in F2.
+
+**B9.** (a) An association across generations; candidates: shared environment and culture (diet, wealth, household smoking), genetics, chance (many outcomes, small subgroup). Fix: a pre-specified single outcome in an independent, larger cohort, adjusting for family socioeconomic status and the parents' own smoking and BMI. (b) Shown: a carrier in sperm RNA sufficient for an F1 phenotype. It is intergenerational; it does not show transmission to F2. Fix: test F2 by mating F1 animals to controls, with several independent litters and replication in another lab. (c) The methylation followed maternal behaviour, and cross-fostering reversed it (Weaver et al. 2004): behavioural transmission, not germline inheritance. Fix: cross-fostering and embryo transfer already show this; the claim "inherited" should be "transmitted by behaviour".
+
+**B10.** Plants form gametes late from somatic shoot cells without a PGC-like erasure, and maintain CG methylation through meiosis (MET1) with RNA-directed DNA methylation to restore non-CG methylation; mammals erase methylation in two waves (preimplantation and PGCs) and package sperm DNA with protamines. Plants (and worms) also have RNA-dependent RNA polymerases that amplify silencing small RNAs each generation, which mammals lack.
+:::
+
+::: {.callout-note collapse="true" title="Solutions — R"}
+
+**R1.** (a) 1001, 942 and 911 CpGs with p < 0.05 in F1, F2 and F3; expected $20\,000 \times 0.05 = 1000$. (b) 134 CpGs are significant in exactly two generations (expected $3 \times 20\,000 \times 0.05^2 \times 0.95 \approx 143$) and 4 in all three (expected 2.5). (c) None survives BH correction in any generation. The histogram is flat (uniform), as it should be under the null; true effects would add a spike near 0. (d) At p < 0.001: 14, 16 and 14 per generation (expected 20) and none in all three (expected $20\,000 \times 10^{-9}$).
+
+**R2.** (a) Pups: 33% false positives; litter means: 4–5% (0.0415 in our run). (b) 5.2%, 7.7%, 16.6% and 33.1% for a litter SD of 0, 0.25, 0.5 and 1. With no litter effect, pups really are independent and the t-test is valid; the larger the between-litter variation, the more the pup-level test mistakes litter differences for an exposure effect. (c) The rate drops to 13%: with more, smaller litters the litter differences average out, and the pseudo-replication is milder. The correct analysis still uses litters.
+
+**R3.** (a) Grandchildren from the famine region have higher methylation: +0.0152, p = 0.0085: a "transgenerational effect of famine". (b) Adjusted for genotype, the exposure effect is +0.0027, p = 0.61, and the SNP effect is 0.039 per allele: the difference came entirely from allele frequency (mean number of methylation-raising alleles 0.875 in the north vs 0.555 in the south). (c) Within-family comparisons (siblings, cousins), genome-wide genotyping with adjustment for ancestry (principal components) and known meQTLs; in animals, isogenic strains.
+
+**R4.** (a) 36 tests; about 63% of null cohorts have at least one p < 0.05 (0.626 in a run of 500; 0.638 with 1000 cohorts in the lecture figure), 1.26 significant tests on average. (b) $1 - 0.95^{36} = 0.84$ assumes independent tests with exact 5% error. Here the tests share data (the "both" group contains the M and F groups; the same outcome is used for four grandparents), and Fisher's exact test is conservative when outcomes are rare (diabetes, 5%). (c) The smallest are maternal grandmother × diabetes × granddaughters (p = 0.0097) and paternal grandmother × diabetes × grandsons (p = 0.020). Headline: "Grandmother's childhood diet predicts granddaughters' diabetes deaths": a sex-specific, line-specific finding from pure noise.
+
+**R5.** (a) Power 0.55, 0.18 and 0.087 for F1, F2 and F3. (b) 0.85: only studies whose estimate happened to be large reach significance (the winner's curse), so a significant small study overestimates the effect, here more than threefold. (c) `power.t.test` gives n ≈ 252 per group for 80% power at 0.25 SD. (d) $0.087^3 \approx 0.0007$ (0.00066): three small labs will almost never all replicate a real but small F3 effect, and if they all do, suspect selective reporting.
+:::
+
+## Where this leads
+
+- *DNA methylation biology* covers imprinting, PGC reprogramming and plant methylation pathways in more depth.
+- *Epigenomics and genetic variation* shows how much methylation is under genetic control (meQTL), the confounder of R3.
+- *Epigenetic clocks and biomarkers* uses methylation as a record of exposure and age within one lifetime.
+- *Differential methylation* covers the statistics of genome-wide methylation tests (R1) properly.
+
+## Key papers (optional further reading)
+
+*Not required reading and not examined.*
+
+- Heard & Martienssen 2014, *Cell*. [Transgenerational epigenetic inheritance: myths and mechanisms](https://doi.org/10.1016/j.cell.2014.02.045).
+- Horsthemke 2018, *Nat Commun*. [A critical view on transgenerational epigenetic inheritance in humans](https://doi.org/10.1038/s41467-018-05445-5).
+- Cubas, Vincent & Coen 1999, *Nature*. [An epigenetic mutation responsible for natural variation in floral symmetry](https://doi.org/10.1038/43657).
+- Johannes et al. 2009, *PLoS Genet*. [Assessing the impact of transgenerational epigenetic variation on complex traits](https://doi.org/10.1371/journal.pgen.1000530).
+- Morgan et al. 1999, *Nat Genet*. [Epigenetic inheritance at the agouti locus in the mouse](https://doi.org/10.1038/15490).
+- Heijmans et al. 2008, *PNAS*. [Persistent epigenetic differences associated with prenatal exposure to famine in humans](https://doi.org/10.1073/pnas.0806560105).

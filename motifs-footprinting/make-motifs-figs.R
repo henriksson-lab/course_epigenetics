@@ -3,8 +3,10 @@
 # Needs: data/download.sh motifs-footprinting differential-accessibility
 #        (Corces 2016 ATAC counts, hg19ToHg38 chain, hg38.fa.bgz + index,
 #        GM12878 ATAC reads rep1 + bowtie2 index of chr21/chrM, GM12878 ATAC and
-#        CTCF peaks, hg38 blacklist); bowtie2, samtools and fastp on the PATH;
-#        R packages DESeq2, rtracklayer, Rsamtools, GenomicAlignments,
+#        CTCF peaks, hg38 blacklist); plus differential_peaks.tsv saved by
+#        Differential accessibility R11 (DIFFERENTIAL_PEAKS overrides its path).
+#        bowtie2, samtools and fastp on the PATH;
+#        R packages SummarizedExperiment, rtracklayer, Rsamtools, GenomicAlignments,
 #        JASPAR2024, TFBSTools, motifmatchr, chromVAR, universalmotif,
 #        ggplot2, patchwork, ggrepel, pheatmap, BiocParallel.
 #
@@ -16,7 +18,7 @@
 # ATAC_BAM=/path/to/gm12878_atac_rep1.bam to reuse the BAM made in the exercise.
 
 suppressPackageStartupMessages({
-  library(DESeq2); library(rtracklayer); library(GenomicRanges); library(Rsamtools)
+  library(SummarizedExperiment); library(rtracklayer); library(GenomicRanges); library(Rsamtools)
   library(GenomicAlignments); library(Biostrings); library(Matrix)
   library(JASPAR2024); library(TFBSTools); library(motifmatchr); library(chromVAR)
   library(universalmotif); library(BiocParallel)
@@ -29,6 +31,7 @@ theme_set(theme_minimal(base_size = 15) +
             theme(panel.grid.minor = element_blank(), plot.title = element_text(face = "bold")))
 colB <- "#2a6f97"; colT <- "#e67e22"
 cache_dir <- Sys.getenv("MOTIF_CACHE", "")
+if (nzchar(cache_dir)) dir.create(cache_dir, recursive = TRUE, showWarnings = FALSE)
 cached <- function(name, expr) {
   if (cache_dir == "") return(expr)
   f <- file.path(cache_dir, paste0(name, ".rds"))
@@ -37,39 +40,23 @@ cached <- function(name, expr) {
 }
 genome <- FaFile(file.path(D, "hg38.fa.bgz"))
 
-# ---- A. Differential peaks B vs CD4 T (as in Differential accessibility) ------
-A <- cached("A", {
-  cnt <- read.delim(file.path(D, "corces2016_atac_counts.txt.gz"), check.names = FALSE)
-  peaks19 <- GRanges(cnt$Chr, IRanges(cnt$Start + 1, cnt$End))
-  cnt <- as.matrix(cnt[, -(1:3)])
-  code <- c("1" = "HSC", "2" = "MPP", "3" = "LMPP", "4" = "CMP", "5" = "GMP", "6" = "MEP",
-            "7" = "Mono", "9" = "CD4", "10" = "CD8", "11" = "NK", "13" = "B", "14" = "CLP",
-            "15" = "Ery")
-  nm <- colnames(cnt); ok <- grepl("^(Donor)?[0-9]{4}-", nm)
-  info <- data.frame(sample = nm[ok],
-                     donor = sub("^(Donor)?([0-9]{4})-.*", "\\2", nm[ok]),
-                     celltype = code[sub(".*-([0-9]{1,2})[A-C]?(-[0-9]{6})?$", "\\1", nm[ok])])
-  chain <- tempfile(fileext = ".chain")
-  writeLines(readLines(file.path(D, "hg19ToHg38.over.chain.gz")), chain)
-  lo <- liftOver(peaks19, import.chain(chain))
-  keep <- lengths(lo) == 1 & sum(width(lo)) == 500
-  peaks <- unlist(lo[keep]); cnt <- cnt[keep, info$sample]
-  bt <- info[info$celltype %in% c("B", "CD4"), ]
-  bt <- bt[bt$donor %in% intersect(bt$donor[bt$celltype == "B"], bt$donor[bt$celltype == "CD4"]), ]
-  grp <- paste(bt$donor, bt$celltype, sep = "_")
-  m <- sapply(split(bt$sample, grp), function(s) rowSums(cnt[, s, drop = FALSE]))
-  cd <- data.frame(donor = factor(sub("_.*", "", colnames(m))),
-                   celltype = factor(sub(".*_", "", colnames(m)), levels = c("CD4", "B")))
-  use <- rowSums(m >= 10) >= 3
-  dds <- DESeq(DESeqDataSetFromMatrix(m[use, ], cd, ~ donor + celltype), quiet = TRUE)
-  res <- results(dds, name = "celltype_B_vs_CD4")
-  tested <- peaks[use]; tested$lfc <- res$log2FoldChange; tested$padj <- res$padj
-  list(info = info, peaks = peaks, cnt = cnt, tested = tested)
-})
-tested <- A$tested
-b_up <- !is.na(tested$padj) & tested$padj < 0.05 & tested$lfc > 1
-t_up <- !is.na(tested$padj) & tested$padj < 0.05 & tested$lfc < -1
-cat("tested", length(tested), "B-up", sum(b_up), "T-up", sum(t_up), "\n")
+# ---- A. Reuse the saved Differential accessibility result --------------------
+diff_file <- Sys.getenv("DIFFERENTIAL_PEAKS", file.path(D, "differential_peaks.tsv"))
+if (!file.exists(diff_file)) stop("Run differential-accessibility/make-diffacc-figs.R first, or set DIFFERENTIAL_PEAKS to the table from exercise R11")
+result <- read.delim(diff_file, check.names = FALSE)
+stopifnot(all(c("peak_id", "chr", "start", "end", "log2FoldChange", "padj", "class") %in% names(result)),
+          !anyDuplicated(result$peak_id), !anyNA(result$class),
+          all(result$class %in% c("B_up", "T_up", "ns")))
+tested <- GRanges(result$chr, IRanges(result$start, result$end))  # 1-based closed
+names(tested) <- result$peak_id
+tested$lfc <- result$log2FoldChange; tested$padj <- result$padj
+stopifnot(all(width(tested) == 500))
+b_up <- result$class == "B_up"
+t_up <- result$class == "T_up"
+ns <- result$class == "ns"
+# Include the input checksum in caches so a changed peak table cannot reuse old matches.
+input_key <- unname(tools::md5sum(diff_file))
+cat("tested", length(tested), "B-up", sum(b_up), "T-up", sum(t_up), "ns", sum(ns), "\n")
 
 # ---- B. JASPAR motifs, matches, enrichment -------------------------------------
 jdb <- RSQLite::dbConnect(RSQLite::SQLite(), db(JASPAR2024()))
@@ -78,12 +65,13 @@ pfms <- getMatrixSet(jdb, opts = list(collection = "CORE", tax_group = "vertebra
 names(pfms) <- paste(name(pfms), ID(pfms), sep = "_")
 fam <- sapply(pfms, function(p) paste(tags(p)$family, collapse = "; "))
 cat("motifs:", length(pfms), "\n")
-hit <- cached("hit", motifMatches(matchMotifs(pfms, tested, genome = genome, p.cutoff = 5e-5)))
+hit <- cached(paste0("hit-", input_key), motifMatches(matchMotifs(pfms, tested, genome = genome, p.cutoff = 5e-5)))
 cat("median fraction of peaks with a match:", median(colMeans(hit)), "\n")
 
-enrich <- function(target, hit, bg = !target) {
-  a <- colSums(hit[target, ]); b <- sum(target) - a
-  c <- colSums(hit[bg, ]);     d <- sum(bg) - c
+enrich <- function(target, hit, bg) {
+  stopifnot(!any(target & bg))
+  a <- colSums(hit[target, , drop = FALSE]); b <- sum(target) - a
+  c <- colSums(hit[bg, , drop = FALSE]);     d <- sum(bg) - c
   # one-sided Fisher = hypergeometric upper tail; log10 so that tiny p-values survive
   lp <- phyper(a - 1, a + c, b + d, a + b, lower.tail = FALSE, log.p = TRUE) / log(10)
   data.frame(motif = colnames(hit), tf = sub("_MA.*", "", colnames(hit)),
@@ -91,7 +79,7 @@ enrich <- function(target, hit, bg = !target) {
              OR = (a * d) / (b * c), log10p = lp,
              padj = p.adjust(10^lp, "BH"))
 }
-eB <- enrich(b_up, hit); eT <- enrich(t_up, hit)
+eB <- enrich(b_up, hit, bg = ns); eT <- enrich(t_up, hit, bg = ns)
 for (e in list(B = eB, T = eT)) {
   print(head(e[order(e$log10p), c("tf", "a", "OR", "log10p")], 12), row.names = FALSE, digits = 3)
   cat("significant (BH < 0.05, OR > 1):", sum(e$padj < 0.05 & e$OR > 1),
@@ -118,9 +106,10 @@ gc_of <- function(gr) {
   s <- getSeq(genome, gr)
   as.numeric(letterFrequency(s, "GC") / width(s))
 }
-gc <- cached("gc", gc_of(tested))
+gc <- cached(paste0("gc-", input_key), gc_of(tested))
 # random 500-bp windows on chr1-22, X without N and blacklisted regions
-rnd <- cached("rnd", {
+rnd <- cached(paste0("rnd-", input_key), {
+  set.seed(1)
   sz <- read.table(file.path(D, "hg38.chrom.sizes"), col.names = c("chr", "len"))
   sz <- sz[sz$chr %in% paste0("chr", c(1:22, "X")), ]
   bl <- import(file.path(D, "hg38_blacklist.bed.gz"))
@@ -135,15 +124,16 @@ rnd <- cached("rnd", {
 })
 gc_rnd <- gc_of(rnd)
 hit_rnd <- motifMatches(matchMotifs(pfms, rnd, genome = genome, p.cutoff = 5e-5))
-# GC-matched: for each B-up peak, one other tested peak from the same 2% GC bin
-bin <- cut(gc, seq(0, 1, 0.02))
-pool <- split(which(!b_up), bin[!b_up])
+# GC-matched: sample ns peaks without replacement within each 2% GC bin
+set.seed(1)
+bin <- cut(gc, seq(0, 1, 0.02), include.lowest = TRUE)
+pool <- split(which(ns), bin[ns])
 gcm <- unlist(lapply(split(which(b_up), bin[b_up]), function(i) {
   p <- pool[[as.character(bin[i[1]])]]
-  if (length(p) == 0) integer(0) else p[sample.int(length(p), length(i), replace = length(p) < length(i))]
+  if (length(p) == 0) integer(0) else p[sample.int(length(p), min(length(p), length(i)))]
 }))
 gcm_set <- seq_along(tested) %in% gcm
-cat("GC: B-up", round(mean(gc[b_up]), 3), " rest", round(mean(gc[!b_up]), 3),
+cat("GC: B-up", round(mean(gc[b_up]), 3), " ns", round(mean(gc[ns]), 3),
     " GC-matched", round(mean(gc[gcm]), 3), " random", round(mean(gc_rnd), 3), "\n")
 or_vs <- function(hb) {          # OR of B-up vs a background match matrix hb
   a <- colSums(hit[b_up, ]); b <- sum(b_up) - a
@@ -153,7 +143,7 @@ or_vs <- function(hb) {          # OR of B-up vs a background match matrix hb
 show <- c("SPIB_MA0081.3", "POU2F2_MA0507.3", "IRF4_MA1419.2", "EBF1_MA0154.5",
           "CTCF_MA0139.2", "KLF4_MA0039.5", "SP1_MA0079.5", "Nrf1_MA0506.3")
 stopifnot(all(show %in% names(pfms)))
-bgs <- list("other tested peaks" = or_vs(hit[!b_up, ]),
+bgs <- list("ns peaks" = or_vs(hit[ns, ]),
             "GC-matched peaks" = or_vs(hit[gcm, ]),
             "random genome windows" = or_vs(hit_rnd))
 d6 <- do.call(rbind, lapply(names(bgs), function(n)
@@ -162,9 +152,9 @@ d6$bg <- factor(d6$bg, levels = names(bgs))
 d6$motif <- factor(d6$motif, levels = rev(sub("_MA.*", "", show)))
 print(reshape(d6, idvar = "motif", timevar = "bg", direction = "wide"), digits = 3)
 gcd <- rbind(data.frame(set = "B-up peaks", gc = gc[b_up]),
-             data.frame(set = "other tested peaks", gc = gc[!b_up]),
+             data.frame(set = "ns peaks", gc = gc[ns]),
              data.frame(set = "random genome windows", gc = gc_rnd))
-bgcol <- c("B-up peaks" = colB, "other tested peaks" = "#5b6b7a", "GC-matched peaks" = "#2e8b57",
+bgcol <- c("B-up peaks" = colB, "ns peaks" = "#5b6b7a", "GC-matched peaks" = "#2e8b57",
            "random genome windows" = "#a8324a")
 p6a <- ggplot(gcd, aes(gc, colour = set)) + geom_density(linewidth = 1.2) +
   scale_colour_manual(values = bgcol, name = NULL) +
@@ -235,7 +225,31 @@ p8 <- ggplot(d8, aes(B, T, colour = fs)) +
   labs(x = "log2 OR in B-up peaks", y = "log2 OR in T-up peaks")
 ggsave("fig08-or-scatter.png", p8, width = 9.5, height = 6.2, dpi = 110, bg = "white")
 
+# Set ENRICHMENT_ONLY=1 to update only the figures that depend on the saved classes.
+if (Sys.getenv("ENRICHMENT_ONLY") == "1") quit(save = "no")
+
 # ---- D. chromVAR across 13 cell types --------------------------------------------
+A <- cached("chromvar-input", {
+  cnt <- read.delim(file.path(D, "corces2016_atac_counts.txt.gz"), check.names = FALSE)
+  peaks19 <- GRanges(cnt$Chr, IRanges(cnt$Start + 1, cnt$End))
+  cnt <- as.matrix(cnt[, -(1:3)])
+  code <- c("1" = "HSC", "2" = "MPP", "3" = "LMPP", "4" = "CMP", "5" = "GMP", "6" = "MEP",
+            "7" = "Mono", "9" = "CD4", "10" = "CD8", "11" = "NK", "13" = "B", "14" = "CLP",
+            "15" = "Ery")
+  nm <- colnames(cnt); ok <- grepl("^(Donor)?[0-9]{4}-", nm)
+  info <- data.frame(sample = nm[ok],
+                     donor = sub("^(Donor)?([0-9]{4})-.*", "\\2", nm[ok]),
+                     celltype = code[sub(".*-([0-9]{1,2})[A-C]?(-[0-9]{6})?$", "\\1", nm[ok])])
+  chain <- tempfile(fileext = ".chain")
+  writeLines(readLines(file.path(D, "hg19ToHg38.over.chain.gz")), chain)
+  lo <- liftOver(peaks19, import.chain(chain))
+  keep <- which(lengths(lo) == 1)
+  peaks <- unlist(lo[keep])
+  ok <- width(peaks) == 500 & as.character(seqnames(peaks)) == as.character(seqnames(peaks19)[keep])
+  keep <- keep[ok]; peaks <- peaks[ok]
+  cnt <- cnt[keep, info$sample]
+  list(info = info, peaks = peaks, cnt = cnt)
+})
 dev <- cached("dev", {
   info <- A$info
   grp <- paste(info$celltype, info$donor, sep = "_")
@@ -325,7 +339,7 @@ if (!file.exists(bam)) {
 }
 chr21 <- GRanges("chr21", IRanges(1, 46709983))
 ga <- readGAlignments(bam, param = ScanBamParam(which = chr21))
-ins <- GRanges("chr21", IRanges(ifelse(strand(ga) == "+", start(ga) + 4, end(ga) - 5), width = 1),
+ins <- GRanges("chr21", IRanges(ifelse(strand(ga) == "+", start(ga) + 4, end(ga) - 4), width = 1),
                seqinfo = Seqinfo("chr21", 46709983))
 cat("Tn5 insertions on chr21:", length(ins), "\n")
 cov_ins <- coverage(ins)$chr21
@@ -370,7 +384,7 @@ fpcol <- c("#8c564b", "#d4a017", "#b8c2cc")
 p15 <- ggplot(fp, aes(pos, colour = lab)) +
   annotate("rect", xmin = -mlen / 2, xmax = mlen / 2, ymin = -Inf, ymax = Inf, fill = "#8c564b",
            alpha = 0.12) +
-  annotate("text", x = 0, y = max(fp$ins) * 1.05, label = "CTCF motif (19 bp)", colour = "#8c564b",
+  annotate("text", x = 0, y = max(fp$ins) * 1.05, label = sprintf("CTCF motif (%d bp)", mlen), colour = "#8c564b",
            size = 4.6) +
   geom_line(aes(y = ins), linewidth = 0.4, alpha = 0.5) +
   geom_line(aes(y = smooth), linewidth = 1.3, na.rm = TRUE) +
@@ -410,7 +424,7 @@ ggsave("fig19-motif-vs-binding.png", p19, width = 12, height = 4.2, dpi = 110, b
 set.seed(2)
 k <- sample(length(ga), 200000)
 st <- as.character(strand(ga))[k]
-pos <- ifelse(st == "+", start(ga)[k] + 4, end(ga)[k] - 5)
+pos <- ifelse(st == "+", start(ga)[k] + 4, end(ga)[k] - 4)
 win <- GRanges("chr21", IRanges(pos - 30, pos + 30), strand = st)
 cm <- consensusMatrix(getSeq(genome, win), as.prob = TRUE)[c("A", "C", "G", "T"), ]
 colnames(cm) <- -30:30

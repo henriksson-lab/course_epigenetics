@@ -267,6 +267,15 @@ pk  <- rowRanges(dds)
 dn  <- distanceToNearest(pk, tss, ignore.strand = TRUE)
 ann <- data.frame(peak = names(pk), gene = tss$gene_name[subjectHits(dn)], dist = mcols(dn)$distance,
                   cls = cls, lfc = rs$log2FoldChange, padj = res$padj)
+# The motif figure script consumes the same table/schema as exercise R11.
+peak_table <- data.frame(peak_id = rownames(dds), chr = as.character(seqnames(dds)),
+                         start = start(dds), end = end(dds), baseMean = res$baseMean,
+                         log2FoldChange = rs$log2FoldChange, lfcSE = rs$lfcSE,
+                         log2FoldChange_mle = res$log2FoldChange, pvalue = res$pvalue,
+                         padj = res$padj, nearest_gene = ann$gene,
+                         dist_to_tss = ann$dist, class = cls)
+write.table(peak_table, file.path(D, "differential_peaks.tsv"), sep = "\t",
+            quote = FALSE, row.names = FALSE)
 cat("fraction within 1 kb of a protein-coding TSS: all tested", round(mean(ann$dist <= 1000), 3),
     " B_up", round(mean(ann$dist[cls == "B_up"] <= 1000), 3), " T_up", round(mean(ann$dist[cls == "T_up"] <= 1000), 3), "\n")
 mk <- c("PAX5", "CD79A", "MS4A1", "CD19", "EBF1", "BLK", "CD3E", "BCL11B", "TCF7", "LEF1", "GATA3", "CD28")

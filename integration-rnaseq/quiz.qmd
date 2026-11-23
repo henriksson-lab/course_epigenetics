@@ -72,7 +72,7 @@ TP = 0.55 × 450 ≈ 248; FP = 0.04 × 9550 = 382. Precision = 248/630 ≈ **0.3
 
 ---
 
-**Q7.** Accessibility of an element and expression of a gene 2 Mb away on another chromosome correlate at r = 0.95 across 6 samples (3 B-cell, 3 T-cell). Is this evidence for regulation? What would make a correlation-based link more convincing?
+**Q7.** Accessibility of an element and expression of a gene on another chromosome correlate at r = 0.95 across 6 samples (3 B-cell, 3 T-cell). Is this evidence for regulation? What would make a correlation-based link more convincing?
 
 ::: {.callout-note collapse="true" title="Answer"}
 No. With two groups, any B-specific element correlates with any B-specific gene, anywhere in the genome: the correlation reflects the cell-type programme, not regulation, and $r$ is easily near ±1 with 6 points in 2 groups. More convincing: restrict to cis pairs (e.g. within 500 kb), use many diverse samples (dozens of cell types, hundreds of individuals, or thousands of single cells), compare with a null (random or trans pairs), combine with distance or contact, and validate by perturbation.

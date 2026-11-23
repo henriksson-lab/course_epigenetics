@@ -40,10 +40,10 @@ Every unmethylated C appears as a T, so reads carry many C/T mismatches that dep
 
 ---
 
-**Q4.** In a directional WGBS library, from which strands does read 1 come? What happens if you align a non-directional (PBAT) library in directional mode?
+**Q4.** In a directional WGBS library, from which strands does read 1 come? What happens if you align a four-strand non-directional library in directional mode? How does standard PBAT differ?
 
 ::: {.callout-note collapse="true" title="Answer"}
-Read 1 comes from the original top (OT) or original bottom (OB) strand. A non-directional library also contains reads from CTOT and CTOB; in directional mode those are not tried, so roughly half of the reads fail to align.
+Read 1 comes from the original top (OT) or original bottom (OB) strand. A four-strand non-directional library also contains reads from CTOT and CTOB; in directional mode those are not tried, so roughly half of the reads fail to align. Standard PBAT yields read 1 from CTOT and CTOB, searched with `--pbat`; using default directional mode can lose nearly all of those reads. Some modified PBAT protocols are non-directional, so check the library protocol. See [Bismark's library options](https://felixkrueger.github.io/Bismark/options/alignment/).
 :::
 
 ---

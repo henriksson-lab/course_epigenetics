@@ -33,7 +33,7 @@ are pinned because newer `cooler` does not work with this `cooltools`):
 
 ```bash
 mamba create -n hic -c conda-forge -c bioconda python=3.11 cooler=0.10 cooltools=0.7 \
-  pairtools=1.1 bwa samtools bedtools pybigwig pyfaidx bioframe matplotlib
+  pairtools=1.1 bwa samtools bedtools pybigwig pyfaidx bioframe matplotlib hic-straw
 ```
 
 ## 2. A genome browser

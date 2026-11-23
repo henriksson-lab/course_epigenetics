@@ -1384,7 +1384,7 @@ Answer
 </div>
 <div id="callout-7" class="callout-7-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Δ = −3.5 bits: <span class="math inline">\(2^{3.5} \approx 11\)</span>-fold weaker in odds. Weak evidence because almost every position in open chromatin changes some motif match when mutated (in our data 81% of random positions in GM12878 peaks gained or lost a JASPAR match at p &lt; 10⁻⁴, vs 85% of autoimmune SNPs), and the TF may not be expressed or bound there. Add binding data, allelic imbalance or a QTL, and an experiment.</p>
+<p>Δ = −3.5 bits: <span class="math inline">\(2^{3.5} \approx 11\)</span>-fold lower motif-versus-background likelihood ratio. This is not an 11-fold change in binding probability. Weak evidence because almost every position in open chromatin changes some motif match when mutated (in our data 81% of random positions in GM12878 peaks gained or lost a JASPAR match at p &lt; 10⁻⁴, vs 85% of autoimmune SNPs), and the TF may not be expressed or bound there. Add binding data, allelic imbalance or a QTL, and an experiment.</p>
 </div>
 </div>
 </div>
@@ -1420,7 +1420,7 @@ Answer
 </div>
 <div id="callout-9" class="callout-9-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Reference mapping bias: reads carrying the non-reference allele have one more mismatch to the reference genome and are lost slightly more often in alignment or MAPQ filtering. A test against 0.5 then finds spurious reference-biased “imbalance”, especially at deeply covered sites (the bias is constant, the standard error shrinks with depth). Test against the genome-wide reference fraction, or remove the bias with WASP or alignment to a personal genome.</p>
+<p>Reference mapping bias: reads carrying the non-reference allele have one more mismatch to the reference genome and are lost slightly more often in alignment or MAPQ filtering. A test against 0.5 then finds spurious reference-biased “imbalance”, especially at deeply covered sites (the bias is constant, the standard error shrinks with depth). Testing against the pooled reference fraction adjusts for the overall excess but leaves site-specific bias. WASP checks whether swapping alleles changes a read’s mapping. Alignment to a personal genome alone does not ensure equal mappability (<a href="https://doi.org/10.1038/nmeth.3582">van de Geijn et al.&nbsp;2015</a>).</p>
 </div>
 </div>
 </div>

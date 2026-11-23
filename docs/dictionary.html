@@ -1275,8 +1275,8 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>Phred quality</strong> — Q = −10 log10(error probability); Phred+33 and Phred+64 are two ways to write it as characters. <em>From reads to coverage</em></p>
 <p><strong>SAM FLAG / MAPQ</strong> — a bit field describing a read’s alignment (paired, reverse strand, duplicate, …) / the aligner’s confidence that the position is right. <em>From reads to coverage</em></p>
 <p><strong>Multi-mapping read</strong> — a read that aligns equally well to several places, typically in repeats. <em>From reads to coverage</em></p>
-<p><strong>Duplicate</strong> — reads from copies of the same original molecule (PCR or optical), recognised by identical ends. <em>From reads to coverage</em></p>
-<p><strong>Blacklist (exclusion list)</strong> — regions with artefactual signal in every experiment, removed before analysis. <em>From reads to coverage</em></p>
+<p><strong>Duplicate</strong> — an alignment flagged as a possible PCR or optical copy, usually from matching fragment ends; independent molecules can also share ends. <em>From reads to coverage</em></p>
+<p><strong>Blacklist (exclusion list)</strong> — regions prone to anomalous signal across many sequencing experiments, removed before analysis. <em>From reads to coverage</em></p>
 <p><strong>CPM / RPGC</strong> — reads per million / reads per genomic content (1× coverage): two ways to normalise coverage tracks. <em>From reads to coverage</em></p>
 </section>
 <section id="experimental-design-and-qc" class="level2">
@@ -1301,7 +1301,7 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>Size factor / TMM</strong> — per-sample scaling of counts (DESeq2 median of ratios / edgeR trimmed mean of M-values). <em>Differential accessibility</em></p>
 <p><strong>Global change</strong> — a change in accessibility or binding over most of the genome; peak-based normalisation hides it. <em>Differential accessibility</em></p>
 <p><strong>Motif enrichment</strong> — more peaks with a motif match in a target set than in a background, tested with Fisher’s exact (hypergeometric) test. <em>Motifs, motif enrichment and TF footprinting</em></p>
-<p><strong>chromVAR deviation</strong> — a per-sample z-score of accessibility at peaks with a motif, relative to GC- and accessibility-matched background peaks. <em>Motifs, motif enrichment and TF footprinting</em></p>
+<p><strong>chromVAR deviation / deviation z-score</strong> — a bias-corrected relative accessibility deviation at peaks with a motif / that deviation standardised using GC- and accessibility-matched background peak sets. <em>Motifs, motif enrichment and TF footprinting</em></p>
 <p><strong>Footprint</strong> — a dip in Tn5 insertions at a bound TF site, flanked by high accessibility. <em>Motifs, motif enrichment and TF footprinting</em></p>
 </section>
 <section id="chip-seq-and-successors" class="level2">
@@ -1333,7 +1333,7 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>β value / M value</strong> — methylated / total signal (0–1) / log2 of methylated over unmethylated. <em>Differential methylation</em>, <em>Methylation arrays</em></p>
 <p><strong>Beta-binomial / overdispersion</strong> — a binomial whose probability varies between replicates; overdispersion is the extra variance beyond sampling noise. <em>Differential methylation</em></p>
 <p><strong>DML / DMR</strong> — differentially methylated locus / region. <em>Differential methylation</em></p>
-<p><strong>Infinium I / II probes</strong> — two-bead vs one-bead, two-colour probe designs on Illumina methylation arrays. <em>Methylation arrays</em></p>
+<p><strong>Infinium I / II probes</strong> — two bead types per CpG measured in one colour channel / one bead type per CpG measured in two colour channels on Illumina methylation arrays. <em>Methylation arrays</em></p>
 <p><strong>Detection p-value / noob / functional normalisation</strong> — probe signal vs negative-control background / within-array background and dye correction / between-array normalisation guided by control probes. <em>Methylation arrays</em></p>
 <p><strong>Cross-reactive probe</strong> — an array probe that also matches other loci; removed before analysis. <em>Methylation arrays</em></p>
 <p><strong>Cell-type deconvolution (Houseman)</strong> — estimating cell fractions of a mixed sample from reference profiles of sorted cells. <em>Methylation arrays</em></p>
@@ -1341,7 +1341,7 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>Epigenetic clock / age acceleration</strong> — a penalised-regression predictor of age from CpGs / predicted minus expected age (the residual). <em>Epigenetic clocks and biomarkers</em></p>
 <p><strong>cfDNA / ctDNA</strong> — cell-free DNA in plasma / its tumour-derived part; methylation reveals the tissue of origin. <em>Epigenetic clocks and biomarkers</em></p>
 <p><strong>modBAM (MM/ML tags) / bedMethyl</strong> — long-read BAM with per-read modification calls and probabilities / a per-site methylation count table (modkit). <em>Methylation and chromatin from long reads</em></p>
-<p><strong>Haplotagging / allele-specific methylation</strong> — assigning reads to a parental haplotype / methylation that differs between the two copies. <em>Methylation and chromatin from long reads</em></p>
+<p><strong>Haplotagging / allele-specific methylation</strong> — assigning reads to a phased haplotype (parental origin requires additional information) / methylation that differs between the two copies. <em>Methylation and chromatin from long reads</em></p>
 <p><strong>XCI escape</strong> — genes expressed from both X chromosomes despite X inactivation. <em>Methylation and chromatin from long reads</em></p>
 <p><strong>Fiber-seq / m6A footprint</strong> — accessibility marked on single DNA molecules by an adenine methyltransferase. <em>Methylation and chromatin from long reads</em></p>
 </section>
@@ -1377,7 +1377,7 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>Overfitting / regularisation (lasso, ridge, elastic net)</strong> — fitting the training data but not new data / penalising large coefficients to prevent it. <em>Machine learning from scratch</em></p>
 <p><strong>Cross-validation</strong> — rotating held-out folds within the training data to estimate performance. <em>Machine learning from scratch</em></p>
 <p><strong>Precision / recall / ROC and PR curves</strong> — TP/(TP + FP) / TP/P / performance over all thresholds; ROC AUC is the chance a random positive outranks a random negative. <em>Machine learning from scratch</em></p>
-<p><strong>Class imbalance</strong> — very unequal class sizes, which make accuracy and ROC AUC look better than PR AUC. <em>Machine learning from scratch</em></p>
+<p><strong>Class imbalance</strong> — very unequal class sizes; accuracy can hide poor minority-class performance, and precision falls as positives become rarer even if TPR, FPR and ROC AUC stay the same. <em>Machine learning from scratch</em></p>
 <p><strong>Leakage</strong> — test information reaching training, e.g.&nbsp;overlapping windows or homologous sequences on different chromosomes. <em>What people try to predict</em></p>
 <p><strong>Matched negatives / baseline</strong> — negatives with the same GC (or accessibility) as the positives / the simplest sensible model to beat. <em>What people try to predict</em></p>
 <p><strong>One-hot encoding</strong> — each base as a column of one 1 and three 0s. <em>How a CNN reads DNA</em></p>

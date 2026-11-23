@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 400" width="1120" height="400" font-family="Helvetica, Arial, sans-serif">
+<defs>
+<marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker>
+</defs>
+<rect width="1120" height="400" fill="#ffffff"/>
+
+<!-- Panel A: mitotic memory -->
+<text x="24" y="30" font-size="18" font-weight="bold" fill="#1b2a3a">A  Mitotic memory</text>
+<text x="24" y="52" font-size="15" fill="#5b6b7a">within one body, through cell division</text>
+<circle cx="70" cy="200" r="26" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="2"/>
+<circle cx="70" cy="200" r="11" fill="#2a6f97"/>
+<path d="M44,165 l10,-18 l-4,14 l12,-4 l-12,22 l4,-14 z" fill="#c0392b"/>
+<text x="70" y="252" font-size="15" fill="#1b2a3a" text-anchor="middle">signal</text>
+<text x="70" y="270" font-size="15" fill="#1b2a3a" text-anchor="middle">sets a state</text>
+<line x1="98" y1="190" x2="140" y2="145" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<line x1="98" y1="210" x2="140" y2="255" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<circle cx="165" cy="130" r="22" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="2"/><circle cx="165" cy="130" r="9" fill="#2a6f97"/>
+<circle cx="165" cy="270" r="22" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="2"/><circle cx="165" cy="270" r="9" fill="#2a6f97"/>
+<line x1="189" y1="122" x2="226" y2="100" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<line x1="189" y1="138" x2="226" y2="160" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<line x1="189" y1="262" x2="226" y2="240" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<line x1="189" y1="278" x2="226" y2="300" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<circle cx="248" cy="95" r="19" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="2"/><circle cx="248" cy="95" r="8" fill="#2a6f97"/>
+<circle cx="248" cy="165" r="19" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="2"/><circle cx="248" cy="165" r="8" fill="#2a6f97"/>
+<circle cx="248" cy="235" r="19" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="2"/><circle cx="248" cy="235" r="8" fill="#2a6f97"/>
+<circle cx="248" cy="305" r="19" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="2"/><circle cx="248" cy="305" r="8" fill="#2a6f97"/>
+<text x="165" y="352" font-size="15" fill="#1b2a3a" text-anchor="middle">state kept after the signal is gone</text>
+<text x="165" y="374" font-size="15" fill="#2e8b57" text-anchor="middle" font-weight="bold">well established</text>
+
+<line x1="352" y1="40" x2="352" y2="380" stroke="#d5dde5" stroke-width="1.5"/>
+
+<!-- Panel B: intergenerational -->
+<text x="372" y="30" font-size="18" font-weight="bold" fill="#1b2a3a">B  Intergenerational</text>
+<text x="372" y="52" font-size="15" fill="#5b6b7a">the offspring was itself exposed</text>
+<ellipse cx="460" cy="200" rx="62" ry="78" fill="#f4f6f8" stroke="#1b2a3a" stroke-width="2"/>
+<text x="460" y="112" font-size="15" fill="#1b2a3a" text-anchor="middle">F0 mother</text>
+<circle cx="460" cy="215" r="26" fill="#ffffff" stroke="#1b2a3a" stroke-width="2"/>
+<text x="460" y="220" font-size="14" fill="#1b2a3a" text-anchor="middle">F1</text>
+<path d="M378,140 l12,-22 l-5,17 l15,-5 l-15,27 l5,-17 z" fill="#c0392b"/>
+<text x="460" y="302" font-size="15" fill="#1b2a3a" text-anchor="middle">exposure in pregnancy</text>
+<text x="460" y="320" font-size="15" fill="#1b2a3a" text-anchor="middle">reaches the embryo</text>
+<line x1="530" y1="200" x2="590" y2="200" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<circle cx="640" cy="200" r="34" fill="#2a6f97" stroke="#1b2a3a" stroke-width="2"/>
+<text x="640" y="206" font-size="16" fill="#ffffff" text-anchor="middle" font-weight="bold">F1</text>
+<text x="640" y="256" font-size="15" fill="#1b2a3a" text-anchor="middle">affected</text>
+<text x="545" y="374" font-size="15" fill="#d4a017" text-anchor="middle" font-weight="bold">common; a direct effect</text>
+
+<line x1="724" y1="40" x2="724" y2="380" stroke="#d5dde5" stroke-width="1.5"/>
+
+<!-- Panel C: transgenerational -->
+<text x="744" y="30" font-size="18" font-weight="bold" fill="#1b2a3a">C  Transgenerational</text>
+<text x="744" y="52" font-size="15" fill="#5b6b7a">an effect in a never-exposed generation</text>
+<rect x="748" y="100" width="222" height="90" rx="10" fill="#fbeaea" stroke="none"/>
+<text x="859" y="92" font-size="14" fill="#c0392b" text-anchor="middle">directly exposed</text>
+<circle cx="784" cy="145" r="26" fill="#2a6f97" stroke="#1b2a3a" stroke-width="2"/><text x="784" y="151" font-size="15" fill="#ffffff" text-anchor="middle" font-weight="bold">F0</text>
+<circle cx="859" cy="145" r="26" fill="#2a6f97" stroke="#1b2a3a" stroke-width="2"/><text x="859" y="151" font-size="15" fill="#ffffff" text-anchor="middle" font-weight="bold">F1</text>
+<circle cx="934" cy="145" r="26" fill="#2a6f97" stroke="#1b2a3a" stroke-width="2"/><text x="934" y="151" font-size="15" fill="#ffffff" text-anchor="middle" font-weight="bold">F2</text>
+<line x1="811" y1="145" x2="830" y2="145" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<line x1="886" y1="145" x2="905" y2="145" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<line x1="961" y1="145" x2="1012" y2="145" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<circle cx="1042" cy="145" r="26" fill="#2a6f97" stroke="#1b2a3a" stroke-width="3" stroke-dasharray="5 3"/><text x="1042" y="151" font-size="15" fill="#ffffff" text-anchor="middle" font-weight="bold">F3</text>
+<text x="1042" y="196" font-size="15" fill="#1b2a3a" text-anchor="middle">never exposed,</text>
+<text x="1042" y="214" font-size="15" fill="#1b2a3a" text-anchor="middle">still affected?</text>
+<text x="752" y="250" font-size="15" fill="#1b2a3a">example: F0 exposed in pregnancy.</text>
+<text x="752" y="270" font-size="15" fill="#1b2a3a">F1 is exposed as an embryo, F2 as the</text>
+<text x="752" y="290" font-size="15" fill="#1b2a3a">germ cells inside that embryo.</text>
+<text x="914" y="374" font-size="15" fill="#c0392b" text-anchor="middle" font-weight="bold">rare in mammals; the claim to test</text>
+</svg>

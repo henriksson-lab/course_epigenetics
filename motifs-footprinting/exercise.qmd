@@ -22,7 +22,7 @@ After this exercise you will be able to:
 
 **Motif matches.** A position weight matrix (PWM, from *Gene regulation*) gives each window of DNA a log-odds score; a window is a *match* when its score would be reached by chance with probability below a threshold $p$ (motifmatchr uses $p < 5 \times 10^{-5}$). A region of length $L$ has about $2L$ windows (both strands), so it contains on average $2Lp$ chance matches.
 
-**Enrichment.** For a target set of peaks (for example B-up) and a background set (the other tested peaks):
+**Enrichment.** For a target set of peaks (for example B-up) and a background set (here the `ns` peaks, which are not differential by the course thresholds):
 
 |  | with match | without |
 |---|---|---|
@@ -35,13 +35,14 @@ Odds ratio $\mathrm{OR} = ad / bc$. Under the null, the target is a random draw 
 
 **chromVAR** computes, for each motif and sample, the fraction of reads in peaks with the motif, compares it with the expected fraction (all samples pooled), and standardises it against background peak sets matched for GC content and average accessibility: a **deviation z-score**. **Variability** is the standard deviation of a motif's z-scores across samples.
 
-**Footprints.** Each read end marks one Tn5 insertion: read start + 4 on the + strand, read end − 5 on the − strand. Averaging insertions around many motif sites, oriented by motif strand, gives an **aggregate footprint**: a dip where the bound protein blocks Tn5, flanked by high insertion rates in the open DNA next to it.
+**Footprints.** Each read end marks one Tn5 insertion: in BED coordinates, read start + 4 on the + strand and read end − 5 on the − strand. With 1-based closed R coordinates, use start + 4 and end − 4. Averaging insertions around many motif sites, oriented by motif strand, gives an **aggregate footprint**: a dip where the bound protein blocks Tn5, flanked by high insertion rates in the open DNA next to it.
 
 ## Data
 
-- **Corces et al. 2016** haematopoiesis ATAC-seq (GEO [GSE74912](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE74912)): read counts in 590 650 fixed 500-bp peaks (hg19) for 132 samples. The 77 samples from healthy donors cover 13 cell types; the sample names encode donor and cell type (decoded below from the GEO sample table). The same file as in *Differential accessibility*, with the UCSC hg19 → hg38 chain file.
+- **Saved differential peaks:** `~/epi/diffacc/differential_peaks.tsv`, written in R11 of [Differential accessibility](../differential-accessibility/exercise.qmd). Its `B_up`, `T_up` and `ns` classes use adjusted $p < 0.05$ and absolute apeglm-shrunken log2 fold change > 1. We reuse these classes and compare each differential group with `ns`.
+- **Corces et al. 2016** haematopoiesis ATAC-seq (GEO [GSE74912](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE74912)): read counts in 590 650 fixed 500-bp peaks (hg19) for 132 samples. The 77 samples from healthy donors cover 13 cell types; the sample names encode donor and cell type (decoded below from the GEO sample table). The same file as in *Differential accessibility*, with the UCSC hg19 → hg38 chain file; these are used for chromVAR in R6. Motif enrichment in R1–R5 uses the saved differential-peak table.
 - **hg38 genome** as a bgzip-compressed, indexed FASTA (`hg38.fa.bgz`, `.fai`, `.gzi`), so R can read any region quickly.
-- **GM12878 ATAC-seq**, ENCODE [ENCSR095QNB](https://www.encodeproject.org/experiments/ENCSR095QNB/) replicate 1, paired-end 2 × 100: the 6.1 million read pairs that ENCODE aligned to **chr21 or chrM**, as raw FASTQ, and a bowtie2 index of chr21 + chrM. Plus the ENCODE GM12878 ATAC peaks and **CTCF ChIP-seq** peaks (from *Genomic intervals*).
+- **GM12878 ATAC-seq**, ENCODE [ENCSR095QNB](https://www.encodeproject.org/experiments/ENCSR095QNB/) replicate 1, paired-end 2 × 101: the 6.1 million read pairs that ENCODE aligned to **chr21 or chrM**, as raw FASTQ, and a bowtie2 index of chr21 + chrM. Plus the ENCODE GM12878 ATAC peaks and **CTCF ChIP-seq** peaks (from *Genomic intervals*).
 
 ```bash
 data/download.sh motifs-footprinting      # about 2 GB, mostly the hg38 genome and the reads
@@ -53,7 +54,7 @@ mkdir -p ~/epi/motifs && cd ~/epi/motifs
 
 **Shortcuts, said plainly.** The footprint uses one chromosome (chr21) of one replicate: aggregate footprints work at this depth, single-site footprints do not. chromVAR uses the 100 000 most-read peaks rather than all 589 000, and sums technical replicates per donor. Motif enrichment is done in R with motifmatchr; HOMER and the MEME suite, the usual command-line tools, are shown in the lecture and under *Where this leads* but not installed in this course.
 
-You need `fastp`, `bowtie2` and `samtools` (≥ 1.10) on the command line, and the R packages listed in *Install the software you need*, including **JASPAR2024, TFBSTools, motifmatchr, chromVAR** and **universalmotif**. Total running time on a laptop with 4–8 cores: about 25 minutes, most of it alignment, motif matching and DESeq2.
+You need `fastp`, `bowtie2` and `samtools` (≥ 1.10) on the command line, and the R packages listed in *Install the software you need*, including **JASPAR2024, TFBSTools, motifmatchr, chromVAR** and **universalmotif**. Total running time on a laptop with 4–8 cores: about 25 minutes, most of it alignment and motif matching. Complete *Differential accessibility* first and keep its saved table; we do not rerun DESeq2 here.
 
 ## By hand
 
@@ -77,7 +78,7 @@ Do these on paper.
 
 (c) How many target peaks would you expect to have a match if the target were a random draw from all 10 000 peaks? Is the observation higher or lower?
 
-(d) In the real data, an EBF1 match is in 2724 of 19 439 B-up peaks and in 23 440 of 192 385 other tested peaks; $p \approx 4 \times 10^{-13}$. Compute the two fractions and the odds ratio. Is EBF1 "the TF that drives B-cell chromatin"? What else would you look at?
+(d) In the real data, an EBF1 match is in 2728 of 19 404 B-up peaks and in 22 271 of 175 523 ns peaks; $p \approx 4.5 \times 10^{-8}$. Compute the two fractions and the odds ratio. Is EBF1 "the TF that drives B-cell chromatin"? What else would you look at?
 
 **B3. Many motifs.** You test 800 motifs. The eight smallest p-values are
 
@@ -97,15 +98,15 @@ $1\times10^{-40}$, $3\times10^{-12}$, $2\times10^{-6}$, $4\times10^{-5}$, $9\tim
 
 (b) Why does the comparison with (ii) answer a more useful question?
 
-(c) In the real B-up peaks (mean GC 0.48, other peaks 0.51), the SP1 motif has OR 0.60 against the other peaks and 0.93 against GC-matched peaks. Which number would you report, and what do you conclude about SP1?
+(c) In the real B-up peaks (mean GC 0.48, ns peaks 0.51), the SP1 motif has OR 0.58 against ns and 0.95 against GC-matched ns peaks. Which number would you report, and what do you conclude about SP1?
 
-**B5. One motif, many TFs.** In B-up peaks the three most enriched motifs are SPIB (OR 2.87), SPI1 (PU.1, OR 2.58) and SPIC (OR 2.80).
+**B5. One motif, many TFs.** In B-up peaks the three most enriched motifs are SPIB (OR 2.95), SPI1 (PU.1, OR 2.64) and SPIC (OR 2.85).
 
 (a) Can you tell from these numbers which of the three TFs binds the B-cell peaks? Why not?
 
 (b) Name two kinds of data that would help.
 
-(c) In T-up peaks, ETS1 has OR 2.67 but SPI1 only 1.18. How can two ETS motifs behave so differently? (Hint: look at the logos in the lecture.)
+(c) In T-up peaks, ETS1 has OR 2.66 but SPI1 only 1.33. How can two ETS motifs behave so differently? (Hint: look at the logos in the lecture.)
 
 **B6. Read a chromVAR heatmap.** Part of a deviation z-score table (mean over donors):
 
@@ -167,7 +168,7 @@ samtools idxstats gm12878_atac_rep1.bam
 
 ## Explore: a 2×2 motif table, the threshold and the background {#explore}
 
-The demo simulates 1000 target peaks and 8000 other peaks of 300 bp (random bases at each peak's GC content). A PU.1-like motif is planted in a fraction of the target peaks (and in 5% of the other peaks, because bound sites occur there too). A GC box (SP1-like) is planted **nowhere**. Both motifs are scanned on both strands; a peak has a match when its best window passes the **threshold**, given as a p-value per window (motifmatchr's default is $5 \times 10^{-5}$). **Target GC − background GC** makes the target peaks GC-richer (or AT-richer) than the others. **Background** compares the target with all other peaks or with a GC-matched set (two other peaks from the same 1% GC bin per target peak, as in R5). Panel (a) shows the two 2×2 tables with the odds ratio and the exact one-sided Fisher / hypergeometric p-value (computed on the log scale, as in R4), and whether it passes Bonferroni for 879 motifs. Panel (b) shows GC content, panel (c) the odds ratio against the threshold.
+The demo simulates 1000 target peaks and 8000 other peaks of 300 bp (random bases at each peak's GC content). A PU.1-like motif is planted in a fraction of the target peaks (and in 5% of the other peaks, because bound sites occur there too). A GC box (SP1-like) is planted **nowhere**. Both motifs are scanned on both strands; a peak has a match when its best window passes the **threshold**, given as a p-value per window (motifmatchr's default is $5 \times 10^{-5}$). **Target GC − background GC** makes the target peaks GC-richer (or AT-richer) than the others. **Background** compares the target with all other peaks or with a GC-matched set (two other peaks from the same 1%-GC bin per target peak; R5 applies the same matching idea to ns peaks using 2%-GC bins). Panel (a) shows the two 2×2 tables with the odds ratio and the exact one-sided Fisher / hypergeometric p-value (computed on the log scale, as in R4), and whether it passes Bonferroni for 879 motifs. Panel (b) shows GC content, panel (c) the odds ratio against the threshold.
 
 ```{=html}
 <link rel="stylesheet" href="../demos/dist/demo.css">
@@ -189,7 +190,7 @@ The demo simulates 1000 target peaks and 8000 other peaks of 300 bp (random base
 
 **E2.** At $10^{-3}$: 538 target matches (54% against 48%), OR 1.24, $p \approx 10^{-3.2}$: almost every second peak has a chance match, and the real sites drown in them. At $10^{-4}$: 177, OR 2.23, $p \approx 10^{-15.8}$; at $5 \times 10^{-5}$: 136, OR 2.60, $p \approx 10^{-17.0}$; at $10^{-5}$: 76, OR 3.88, $p \approx 10^{-17.3}$; at $10^{-6}$: 22, OR 3.2, $p \approx 10^{-4.6}$. A stricter threshold removes chance matches faster than true sites, so the odds ratio rises, but it also loses true sites (weak matches), and with few counts the estimate becomes noisy and the p-value weak. The threshold trades counts (sensitivity) against specificity.
 
-**E3.** Against all other peaks the GC box has OR 2.24 (4.1% vs 1.9%), $p = 2.2 \times 10^{-5}$: it passes Bonferroni ($p < 5.7 \times 10^{-5}$). It is enriched only because the target peaks are GC-richer (mean GC 0.52 vs 0.44), and a GC-rich word matches more often by chance in GC-rich DNA. Against GC-matched peaks: OR 0.99, $p = 0.56$. PU.1 hardly changes (OR 2.60 → 2.63), because its enrichment is real. With no GC difference the GC box gets OR 1.12 against all peaks; at +0.12 it gets OR 4.55, $p \approx 4 \times 10^{-22}$, and 1.23 against GC-matched peaks. The background decides the question you ask; in the real data (lecture, R5) the same effect works in the other direction, because B-up peaks are AT-richer than the other peaks.
+**E3.** Against all other peaks the GC box has OR 2.24 (4.1% vs 1.9%), $p = 2.2 \times 10^{-5}$: it passes Bonferroni ($p < 5.7 \times 10^{-5}$). It is enriched only because the target peaks are GC-richer (mean GC 0.52 vs 0.44), and a GC-rich word matches more often by chance in GC-rich DNA. Against GC-matched peaks: OR 0.99, $p = 0.56$. PU.1 hardly changes (OR 2.60 → 2.63), because its enrichment is real. With no GC difference the GC box gets OR 1.12 against all peaks; at +0.12 it gets OR 4.55, $p \approx 4 \times 10^{-22}$, and 1.23 against GC-matched peaks. The background decides the question you ask; in the real data (lecture, R5) the same effect works in the other direction, because B-up peaks are AT-richer than the ns peaks.
 
 **E4.** With no bound target peaks, PU.1 has OR 0.49 (2.9% vs 5.7%): the background still contains 5% of peaks with a bound site, so the target is depleted relative to it. "Depleted" means "less than in the background", not "avoided". Multiple-testing corrections control errors made by **chance**; the GC box is a **bias** that gets more significant with more data. Only a better background (or a GC-aware test) removes it. The hidden multiple testing: trying several thresholds or backgrounds and reporting the one that gives the best p-value.
 :::
@@ -200,7 +201,7 @@ Start R in `~/epi/motifs` (where the BAM file is) and load the packages:
 
 ```r
 suppressPackageStartupMessages({
-  library(DESeq2); library(rtracklayer); library(GenomicRanges); library(Rsamtools)
+  library(SummarizedExperiment); library(rtracklayer); library(GenomicRanges); library(Rsamtools)
   library(GenomicAlignments); library(Biostrings); library(Matrix)
   library(JASPAR2024); library(TFBSTools); library(motifmatchr); library(chromVAR)
   library(universalmotif); library(BiocParallel); library(ggplot2); library(pheatmap)
@@ -211,53 +212,28 @@ genome <- FaFile(file.path(D, "hg38.fa.bgz"))
 set.seed(1)
 ```
 
-### R1 — The differential peaks (given)
+### R1 — Reuse the saved differential peaks
 
-This block reproduces the B-cell vs CD4 T-cell analysis of *Differential accessibility* in compact form: decode the sample names, lift the peaks to hg38, sum technical replicates, and run DESeq2 with `~ donor + celltype` on the three donors that have both cell types. Run it; it takes 2–3 minutes.
+Read the table written in R11 of *Differential accessibility*. Set `diff_file` to that file if you used another working folder. Coordinates are already GRCh38, 1-based closed: do not add 1 to the start. The saved `class` column preserves the paired DESeq2 analysis and its apeglm-shrunken fold-change threshold.
 
 ```r
-cnt <- read.delim(file.path(D, "corces2016_atac_counts.txt.gz"), check.names = FALSE)
-peaks19 <- GRanges(cnt$Chr, IRanges(cnt$Start + 1, cnt$End))        # BED-like 0-based starts
-cnt <- as.matrix(cnt[, -(1:3)])
-
-# sample names -> donor and cell type (codes from the GEO sample table, GSE74912)
-code <- c("1" = "HSC", "2" = "MPP", "3" = "LMPP", "4" = "CMP", "5" = "GMP", "6" = "MEP",
-          "7" = "Mono", "9" = "CD4", "10" = "CD8", "11" = "NK", "13" = "B", "14" = "CLP",
-          "15" = "Ery")
-nm <- colnames(cnt)
-ok <- grepl("^(Donor)?[0-9]{4}-", nm)                                # healthy donors only
-info <- data.frame(sample = nm[ok],
-                   donor = sub("^(Donor)?([0-9]{4})-.*", "\\2", nm[ok]),
-                   celltype = code[sub(".*-([0-9]{1,2})[A-C]?(-[0-9]{6})?$", "\\1", nm[ok])])
-table(info$celltype)
-
-# lift to hg38; keep peaks that map in one piece of 500 bp
-chain <- tempfile(fileext = ".chain")
-writeLines(readLines(file.path(D, "hg19ToHg38.over.chain.gz")), chain)
-lo <- liftOver(peaks19, import.chain(chain))
-keep <- lengths(lo) == 1 & sum(width(lo)) == 500
-peaks <- unlist(lo[keep]); cnt <- cnt[keep, info$sample]
-
-# B vs CD4 T in donors with both; technical replicates (A/B) summed
-bt <- info[info$celltype %in% c("B", "CD4"), ]
-bt <- bt[bt$donor %in% intersect(bt$donor[bt$celltype == "B"], bt$donor[bt$celltype == "CD4"]), ]
-m <- sapply(split(bt$sample, paste(bt$donor, bt$celltype, sep = "_")),
-            function(s) rowSums(cnt[, s, drop = FALSE]))
-cd <- data.frame(donor = factor(sub("_.*", "", colnames(m))),
-                 celltype = factor(sub(".*_", "", colnames(m)), levels = c("CD4", "B")))
-use <- rowSums(m >= 10) >= 3                                         # drop barely detected peaks
-dds <- DESeq(DESeqDataSetFromMatrix(m[use, ], cd, ~ donor + celltype), quiet = TRUE)
-res <- results(dds, name = "celltype_B_vs_CD4")
-tested <- peaks[use]; tested$lfc <- res$log2FoldChange; tested$padj <- res$padj
-b_up <- !is.na(tested$padj) & tested$padj < 0.05 & tested$lfc > 1
-t_up <- !is.na(tested$padj) & tested$padj < 0.05 & tested$lfc < -1
-c(hg19 = length(peaks19), hg38 = length(peaks), tested = length(tested),
-  B_up = sum(b_up), T_up = sum(t_up))
+diff_file <- path.expand("~/epi/diffacc/differential_peaks.tsv")
+tab <- read.delim(diff_file, check.names = FALSE)
+stopifnot(!anyDuplicated(tab$peak_id), all(tab$class %in% c("B_up", "T_up", "ns")))
+tested <- GRanges(tab$chr, IRanges(tab$start, tab$end))
+names(tested) <- tab$peak_id
+tested$lfc <- tab$log2FoldChange; tested$padj <- tab$padj
+tested$class <- tab$class
+stopifnot(all(width(tested) == 500))
+b_up <- tested$class == "B_up"
+t_up <- tested$class == "T_up"
+ns <- tested$class == "ns"
+c(tested = length(tested), B_up = sum(b_up), T_up = sum(t_up), ns = sum(ns))
 ```
 
-(a) How many samples does each cell type have? How many peaks were lost in the liftOver?
+(a) How many peaks were tested, and how many belong to each class? Check that the counts agree with the saved table from *Differential accessibility*.
 
-(b) How many peaks were tested, and how many are B-up and T-up?
+(b) Why reuse the `class` column instead of applying the cutoff to the unshrunk maximum-likelihood fold changes? Does `ns` prove that a peak is unchanged?
 
 ### R2 — JASPAR motifs
 
@@ -294,22 +270,24 @@ sort(colMeans(hit), decreasing = TRUE)[1:5]
 
 ### R4 — Enrichment in B-up and T-up peaks
 
-First one motif with `fisher.test`, then all motifs at once with the hypergeometric distribution (identical to one-sided Fisher, but vectorised and on the log scale, so that p-values below $10^{-308}$ do not become 0):
+Compare B-up with `ns`, and T-up with the same `ns` background. The opposite differential group is excluded from each comparison. First one motif with `fisher.test`, then all motifs at once with the hypergeometric distribution (identical to one-sided Fisher, but vectorised and on the log scale, so that p-values below $10^{-308}$ do not become 0):
 
 ```r
-tab <- table(B_up = b_up, SPIB = hit[, "SPIB_MA0081.3"])
+selected <- b_up | ns
+tab <- table(B_up = b_up[selected], SPIB = hit[selected, "SPIB_MA0081.3"])
 tab
 fisher.test(tab, alternative = "greater")
 
-enrich <- function(target, hit, bg = !target) {
-  a <- colSums(hit[target, ]); b <- sum(target) - a
-  c <- colSums(hit[bg, ]);     d <- sum(bg) - c
+enrich <- function(target, hit, bg) {
+  stopifnot(!any(target & bg))
+  a <- colSums(hit[target, , drop = FALSE]); b <- sum(target) - a
+  c <- colSums(hit[bg, , drop = FALSE]);     d <- sum(bg) - c
   lp <- phyper(a - 1, a + c, b + d, a + b, lower.tail = FALSE, log.p = TRUE) / log(10)
   data.frame(tf = sub("_MA.*", "", colnames(hit)), family = fam[colnames(hit)],
              frac_target = a / (a + b), frac_bg = c / (c + d), OR = (a * d) / (b * c),
              log10p = lp, padj = p.adjust(10^lp, "BH"))
 }
-eB <- enrich(b_up, hit); eT <- enrich(t_up, hit)
+eB <- enrich(b_up, hit, bg = ns); eT <- enrich(t_up, hit, bg = ns)
 head(eB[order(eB$log10p), -2], 15)
 head(eT[order(eT$log10p), -2], 15)
 c(B = sum(eB$padj < 0.05 & eB$OR > 1), T = sum(eT$padj < 0.05 & eT$OR > 1))
@@ -318,7 +296,7 @@ sel <- c("EBF1_MA0154.5", "PAX5_MA0014.4", "PAX2_MA0067.3", "POU2F2_MA0507.3", "
 round(cbind(B = eB[sel, c("OR", "log10p")], T = eT[sel, c("OR", "log10p")]), 2)
 ```
 
-(a) From `tab`, compute the odds ratio by hand and compare with `fisher.test`. Why does `fisher.test` report $p < 2.2 \times 10^{-16}$ while `enrich()` gives $10^{-934}$?
+(a) From `tab`, compute the odds ratio by hand and compare with `fisher.test`. Why does `fisher.test` report $p < 2.2 \times 10^{-16}$ while `enrich()` gives $10^{-966}$?
 
 (b) Which TF families dominate the top of each list? Do they match what you know about B and T cells?
 
@@ -332,27 +310,58 @@ round(cbind(B = eB[sel, c("OR", "log10p")], T = eT[sel, c("OR", "log10p")]), 2)
 
 ```r
 gc <- as.numeric(letterFrequency(getSeq(genome, tested), "GC") / 500)
-tapply(gc, b_up, mean)
-bin <- cut(gc, seq(0, 1, 0.02))
-pool <- split(which(!b_up), bin[!b_up])
+tapply(gc, tested$class, mean)
+bin <- cut(gc, seq(0, 1, 0.02), include.lowest = TRUE)
+pool <- split(which(ns), bin[ns])
+set.seed(1)
 gcm <- unlist(lapply(split(which(b_up), bin[b_up]), function(i) {
   p <- pool[[as.character(bin[i[1]])]]
-  if (length(p) == 0) integer(0) else p[sample.int(length(p), length(i), replace = length(p) < length(i))]
+  n <- min(length(p), length(i))
+  if (n == 0) integer(0) else p[sample.int(length(p), n)]
 }))
-mean(gc[gcm])
+c(background_peaks = length(gcm), mean_gc = mean(gc[gcm]))
 eB_gc <- enrich(b_up, hit, bg = seq_along(tested) %in% gcm)
 sel2 <- c("SPIB_MA0081.3", "EBF1_MA0154.5", "SP1_MA0079.5", "KLF4_MA0039.5", "Nrf1_MA0506.3",
           "CTCF_MA0139.2")
-data.frame(OR_all = eB[sel2, "OR"], OR_gc = eB_gc[sel2, "OR"], row.names = sel2)
+data.frame(OR_ns = eB[sel2, "OR"], OR_gc = eB_gc[sel2, "OR"], row.names = sel2)
 ```
 
-(a) Are B-up peaks more or less GC-rich than the other tested peaks?
+(a) Are B-up peaks more or less GC-rich than the `ns` peaks? How many background peaks were sampled?
 
-(b) Which motifs change most when the background is GC-matched, and in which direction? Explain using (a). (Note: the GC-matched set contains each background peak at most once per draw, but may repeat peaks; that is fine for this purpose.)
+(b) Which motifs change most when the background is GC-matched, and in which direction? Explain using (a). The matching samples without replacement from `ns` in each 2%-GC bin. If a bin has too few `ns` peaks, it contributes fewer partners, so the background may be smaller than the target. Why is it useful to report its size and GC distribution?
 
 ### R6 — chromVAR across 13 cell types
 
+chromVAR needs the count matrix across all healthy donors and cell types, rather than the differential-peak table alone. Load and lift that matrix here, preserving the same coordinate filters as *Differential accessibility*. This prepares counts for chromVAR without fitting another differential model.
+
 ```r
+cnt <- read.delim(file.path(D, "corces2016_atac_counts.txt.gz"), check.names = FALSE)
+peaks19 <- GRanges(cnt$Chr, IRanges(cnt$Start + 1, cnt$End))        # BED-like 0-based starts
+cnt <- as.matrix(cnt[, -(1:3)])
+
+# sample names -> donor and cell type (codes from the GEO sample table, GSE74912)
+code <- c("1" = "HSC", "2" = "MPP", "3" = "LMPP", "4" = "CMP", "5" = "GMP", "6" = "MEP",
+          "7" = "Mono", "9" = "CD4", "10" = "CD8", "11" = "NK", "13" = "B", "14" = "CLP",
+          "15" = "Ery")
+nm <- colnames(cnt)
+ok <- grepl("^(Donor)?[0-9]{4}-", nm)                                # healthy donors only
+info <- data.frame(sample = nm[ok],
+                   donor = sub("^(Donor)?([0-9]{4})-.*", "\\2", nm[ok]),
+                   celltype = code[sub(".*-([0-9]{1,2})[A-C]?(-[0-9]{6})?$", "\\1", nm[ok])])
+
+# lift to hg38; keep peaks that map in one piece of 500 bp
+chain <- tempfile(fileext = ".chain")
+writeLines(readLines(file.path(D, "hg19ToHg38.over.chain.gz")), chain)
+lo <- liftOver(peaks19, import.chain(chain))
+keep <- which(lengths(lo) == 1)
+peaks <- unlist(lo[keep])
+ok <- width(peaks) == 500 & as.character(seqnames(peaks)) == as.character(seqnames(peaks19)[keep])
+keep <- keep[ok]; peaks <- peaks[ok]
+cnt <- cnt[keep, info$sample]
+
+table(info$celltype)
+length(peaks)
+
 grp <- paste(info$celltype, info$donor, sep = "_")                 # one column per donor x cell type
 cm <- sapply(split(info$sample, grp), function(s) rowSums(cnt[, s, drop = FALSE]))
 top <- order(rowSums(cm), decreasing = TRUE)[1:100000]              # the 100 000 most-read peaks
@@ -377,7 +386,7 @@ pheatmap(pmax(pmin(zm, 15), -15), cluster_cols = FALSE,
          color = colorRampPalette(c("#2a6f97", "white", "#c0392b"))(101))
 ```
 
-(a) How many samples and cell types are there? Which motifs are the most variable?
+(a) How many healthy libraries, donor × cell-type samples and cell types are there? How many peaks pass the liftOver filters? Which motifs are the most variable?
 
 (b) Read the table `zm`: in which cell types is each motif most accessible? Do they fit the known regulators of each lineage (GATA1 and KLF1 for erythroid cells, C/EBPα for myeloid cells, PU.1, EBF1 and E2A (TCF3) for B cells, RUNX, TCF7 and T-bet (TBX21) for T and NK cells)?
 
@@ -387,10 +396,13 @@ pheatmap(pmax(pmin(zm, 15), -15), cluster_cols = FALSE,
 
 ### R7 — Tn5 insertions and a CTCF footprint
 
+The offsets below use 1-based closed coordinates, as in [BRGenomics ATAC-seq import](https://mdeber.github.io/reference/import_bam.html#atac-seq-data-import).
+
 ```r
 ga <- readGAlignments("gm12878_atac_rep1.bam",
                       param = ScanBamParam(which = GRanges("chr21", IRanges(1, 46709983))))
-ins <- GRanges("chr21", IRanges(ifelse(strand(ga) == "+", start(ga) + 4, end(ga) - 5), width = 1),
+# GRanges is 1-based closed: the BED end - 5 base is end(ga) - 4 in R.
+ins <- GRanges("chr21", IRanges(ifelse(strand(ga) == "+", start(ga) + 4, end(ga) - 4), width = 1),
                seqinfo = Seqinfo("chr21", 46709983))
 length(ins)
 cov_ins <- coverage(ins)$chr21                     # insertions per base along chr21 (an Rle)
@@ -434,9 +446,10 @@ c(flank = mean(b$ins[abs(b$pos) >= 30 & abs(b$pos) <= 60]),
 ### R8 — Tn5 sequence preference
 
 ```r
+set.seed(2)
 k <- sample(length(ga), 200000)
 st <- as.character(strand(ga))[k]
-pos <- ifelse(st == "+", start(ga)[k] + 4, end(ga)[k] - 5)
+pos <- ifelse(st == "+", start(ga)[k] + 4, end(ga)[k] - 4)
 win <- GRanges("chr21", IRanges(pos - 10, pos + 10), strand = st)
 freq <- consensusMatrix(getSeq(genome, win), as.prob = TRUE)[c("A", "C", "G", "T"), ]
 colnames(freq) <- -10:10
@@ -485,11 +498,11 @@ The [chromVAR vignette](https://bioconductor.org/packages/release/bioc/vignettes
 | target | 120 | 280 | 30% |
 | background | 1440 | 8160 | 15% |
 
-(b) $\mathrm{OR} = (120 \times 8160)/(280 \times 1440) = 979\,200 / 403\,200 = 2.43$. (c) $400 \times 1560 / 10\,000 = 62.4$ expected; 120 observed, about twice as many. (d) $2724 / 19\,439 = 14.0\%$ vs $23\,440 / 192\,385 = 12.2\%$; $\mathrm{OR} = (2724 \times 168\,945)/(16\,715 \times 23\,440) = 1.17$. Highly significant because the sets are large, but a weak effect: on this evidence EBF1 is not a major distinguishing motif. Before concluding, check a GC-matched background (EBF1's motif is GC-rich and B-up peaks are AT-rich; with GC matching the OR rises to about 1.5, R5), the quality of the matrix, EBF1 expression, EBF1 ChIP-seq, and chromVAR (R6: the EBF1 motif is most accessible in lymphoid progenitors). EBF1 is in fact a B-cell master regulator; motif enrichment just measures it poorly here.
+(b) $\mathrm{OR} = (120 \times 8160)/(280 \times 1440) = 979\,200 / 403\,200 = 2.43$. (c) $400 \times 1560 / 10\,000 = 62.4$ expected; 120 observed, about twice as many. (d) $2728 / 19\,404 = 14.1\%$ vs $22\,271 / 175\,523 = 12.7\%$; $\mathrm{OR} = (2728 \times 153\,252)/(16\,676 \times 22\,271) = 1.13$. Highly significant because the sets are large, but a weak effect: on this evidence EBF1 is not a major distinguishing motif. Before concluding, check a GC-matched background (EBF1's motif is GC-rich and B-up peaks are AT-rich; with GC matching the OR rises to about 1.44, R5), the quality of the matrix, EBF1 expression, EBF1 ChIP-seq, and chromVAR (R6: the EBF1 motif is most accessible in lymphoid progenitors). EBF1 is in fact a B-cell master regulator; motif enrichment just measures it poorly here.
 
 **B3.** (a) $0.05 / 800 = 6.25 \times 10^{-5}$: four motifs pass ($10^{-40}$, $3 \times 10^{-12}$, $2 \times 10^{-6}$, $4 \times 10^{-5}$). (b) BH thresholds $0.05\,i/800 = 6.25 \times 10^{-5}\, i$: $6.25 \times 10^{-5}$, $1.25 \times 10^{-4}$, $1.9 \times 10^{-4}$, $2.5 \times 10^{-4}$, $3.1 \times 10^{-4}$, $3.75 \times 10^{-4}$, $4.4 \times 10^{-4}$, $5 \times 10^{-4}$. The 7th p-value ($2.5 \times 10^{-4} \le 4.4 \times 10^{-4}$) passes, the 8th ($6 \times 10^{-4} > 5 \times 10^{-4}$) does not: **7** motifs. (c) $800 \times 0.05 = 40$. (d) Essentially one: all ETS motifs share the GGAA core, so they are 12 correlated tests of one signal (perhaps two, if PU.1-type and ETS1-type sites separate).
 
-**B4.** (a) GC-rich and CpG-containing motifs: SP/KLF (GGGCGG), NRF1, E2F, ETS motifs typical of promoters (GABPA), CTCF. They are enriched in promoters against AT-rich random DNA because of composition and because promoters are open, not because they explain anything specific. (b) GC-matched peaks are also open chromatin with the same base composition, so a motif that remains enriched is more frequent in the target than composition and openness alone predict. (c) Report 0.93 (and say which background). The apparent depletion of SP1 against all peaks comes from the B-up peaks being AT-richer (distal elements) than the background, which contains many GC-rich promoters; with GC matched, SP1 is neither enriched nor depleted: no evidence for or against SP1.
+**B4.** (a) GC-rich and CpG-containing motifs: SP/KLF (GGGCGG), NRF1, E2F, ETS motifs typical of promoters (GABPA), CTCF. They are enriched in promoters against AT-rich random DNA because of composition and because promoters are open, not because they explain anything specific. (b) GC-matched peaks are also open chromatin with the same base composition, so a motif that remains enriched is more frequent in the target than composition and openness alone predict. (c) Report the GC-matched OR of 0.95 alongside the ns-background OR of 0.58, naming both backgrounds. The apparent strong depletion largely disappears after matching GC: the B-up peaks are AT-richer (distal elements) than the ns background, which contains many GC-rich promoters. Neither result establishes whether SP1 binds or drives accessibility.
 
 **B5.** (a) No. SPIB, PU.1 and SPIC have nearly identical motifs (one family, one DNA-binding domain); the small differences in OR reflect the matrices, not which protein binds. (b) Expression (RNA-seq of B and T cells: PU.1 and SPIB are expressed in B cells; SPIC mainly in red-pulp macrophages), ChIP-seq or CUT&RUN for each candidate, and perturbation (knock-out or degradation followed by ATAC-seq). (c) The ETS core GGAA is shared, but the flanks differ: PU.1/SPIB prefer an A-rich 5' flank (AAAGAGGAAGT), ETS1/GABPA prefer CCGGAAGT. T-cell-specific peaks contain ETS1-type sites, B-cell-specific peaks PU.1-type sites, and each matrix detects mostly its own subtype.
 
@@ -505,26 +518,26 @@ The [chromVAR vignette](https://bioconductor.org/packages/release/bioc/vignettes
 :::
 
 ::: {.callout-note collapse="true" title="Solutions — R"}
-**R1.** (a) B 4, CD4 5, CD8 5, CLP 5, CMP 8, Ery 8, GMP 7, HSC 7, LMPP 3, MEP 7, Mono 6, MPP 6, NK 6 samples (77 in all, counting technical replicates). 590 650 − 589 071 = 1579 peaks (0.3%) were lost or split in the liftOver. (b) 211 824 tested peaks; **19 439 B-up** and **16 972 T-up**. The block runs in about 2 minutes. *Differential accessibility* reports 19 404 and 16 897: the tested peaks are the same, but there the cut-off of 1 is applied to the apeglm-**shrunk** fold change, which pulls a few borderline peaks below it. Here we skip the shrinkage to save time.
+**R1.** (a) 211 824 tested peaks: **19 404 B_up**, **16 897 T_up** and **175 523 ns**, exactly as saved in *Differential accessibility*. (b) The class column retains that analysis's apeglm-shrunken effect sizes and adjusted-p threshold. Reapplying the cutoff to MLE fold changes would admit some borderline peaks and change the target sets. The ns class includes nonsignificant peaks and peaks below the effect-size threshold; it is not evidence that every ns peak is unchanged.
 
 **R2.** (a) 879 motifs. The largest families are zinc-finger proteins with more than 3 adjacent fingers (124), HOX (49), NK homeodomain (40), paired-related homeodomain (39), FOX (33), dispersed zinc fingers (32), Tal-related bHLH (32) and ETS (28). (b) Each column sums to 903: the matrix was built from 903 aligned sites. (c) All three have the GGAA core. PU.1 and SPIB add an A-rich 5' flank (AAAGAGGAAGT), ETS1 prefers CC before the core (ACCGGAAGT).
 
 **R3.** The matching takes about 3 minutes. (a) Median 6.4% of peaks (range 0.4–65%), close to the 5% expected by chance for a 500-bp peak at $p = 5 \times 10^{-5}$ ($2 \times 500 \times 5 \times 10^{-5} = 0.05$). Most motifs are present in a few percent of peaks, real sites and chance matches together. (b) MEIS1 (65%), SP5 (55%), IKZF2 (53%), FIGLA and ZEB1 (41%). These are short matrices with little information (MEIS1: TGACAG; IKZF: GGGAA; E-box: CAGCTG). A short matrix has few distinct scores, so the score cut-off that corresponds to $p < 5 \times 10^{-5}$ cannot be set precisely, and many windows reach it. Treat enrichment results for such motifs with extra care.
 
-**R4.** (a) $\mathrm{OR} = (8242 \times 153\,118)/(11\,197 \times 39\,267) = 2.87$, the same as `fisher.test`'s estimate (2.870; Fisher reports a conditional maximum-likelihood estimate, which is almost identical for large tables). `fisher.test` prints `< 2.2e-16` because it reports p-values only down to machine precision; the true value is about $10^{-934}$, which only the log-scale computation can represent. (b) B-up: ETS of the PU.1 type (SPIB, SPI1, SPIC), IRF/STAT (ETS–IRF composite elements and interferon-response elements), IKZF1, and POU/OCT (POU2F1/2/3, the OCT2 motif). T-up: BCL11B, ETS of the ETS1/ERG/GABPA type, IKZF3, RUNX (Runx1 OR 2.06, ETS1 OR 2.67), and further down TCF7/LEF (TCF7 OR 2.07). Both fit: PU.1, SPIB, OCT2, IRF4/8 and IKAROS are B-cell regulators; RUNX1/3, ETS1, TCF1 and BCL11B are T-cell regulators. (c) 474 (B-up) and 497 (T-up) of 879. Not useful by itself: half of all motifs, mostly redundant family members and composition effects. Rank by odds ratio and group by family. (d) B-up: EBF1 OR 1.17 ($p \approx 10^{-13}$), PAX5 OR 0.92 (not significant), PAX2 OR 1.92 ($10^{-39}$). Both are B-cell master regulators, so absence of enrichment is not absence of function. For EBF1 the effect is weak with this background (see R5); for PAX5 the JASPAR matrix MA0014.4 is short and matches only 1.8% of peaks, while the longer PAX2 matrix (same paired domain) detects the enrichment. A failed matrix, not failed biology. In T-up peaks EBF1 is clearly depleted (OR 0.50). (e) CTCF sites are open in nearly every cell type, so they are rarely differential: they are under-represented in any set of cell-type-specific peaks compared with all tested peaks (OR 0.52 and 0.63).
+**R4.** (a) $\mathrm{OR} = (8227 \times 140\,448)/(11\,177 \times 35\,075) = 2.95$, the same as `fisher.test`'s estimate (about 2.95; Fisher reports a conditional maximum-likelihood estimate, which is almost identical for large tables). `fisher.test` uses a default print format that displays very small p-values as `< 2.2e-16`; the probability here is about $10^{-966}$ and underflows on the ordinary probability scale, so `enrich()` evaluates the hypergeometric tail on the log scale. (b) B-up: ETS of the PU.1 type (SPIB, SPI1, SPIC), IRF/STAT (ETS–IRF composite elements and interferon-response elements), IKZF1, and POU/OCT (POU2F1/2/3, the OCT2 motif). T-up: BCL11B, ETS of the ETS1/ERG/GABPA type, IKZF3, RUNX (Runx1 OR 2.13, ETS1 OR 2.66), and further down TCF7/LEF (TCF7 OR 2.11). Both fit: PU.1, SPIB, OCT2, IRF4/8 and IKAROS are B-cell regulators; RUNX1/3, ETS1, TCF1 and BCL11B are T-cell regulators. (c) 511 (B-up) and 507 (T-up) of 879. Not useful by itself: half of all motifs, mostly redundant family members and composition effects. Rank by odds ratio and group by family. (d) B-up: EBF1 OR 1.13 ($p \approx 4.5 \times 10^{-8}$), PAX5 OR 0.90 (not enriched), PAX2 OR 1.86 ($p \approx 1.5 \times 10^{-35}$). Both are B-cell master regulators, so absence of enrichment is not absence of function. For EBF1 the effect is weak with this background (see R5); for PAX5 the JASPAR matrix MA0014.4 is short and matches only 1.8% of peaks, while the longer PAX2 matrix (same paired domain) detects the enrichment. Matrix choice and background matter; lack of enrichment does not show that the TF is inactive. In T-up peaks EBF1 is clearly depleted (OR 0.51). (e) Many CTCF sites are shared between B and T cells, so they are not differential in this comparison: they are under-represented in any set of cell-type-specific peaks compared with the ns peaks (OR 0.51 and 0.59).
 
-**R5.** (a) Less GC-rich: mean GC 0.476 vs 0.508 for the other tested peaks. The GC-matched set has 0.476. (b) GC-rich motifs move towards 1: SP1 0.60 → 0.94, KLF4 0.75 → 1.07, NRF1 0.39 → 0.73; their "depletion" was mostly composition. EBF1 (GC-rich motif) rises from 1.17 to 1.47. SPIB hardly changes (2.87 → 2.71) and CTCF stays depleted (0.52 → 0.58): those are not composition effects. (Exact values vary slightly with the random draw.)
+**R5.** (a) Less GC-rich: mean GC 0.477 in B-up versus 0.513 in ns peaks. All 19 404 B-up peaks find partners in their 2%-GC bins, giving 19 404 distinct ns background peaks with mean GC 0.477. (b) GC-rich motifs move towards 1: SP1 0.58 → 0.95, KLF4 0.73 → 1.07, NRF1 0.38 → 0.73; their apparent depletion was largely composition. EBF1 rises from 1.13 to 1.44. SPIB hardly changes (2.95 → 2.89) and CTCF stays depleted (0.51 → 0.54): those effects survive GC matching. Reporting the background size and GC distribution makes a shortage of partners or an imperfect match visible. The values above use `set.seed(1)`; other random draws vary slightly.
 
-**R6.** (a) `dim(z)` is 879 × 47: 47 donor × cell-type samples covering 13 cell types; `computeDeviations` takes about 25 s on 4 cores after the motif matching (whole block about 3 minutes). The most variable motifs are GATA (GATA1::TAL1 34, then GATA4, Gata3, GATA6, GATA2), the PU.1-type ETS motifs (SPIC, Spi1, SPIB, 14–16) and E-box motifs (ERF::FIGLA, FIGLA, ZEB1, 13–15). (b) GATA1::TAL1: MEP 77, Ery 50, CMP 37, MPP 12, negative in all lymphoid and myeloid cells. KLF1: weak (Mono 12, Ery 5): the KLF motif is GC-rich and shared with many KLF/SP factors. CEBPA: GMP 21, Mono 22. Spi1: LMPP 19, GMP 25, Mono 22, B 19; negative in MEP, Ery, T and NK. EBF1: CLP 20, B 6. TCF3 (E2A): CLP 27, LMPP 19, B 17, CD4 9. POU2F2: B 13. Runx1: LMPP 18. TCF7: CD4 11, CD8 8. TBX21: NK 21, CD8 15. CTCF: high only in GMPs (26), a pattern without an obvious biological explanation; worth checking for a technical batch. Overall, the known regulators of each lineage come out where expected. (c) Gata3 follows GATA1::TAL1 (MEP 46, Ery 27, CMP 36) and is negative in CD4 T cells (−17), where GATA3 is the active GATA factor. The motif cannot tell family members apart; in erythroid cells the open GATA sites are bound by GATA1. (d) `fam["FIGLA_MA0820.2"]` and BHLHE22 are "Tal-related" and ASCL1 "MyoD/ASC-related": bHLH factors binding E-boxes (CANNTG). In blood the E-box factors are E2A (TCF3), HEB (TCF12) and E2-2 (TCF4) in lymphoid cells, and TAL1 with GATA1 in erythroid cells. TBR1 ("TBrain-related") is a T-box motif: in blood it stands for T-bet (TBX21) and Eomes, high in NK and CD8 T cells.
+**R6.** (a) 77 healthy libraries become 47 donor × cell-type samples across 13 cell types after summing technical replicates. The liftOver filters retain 589 070 peaks; chromVAR uses the 100 000 most-read. `dim(z)` is 879 × 47; `computeDeviations` takes about 25 s on 4 cores after the motif matching (whole block about 3 minutes). The most variable motifs are GATA (GATA1::TAL1 34, then GATA4, Gata3, GATA6, GATA2), the PU.1-type ETS motifs (SPIC, Spi1, SPIB, 14–16) and E-box motifs (ERF::FIGLA, FIGLA, ZEB1, 13–15). (b) GATA1::TAL1: MEP 77, Ery 50, CMP 37, MPP 12, negative in all lymphoid and myeloid cells. KLF1: weak (Mono 12, Ery 5): the KLF motif is GC-rich and shared with many KLF/SP factors. CEBPA: GMP 21, Mono 22. Spi1: LMPP 19, GMP 25, Mono 22, B 19; negative in MEP, Ery, T and NK. EBF1: CLP 20, B 6. TCF3 (E2A): CLP 27, LMPP 19, B 17, CD4 9. POU2F2: B 13. Runx1: LMPP 18. TCF7: CD4 11, CD8 8. TBX21: NK 21, CD8 15. CTCF: high only in GMPs (26), a pattern without an obvious biological explanation; worth checking for a technical batch. Overall, the known regulators of each lineage come out where expected. (c) Gata3 follows GATA1::TAL1 (MEP 46, Ery 27, CMP 36) and is negative in CD4 T cells (−17), where GATA3 is the active GATA factor. The motif cannot tell family members apart; in erythroid cells the open GATA sites are bound by GATA1. (d) `fam["FIGLA_MA0820.2"]` and BHLHE22 are "Tal-related" and ASCL1 "MyoD/ASC-related": bHLH factors binding E-boxes (CANNTG). In blood the E-box factors are E2A (TCF3), HEB (TCF12) and E2-2 (TCF4) in lymphoid cells, and TAL1 with GATA1 in erythroid cells. TBR1 ("TBrain-related") is a T-box motif: in blood it stands for T-bet (TBX21) and Eomes, high in NK and CD8 T cells.
 
-**R7.** (a) 504 974 insertions on chr21. 15 684 CTCF motif matches at $p < 10^{-4}$: 400 (2.6%) in a CTCF ChIP peak, 427 in an ATAC peak without ChIP peak, 14 857 in closed chromatin. 82% of the 405 chr21 ChIP peaks contain a motif match. (b) Bound sites: flanks rise to about 0.7 insertions per site at −23 and +33 bp (5-bp smoothed), a dip over the motif (about 0.2 on either side of the centre) with a narrow spike at the centre, and lower values far out. Averages: flank (30–60 bp) 0.48, centre (±10 bp) 0.34, far (≥ 90 bp) 0.20; centre/flank = 0.71 (the central spike raises the ±10-bp average; without it the dip is deeper). Open but unbound sites: flat at about 0.45, no flanks, no dip, but the same central spike. Closed sites: flat near 0.01. (c) Being in an ATAC peak only means the site lies somewhere in an open region, typically not at its centre and not bound: no protein protects it and no CTCF-positioned nucleosome-free region surrounds it. Without binding there is neither a footprint nor the flank pattern. (d) Without orientation, + and − strand sites are averaged in opposite directions: the profile becomes nearly symmetric (flank maxima at −32 and +32 instead of −23 and +33) and the dip slightly shallower (minimum 0.26 instead of 0.22). Real asymmetric features of the CTCF footprint are smeared out.
+**R7.** (a) 504 974 insertions on chr21. 15 684 CTCF motif matches at $p < 10^{-4}$: 400 (2.6%) in a CTCF ChIP peak, 427 in an ATAC peak without ChIP peak, 14 857 in closed chromatin. 82% of the 405 chr21 ChIP peaks contain a motif match. (b) Bound sites: flanks rise to about 0.7 insertions per site at −23 and +34 bp (5-bp smoothed), a dip over the motif (about 0.2 on either side of the centre) with a narrow spike at the centre, and lower values far out. Averages: flank (30–60 bp) 0.48, centre (±10 bp) 0.34, far (≥ 90 bp) 0.20; centre/flank = 0.69 (the central spike raises the ±10-bp average; without it the dip is deeper). Open but unbound sites: flat at about 0.45, no flanks, no dip, but the same central spike. Closed sites: flat near 0.01. (c) Being in an ATAC peak only means the site lies somewhere in an open region, typically not at its centre and not bound: no protein protects it and no CTCF-positioned nucleosome-free region surrounds it. Without binding there is neither a footprint nor the flank pattern. (d) Without orientation, + and − strand sites are averaged in opposite directions: the profile becomes nearly symmetric (flank maxima at −31 and +33 instead of −23 and +34) and the central dip slightly shallower (minimum of the 5-bp-smoothed profile within ±10 bp: 0.24 instead of 0.21). Real asymmetric features of the CTCF footprint are smeared out.
 
-**R8.** (a) Positions −4 to +4 deviate most from the surroundings: C is enriched at −2 (0.37) and +3/+4 (0.34–0.35), G at +1 (0.37) and −5/−4 (0.35–0.36), A at 0 to +2 (0.28–0.30), while T is depleted at +1 (0.15) and A at −4 to −2 (0.15–0.17). Further out the composition settles at the GC-rich level of open chromatin (about 0.3 for each of C and G), above the chr21 average of 41% GC. (b) The sequence of a motif is nearly the same at every site, so Tn5's preference for or against it repeats at every site. Averaged over thousands of sites this gives a reproducible spike or dip that has nothing to do with binding, as in the central spike of R7. Footprints must be compared with unbound sites of the same motif or corrected with a bias model.
+**R8.** (a) The strongest deviations occur near the insertion: C is enriched at −6 and +4 (0.44) and −1 (0.41), G at −4 (0.48), +1 (0.40) and +6 (0.41), while T is depleted at −4 (0.09) and A at +4 (0.12). Further out the composition settles at the GC-rich level of open chromatin (about 0.3 for each of C and G), above the chr21 average of 41% GC. (b) The sequence of a motif is nearly the same at every site, so Tn5's preference for or against it repeats at every site. Averaged over thousands of sites this gives a reproducible spike or dip that has nothing to do with binding, as in the central spike of R7. Footprints must be compared with unbound sites of the same motif or corrected with a bias model.
 :::
 
 ## Where this leads
 
-- **HOMER and MEME** do known and de novo motif enrichment from the command line: `findMotifsGenome.pl b_up.bed hg38.fa out/ -size 200 -bg tested.bed`, or `sea --p b_up.fa --n tested.fa --m JASPAR2024.meme` and `streme` (see the lecture).
+- **HOMER and MEME** do known and de novo motif enrichment from the command line: `findMotifsGenome.pl b_up.bed hg38.fa out/ -size 200 -bg ns.bed`, or `sea --p b_up.fa --n ns.fa --m JASPAR2024.meme` and `streme` (see the lecture).
 - **TOBIAS** corrects Tn5 bias and compares footprints between conditions: `TOBIAS ATACorrect --bam atac.bam --genome hg38.fa --peaks peaks.bed`, then `ScoreBigwig` and `BINDetect --motifs JASPAR.meme`.
 - **chromVAR on single cells** (ArchR, Signac) gives each cell a motif z-score; the same idea as R6 with cells as columns.
 - *ChIP-seq*, *CUT&RUN and CUT&Tag* measure the binding of one TF directly and give the ground truth that motifs and footprints only suggest.

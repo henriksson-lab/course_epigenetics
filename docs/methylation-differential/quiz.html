@@ -1346,7 +1346,7 @@ Answer
 </div>
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Pooling treats every read as an independent replicate and ignores the variation between samples, so p-values are too small (on chr21 the same test calls 20 902 CpGs “different” between the two GM12878 replicates). Use a model with a dispersion parameter (beta-binomial, as in DSS) and the samples as replicates. Pooled levels: GM <span class="math inline">\(27/30 = 0.90\)</span>, K562 <span class="math inline">\(4/30 = 0.13\)</span>; Δβ (K562 − GM) <span class="math inline">\(= -0.77\)</span>.</p>
+<p>Pooling treats every read as an independent replicate and ignores the variation between samples, so p-values can be too small (on chr21 the same test calls 20 902 CpGs “different” between the two GM12878 replicates). Use a model with a dispersion parameter (beta-binomial, as in DSS) and the samples as replicates. Using the exercise’s definition (mean of sample proportions): GM <span class="math inline">\((0.9 + 0.9)/2 = 0.90\)</span>, K562 <span class="math inline">\((0.10 + 0.15)/2 = 0.125\)</span>; Δβ (K562 − GM) <span class="math inline">\(= -0.775\)</span> (about −0.78). Pooling instead gives <span class="math inline">\(4/30 - 27/30 \approx -0.77\)</span>, a different, coverage-weighted estimate.</p>
 </div>
 </div>
 </div>

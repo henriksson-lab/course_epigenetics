@@ -2,7 +2,7 @@
   <rect width="1120" height="400" fill="#ffffff"/>
   <text x="250" y="32" font-size="18" font-weight="bold" fill="#1b2a3a" text-anchor="middle">Peaks with and without a SPIB match</text>
   <text x="40" y="68" font-size="16" font-weight="bold" fill="#2a6f97">target: B-up</text>
-  <text x="150" y="68" font-size="15" fill="#5b6b7a">(19 439 peaks)</text>
+  <text x="150" y="68" font-size="15" fill="#5b6b7a">(19 404 peaks)</text>
   <rect x="40" y="80" width="38" height="16" rx="3" fill="#ffffff" stroke="#2a6f97" stroke-width="1.5"/>
   <circle cx="59" cy="88" r="5" fill="#c0392b"/>
   <rect x="84" y="80" width="38" height="16" rx="3" fill="#eaf1f7" stroke="#2a6f97" stroke-width="1.5"/>
@@ -46,8 +46,8 @@
   <rect x="392" y="132" width="38" height="16" rx="3" fill="#ffffff" stroke="#2a6f97" stroke-width="1.5"/>
   <circle cx="411" cy="140" r="5" fill="#c0392b"/>
   <rect x="436" y="132" width="38" height="16" rx="3" fill="#eaf1f7" stroke="#2a6f97" stroke-width="1.5"/>
-  <text x="40" y="218" font-size="16" font-weight="bold" fill="#5b6b7a">background: rest</text>
-  <text x="190" y="218" font-size="15" fill="#5b6b7a">(192 385 tested peaks)</text>
+  <text x="40" y="218" font-size="16" font-weight="bold" fill="#5b6b7a">background: ns</text>
+  <text x="190" y="218" font-size="15" fill="#5b6b7a">(175 523 ns peaks)</text>
   <rect x="40" y="230" width="38" height="16" rx="3" fill="#eaf1f7" stroke="#5b6b7a" stroke-width="1.5"/>
   <rect x="84" y="230" width="38" height="16" rx="3" fill="#ffffff" stroke="#5b6b7a" stroke-width="1.5"/>
   <circle cx="103" cy="238" r="5" fill="#c0392b"/>
@@ -109,20 +109,20 @@
   <rect x="665" y="162" width="160" height="70" fill="#f4f6f8" stroke="#1b2a3a"/>
   <rect x="825" y="162" width="160" height="70" fill="#f4f6f8" stroke="#1b2a3a"/>
   <text x="590" y="133" font-size="16" font-weight="bold" fill="#2a6f97" text-anchor="middle">B-up</text>
-  <text x="590" y="203" font-size="16" font-weight="bold" fill="#5b6b7a" text-anchor="middle">rest</text>
+  <text x="590" y="203" font-size="16" font-weight="bold" fill="#5b6b7a" text-anchor="middle">ns</text>
   <g font-size="17" fill="#1b2a3a">
-    <text x="700" y="122"><tspan font-weight="bold">a</tspan> = 8 242</text>
-    <text x="855" y="122"><tspan font-weight="bold">b</tspan> = 11 197</text>
-    <text x="700" y="192"><tspan font-weight="bold">c</tspan> = 39 267</text>
-    <text x="855" y="192"><tspan font-weight="bold">d</tspan> = 153 118</text>
+    <text x="700" y="122"><tspan font-weight="bold">a</tspan> = 8 227</text>
+    <text x="855" y="122"><tspan font-weight="bold">b</tspan> = 11 177</text>
+    <text x="700" y="192"><tspan font-weight="bold">c</tspan> = 35 075</text>
+    <text x="855" y="192"><tspan font-weight="bold">d</tspan> = 140 448</text>
   </g>
   <g font-size="15" fill="#5b6b7a" text-anchor="middle">
-    <text x="745" y="146">42.4%</text><text x="745" y="216">20.4%</text>
-    <text x="1040" y="133">19 439</text><text x="1040" y="203">192 385</text>
+    <text x="745" y="146">42.4%</text><text x="745" y="216">20.0%</text>
+    <text x="1040" y="133">19 404</text><text x="1040" y="203">175 523</text>
   </g>
   <rect x="580" y="262" width="510" height="122" rx="8" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1.5"/>
-  <text x="600" y="292" font-size="16" fill="#1b2a3a">odds ratio  OR = (a·d) / (b·c) = <tspan font-weight="bold">2.87</tspan></text>
+  <text x="600" y="292" font-size="16" fill="#1b2a3a">odds ratio  OR = (a·d) / (b·c) = <tspan font-weight="bold">2.95</tspan></text>
   <text x="600" y="322" font-size="16" fill="#1b2a3a">p-value: Fisher's exact test (= hypergeometric)</text>
-  <text x="600" y="350" font-size="16" fill="#1b2a3a">P(≥ a matches in 19 439 peaks drawn at random</text>
-  <text x="600" y="372" font-size="16" fill="#1b2a3a">from all 211 824 tested)  ≈ 10<tspan dy="-7" font-size="12">−934</tspan></text>
+  <text x="600" y="350" font-size="16" fill="#1b2a3a">P(≥ a matches in 19 404 peaks drawn at random</text>
+  <text x="600" y="372" font-size="16" fill="#1b2a3a">from 194 927 B-up + ns peaks)  ≈ 10<tspan dy="-7" font-size="12">−966</tspan></text>
 </svg>

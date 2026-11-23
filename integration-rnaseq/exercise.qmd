@@ -70,7 +70,7 @@ Do these on paper.
 
 (b) A CRISPRi screen shows that the element regulates C. What is C's rank among the expressed genes, by TSS distance?
 
-(c) In the K562 benchmark, the target is the nearest expressed gene for 67% of positive pairs. Give two biological reasons why the remaining third is not.
+(c) In the K562 benchmark, among positive pairs whose target is expressed, the target is the nearest expressed gene for 67%. Give two biological reasons why the remaining third is not.
 
 **B2. ABC by hand.** Gene G has its TSS at position 0 (kb). Its promoter P and three elements have activities and positions:
 
@@ -260,10 +260,12 @@ mean(cr$Regulated)
 
 ```r
 pr_curve <- function(score, truth) {
-  set.seed(1)
-  o  <- order(score, runif(length(score)), decreasing = TRUE)   # ties in random order
+  o <- order(score, decreasing = TRUE)
   tp <- cumsum(truth[o])
-  data.frame(threshold = score[o], recall = tp / sum(truth), precision = tp / seq_along(o))
+  # A threshold includes every pair with the same score: never split a tie.
+  last <- !duplicated(score[o], fromLast = TRUE)
+  k <- which(last)
+  data.frame(threshold = score[o][k], recall = tp[k] / sum(truth), precision = tp[k] / k)
 }
 auprc <- function(score, truth) { p <- pr_curve(score, truth); sum(diff(c(0, p$recall)) * p$precision) }
 prec_at_recall <- function(score, truth, r = 0.7) { p <- pr_curve(score, truth); p$precision[which(p$recall >= r)[1]] }
@@ -273,7 +275,7 @@ p <- pr_curve(cr$inv_dist, cr$Regulated)
 p[which(p$recall >= 0.5)[1], ]
 ```
 
-(a) Explain `pr_curve` line by line. Why must ties be broken at random?
+(a) Explain `pr_curve` line by line. Why must all pairs with the same score enter together?
 
 (b) What is the AUPRC of 1/distance, and its precision at 70% recall? At what distance threshold does it reach 50% recall, and with what precision?
 
@@ -507,22 +509,22 @@ Run times are from one server core; a laptop is 1.5–3 times slower.
 
 **R2.** (a) `fix = "start"` is strand-aware: for a minus-strand gene the "start" of the feature in transcription direction is its highest coordinate, which is where the TSS is. (b) 20 065 protein-coding genes, 9499 of them expressed (TPM ≥ 1). Nearest protein-coding: TP 256, FP 374, precision **0.41**, recall **0.54**. Nearest expressed: TP 284, FP 532, precision **0.35**, recall **0.60**. Removing silent genes lets elements skip to the correct expressed gene (recall up), but some elements that were previously assigned to a non-tested or silent gene now get an expressed gene that is tested and negative (more calls, precision down). (c) Yes, 256 in both. Small differences can arise from how the element centre is rounded and how ties are broken.
 
-**R3.** (a) `order(score, runif(...), decreasing = TRUE)` sorts pairs from the highest score down, with random order among ties; `cumsum(truth[o])` counts true positives among the top $k$; recall = TP/all positives, precision = TP/$k$. Without random tie-breaking, tied pairs keep the file order, which is sorted by dataset and position and can make a score look better or worse than it is. (b) AUPRC **0.438**, precision at 70% recall **0.316**. 50% recall at a distance of about 26 kb (1/3.83 × 10⁻⁵), with precision **0.43**. (c) At recall 0.54 the distance curve has precision about 0.41, the same as the nearest gene: in this benchmark the two rules are nearly equivalent; distance has the advantage of a full ranking.
+**R3.** (a) `order(score, decreasing = TRUE)` sorts pairs from the highest score down; `cumsum(truth[o])` counts true positives. `last` keeps only the final row of each tied group, so every point corresponds to an attainable score threshold. Recall = TP/all positives, precision = TP/$k$. Splitting ties, randomly or by file order, invents thresholds that the score cannot distinguish. Here AUPRC is computed as non-interpolated average precision ([definition](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.average_precision_score.html)). (b) AUPRC **0.438**, precision at 70% recall **0.316**. 50% recall at a distance of about 26 kb (1/3.83 × 10⁻⁵), with precision **0.43**. (c) At recall 0.54 the distance curve has precision about 0.41, the same as the nearest gene: in this benchmark the two rules are nearly equivalent; distance has the advantage of a full ranking.
 
-**R4.** (a) 60 956 elements, 18 245 promoters (median width 742 and 720 bp). Promoters are included because ABC needs the gene's own promoter in the denominator, and because promoters of other genes also act as enhancers (they compete for the gene). A closed promoter has activity 0 and does not affect the result. (b) Spearman: ATAC–DNase **0.72**, DNase–H3K27ac **0.79**, ATAC–H3K27ac **0.56**. (c) 62.6% of tested elements and **81.5%** of positive elements overlap a candidate; a pair without overlap gets 0 (it can never be predicted). (d) AUPRC 0.100 (DNase) and 0.100 (ATAC): an element's activity is the same for every gene it is tested against, and most of those genes are not its targets.
+**R4.** (a) 60 956 elements, 18 245 promoters (median width 742 and 720 bp). Promoters are included because ABC needs the gene's own promoter in the denominator, and because promoters of other genes also act as enhancers (they compete for the gene). A closed promoter has activity 0 and does not affect the result. (b) Spearman: ATAC–DNase **0.72**, DNase–H3K27ac **0.79**, ATAC–H3K27ac **0.56**. (c) 62.6% of tested elements and **81.5%** of positive elements overlap a candidate; a pair without overlap gets 0 (it can never be predicted). (d) AUPRC 0.099 (DNase) and 0.099 (ATAC): an element's activity is the same for every gene it is tested against, and most of those genes are not its targets.
 
 **R5.** (a) For each gene, `win` is the 10-Mb window around its TSS; `findOverlaps` lists every element in it; `d` is the distance from the element's centre to the TSS; `C` is the power-law contact; `AC / sum(AC)` with `by = gene` divides each element's product by the sum over all elements of the same gene. The tested element is then matched to the candidates it overlaps, keeping the maximum ABC for that gene. (b) 758 316 element–gene pairs; a gene has a median of 320 elements within 5 Mb (22–849). (c)
 
 | score | AUPRC | precision at 70% recall |
 |---|---:|---:|
 | 1 / distance | 0.438 | 0.316 |
-| activity only | 0.100 | 0.098 |
-| ABC (ATAC × H3K27ac) | 0.480 | 0.311 |
-| ABC (DNase × H3K27ac) | **0.516** | **0.345** |
+| activity only | 0.099 | 0.098 |
+| ABC (ATAC × H3K27ac) | 0.479 | 0.311 |
+| ABC (DNase × H3K27ac) | **0.515** | **0.345** |
 
 DNase works better. The ENCODE ATAC fold-change track divides by a local background estimated from the ATAC data itself, which rises around clusters of strong peaks and compresses the strongest elements (ATAC and DNase agree only at Spearman 0.72); the DNase track is read depth, proportional to read counts as in the original ABC. (d) 602 calls, 294 correct: precision **0.49**, recall **0.62**, better than the nearest gene on both (0.41, 0.54).
 
-**R6.** (a) The 13 cell types (Bcell, CD4, CD8, CLP, CMP, Ery, GMP, HSC, LMPP, MEP, Mono, MPP, NK); one entry is the mean log2 CPM over the donors (libraries) of that cell type. Averaging per cell type removes donor noise and gives the same samples for ATAC and RNA, which come from partly different donors. `A` has 589 116 lifted peaks, `R` 25 498 genes. (b) Positives: median $r$ = **0.39**, 10.7% above 0.8 (428 pairs with a value); negatives: median 0.085, 1.4% above 0.8 (8362 pairs). (c) Random pairs: 95% quantile **0.59**, 99% **0.77** (median −0.06). Higher than the theoretical 0.48 because the cell types are not independent (B5b). (d) AUPRC **0.136** vs 0.438 for distance. Reasons: the cell types are normal blood cells, while the screen is in K562, a leukaemia line with its own enhancers; 13 related samples give a wide null; correlation ignores distance, so far elements that co-vary with a gene (same lineage programme) rank as high as close ones.
+**R6.** (a) The 13 cell types (Bcell, CD4, CD8, CLP, CMP, Ery, GMP, HSC, LMPP, MEP, Mono, MPP, NK); one entry is log2(mean CPM + 1), averaging CPM over the donors (libraries) of that cell type before taking the log. Averaging per cell type removes donor noise and gives the same samples for ATAC and RNA, which come from partly different donors. `A` has 589 116 lifted peaks, `R` 25 498 genes. (b) Positives: median $r$ = **0.39**, 10.7% above 0.8 (428 pairs with a value); negatives: median 0.085, 1.4% above 0.8 (8362 pairs). (c) Random pairs: 95% quantile **0.59**, 99% **0.77** (median −0.06). Higher than the theoretical 0.48 because the cell types are not independent (B5b). (d) AUPRC **0.136** vs 0.438 for distance. Reasons: the cell types are normal blood cells, while the screen is in K562, a leukaemia line with its own enhancers; 13 related samples give a wide null; correlation ignores distance, so far elements that co-vary with a gene (same lineage programme) rank as high as close ones.
 
 **R7.** (a) About 50 s for both bigWigs; 85 273 elements (18 248 promoters). (b)
 

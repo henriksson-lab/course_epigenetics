@@ -19,7 +19,8 @@ prepare=()
 derived=()
 while IFS=$'\t' read -r id url desc used_by; do
   [[ -z "$id" || "$id" == \#* ]] && continue
-  [ -n "$unit" ] && [[ "$used_by" != *"$unit"* ]] && continue
+  # Match a whole comma-separated topic, not a substring of another topic.
+  [ -n "$unit" ] && [[ ",${used_by// /}," != *",$unit,"* ]] && continue
   if [ -s "$id" ] || [ -s "$id.1.bt2" ]; then echo "have $id"; continue; fi
   case "$url" in
     http*)            echo "get  $id  ($desc)"
@@ -29,21 +30,39 @@ while IFS=$'\t' read -r id url desc used_by; do
   esac
 done < manifest.tsv
 
-for script in "${prepare[@]+"${prepare[@]}"}"; do
-  echo "run $script (builds files that are not plain downloads; see its header)"
-  ./"$script"
-done
-
+# Preparation scripts for Hi-C, long reads and CNNs need this indexed reference
+# themselves. Build it before running them, even though it is a derived file.
 for id in "${derived[@]+"${derived[@]}"}"; do
-  case "$id" in
-    bowtie2/hg38_chr21_chrM)
-      [ -s hg38_chr21_chrM.fa ] || ./prepare-reads.sh
-      echo "build bowtie2 index $id"
-      mkdir -p bowtie2 && bowtie2-build --threads 4 hg38_chr21_chrM.fa bowtie2/hg38_chr21_chrM > /dev/null ;;
-    hg38.fa.bgz)
+  if [ "$id" = hg38.fa.bgz ]; then
       [ -s hg38.fa.gz ] || curl -fL -sS --retry 3 -o hg38.fa.gz \
         https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.fa.gz
       echo "bgzip and index $id"
-      zcat hg38.fa.gz | bgzip -@ 4 > hg38.fa.bgz && samtools faidx hg38.fa.bgz ;;
+      zcat hg38.fa.gz | bgzip -@ 4 > hg38.fa.bgz.part
+      mv hg38.fa.bgz.part hg38.fa.bgz
+      samtools faidx hg38.fa.bgz
+  fi
+done
+
+# An existing FASTA can still be missing its indexes after an interrupted run.
+if [ -s hg38.fa.bgz ] && { [ ! -s hg38.fa.bgz.fai ] || [ ! -s hg38.fa.bgz.gzi ]; }; then
+  samtools faidx hg38.fa.bgz
+fi
+
+for script in "${prepare[@]+"${prepare[@]}"}"; do
+  echo "run $script (builds files that are not plain downloads; see its header)"
+  case "$script:$unit" in
+    prepare-meth2.sh:methylation-arrays) ./"$script" arrays ;;
+    prepare-meth2.sh:epigenetic-clocks)  ./"$script" arrays; ./"$script" clocks ;;
+    prepare-meth2.sh:longread-epigenomics) ./"$script" longreads ;;
+    prepare-hic.sh:genome-3d-intro|prepare-hic.sh:hic-features) ./"$script" matrices ;;
+    *) ./"$script" ;;
   esac
+done
+
+for id in "${derived[@]+"${derived[@]}"}"; do
+  if [ "$id" = bowtie2/hg38_chr21_chrM ]; then
+    [ -s hg38_chr21_chrM.fa ] || ./prepare-reads.sh
+    echo "build bowtie2 index $id"
+    mkdir -p bowtie2 && bowtie2-build --threads 4 hg38_chr21_chrM.fa bowtie2/hg38_chr21_chrM > /dev/null
+  fi
 done

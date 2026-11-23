@@ -80,7 +80,7 @@ Do these on paper.
 
 (b) Would the first two regions merge if the gap rule were 300 bp? What would the "fraction significant" of that merged region be, counting the four non-significant CpGs?
 
-**B5. Multiple testing.** (a) A WGBS study tests 25 million CpGs. How many have $p < 10^{-3}$ by chance if nothing differs? (b) DSS calls 5 061 DMRs at a CpG-level threshold. Why is "5 061 DMRs at FDR 5%" not a correct statement? (c) What does dmrseq do differently, and why can it not help with 2 vs 2 samples?
+**B5. Multiple testing.** (a) A WGBS study tests 25 million CpGs. How many have $p < 10^{-3}$ by chance if nothing differs? (b) DSS calls 5 061 DMRs at a CpG-level threshold. Why is "5 061 DMRs at FDR 5%" not a correct statement? (c) How does dmrseq obtain region-level inference even with only 2 vs 2 samples, where a separate permutation test for each region would have very coarse p-values?
 
 **B6. Read the results.** Use the lecture figures.
 
@@ -322,7 +322,7 @@ Think of everything that differs between the groups besides the variable of inte
 
 **B4.** (a) Gaps: 60, 50, 40, | 250 |, 30, 40, | 430 |, | 100 |, 80, 70, 80, 30, 30. Regions: {5000–5150}: 4 CpGs, 150 bp → **DMR**; {5400–5470}: 3 CpGs, 70 bp → **DMR**; {5900}: 1 CpG → rejected (the gap to 6000 is exactly 100, not less than 100); {6000–6290}: 6 CpGs, 290 bp → **DMR**. (b) Yes: with a 300-bp rule 5150 and 5400 (gap 250) merge into 5000–5470 with 7 significant and 4 non-significant CpGs: 7/11 = 64% significant, above DSS's 50% rule, so one region. The rules decide whether one long or two short regions are reported.
 
-**B5.** (a) $25 \times 10^6 \times 10^{-3} = 25\,000$. (b) DSS's threshold is applied to CpGs; DMRs are built afterwards from the significant CpGs, so the proportion of false DMRs is not controlled (one false region can contain many correlated false CpGs, and region boundaries are chosen after seeing the data). (c) dmrseq scores candidate regions and computes region-level p-values by permuting sample labels, which gives a valid region-level FDR; with 2 vs 2 samples there are only 3 distinct ways to split the samples, far too few permutations.
+**B5.** (a) $25 \times 10^6 \times 10^{-3} = 25\,000$. (b) DSS's threshold is applied to CpGs; DMRs are built afterwards from the significant CpGs, so the proportion of false DMRs is not controlled (one false region can contain many correlated false CpGs, and region boundaries are chosen after seeing the data). (c) dmrseq scores candidate regions with generalised least squares on transformed proportions, accounting for spatial correlation. It pools null statistics across regions and label permutations rather than testing each region against its own few permutations. This supports region-level inference with at least two samples per group; more replicates improve power and robustness. See the [dmrseq documentation](https://bioconductor.org/packages/release/bioc/html/dmrseq.html).
 
 **B6.** (a) 4 803 lower, 258 higher in K562. (b) Losses: 68% overlap K562 low domains (background 46.5%); depleted at CGIs (2.0% vs 7.1%) and promoters (1.8% vs 4.9%). Gains: enriched at CGIs (9.7%) and promoters (6.6%), almost absent from low domains (3.1%). (c) A low domain of several hundred kb is one event (one region that lost methylation), but the merging rule cuts it into many DMRs wherever two significant CpGs are 100 bp or more apart.
 

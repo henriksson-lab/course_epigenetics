@@ -40,7 +40,7 @@ ENCODE repeats experiments with NSC < 1.05 and RSC < 0.8.
 
 ## Data
 
-The CTCF ChIP-seq of GM12878 (ENCODE ENCSR000DZN, replicate 1, single-end 36 bp, 2008-era Illumina reads with phred+64 qualities) and its input control (ENCSR000EYX, single-end 27–28 bp), and ATAC-seq of GM12878 in two biological replicates (ENCSR095QNB, paired-end 2 × 100 bp). For each library you get the **original, untrimmed reads** that ENCODE aligned to **chr21 or chrM**, plus a Bowtie2 index of chr21 + chrM, the ENCODE peaks (CTCF and ATAC, IDR-thresholded), the blacklist and the GENCODE annotation.
+The CTCF ChIP-seq of GM12878 (ENCODE ENCSR000DZN, replicate 1, single-end 36 bp, 2008-era Illumina reads with phred+64 qualities) and its input control (ENCSR000EYX, single-end 27–28 bp), and ATAC-seq of GM12878 in two biological replicates (ENCSR095QNB, paired-end 2 × 101 bp). For each library you get the **original, untrimmed reads** that ENCODE aligned to **chr21 or chrM**, plus a Bowtie2 index of chr21 + chrM, the ENCODE peaks (CTCF and ATAC, IDR-thresholded), the blacklist and the GENCODE annotation.
 
 ```bash
 data/download.sh epigenomics-design      # about 1.5 GB
@@ -81,7 +81,7 @@ Do these on paper.
 
 (b) What FRiP would you expect if the reads were spread uniformly over the mappable genome? How many times more reads are in the peaks than expected?
 
-(c) The input of the same experiment has a FRiP of 0.4% in the same peaks. Why is that higher than your answer in (b)?
+(c) The input of the same experiment has a FRiP of 0.8% in the same peaks. Why is that higher than your answer in (b)?
 
 (d) An ATAC-seq library has FRiP 0.15. What does ENCODE say? Name two things that could have gone wrong in the experiment.
 
@@ -97,7 +97,7 @@ Do these on paper.
 
 **B4. Strand cross-correlation.** Two single-end (36 bp) ChIP-seq experiments give these cross-correlation values:
 
-| | CC at 36 bp | CC at the maximum (shift) | minimum CC |
+| | CC at 36 bp | CC at the fragment-length peak (shift) | minimum CC |
 |---|---:|---:|---:|
 | experiment X | 0.21 | 0.32 (180 bp) | 0.15 |
 | experiment Y | 0.30 | 0.26 (170 bp) | 0.25 |
@@ -477,7 +477,7 @@ Usable fraction = product of the fractions kept at each step. [`multiBamSummary 
 
 **B1.** (a) Library 1: NRF $8.2/10 = 0.82$, PBC1 $7.0/8.2 = 0.85$, PBC2 $7.0/0.9 = 7.8$: NRF compliant (0.8–0.9), mild bottlenecking by PBC1 and PBC2: acceptable. Library 2: NRF $0.30$, PBC1 $1.2/3.0 = 0.40$, PBC2 $1.2/0.6 = 2.0$: NRF concerning, PBC1 severe, PBC2 moderate: a strongly bottlenecked library. (b) $1 - 0.30 = 70\%$ of the reads are duplicates; 3.0 M usable reads remain. (c) NRF goes **down**: the library holds a limited number of distinct molecules (judging from PBC2, not many more than the 3 M already seen), so most new reads are copies of molecules already sequenced. The usable reads grow far less than four-fold. More sequencing cannot rescue a library that was amplified from too little DNA; make a new one. (d) After duplicate removal every position has exactly one read, so NRF = PBC1 = 1 by definition; the information is in how many copies there were.
 
-**B2.** (a) $540\,000 / 18\,000\,000 = 3\%$: above 1%, passes. (b) Peaks cover $45\,000 \times 300 = 13.5$ Mb, $13.5 / 2700 = 0.5\%$ of the mappable genome; expected FRiP 0.5%, so the ChIP has 6 times more reads in peaks than uniform. (c) The input is not uniform: CTCF sites are often in open chromatin, which shears more easily, and they are in mappable, GC-rich DNA. (In the course data the input's FRiP in CTCF peaks is about 8 times the uniform expectation, C3.) (d) Below 0.2: not acceptable. Possible causes: too few cells or too much Tn5 for the cell number (over-tagmentation, more background), dead or dying cells (fragmented chromatin), poor nuclei isolation, many mitochondrial reads (these are removed but signal the problem), or a library dominated by background after too many PCR cycles.
+**B2.** (a) $540\,000 / 18\,000\,000 = 3\%$: above 1%, passes. (b) Peaks cover $45\,000 \times 300 = 13.5$ Mb, $13.5 / 2700 = 0.5\%$ of the mappable genome; expected FRiP 0.5%, so the ChIP has 6 times more reads in peaks than uniform. (c) The input has $0.8/0.5 = 1.6$ times the uniform expectation. It is not uniform: CTCF sites are often in open chromatin, which shears more easily, and they are in mappable, GC-rich DNA. (In the course data the input's FRiP in CTCF peaks is about 8 times the uniform expectation, C3.) (d) Below 0.2: not acceptable. Possible causes: too few cells or too much Tn5 for the cell number (over-tagmentation, more background), dead or dying cells (fragmented chromatin), poor nuclei isolation, many mitochondrial reads (these are removed but signal the problem), or a library dominated by background after too many PCR cycles.
 
 **B3.** (a) A is the input (close to the diagonal). B is the sharp TF: flat for 90% of the bins, then a steep rise. C, a smooth curve bending away from the diagonal over the whole range, is the broad mark. (b) At $x = 0.9$, $y \approx 0.23$, so the top 10% of bins hold about **77%** of the reads. (c) No: 99% of the genome looks like an input. A few bins with huge counts produce the jump: artefact regions such as satellite repeats, rDNA or the mitochondrial genome (blacklisted regions), or a few PCR jackpots. Check what those bins are; remove the blacklist and duplicates and replot.
 

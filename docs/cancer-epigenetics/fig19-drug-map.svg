@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 440" width="1120" height="440" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker><marker id="ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker><marker id="ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker><marker id="ahc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a8324a"/></marker><marker id="ahgr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker><marker id="ahb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a6f97"/></marker></defs>
+<rect width="1120" height="440" fill="#ffffff"/>
+<text x="24" y="30" font-size="18" fill="#1b2a3a" text-anchor="start" font-weight="bold">Epigenetic drugs: what they hit</text>
+<text x="40" y="66" font-size="15" fill="#5b6b7a" text-anchor="start" font-weight="bold">target</text>
+<text x="330" y="66" font-size="15" fill="#5b6b7a" text-anchor="start" font-weight="bold">type</text>
+<text x="480" y="66" font-size="15" fill="#5b6b7a" text-anchor="start" font-weight="bold">drugs</text>
+<text x="770" y="66" font-size="15" fill="#5b6b7a" text-anchor="start" font-weight="bold">status</text>
+<rect x="24" y="80" width="1072" height="48" rx="8" fill="#ffffff" stroke="#d5dde5" stroke-width="1"/>
+<text x="40" y="109" font-size="15" fill="#1b2a3a" text-anchor="start" font-weight="bold">DNA methyltransferase (DNMT1)</text>
+<text x="330" y="109" font-size="15" fill="#5b6b7a" text-anchor="start">writer, DNA</text>
+<text x="480" y="109" font-size="15" fill="#1b2a3a" text-anchor="start">azacitidine, decitabine</text>
+<circle cx="764" cy="104" r="7" fill="#2e8b57" stroke="#2e8b57" stroke-width="2"/>
+<text x="778" y="109" font-size="15" fill="#1b2a3a" text-anchor="start">approved: MDS, AML</text>
+<rect x="24" y="136" width="1072" height="48" rx="8" fill="#f4f6f8" stroke="#d5dde5" stroke-width="1"/>
+<text x="40" y="165" font-size="15" fill="#1b2a3a" text-anchor="start" font-weight="bold">histone deacetylases (HDACs)</text>
+<text x="330" y="165" font-size="15" fill="#5b6b7a" text-anchor="start">eraser, acetyl</text>
+<text x="480" y="165" font-size="15" fill="#1b2a3a" text-anchor="start">vorinostat, romidepsin</text>
+<circle cx="764" cy="160" r="7" fill="#2e8b57" stroke="#2e8b57" stroke-width="2"/>
+<text x="778" y="165" font-size="15" fill="#1b2a3a" text-anchor="start">approved: T-cell lymphomas</text>
+<rect x="24" y="192" width="1072" height="48" rx="8" fill="#ffffff" stroke="#d5dde5" stroke-width="1"/>
+<text x="40" y="221" font-size="15" fill="#1b2a3a" text-anchor="start" font-weight="bold">EZH2 in PRC2</text>
+<text x="330" y="221" font-size="15" fill="#5b6b7a" text-anchor="start">writer, H3K27me3</text>
+<text x="480" y="221" font-size="15" fill="#1b2a3a" text-anchor="start">tazemetostat</text>
+<circle cx="764" cy="216" r="7" fill="#e67e22" stroke="#e67e22" stroke-width="2"/>
+<text x="778" y="212" font-size="15" fill="#1b2a3a" text-anchor="start">FDA approvals withdrawn</text>
+<text x="778" y="231" font-size="15" fill="#1b2a3a" text-anchor="start">June 2026: safety risk</text>
+<rect x="24" y="248" width="1072" height="48" rx="8" fill="#f4f6f8" stroke="#d5dde5" stroke-width="1"/>
+<text x="40" y="277" font-size="15" fill="#1b2a3a" text-anchor="start" font-weight="bold">mutant IDH1 / IDH2</text>
+<text x="330" y="277" font-size="15" fill="#5b6b7a" text-anchor="start">makes 2-HG</text>
+<text x="480" y="277" font-size="15" fill="#1b2a3a" text-anchor="start">ivosidenib, enasidenib, vorasidenib</text>
+<circle cx="764" cy="272" r="7" fill="#2e8b57" stroke="#2e8b57" stroke-width="2"/>
+<text x="778" y="268" font-size="15" fill="#1b2a3a" text-anchor="start">approved: AML; grade 2</text>
+<text x="778" y="287" font-size="15" fill="#1b2a3a" text-anchor="start">IDH-mutant glioma (2024)</text>
+<rect x="24" y="304" width="1072" height="48" rx="8" fill="#ffffff" stroke="#d5dde5" stroke-width="1"/>
+<text x="40" y="333" font-size="15" fill="#1b2a3a" text-anchor="start" font-weight="bold">menin, partner of KMT2A</text>
+<text x="330" y="333" font-size="15" fill="#5b6b7a" text-anchor="start">writer complex</text>
+<text x="480" y="333" font-size="15" fill="#1b2a3a" text-anchor="start">revumenib</text>
+<circle cx="764" cy="328" r="7" fill="#2e8b57" stroke="#2e8b57" stroke-width="2"/>
+<text x="778" y="324" font-size="15" fill="#1b2a3a" text-anchor="start">approved 2024: KMT2A-</text>
+<text x="778" y="343" font-size="15" fill="#1b2a3a" text-anchor="start">rearranged acute leukaemia</text>
+<rect x="24" y="360" width="1072" height="48" rx="8" fill="#f4f6f8" stroke="#d5dde5" stroke-width="1"/>
+<text x="40" y="389" font-size="15" fill="#1b2a3a" text-anchor="start" font-weight="bold">BRD4 (BET bromodomains)</text>
+<text x="330" y="389" font-size="15" fill="#5b6b7a" text-anchor="start">reader, acetyl</text>
+<text x="480" y="389" font-size="15" fill="#1b2a3a" text-anchor="start">BET inhibitors (JQ1 in the lab)</text>
+<circle cx="764" cy="384" r="7" fill="#ffffff" stroke="#5b6b7a" stroke-width="2"/>
+<text x="778" y="389" font-size="15" fill="#5b6b7a" text-anchor="start">clinical trials only</text>
+<text x="24" y="428" font-size="14" fill="#5b6b7a" text-anchor="start">Approval status: US FDA, November 2026. More drugs exist in each class; the table shows those discussed in this lecture.</text>
+</svg>

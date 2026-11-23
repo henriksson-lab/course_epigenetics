@@ -12,7 +12,7 @@
 # a small chr21 + chrM reference in minutes. The big downloads are deleted.
 #
 # Datasets (GM12878, GRCh38):
-#   ATAC-seq  ENCSR095QNB (Snyder lab), paired-end 2x100, replicates 1 and 2
+#   ATAC-seq  ENCSR095QNB (Snyder lab), paired-end 2x101, replicates 1 and 2
 #   CTCF ChIP ENCSR000DZN (Snyder lab), single-end 36 bp, replicate 1
 #   input     ENCSR000EYX, the control for the CTCF experiment, single-end 28 bp
 set -euo pipefail

@@ -382,7 +382,7 @@ Enrichment = observed / mean of the shuffles. Empirical $p = (k + 1) / (N + 1)$,
 
 **B6.** Pairs (1, 1), (2, 1), (2, 2), (3, 2). `countOverlaps` = 1, 2, 1. `overlapsAny` = TRUE, TRUE, TRUE.
 
-**B7.** (a) Enrichment $30 / 12 = 2.5$; $p = (4 + 1) / (999 + 1) = 0.005$. (b) $p = (0 + 1)/(99 + 1) = 0.01$; report "$p \le 0.01$ (none of 99 shuffles reached the observed value)", together with the enrichment. Run more shuffles if you need a smaller bound. (c) Too high. Shuffled peaks land in places where no real peak can be (centromeres, gaps, unplaced contigs, chrY in a female cell line), so the shuffled overlaps are too low and the ratio observed/shuffled too high.
+**B7.** (a) Enrichment $30 / 12 = 2.5$; $p = (4 + 1) / (999 + 1) = 0.005$. (b) $p = (0 + 1)/(99 + 1) = 0.01$; report "empirical $p = 0.01$ (none of 99 shuffles reached the observed value)", together with the enrichment. Run more shuffles if you need finer p-value resolution. (c) Too high. Shuffled peaks land in places where no real peak can be (centromeres, gaps, unplaced contigs, chrY in a female cell line), so the shuffled overlaps are too low and the ratio observed/shuffled too high.
 :::
 
 ::: {.callout-note collapse="true" title="Solutions — command line"}
@@ -399,12 +399,12 @@ Enrichment = observed / mean of the shuffles. Empirical $p = (k + 1) / (N + 1)$,
 
 **C6.** (a) 65 446 merged regions: wherever an H3K4me3 and an H3K27ac peak overlap (active promoters), merging makes one region of the two. (b) H3K4me3–H3K27ac 0.41, CTCF–H3K27ac 0.018. The CTCF Jaccard is small partly because CTCF peaks are narrow (few bases each), so even complete overlap of every CTCF peak would give a small fraction of the union. Jaccard measures shared *bases*, not shared *sites*.
 
-**C7.** (a) Observed 7464. Restricted shuffles: mean about 1120 (range about 1000–1200; the exact numbers depend on the order of lines and the seeds), enrichment about **6.7**, empirical $p = 1/101 \approx 0.01$ (none of the 100 shuffles came close). (b) Naive: mean about 950, enrichment about **7.8**: larger, because shuffled peaks fall into regions where no peak can be (B7c). (c) "17% of CTCF peaks (7464 of 44 217) overlapped an H3K27ac peak, 6.7 times more than expected from 100 shuffles of the H3K27ac peaks within their chromosomes outside blacklisted regions ($p \le 0.01$)." Significant but partial: most CTCF sites are not in active regulatory elements.
+**C7.** (a) Observed 7464. Restricted shuffles: mean about 1120 (range about 1000–1200; the exact numbers depend on the order of lines and the seeds), enrichment about **6.7**, empirical $p = 1/101 \approx 0.01$ (none of the 100 shuffles came close). (b) Naive: mean about 950, enrichment about **7.8**: larger, because shuffled peaks fall into regions where no peak can be (B7c). (c) "17% of CTCF peaks (7464 of 44 217) overlapped an H3K27ac peak, 6.7 times more than expected from 100 shuffles of the H3K27ac peaks within their chromosomes outside blacklisted regions (empirical $p = 1/101 \approx 0.01$)." Significant but partial: most CTCF sites are not in active regulatory elements.
 :::
 
 ::: {.callout-note collapse="true" title="Solutions — R"}
 
-**R1.** (a) R's start is the file's start + 1 (53 676 108 vs 53 676 107); widths agree (246). (b) No. `start` is now 1-based (file start + 1), so `start + peak` = 53 676 234, which happens to be the 1-based summit position: (file start + 1) + peak. Coincidence of conventions, worth checking each time. (c) Width 247: the 0-based start was used as a 1-based start, adding a base on the left. Fix: `IRanges(raw$V2 + 1, raw$V3)`, or `makeGRangesFromDataFrame(..., starts.in.df.are.0based = TRUE)`.
+**R1.** (a) R's start is the file's start + 1 (53 676 108 vs 53 676 107); widths agree (246). (b) Yes. `start` is now 1-based (file start + 1), so `start + peak` = 53 676 234 is the 1-based summit position: (file start + 1) + peak. The offset is unchanged when the interval start is converted to 1-based coordinates. (c) Width 247: the 0-based start was used as a 1-based start, adding a base on the left. Fix: `IRanges(raw$V2 + 1, raw$V3)`, or `makeGRangesFromDataFrame(..., starts.in.df.are.0based = TRUE)`.
 
 **R2.** (a) 56 260, the same as C2 (with the plain `sort -u`). (b) The APP TSSs are the same 8 positions. `fix = "start"` keeps the *biological* start of the range, which is the end coordinate on the − strand. (c) Yes: `tss + 1000` has width 2001, the TSS base plus 1000 on each side, the same bases as `slop -b 1000` on the BED TSS.
 

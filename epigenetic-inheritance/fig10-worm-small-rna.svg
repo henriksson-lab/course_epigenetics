@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 400" width="1120" height="400" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker><marker id="ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker><marker id="ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker><marker id="ahc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a8324a"/></marker><marker id="ahgr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker><marker id="ahb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a6f97"/></marker></defs>
+<rect width="1120" height="400" fill="#ffffff"/>
+<text x="24" y="30" font-size="18" fill="#1b2a3a" text-anchor="start" font-weight="bold">C. elegans: small RNAs carry silencing into the next generations</text>
+<rect x="30" y="60" width="190" height="60" rx="10" fill="#fbeaea" stroke="#c0392b" stroke-width="1.6"/>
+<text x="125" y="86" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">trigger: dsRNA,</text>
+<text x="125" y="106" font-size="15" fill="#1b2a3a" text-anchor="middle">piRNA, starvation</text>
+<line x1="222" y1="90" x2="280" y2="90" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<rect x="284" y="60" width="200" height="60" rx="10" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.6"/>
+<text x="384" y="86" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">small RNAs against</text>
+<text x="384" y="106" font-size="15" fill="#1b2a3a" text-anchor="middle">a target mRNA</text>
+<line x1="486" y1="90" x2="544" y2="90" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<rect x="548" y="60" width="230" height="60" rx="10" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.6"/>
+<text x="663" y="86" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">RdRP makes many</text>
+<text x="663" y="106" font-size="15" fill="#1b2a3a" text-anchor="middle">secondary siRNAs</text>
+<line x1="663" y1="122" x2="663" y2="170" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<rect x="548" y="174" width="230" height="60" rx="10" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.6"/>
+<text x="663" y="200" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">HRDE-1 (nuclear Argonaute)</text>
+<text x="663" y="220" font-size="15" fill="#1b2a3a" text-anchor="middle">→ H3K9me at the gene</text>
+<path d="M546,204 C430,204 420,150 386,124" fill="none" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<text x="392" y="176" font-size="14" fill="#5b6b7a" text-anchor="end">amplify again</text>
+<text x="392" y="194" font-size="14" fill="#5b6b7a" text-anchor="end">in the germline</text>
+<line x1="780" y1="204" x2="830" y2="204" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<rect x="834" y="174" width="260" height="60" rx="10" fill="#eaf5ee" stroke="#2e8b57" stroke-width="1.6"/>
+<text x="964" y="200" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">small RNAs in the egg</text>
+<text x="964" y="220" font-size="15" fill="#1b2a3a" text-anchor="middle">start the loop in F1</text>
+<text x="30" y="280" font-size="15" fill="#1b2a3a" text-anchor="start" font-weight="bold">silencing over generations after one trigger (typical)</text>
+<rect x="40" y="290" width="56" height="80" rx="2" fill="#c0392b" stroke="none" stroke-width="0"/>
+<text x="68" y="390" font-size="14" fill="#1b2a3a" text-anchor="middle">P0</text>
+<rect x="130" y="302.0" width="56" height="68.0" rx="2" fill="#c0392b" stroke="none" stroke-width="0"/>
+<text x="158" y="390" font-size="14" fill="#1b2a3a" text-anchor="middle">F1</text>
+<rect x="220" y="322.0" width="56" height="48.0" rx="2" fill="#c0392b" stroke="none" stroke-width="0"/>
+<text x="248" y="390" font-size="14" fill="#1b2a3a" text-anchor="middle">F2</text>
+<rect x="310" y="342.0" width="56" height="28.0" rx="2" fill="#c0392b" stroke="none" stroke-width="0"/>
+<text x="338" y="390" font-size="14" fill="#1b2a3a" text-anchor="middle">F3</text>
+<rect x="400" y="358.0" width="56" height="12.0" rx="2" fill="#c0392b" stroke="none" stroke-width="0"/>
+<text x="428" y="390" font-size="14" fill="#1b2a3a" text-anchor="middle">F4</text>
+<rect x="490" y="366.0" width="56" height="4.0" rx="2" fill="#c0392b" stroke="none" stroke-width="0"/>
+<text x="518" y="390" font-size="14" fill="#1b2a3a" text-anchor="middle">F5</text>
+<rect x="580" y="368.4" width="56" height="1.6" rx="2" fill="#c0392b" stroke="none" stroke-width="0"/>
+<text x="608" y="390" font-size="14" fill="#1b2a3a" text-anchor="middle">F6</text>
+<line x1="30" y1="370" x2="680" y2="370" stroke="#1b2a3a" stroke-width="1.5"/>
+<text x="720" y="300" font-size="15" fill="#1b2a3a" text-anchor="start">usually fades in 3–5 generations: an active</text>
+<text x="720" y="320" font-size="15" fill="#1b2a3a" text-anchor="start">process sets the duration (Houri-Ze'evi 2016)</text>
+<text x="720" y="348" font-size="15" fill="#1b2a3a" text-anchor="start">piRNA-triggered silencing can last</text>
+<text x="720" y="368" font-size="15" fill="#1b2a3a" text-anchor="start">20+ generations (Ashe et al. 2012)</text>
+<text x="720" y="392" font-size="13" fill="#5b6b7a" text-anchor="start">schematic heights; not data</text>
+</svg>

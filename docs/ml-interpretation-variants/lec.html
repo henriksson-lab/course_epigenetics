@@ -317,7 +317,7 @@ Epigenetics
 <li>Cheap, but <strong>local</strong>: where the model saturates, the slope is flat although the effect of a mutation is large.</li>
 </ul>
 <aside class="notes">
-<p>This is the same backpropagation that trains the network, now taking derivatives with respect to the input instead of the weights; in torch it is one call, x$backward() after setting requires_grad on the input tensor (exercise R2). For a one-hot input, gradient × input at position i equals the gradient at the reference base. The difference between the gradient at the reference base and the gradient at another base is a first-order estimate of the ISM Δ for that substitution. Cost matters for big models: ISM of a 200-kb Enformer input would need 600 000 forward passes per sequence; gradients need one. Integrated gradients (Sundararajan et al.&nbsp;2017) average the gradient along a path from a reference to the input, which fixes the saturation problem in the figure.</p>
+<p>This is the same backpropagation that trains the network, now taking derivatives with respect to the input instead of the weights; in torch, set requires_grad on the input tensor and call backward() on the scalar model output (exercise R2). For a one-hot input, gradient × input at position i equals the gradient at the reference base. The gradient at the alternative base minus the gradient at the reference base is a first-order estimate of the ISM Δ for that substitution. Cost matters for big models: ISM of a 200-kb Enformer input would need 600 000 forward passes per sequence; gradients need one. Integrated gradients (Sundararajan et al.&nbsp;2017) average the gradient along a path from a reference to the input, which fixes the saturation problem in the figure.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -465,7 +465,7 @@ Epigenetics
 <h2>Allele-specific binding: a natural experiment</h2>
 
 <img data-src="fig14-asb.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><ul>
-<li>In a heterozygous person, both alleles share the same cell and chromatin: if ChIP reads favour one allele, the <strong>sequence difference</strong> causes it (or a variant in phase with it).</li>
+<li>In a heterozygous person, both alleles share the same trans environment. After controlling technical biases and allelic dosage, ChIP imbalance supports a <strong>cis effect</strong>: a sequence difference on the haplotype or an allele-specific epigenetic state.</li>
 <li><strong>ADASTRA</strong> collects such allele-specific binding (ASB) events from thousands of public ChIP-seq experiments: <strong>29 519</strong> CTCF ASB SNPs at FDR &lt; 0.05.</li>
 </ul>
 <aside class="notes">

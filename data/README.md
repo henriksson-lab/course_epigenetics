@@ -16,7 +16,7 @@ over in the exercise). ENCODE accessions are in the URLs.
 
 | file | source | reads |
 |---|---|---|
-| `gm12878_atac_rep{1,2}_R{1,2}.fastq.gz` | ATAC-seq ENCSR095QNB, PE 2×100 | pairs ENCODE aligned to chr21 or chrM |
+| `gm12878_atac_rep{1,2}_R{1,2}.fastq.gz` | ATAC-seq ENCSR095QNB, PE 2×101 | pairs ENCODE aligned to chr21 or chrM |
 | `gm12878_ctcf_chip.fastq.gz` | CTCF ChIP-seq ENCSR000DZN rep 1, SE 36 | reads aligned to chr21 or chrM |
 | `gm12878_ctcf_input.fastq.gz` | input ENCSR000EYX, SE 28 | reads aligned to chr21 or chrM |
 | `hg38_chr21_chrM.fa` | UCSC hg38 | the matching small reference |

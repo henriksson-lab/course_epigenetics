@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 400" width="1120" height="400" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker><marker id="ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker><marker id="ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker><marker id="ahc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a8324a"/></marker><marker id="ahgr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker><marker id="ahb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a6f97"/></marker></defs>
+<rect width="1120" height="400" fill="#ffffff"/>
+<text x="24" y="30" font-size="18" fill="#1b2a3a" text-anchor="start" font-weight="bold">Methylation-based classification of brain tumours (Capper et al. 2018)</text>
+<rect x="24" y="60" width="150" height="110" rx="10" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.6"/>
+<text x="99.0" y="100.0" font-size="16" fill="#1b2a3a" text-anchor="middle" font-weight="bold">tumour sample</text>
+<text x="99.0" y="120.0" font-size="15" fill="#1b2a3a" text-anchor="middle">fixed tissue (FFPE)</text>
+<text x="99.0" y="140.0" font-size="15" fill="#1b2a3a" text-anchor="middle">is enough</text>
+<rect x="204" y="60" width="170" height="110" rx="10" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.6"/>
+<text x="289.0" y="90.0" font-size="16" fill="#1b2a3a" text-anchor="middle" font-weight="bold">methylation array</text>
+<text x="289.0" y="110.0" font-size="15" fill="#1b2a3a" text-anchor="middle">450k / EPIC,</text>
+<text x="289.0" y="130.0" font-size="15" fill="#1b2a3a" text-anchor="middle">bisulfite-converted</text>
+<text x="289.0" y="150.0" font-size="15" fill="#1b2a3a" text-anchor="middle">DNA</text>
+<rect x="404" y="60" width="220" height="110" rx="10" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.6"/>
+<text x="514.0" y="90.0" font-size="16" fill="#1b2a3a" text-anchor="middle" font-weight="bold">random forest</text>
+<text x="514.0" y="110.0" font-size="15" fill="#1b2a3a" text-anchor="middle">10,000 decision trees</text>
+<text x="514.0" y="130.0" font-size="15" fill="#1b2a3a" text-anchor="middle">trained on 2,801 reference</text>
+<text x="514.0" y="150.0" font-size="15" fill="#1b2a3a" text-anchor="middle">samples, 91 classes</text>
+<rect x="654" y="60" width="190" height="110" rx="10" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.6"/>
+<text x="749.0" y="90.0" font-size="16" fill="#1b2a3a" text-anchor="middle" font-weight="bold">calibration</text>
+<text x="749.0" y="110.0" font-size="15" fill="#1b2a3a" text-anchor="middle">raw votes → probability</text>
+<text x="749.0" y="130.0" font-size="15" fill="#1b2a3a" text-anchor="middle">(multinomial logistic</text>
+<text x="749.0" y="150.0" font-size="15" fill="#1b2a3a" text-anchor="middle">regression)</text>
+<line x1="176" y1="115.0" x2="200" y2="115.0" stroke="#1b2a3a" stroke-width="2.2" marker-end="url(#ah)"/>
+<line x1="376" y1="115.0" x2="400" y2="115.0" stroke="#1b2a3a" stroke-width="2.2" marker-end="url(#ah)"/>
+<line x1="626" y1="115.0" x2="650" y2="115.0" stroke="#1b2a3a" stroke-width="2.2" marker-end="url(#ah)"/>
+<rect x="882" y="54" width="214" height="52" rx="10" fill="#eaf5ee" stroke="#2e8b57" stroke-width="1.6"/>
+<text x="989" y="76" font-size="15" fill="#2e8b57" text-anchor="middle" font-weight="bold">score ≥ 0.9:</text>
+<text x="989" y="96" font-size="15" fill="#1b2a3a" text-anchor="middle">assign the class</text>
+<rect x="882" y="124" width="214" height="52" rx="10" fill="#fbeaea" stroke="#a8324a" stroke-width="1.6"/>
+<text x="989" y="146" font-size="15" fill="#a8324a" text-anchor="middle" font-weight="bold">score &lt; 0.9: "no match"</text>
+<text x="989" y="166" font-size="15" fill="#1b2a3a" text-anchor="middle">back to the pathologist</text>
+<path d="M846,115.0 L864,115.0 L864,80 L878,80" fill="none" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M864,115.0 L864,150 L878,150" fill="none" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<text x="514" y="194" font-size="14" fill="#5b6b7a" text-anchor="middle">82 tumour classes + 9 normal-tissue classes</text>
+<text x="289" y="216" font-size="14" fill="#5b6b7a" text-anchor="middle">the array also gives a copy-number profile</text>
+<line x1="24" y1="232" x2="1096" y2="232" stroke="#d5dde5" stroke-width="1.5"/>
+<text x="24" y="262" font-size="16" fill="#1b2a3a" text-anchor="start" font-weight="bold">Tested on 1,104 new diagnostic cases</text>
+<rect x="24" y="276" width="813.7101449275362" height="34" rx="0" fill="#2e8b57" stroke="#ffffff" stroke-width="1"/>
+<rect x="837.7101449275362" y="276" width="134.97101449275362" height="34" rx="0" fill="#e67e22" stroke="#ffffff" stroke-width="1"/>
+<rect x="972.6811594202899" y="276" width="123.31884057971014" height="34" rx="0" fill="#c9d3dd" stroke="#ffffff" stroke-width="1"/>
+<rect x="24" y="326" width="14" height="14" fill="#2e8b57"/>
+<text x="44" y="338" font-size="15" fill="#1b2a3a" text-anchor="start">matched, agreed with pathology (838)</text>
+<rect x="384" y="326" width="14" height="14" fill="#e67e22"/>
+<text x="404" y="338" font-size="15" fill="#1b2a3a" text-anchor="start">matched, disagreed (139)</text>
+<rect x="744" y="326" width="14" height="14" fill="#c9d3dd"/>
+<text x="764" y="338" font-size="15" fill="#1b2a3a" text-anchor="start">no match (127)</text>
+<text x="24" y="372" font-size="15" fill="#1b2a3a" text-anchor="start">Of the 139 disagreements, 129 (12% of all cases) led to a revised diagnosis after further tests;</text>
+<text x="24" y="392" font-size="15" fill="#5b6b7a" text-anchor="start">the classifier cannot name a class it was never trained on, which is why "no match" matters.</text>
+</svg>

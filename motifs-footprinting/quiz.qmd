@@ -47,7 +47,7 @@ $0.05 / 900 \approx 5.6 \times 10^{-5}$. With 20 000 target peaks, tiny differen
 **Q4.** Peaks that gain accessibility after a treatment are compared with random genomic windows, and CTCF, SP1 and NRF1 motifs come out as highly enriched. Is the treatment acting through these TFs? What background would you use instead?
 
 ::: {.callout-note collapse="true" title="Answer"}
-Probably not. These motifs are typical of open chromatin and GC-rich promoters in general; random genomic windows are mostly closed and AT-rich, so any set of peaks is "enriched" for them. Use peaks that did not change (all tested peaks) as background, ideally GC-matched. Then CTCF in particular usually comes out *depleted*, because its sites are open in every condition.
+Those results alone do not show that. These motifs are typical of open chromatin and GC-rich promoters in general; random genomic windows are mostly closed and AT-rich, so any set of peaks is "enriched" for them. Use the tested `ns` peaks (not differential by the chosen significance and effect-size thresholds) as background, ideally GC-matched. Exclude both differential groups from this background; `ns` is not proof that a peak is unchanged. Then CTCF in particular usually comes out *depleted*, because many of its sites are shared across conditions.
 :::
 
 ---

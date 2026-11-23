@@ -166,7 +166,7 @@ The demo works through one convolutional filter by hand, from the one-hot input 
 
 **E4.** The site is now window 19–33 on the − strand. With both strands, P(bound) is 0.942 as before. With the + strand only, the best window scores −5.80, the max pool is 0 and P(bound) is 0.047 $= \sigma(-3)$. A CTCF site can lie in either orientation. A network that scans one strand therefore needs one filter per orientation, and training finds both, as for filters 18 and 22 in R8.
 
-**E5.** CTCF PWM: 0.942 on the original, 0.047 on the first shuffle (best score 7.17, below 10). Another shuffle gives a different sequence, but almost never a site that passes. GC filter (bias −4): 0.142 for both, because its best 8-mer has 7 G/C in both sequences, and shuffling keeps the composition. A GC filter cannot tell the site from shuffled sequence; the PWM can. With GC-matched negatives (R1), GC content is useless (AUC 0.51 in R3), so a network has to learn the motif to separate the classes.
+**E5.** CTCF PWM: 0.942 on the original, 0.047 on the first shuffle (best score 7.17, below 10). Another shuffle gives a different sequence, but almost never a site that passes. GC filter (bias −4): 0.142 for both, because its best 8-mer happens to have 7 G/C in both sequences. Shuffling preserves the total GC content, but can change the GC content of the best 8-mer, so later shuffles can change this filter's prediction too. The GC filter detects local GC-rich stretches without recognising CTCF specifically; the PWM detects the ordered motif. With GC-matched negatives (R1), whole-window GC content is uninformative (AUC 0.51 in R3), so a network must use additional sequence features.
 :::
 
 ## In R
@@ -486,7 +486,7 @@ T   0  0  1  1  0
 
 **B2.** (a) `CCAG`, score 2 + 2 + 2 + 2 = **8**. (b) 11 − 4 + 1 = **8 windows**: TCCA −1, **CCAG 8**, CAGA −1, AGAC −1, GACT −4, ACTG 2, CTGG 2, TGGA −4. (c) After the bias: −6, 3, −6, −6, −9, −3, −3, −9; ReLU: 0, **3**, 0, 0, 0, 0, 0, 0; max pool = **3**. (d) With −4, CCAG gives 4 and nothing else passes (the next best windows score 2). The bias is the threshold: how good a match must be to count. A less negative bias lets imperfect matches through.
 
-**B3.** (a) The reverse complement of `CCAG` is **`CTGG`**. The B2 filter scores `CTGG` only 2 (−1 after the bias, 0 after ReLU): it does not see the site on the other strand. (b) Reverse-complement filter:
+**B3.** (a) The reverse complement of `CCAG` is **`CTGG`**. The B2 filter scores `CTGG` only 2 (−3 after the bias, 0 after ReLU): it does not see the site on the other strand. (b) Reverse-complement filter:
 
 ```
       1    2    3    4

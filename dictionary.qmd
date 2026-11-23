@@ -55,9 +55,9 @@ where a term is taught is given in italics.
 
 **Multi-mapping read** — a read that aligns equally well to several places, typically in repeats. *From reads to coverage*
 
-**Duplicate** — reads from copies of the same original molecule (PCR or optical), recognised by identical ends. *From reads to coverage*
+**Duplicate** — an alignment flagged as a possible PCR or optical copy, usually from matching fragment ends; independent molecules can also share ends. *From reads to coverage*
 
-**Blacklist (exclusion list)** — regions with artefactual signal in every experiment, removed before analysis. *From reads to coverage*
+**Blacklist (exclusion list)** — regions prone to anomalous signal across many sequencing experiments, removed before analysis. *From reads to coverage*
 
 **CPM / RPGC** — reads per million / reads per genomic content (1× coverage): two ways to normalise coverage tracks. *From reads to coverage*
 
@@ -99,7 +99,7 @@ where a term is taught is given in italics.
 
 **Motif enrichment** — more peaks with a motif match in a target set than in a background, tested with Fisher's exact (hypergeometric) test. *Motifs, motif enrichment and TF footprinting*
 
-**chromVAR deviation** — a per-sample z-score of accessibility at peaks with a motif, relative to GC- and accessibility-matched background peaks. *Motifs, motif enrichment and TF footprinting*
+**chromVAR deviation / deviation z-score** — a bias-corrected relative accessibility deviation at peaks with a motif / that deviation standardised using GC- and accessibility-matched background peak sets. *Motifs, motif enrichment and TF footprinting*
 
 **Footprint** — a dip in Tn5 insertions at a bound TF site, flanked by high accessibility. *Motifs, motif enrichment and TF footprinting*
 
@@ -155,7 +155,7 @@ where a term is taught is given in italics.
 
 **DML / DMR** — differentially methylated locus / region. *Differential methylation*
 
-**Infinium I / II probes** — two-bead vs one-bead, two-colour probe designs on Illumina methylation arrays. *Methylation arrays*
+**Infinium I / II probes** — two bead types per CpG measured in one colour channel / one bead type per CpG measured in two colour channels on Illumina methylation arrays. *Methylation arrays*
 
 **Detection p-value / noob / functional normalisation** — probe signal vs negative-control background / within-array background and dye correction / between-array normalisation guided by control probes. *Methylation arrays*
 
@@ -171,7 +171,7 @@ where a term is taught is given in italics.
 
 **modBAM (MM/ML tags) / bedMethyl** — long-read BAM with per-read modification calls and probabilities / a per-site methylation count table (modkit). *Methylation and chromatin from long reads*
 
-**Haplotagging / allele-specific methylation** — assigning reads to a parental haplotype / methylation that differs between the two copies. *Methylation and chromatin from long reads*
+**Haplotagging / allele-specific methylation** — assigning reads to a phased haplotype (parental origin requires additional information) / methylation that differs between the two copies. *Methylation and chromatin from long reads*
 
 **XCI escape** — genes expressed from both X chromosomes despite X inactivation. *Methylation and chromatin from long reads*
 
@@ -231,7 +231,7 @@ where a term is taught is given in italics.
 
 **Precision / recall / ROC and PR curves** — TP/(TP + FP) / TP/P / performance over all thresholds; ROC AUC is the chance a random positive outranks a random negative. *Machine learning from scratch*
 
-**Class imbalance** — very unequal class sizes, which make accuracy and ROC AUC look better than PR AUC. *Machine learning from scratch*
+**Class imbalance** — very unequal class sizes; accuracy can hide poor minority-class performance, and precision falls as positives become rarer even if TPR, FPR and ROC AUC stay the same. *Machine learning from scratch*
 
 **Leakage** — test information reaching training, e.g. overlapping windows or homologous sequences on different chromosomes. *What people try to predict*
 

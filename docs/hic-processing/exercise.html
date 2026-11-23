@@ -1341,7 +1341,7 @@ window.Quarto = {
 <p><strong>Junction.</strong> A restriction enzyme with a 5′ overhang (MboI: ^GATC) leaves ends that are filled in and ligated blunt; the overhang is duplicated: GATC + GATC = <strong>GATCGATC</strong>.</p>
 <p><strong>Pairs.</strong> Each side of a read pair is placed by the 5′ end of its 5′-most alignment. A side is <strong>U</strong>nique (MAPQ ≥ 30), <strong>M</strong>ulti-mapped, <strong>N</strong>ull (unmapped), <strong>R</strong>escued (part of a chimeric read explained by one ligation) or part of a <strong>W</strong>alk. Pair types UU, UR and RU are kept.</p>
 <p><strong>Artefacts.</strong> Pairs within one restriction fragment with reads pointing <strong>inward</strong> (+ −) are dangling ends; pointing <strong>outward</strong> (− +) are self-circles. At large distances the four orientations (+ −, − +, + +, − −) each make up 25%. <strong>Duplicates</strong> share both 5′ positions and strands.</p>
-<p><strong>Matrix.</strong> bin = ⌊position / bin size⌋; pixel (i, j) counts pairs with one side in bin i and one in bin j.</p>
+<p><strong>Matrix.</strong> For 0-based positions, bin = ⌊position / bin size⌋; pixel (i, j) counts pairs with one side in bin i and one in bin j. The <code>.pairs</code> format uses 1-based positions, so its bin is ⌊(position − 1) / bin size⌋; <code>cooler cload pairs</code> handles that conversion by default.</p>
 <p><strong>Balancing (ICE).</strong> Model <span class="math inline">\(O_{ij} = b_i b_j T_{ij}\)</span>; iterate <span class="math inline">\(b_i \leftarrow\)</span> row sum<span class="math inline">\(_i\)</span> / mean row sum, divide pixel (i, j) by <span class="math inline">\(b_i b_j\)</span>, until row sums are equal. <strong>Expected</strong> <span class="math inline">\(E(s)\)</span> = mean of the balanced diagonal at distance <span class="math inline">\(s\)</span>; O/E = pixel / <span class="math inline">\(E(s)\)</span>.</p>
 </section>
 <section id="data" class="level2">
@@ -1452,7 +1452,7 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<p><strong>B4. Bin and count.</strong> With 100-kb bins, fill the upper triangle of a 4 × 4 matrix for chr21:0–400 kb from these pairs: (15 000, 80 000), (120 000, 390 000), (210 000, 260 000), (230 000, 280 000), (50 000, 330 000), (305 000, 395 000), (110 000, 190 000), (99 999, 100 000).</p>
+<p><strong>B4. Bin and count.</strong> With 100-kb bins and <strong>0-based positions</strong>, fill the upper triangle of a 4 × 4 matrix for chr21:0–400 kb from these pairs: (15 000, 80 000), (120 000, 390 000), (210 000, 260 000), (230 000, 280 000), (50 000, 330 000), (305 000, 395 000), (110 000, 190 000), (99 999, 100 000).</p>
 <p><strong>B5. One ICE iteration.</strong> A balanced map must have equal row sums. Raw matrix:</p>
 <pre><code>      a    b    c
 a    10    8    2
@@ -1717,7 +1717,7 @@ Hint 2 — binning, ICE and O/E (B4–B6, B8)
 </div>
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>bin = ⌊pos / 100 000⌋; order the two bins so i ≤ j. For ICE: <span class="math inline">\(b_i\)</span> = row sum<span class="math inline">\(_i\)</span> / mean of the row sums, new pixel = old pixel / (<span class="math inline">\(b_i b_j\)</span>). <span class="math inline">\(E(s)\)</span> = mean of one diagonal. <a href="https://doi.org/10.1038/nmeth.2148">Imakaev et al.&nbsp;2012</a> for ICE; for resolution, <a href="https://doi.org/10.1016/j.cell.2014.11.021">Rao et al.&nbsp;2014</a>.</p>
+<p>For the 0-based positions in B4, bin = ⌊pos / 100 000⌋; order the two bins so i ≤ j. For ICE: <span class="math inline">\(b_i\)</span> = row sum<span class="math inline">\(_i\)</span> / mean of the row sums, new pixel = old pixel / (<span class="math inline">\(b_i b_j\)</span>). <span class="math inline">\(E(s)\)</span> = mean of one diagonal. <a href="https://doi.org/10.1038/nmeth.2148">Imakaev et al.&nbsp;2012</a> for ICE; for resolution, <a href="https://doi.org/10.1016/j.cell.2014.11.021">Rao et al.&nbsp;2014</a>.</p>
 </div>
 </div>
 </div>

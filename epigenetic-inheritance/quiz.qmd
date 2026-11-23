@@ -1,0 +1,95 @@
+---
+title: "Quiz: epigenetic inheritance"
+format:
+  html:
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+---
+
+Short questions on inheritance across generations and how to judge the claims. Try each on paper first, then open the answer.
+
+---
+
+**Q1.** What is the difference between an intergenerational and a transgenerational effect? Give an example of each.
+
+::: {.callout-note collapse="true" title="Answer"}
+Intergenerational: the offspring differs because it was itself exposed, as an embryo or as a germ cell (e.g. F1 offspring of a mother who was undernourished in pregnancy, or of a father on a high-fat diet). Transgenerational: an effect in a generation that was never exposed (e.g. F3 after a pregnancy exposure), which requires information to pass through the germline. Examples of the second are robust in plants (epiRILs, paramutation) and worms (small-RNA inheritance).
+:::
+
+---
+
+**Q2.** A pregnant rat is exposed to a chemical. Which generation is the first that was never exposed, and why? What if the father had been exposed instead?
+
+::: {.callout-note collapse="true" title="Answer"}
+F3. The F1 is exposed as an embryo, and the F1's primordial germ cells, which will form F2, are already present in that embryo. For a paternal exposure the sperm (F1) are exposed, so F2 is the first unexposed generation.
+:::
+
+---
+
+**Q3.** Name the two waves of DNA methylation reprogramming in mammals. Which of them do imprints survive?
+
+::: {.callout-note collapse="true" title="Answer"}
+Wave 1 after fertilisation (preimplantation embryo) and wave 2 in primordial germ cells. Imprinting control regions are protected in wave 1 (ZFP57/TRIM28) and erased in wave 2, then re-established according to the sex of the embryo.
+:::
+
+---
+
+**Q4.** Give two reasons why stable epialleles are common in plants but rare in mammals.
+
+::: {.callout-tip collapse="true" title="Hint"}
+Think about when the germline forms, and about how a silent state can be re-made each generation.
+:::
+
+::: {.callout-note collapse="true" title="Answer"}
+Plants form gametes late, from somatic shoot cells, and do not erase methylation in the gametes (MET1 keeps CG methylation through meiosis); mammals set aside the germline early and erase it. Plants also restore methylation with RNA-directed DNA methylation and amplify small RNAs with RNA-dependent RNA polymerases, which mammals lack.
+:::
+
+---
+
+**Q5.** What is paramutation? Give the example and one requirement.
+
+::: {.callout-note collapse="true" title="Answer"}
+A heritable change in one allele caused by its interaction with the other allele in the same plant. At maize *b1*, the weak B' allele converts the strong B-I allele into a new B', which stays weak and converts others in turn. It needs a tandem-repeat array about 100 kb upstream of *b1* and an RNA-directed silencing pathway. The canonical B-I and B' alleles have seven repeats; seven is not a strict minimum (five-repeat alleles can be fully paramutagenic and three-repeat alleles less effective). See [the repeat-array experiments](https://pmc.ncbi.nlm.nih.gov/articles/PMC3798267/).
+:::
+
+---
+
+**Q6.** People conceived during the Dutch Hunger Winter had 0.488 vs 0.515 methylation at the *IGF2* DMR compared with their same-sex siblings. What does this show, and what does it not show?
+
+::: {.callout-note collapse="true" title="Answer"}
+It shows that prenatal (periconceptional) exposure is associated with a lasting, small (5% relative, 0.027 absolute) methylation difference in blood decades later, with genetics and family environment partly controlled by the sibling design. It does not show inheritance (the exposed were embryos: an F1 effect), causation of disease, or effects in other tissues.
+:::
+
+---
+
+**Q7.** An array study finds 50 CpGs with p < 0.05 in both F1 and F3 out of 20 000 tested, and calls them "persistent epimutations". Is this convincing?
+
+::: {.callout-note collapse="true" title="Answer"}
+No. With no true effects, $20\,000 \times 0.05^2 = 50$ CpGs are expected to be significant in both generations by chance. The overlap must be compared with this expectation, the tests corrected for multiple testing, and the result replicated.
+:::
+
+---
+
+**Q8.** A mouse study measures 40 pups from 4 exposed and 4 control mothers and treats the pups as independent. What is the problem, and how should it be analysed?
+
+::: {.callout-note collapse="true" title="Answer"}
+Pups of one litter share mother, uterus, milk and cage, so they are not independent: the real n is 4 per group. Pup-level tests have an inflated false-positive rate when litters differ (about 33% in the lecture's simulation). Analyse litter means or use a mixed model with litter as a random effect, and use more litters.
+:::
+
+---
+
+**Q9.** Sperm RNA from male mice on a high-fat diet, injected into normal zygotes, causes metabolic changes in the offspring. Which alternative explanations does this design rule out, and what does it leave open?
+
+::: {.callout-note collapse="true" title="Answer"}
+It rules out the father's behaviour, seminal fluid, shared environment and maternal effects of the exposed father, and points to RNA as a sufficient carrier. It leaves open whether the effect is physiological (the injected amount differs from one sperm's payload), whether it reproduces across labs, and whether it lasts beyond F1: it is an intergenerational result.
+:::
+
+---
+
+**Q10.** List four design features that would make a claim of transgenerational epigenetic inheritance in mammals convincing.
+
+::: {.callout-note collapse="true" title="Answer"}
+Any four of: test the first unexposed generation (F3 after pregnancy, F2 after paternal exposure); isogenic animals; IVF/embryo transfer and cross-fostering; litters as the unit, many litters; a pre-specified outcome with multiple-testing correction; an identified carrier shown to be sufficient and necessary; independent replication.
+:::

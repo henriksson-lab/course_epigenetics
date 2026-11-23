@@ -63,7 +63,7 @@ On the logit scale both are Δ = −2. On the probability scale the first moves 
 **Q7.** In ChIP-seq of a heterozygous individual, 45 reads carry the reference allele and 15 the alternative; in the input DNA the split is 30/30. What does this show, and why is it called a natural experiment?
 
 ::: {.callout-note collapse="true" title="Answer"}
-Allele-specific binding: the TF binds the reference allele about three times more (75% of reads), and the balanced input rules out a copy-number difference or mapping bias as the cause. Both alleles are in the same nucleus, with the same TF levels and the same trans environment, so the difference must come from the DNA sequence of the two haplotypes (the SNP itself, or another variant in phase with it).
+The ChIP reads show a 3:1 allelic ratio (75% reference), consistent with allele-specific binding. The balanced input argues against a large dosage difference or shared mapping bias, but 60 input reads cannot rule these out. After technical biases and dosage are controlled, a within-person comparison controls the trans environment and supports a cis effect of the two haplotypes (the SNP itself, another variant in phase, or a haplotype-specific epigenetic state).
 :::
 
 ---

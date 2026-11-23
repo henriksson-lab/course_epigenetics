@@ -25,7 +25,7 @@ After this exercise you will be able to:
 
 **Artefacts.** Pairs within one restriction fragment with reads pointing **inward** (+ −) are dangling ends; pointing **outward** (− +) are self-circles. At large distances the four orientations (+ −, − +, + +, − −) each make up 25%. **Duplicates** share both 5′ positions and strands.
 
-**Matrix.** bin = ⌊position / bin size⌋; pixel (i, j) counts pairs with one side in bin i and one in bin j.
+**Matrix.** For 0-based positions, bin = ⌊position / bin size⌋; pixel (i, j) counts pairs with one side in bin i and one in bin j. The `.pairs` format uses 1-based positions, so its bin is ⌊(position − 1) / bin size⌋; `cooler cload pairs` handles that conversion by default.
 
 **Balancing (ICE).** Model $O_{ij} = b_i b_j T_{ij}$; iterate $b_i \leftarrow$ row sum$_i$ / mean row sum, divide pixel (i, j) by $b_i b_j$, until row sums are equal. **Expected** $E(s)$ = mean of the balanced diagonal at distance $s$; O/E = pixel / $E(s)$.
 
@@ -77,7 +77,7 @@ You need `bwa`, `samtools`, `pairtools` (1.1), `cooler` (0.10) and, in Python, `
 | p5 | 1 000 400 | − | 1 250 000 | − |
 | p6 | 1 000 700 | + | (chr19) 2 000 000 | + |
 
-**B4. Bin and count.** With 100-kb bins, fill the upper triangle of a 4 × 4 matrix for chr21:0–400 kb from these pairs: (15 000, 80 000), (120 000, 390 000), (210 000, 260 000), (230 000, 280 000), (50 000, 330 000), (305 000, 395 000), (110 000, 190 000), (99 999, 100 000).
+**B4. Bin and count.** With 100-kb bins and **0-based positions**, fill the upper triangle of a 4 × 4 matrix for chr21:0–400 kb from these pairs: (15 000, 80 000), (120 000, 390 000), (210 000, 260 000), (230 000, 280 000), (50 000, 330 000), (305 000, 395 000), (110 000, 190 000), (99 999, 100 000).
 
 **B5. One ICE iteration.** A balanced map must have equal row sums. Raw matrix:
 
@@ -319,7 +319,7 @@ Fill-in copies the 4-nt overhang onto the other end, so the junction is site-up-
 :::
 
 ::: {.callout-tip collapse="true" title="Hint 2 — binning, ICE and O/E (B4–B6, B8)"}
-bin = ⌊pos / 100 000⌋; order the two bins so i ≤ j. For ICE: $b_i$ = row sum$_i$ / mean of the row sums, new pixel = old pixel / ($b_i b_j$). $E(s)$ = mean of one diagonal. [Imakaev et al. 2012](https://doi.org/10.1038/nmeth.2148) for ICE; for resolution, [Rao et al. 2014](https://doi.org/10.1016/j.cell.2014.11.021).
+For the 0-based positions in B4, bin = ⌊pos / 100 000⌋; order the two bins so i ≤ j. For ICE: $b_i$ = row sum$_i$ / mean of the row sums, new pixel = old pixel / ($b_i b_j$). $E(s)$ = mean of one diagonal. [Imakaev et al. 2012](https://doi.org/10.1038/nmeth.2148) for ICE; for resolution, [Rao et al. 2014](https://doi.org/10.1016/j.cell.2014.11.021).
 :::
 
 ::: {.callout-tip collapse="true" title="Hint 3 — command line (C1–C6)"}

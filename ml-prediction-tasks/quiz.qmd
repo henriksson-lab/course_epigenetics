@@ -23,7 +23,7 @@ Short questions on prediction tasks in epigenomics and on judging an evaluation.
 **Q2.** How is the effect of a non-coding variant predicted with a sequence model? A model predicts P(bound) = 0.72 for the reference and 0.69 for the alternative allele, and 0.80 vs 0.15 for a second variant. Which variant would you test first, and why?
 
 ::: {.callout-note collapse="true" title="Answer"}
-Predict the reference and the alternative sequence with the same trained model and take the difference. Effects: −0.03 and −0.65. Test the second: the predicted effect is large, typical of a variant that destroys a strong motif. A difference of 0.03 is within what the model cannot resolve.
+Predict the reference and the alternative sequence with the same trained model and take the difference. Effects: −0.03 and −0.65. Test the second: the predicted effect is large, typical of a variant that destroys a strong motif. A difference of 0.03 may be harder to validate, but its uncertainty must be measured; probability differences alone do not establish a model's resolution.
 :::
 
 ---

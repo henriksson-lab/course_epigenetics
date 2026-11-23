@@ -3,8 +3,8 @@
   <!-- three columns -->
   <g>
     <rect x="20" y="20" width="350" height="345" rx="10" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1.5"/>
-    <text x="195" y="50" font-size="18" font-weight="bold" fill="#1b2a3a" text-anchor="middle">Other peaks</text>
-    <text x="195" y="72" font-size="15" fill="#5b6b7a" text-anchor="middle">(all tested peaks, or the other group)</text>
+    <text x="195" y="50" font-size="18" font-weight="bold" fill="#1b2a3a" text-anchor="middle">Other tested peaks (ns)</text>
+    <text x="195" y="72" font-size="15" fill="#5b6b7a" text-anchor="middle">(neither B-up nor T-up)</text>
     <!-- genome line with peaks -->
     <line x1="40" y1="130" x2="350" y2="130" stroke="#5b6b7a" stroke-width="2"/>
     <rect x="60" y="112" width="22" height="18" fill="#2a6f97"/>
@@ -15,17 +15,17 @@
     <rect x="40" y="149" width="14" height="12" fill="#2a6f97"/><text x="60" y="160" font-size="15" fill="#2a6f97">target</text>
     <rect x="130" y="149" width="14" height="12" fill="#c8d0d8" stroke="#5b6b7a"/><text x="150" y="160" font-size="15" fill="#5b6b7a">background peaks</text>
     <text x="40" y="205" font-size="15" font-weight="bold" fill="#1b2a3a">Asks</text>
-    <text x="40" y="227" font-size="15" fill="#1b2a3a">what is special about these open</text>
-    <text x="40" y="247" font-size="15" fill="#1b2a3a">regions compared with other open</text>
-    <text x="40" y="267" font-size="15" fill="#1b2a3a">regions?</text>
+    <text x="40" y="227" font-size="15" fill="#1b2a3a">what distinguishes the changing</text>
+    <text x="40" y="247" font-size="15" fill="#1b2a3a">regions from peaks not classified</text>
+    <text x="40" y="267" font-size="15" fill="#1b2a3a">as changing?</text>
     <text x="40" y="305" font-size="15" font-weight="bold" fill="#2e8b57">Default for differential peaks.</text>
-    <text x="40" y="327" font-size="15" fill="#1b2a3a">Removes "open chromatin in general"</text>
-    <text x="40" y="347" font-size="15" fill="#1b2a3a">(promoters, CTCF, GC-rich DNA).</text>
+    <text x="40" y="327" font-size="15" fill="#1b2a3a">Baseline: other accessible regions</text>
+    <text x="40" y="347" font-size="15" fill="#1b2a3a">(promoters, CTCF sites, …).</text>
   </g>
   <g>
     <rect x="385" y="20" width="350" height="345" rx="10" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1.5"/>
     <text x="560" y="50" font-size="18" font-weight="bold" fill="#1b2a3a" text-anchor="middle">GC-matched peaks</text>
-    <text x="560" y="72" font-size="15" fill="#5b6b7a" text-anchor="middle">(same GC distribution as the target)</text>
+    <text x="560" y="72" font-size="15" fill="#5b6b7a" text-anchor="middle">(similar GC distribution to the target)</text>
     <!-- two histograms -->
     <line x1="410" y1="150" x2="710" y2="150" stroke="#1b2a3a" stroke-width="1.5"/>
     <path d="M420,149 C470,149 500,92 540,92 C580,92 600,149 650,149" fill="none" stroke="#2a6f97" stroke-width="3"/>
@@ -37,9 +37,9 @@
     <text x="410" y="227" font-size="15" fill="#1b2a3a">is the motif enriched beyond what</text>
     <text x="410" y="247" font-size="15" fill="#1b2a3a">the base composition of the target</text>
     <text x="410" y="267" font-size="15" fill="#1b2a3a">explains?</text>
-    <text x="410" y="305" font-size="15" font-weight="bold" fill="#2e8b57">HOMER matches GC by default</text>
-    <text x="410" y="327" font-size="15" fill="#1b2a3a">(random genomic regions); chromVAR</text>
-    <text x="410" y="347" font-size="15" fill="#1b2a3a">matches GC and accessibility.</text>
+    <text x="410" y="305" font-size="15" font-weight="bold" fill="#2e8b57">Here: match within the ns peaks</text>
+    <text x="410" y="327" font-size="15" fill="#1b2a3a">Controls for GC; chromVAR also</text>
+    <text x="410" y="347" font-size="15" fill="#1b2a3a">matches average accessibility.</text>
   </g>
   <g>
     <rect x="750" y="20" width="350" height="345" rx="10" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1.5"/>

@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 446" width="1120" height="446" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker><marker id="ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker><marker id="ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker><marker id="ahc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a8324a"/></marker><marker id="ahgr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker><marker id="ahb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a6f97"/></marker></defs>
+<rect width="1120" height="446" fill="#ffffff"/>
+<text x="24" y="30" font-size="18" fill="#1b2a3a" text-anchor="start" font-weight="bold">Many routes can link an exposure in F0 with a trait in later generations</text>
+<rect x="30" y="190" width="150" height="64" rx="10" fill="#fbeaea" stroke="#c0392b" stroke-width="1.8"/>
+<text x="105" y="218" font-size="16" fill="#1b2a3a" text-anchor="middle" font-weight="bold">exposure</text>
+<text x="105" y="238" font-size="14" fill="#5b6b7a" text-anchor="middle">in F0</text>
+<rect x="940" y="190" width="150" height="64" rx="10" fill="#eaf5ee" stroke="#2e8b57" stroke-width="1.8"/>
+<text x="1015" y="218" font-size="16" fill="#1b2a3a" text-anchor="middle" font-weight="bold">trait in</text>
+<text x="1015" y="238" font-size="14" fill="#5b6b7a" text-anchor="middle">F1, F2, F3</text>
+<rect x="300" y="70" width="520" height="46" rx="8" fill="#ffffff" stroke="#c0392b" stroke-width="2.4"/>
+<text x="316" y="90" font-size="15" fill="#c0392b" text-anchor="start" font-weight="bold">germline mark that escapes reprogramming</text>
+<text x="316" y="108" font-size="14" fill="#5b6b7a" text-anchor="start">the claim being tested</text>
+<path d="M182,222 C240,222 250,93 296,93" fill="none" stroke="#c0392b" stroke-width="1.6" marker-end="url(#ahr)"/>
+<path d="M822,93 C880,93 890,222 936,222" fill="none" stroke="#c0392b" stroke-width="1.6" marker-end="url(#ahr)"/>
+<rect x="300" y="128" width="520" height="46" rx="8" fill="#ffffff" stroke="#1b2a3a" stroke-width="1.6"/>
+<text x="316" y="148" font-size="15" fill="#1b2a3a" text-anchor="start" font-weight="bold">direct exposure of embryo or germ cells</text>
+<text x="316" y="166" font-size="14" fill="#5b6b7a" text-anchor="start">F1, and F2 after pregnancy</text>
+<path d="M182,222 C240,222 250,151 296,151" fill="none" stroke="#1b2a3a" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M822,151 C880,151 890,222 936,222" fill="none" stroke="#1b2a3a" stroke-width="1.6" marker-end="url(#ah)"/>
+<rect x="300" y="186" width="520" height="46" rx="8" fill="#ffffff" stroke="#1b2a3a" stroke-width="1.6"/>
+<text x="316" y="206" font-size="15" fill="#1b2a3a" text-anchor="start" font-weight="bold">shared genes (meQTL, ancestry, selection)</text>
+<text x="316" y="224" font-size="14" fill="#5b6b7a" text-anchor="start">relatives share DNA</text>
+<path d="M182,222 C240,222 250,209 296,209" fill="none" stroke="#1b2a3a" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M822,209 C880,209 890,222 936,222" fill="none" stroke="#1b2a3a" stroke-width="1.6" marker-end="url(#ah)"/>
+<rect x="300" y="244" width="520" height="46" rx="8" fill="#ffffff" stroke="#1b2a3a" stroke-width="1.6"/>
+<text x="316" y="264" font-size="15" fill="#1b2a3a" text-anchor="start" font-weight="bold">shared environment, diet, wealth, culture</text>
+<text x="316" y="282" font-size="14" fill="#5b6b7a" text-anchor="start">families share more than genes</text>
+<path d="M182,222 C240,222 250,267 296,267" fill="none" stroke="#1b2a3a" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M822,267 C880,267 890,222 936,222" fill="none" stroke="#1b2a3a" stroke-width="1.6" marker-end="url(#ah)"/>
+<rect x="300" y="302" width="520" height="46" rx="8" fill="#ffffff" stroke="#1b2a3a" stroke-width="1.6"/>
+<text x="316" y="322" font-size="15" fill="#1b2a3a" text-anchor="start" font-weight="bold">parental behaviour, uterus, milk, microbes</text>
+<text x="316" y="340" font-size="14" fill="#5b6b7a" text-anchor="start">non-germline transmission</text>
+<path d="M182,222 C240,222 250,325 296,325" fill="none" stroke="#1b2a3a" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M822,325 C880,325 890,222 936,222" fill="none" stroke="#1b2a3a" stroke-width="1.6" marker-end="url(#ah)"/>
+<rect x="300" y="360" width="520" height="46" rx="8" fill="#ffffff" stroke="#5b6b7a" stroke-width="1.6"/>
+<text x="316" y="380" font-size="15" fill="#1b2a3a" text-anchor="start" font-weight="bold">chance: many tests, litters as replicates</text>
+<text x="316" y="398" font-size="14" fill="#5b6b7a" text-anchor="start">no transmission at all</text>
+<path d="M182,222 C240,222 250,383 296,383" fill="none" stroke="#5b6b7a" stroke-width="1.6" marker-end="url(#ahgr)"/>
+<path d="M822,383 C880,383 890,222 936,222" fill="none" stroke="#5b6b7a" stroke-width="1.6" marker-end="url(#ahgr)"/>
+<text x="560" y="436" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">A study shows inheritance only when it has closed the other five routes.</text>
+</svg>

@@ -10,6 +10,80 @@ data-shape assumptions, genome build and coordinate conventions (0- vs 1-based),
 numerical correctness, and consistency with its surrounding teaching material.
 Record fixes in the Git history.
 
+## Review on 2026-11-23
+
+A parallel review corrected scientific descriptions, worked answers and code
+across the course. This is a partial audit: unchecked items below still need
+the complete independent review specified above.
+
+- Corrected interval/summit and Tn5 insertion coordinates, local-background
+  Poisson calculations, an impossible peak-selection task, inconsistent QC
+  questions, and empirical permutation-p-value reporting.
+- Distinguished standard PBAT from four-strand non-directional libraries;
+  corrected dmrseq's model and support for two replicates per group, methylation
+  averaging, array coverage, and germline methylation-reprogramming exceptions.
+- Updated the cancer unit's tazemetostat status using the
+  [June 2026 FDA withdrawal notice](https://www.govinfo.gov/content/pkg/FR-2026-06-22/pdf/2026-12367.pdf)
+  and qualified the claim that tumour MLH1 methylation excludes inherited risk.
+- Corrected tied-score PR calculations and regenerated the integration PR plot;
+  corrected CNN arithmetic, sequence-shuffling and attribution explanations,
+  and claims about allele-specific binding and mapping-bias correction.
+- Corrected glossary definitions, a draft-syllabus label, missing preparation
+  dependencies, reference/index creation order, and topic-specific dispatch of
+  the methylation and Hi-C preparation scripts.
+
+Validation includes syntax checks of 205 R, 163 shell and 18 Python examples
+and 28 R figure scripts; TypeScript type checking; full runs of the chromatin-intro, methylation-biology
+and epigenetic-inheritance R exercises; genomic-intervals R1–R4; and the full
+integration figure script. The downloader passed isolated fresh-directory
+checks for ten affected topic selections and the whole-course selection,
+including missing-index recovery, using a tiny real bgzipped FASTA and mocked
+downloads/preparation jobs. Full public-data downloads were not repeated.
+Several optional R/Python packages are absent locally; syntax checks do not
+establish that every exercise runs end to end.
+All 96 site pages render; the generated site has no missing local file links,
+assets or cross-page anchors. All source SVGs parse as XML.
+The footprint/bias plotting blocks were also rerun after realigning the
+supplied ATAC reads, using the official JASPAR MA0139.2 matrix; the corrected
+figures and their quoted summary statistics were regenerated together.
+
+Sources for method corrections include the [Bismark library options](https://felixkrueger.github.io/Bismark/options/alignment/),
+[dmrseq vignette](https://bioconductor.org/packages/release/bioc/vignettes/dmrseq/inst/doc/dmrseq.html),
+[chromVAR vignette](https://www.bioconductor.org/packages/release/bioc/vignettes/chromVAR/inst/doc/Introduction.html),
+[Infinium assay documentation](https://support-docs.illumina.com/ARR/Inf_HD_Methylation/Content/ARR/Methylation/Overview_mMeth.htm),
+[average precision definition](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.average_precision_score.html),
+[DeepLIFT paper](https://arxiv.org/abs/1704.02685), and
+[WASP paper](https://doi.org/10.1038/nmeth.3582).
+
+The allele-specific-binding exercise retains its illustrative ChIP 42:18 and
+input 31:29 counts. At the teacher's request, solution B5 now explains both
+tests: the binomial test against 0.5 gives p = 0.00267, whereas a direct
+two-sided Fisher comparison with input gives p = 0.06093. The solution explains
+the different null hypotheses and the uncertainty in both sets of counts.
+
+Also unresolved: the differential-methylation hand rules are described as DSS
+defaults, but the [current upstream implementation](https://raw.githubusercontent.com/haowulab/DSS/master/R/DMR.R)
+uses different run/gap logic and strict thresholds. The DSS version behind the
+reported 5,061 DMRs is unspecified and is not installed here. Pin and rerun that
+version before changing the real-data answers; discuss whether the hand rules
+should instead be explicitly labelled as a teaching simplification.
+
+The motif workflow is now standardised at the teacher's request: it reads the
+saved differential_peaks.tsv from Differential accessibility instead of
+refitting DESeq2 with different shrinkage/filtering settings. Both target groups
+use the same `ns` background; GC-matched partners are sampled without replacement
+from that pool. `ns` means neither differential class under the chosen thresholds,
+not proof of equal accessibility. The differential figure script also exports
+this table for the motif figure script, preserving `make figs` dependency order.
+
+The canonical run reproduces 211,824 tested peaks: 19,404 B_up, 16,897 T_up and
+175,523 ns. Its figure-script export matches the exercise R11 table exactly.
+Enrichment against ns yields 511 enriched motifs in B_up and 507 in T_up at BH
+5%; the affected figures, worked answers and SVG table are regenerated from
+those results. The stricter liftOver filter removes one interchromosomal peak,
+but the ordered top 100,000 peaks used by chromVAR are identical, so its existing
+figures retain the same inputs.
+
 ## Executable teaching documents
 
 <!-- - [ ] `<unit>/lec.qmd` — added YYYY-MM-DD; needs audit -->
@@ -19,7 +93,7 @@ Record fixes in the Git history.
 - [ ] `genomic-intervals/lec.qmd` — added 2026-11-17; needs audit (bash code slide)
 - [ ] `genomic-intervals/exercise.qmd` — added 2026-11-17; bash and R chunks run against data/, numbers in solutions from those runs (2026-11-17); needs independent audit
 - [ ] `genomic-intervals/make-intervals-figs.R` — added 2026-11-17; needs audit (calls bedtools)
-- [ ] `data/download.sh` — added 2026-11-17
+- [x] `data/download.sh` — reviewed 2026-11-23; dependency order and topic dispatch fixed, isolated preparation/index-recovery checks passed
 - [ ] `gene-regulation/lec.qmd` — added 2026-11-18; needs audit
 - [ ] `gene-regulation/exercise.qmd` — added 2026-11-18; chunks run as written by its author; needs independent audit
 - [ ] `gene-regulation/make-generegulation-figs.R` — added 2026-11-18; needs audit

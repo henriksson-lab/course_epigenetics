@@ -172,10 +172,10 @@ Median DMR: 416 bp and 10 CpGs for losses, 495 bp and 7 CpGs for gains. Many of 
 
 - Whole genome: ~28 million CpGs. At p < 0.001 you expect ~28 000 false positives: control the **FDR** (Benjamini–Hochberg), as in RNA-seq.
 - But an FDR over CpGs is **not** an FDR over regions: one false region can contain 10 false CpGs, and regions are defined after looking at the data.
-- **dmrseq** defines candidate regions, scores each as a unit, and gets region-level p-values by **permuting sample labels**: valid FDR for DMRs, but it needs enough samples to permute.
+- **dmrseq** defines candidate regions, scores each as a unit, and estimates a **pooled regional null** from permuted sample labels: region-level FDR with as few as two samples per group.
 
 ::: notes
-No figure. With 2 vs 2 samples there are only three distinct ways to split the four samples into two groups, so permutation-based region FDR (dmrseq; Korthauer et al. 2019) is not available, and the DMR list from DSS should be read as a ranking with strong evidence, not as a calibrated FDR. This is a good exam point: "FDR < 5% DMRs" in a paper with 2 vs 2 samples needs a closer look at how the FDR was computed. For larger designs, dmrseq or a region-level model with covariates is the better choice.
+No figure. With 2 vs 2 samples there are only three distinct unlabelled splits, so a separate permutation test for each fixed region has very coarse p-values. dmrseq overcomes this by pooling null region statistics across the genome and permutations; its [documentation](https://bioconductor.org/packages/release/bioc/html/dmrseq.html) supports at least two samples per group. It fits generalised least squares to transformed methylation proportions, accounting for spatial correlation. The DMR list from DSS here has no calibrated region-level FDR because callDMR merges CpG-level calls; that limitation is not a prohibition on region-level inference with 2 vs 2. More biological replicates still improve power and robustness.
 :::
 
 ## A promoter DMR {.smaller}
@@ -217,7 +217,7 @@ The judgement slide. Cell-type composition is the classic confounder of methylat
 |------|------------------|----------------|------------------|
 | DSS | beta-binomial, shrunken dispersion, Wald test; smoothing | callDMR merges DMLs | fast; multi-factor designs |
 | BSmooth (bsseq) | local-likelihood smoothing, t-statistics | runs of large t; blocks | low coverage OK; needs ≥ 2–3 per group |
-| dmrseq | beta-binomial GLM on candidate regions | permutation FDR for regions | needs more samples |
+| dmrseq | generalised least squares on transformed proportions; spatial correlation | pooled permutation null; region FDR | ≥ 2 samples per group |
 | methylKit | logistic regression (+ overdispersion) | tiles or merged CpGs | popular for RRBS |
 | metilene | segmentation, no model per CpG | yes | very fast, few assumptions |
 | limma on M-values | linear model | DMRcate, bumphunter | arrays (*Methylation arrays*) |

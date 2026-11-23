@@ -43,7 +43,7 @@ SD of β $= \sqrt{p(1-p)[1 + (N-1)\varphi]/N}$. For N = 2000: $\sqrt{0.21 \times
 **Q4.** GM12878 replicate 1 has 9 of 10 reads methylated at a CpG and replicate 2 has 18 of 20; K562 replicate 1 has 1 of 10 and replicate 2 has 3 of 20. A colleague pools the reads and runs Fisher's exact test. What is wrong with that, and what is the Δβ?
 
 ::: {.callout-note collapse="true" title="Answer"}
-Pooling treats every read as an independent replicate and ignores the variation between samples, so p-values are too small (on chr21 the same test calls 20 902 CpGs "different" between the two GM12878 replicates). Use a model with a dispersion parameter (beta-binomial, as in DSS) and the samples as replicates. Pooled levels: GM $27/30 = 0.90$, K562 $4/30 = 0.13$; Δβ (K562 − GM) $= -0.77$.
+Pooling treats every read as an independent replicate and ignores the variation between samples, so p-values can be too small (on chr21 the same test calls 20 902 CpGs "different" between the two GM12878 replicates). Use a model with a dispersion parameter (beta-binomial, as in DSS) and the samples as replicates. Using the exercise's definition (mean of sample proportions): GM $(0.9 + 0.9)/2 = 0.90$, K562 $(0.10 + 0.15)/2 = 0.125$; Δβ (K562 − GM) $= -0.775$ (about −0.78). Pooling instead gives $4/30 - 27/30 \approx -0.77$, a different, coverage-weighted estimate.
 :::
 
 ---

@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-662ae1889177880cb371f83234c0a158.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.7.30">
+
+  <meta name="author" content="Epigenetics">
+  <title>Epigenetics – Epigenetics in disease and therapy</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-bf56578b9c06c165c166475cd19dbcd1.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Epigenetics in disease and therapy</h1>
+  <p class="subtitle">The cancer epigenome, mutated chromatin regulators, epigenetic drugs and methylation-based diagnostics</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Epigenetics 
+</div>
+</div>
+</div>
+
+</section>
+<section id="about-this-lecture" class="slide level2">
+<h2>About this lecture</h2>
+<p>Cancer is the disease where the epigenome has been studied most, and where epigenetics reaches the clinic: as <strong>drug targets</strong> and as <strong>diagnostic tests</strong>. The running example is real: <strong>TCGA colon cancer</strong> and <strong>lower-grade glioma</strong> methylation arrays.</p>
+<ul>
+<li>The cancer methylome: <strong>global loss, focal gain</strong> at CpG islands.</li>
+<li>Silencing tumour suppressors: <strong>MLH1 and microsatellite instability</strong>; the <strong>CpG island methylator phenotype</strong> (CIMP).</li>
+<li><strong>Mutated epigenetic regulators</strong>: IDH, DNMT3A/TET2, EZH2, oncohistones, SWI/SNF.</li>
+<li><strong>Epigenetic drugs</strong> and how they work.</li>
+<li><strong>Methylation as a diagnostic</strong>: tumour classification and cell-free DNA.</li>
+</ul>
+<aside class="notes">
+<p>Students know DNA methylation chemistry, CpG islands and the main histone marks from <em>What is epigenetics?</em> and <em>DNA methylation biology</em>; the 450k/EPIC array and beta values are covered in <em>Methylation arrays</em>. This lecture applies them to disease. Cancer is the main example because it is where the evidence is deepest, but the same ideas (methylation as a stable cell-identity record, regulators as drug targets) apply to haematological and developmental disorders. The exercise analyses the same TCGA data shown in the figures: about 37 600 CpGs, 297 colon tumours and 38 normal colon samples, and 513 gliomas.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-cancer-methylome-in-one-picture" class="slide level2 smaller">
+<h2>The cancer methylome in one picture</h2>
+
+<img data-src="fig01-cancer-methylome.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><ul>
+<li><strong>Global hypomethylation:</strong> CpGs that are normally methylated (repeats, gene-poor regions, gene bodies) lose methylation (Feinberg &amp; Vogelstein 1983).</li>
+<li><strong>Focal hypermethylation:</strong> some CpG-island promoters, normally unmethylated, become methylated and their genes are silenced.</li>
+<li>Both happen in the same tumour, and both are detectable in early lesions.</li>
+</ul>
+<aside class="notes">
+<p>These two changes were the first epigenetic alterations found in cancer. Feinberg and Vogelstein measured less methylation at specific genes in colon cancers than in matched normal mucosa in 1983. CpG-island hypermethylation of tumour suppressors (RB1, VHL, CDKN2A, MLH1, BRCA1) was established in the 1990s, largely by the Baylin, Jones, Herman and Issa groups. The figure is a cartoon; the next slide shows the real data. Keep in mind the “cause or consequence” question from <em>What is epigenetics?</em>: a change found in tumours may drive growth, or may be a by-product of the many divisions and the altered state of a cancer cell.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="real-data-global-loss-focal-gain" class="slide level2 smaller">
+<h2>Real data: global loss, focal gain</h2>
+
+<img data-src="fig02-global-methylation.png" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><ul>
+<li>TCGA colon adenocarcinoma, Illumina 450k: <strong>open-sea</strong> CpGs median beta <strong>0.69</strong> in normal colon vs <strong>0.64</strong> in tumours; <strong>CpG-island</strong> CpGs <strong>0.21</strong> vs <strong>0.25</strong>.</li>
+<li>In 38 patients with both samples, the tumour has lower open-sea methylation in <strong>37</strong> and higher island methylation in <strong>36</strong>.</li>
+<li>Tumours are much more <strong>variable</strong> than normal tissue.</li>
+</ul>
+<aside class="notes">
+<p>Each dot in the left panel is one sample; normal colon samples form a tight cluster, tumours spread in both directions. The paired comparison (right) removes differences between people: almost every tumour has lost open-sea methylation and gained island methylation relative to the patient’s own normal colon. The global change looks small (0.05) because the 450k array mostly measures CpGs in and near genes; whole-genome bisulfite sequencing shows that the loss is concentrated in large domains (next slide), where it can be 0.2–0.3. Purity also matters: a tumour sample with 60% cancer cells shows only 60% of the cancer cells’ change. Students compute this in the exercise.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="where-methylation-is-lost" class="slide level2 smaller">
+<h2>Where methylation is lost</h2>
+
+<img data-src="fig03-hypomethylation-domains.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><ul>
+<li>Loss is concentrated in <strong>partially methylated domains</strong> (PMDs): large, late-replicating, lamina-associated, gene-poor regions (Berman et al.&nbsp;2012).</li>
+<li>Many focal CGI gains lie <strong>inside</strong> these domains.</li>
+<li>Proposed consequences: less tightly silenced <strong>repeats and transposons</strong>, <strong>chromosomal instability</strong>; effects on gene expression are modest.</li>
+</ul>
+<aside class="notes">
+<p>PMDs were first seen in cultured fibroblasts and then in cancers. They coincide with late replication, the nuclear lamina and the B compartment of Hi-C (<em>3D genome organisation</em>), and they tend to lose methylation in dividing cells, perhaps because maintenance methylation has less time to finish in late-replicating DNA. The loss is therefore partly a record of how many times a cell has divided, which links it to epigenetic clocks. Be cautious about causal claims: hypomethylation of repeats and pericentromeric satellites is associated with chromosomal instability (mouse models with low DNMT1 develop tumours), but for most human tumours we cannot say which consequences matter.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="which-cpg-islands-gain-methylation" class="slide level2 smaller">
+<h2>Which CpG islands gain methylation?</h2>
+
+<img data-src="fig04-polycomb-to-methylation.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><ul>
+<li>Many CGIs hypermethylated in cancer are <strong>Polycomb (H3K27me3) targets in stem cells</strong>: developmental genes that were already off (Widschwendter et al.&nbsp;2007).</li>
+<li>In the tumour the silent-but-plastic Polycomb state is replaced by <strong>DNA methylation</strong>: a more stable lock.</li>
+<li>The same switch happens slowly in <strong>ageing</strong> normal tissue.</li>
+</ul>
+<aside class="notes">
+<p>This was a key insight from three papers in 2007 (Widschwendter, Ohm, Schlesinger): the genes that are methylated in tumours are not a random set, nor mainly tumour suppressors, but Polycomb targets in embryonic stem cells. These genes are usually silent already in the cell of origin, so their methylation changes little in expression; what it changes is the ability to switch them on again during differentiation. That is one model for how epigenetic changes lock a cell in a stem-like state. It also explains why the same CGIs gain methylation with age in normal tissue, and why they are useful biomarkers: they are reliably unmethylated in normal cells and methylated in tumours, regardless of whether they drive anything.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="real-data-single-cpg-islands" class="slide level2 smaller">
+<h2>Real data: single CpG islands</h2>
+
+<img data-src="fig05-gene-panel.png" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li><strong>SFRP2, GATA4, SEPTIN9:</strong> methylated (beta &gt; 0.3) in <strong>91%, 81%, 74%</strong> of colon tumours, low in every normal sample.</li>
+<li><strong>MGMT</strong> in 37%, <strong>MLH1</strong> in 13%, <strong>CDKN2A</strong> only in 3% on this array; <strong>GAPDH</strong> (a housekeeping gene) never.</li>
+<li>Methylated <em>SEPTIN9</em> in plasma DNA is the basis of an approved blood test for colorectal cancer.</li>
+</ul>
+<aside class="notes">
+<p>Each panel is the mean beta over the promoter CGI probes of one gene (19 to 38 probes; CDKN2A has only 5 on the subset in the exercise). SFRP2 and GATA4 are typical Polycomb-target CGIs: methylated in almost every tumour, so excellent markers, but their methylation does not separate tumours into groups. MLH1 is different: methylated in a minority, and then strongly (beta 0.4–0.7): that is a functional, selected event, next slide. The CDKN2A number is low because the array probes average over the p16 and p14ARF promoters and because purity dilutes the signal; reported frequencies of p16 methylation in colon cancer by methylation-specific PCR are higher. The SEPTIN9 test (Epi proColon) detects methylated SEPTIN9 DNA in plasma; it is less sensitive than colonoscopy, a point we return to with cell-free DNA.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="silencing-a-tumour-suppressor-the-epigenetic-hit" class="slide level2 smaller">
+<h2>Silencing a tumour suppressor: the epigenetic hit</h2>
+
+<img data-src="fig06-two-hits.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>Knudson’s two hits can be <strong>genetic or epigenetic</strong>: a mutation plus promoter methylation, a deletion plus methylation, or methylation of both copies.</li>
+<li>Classic examples: <strong>MLH1</strong> (sporadic MSI colon cancer), <strong>CDKN2A</strong>, <strong>BRCA1</strong> (some breast and ovarian cancers), <strong>VHL</strong> (some renal cancers).</li>
+<li><strong>MGMT</strong> methylation in glioblastoma is a <strong>predictive biomarker</strong>: the tumour cannot repair the damage made by temozolomide (Hegi et al.&nbsp;2005).</li>
+</ul>
+<aside class="notes">
+<p>Promoter CGI methylation is a heritable, clonal silencing event, so it can act like a mutation in tumour evolution. The evidence that it is functional rather than incidental comes from cases where it replaces a genetic hit: in tumours with a BRCA1 promoter methylation, BRCA1 is usually not mutated, and the tumours behave like BRCA1-mutant tumours (for example in their response to PARP inhibitors, an active clinical question). MGMT is a DNA repair enzyme that removes the O6-methylguanine lesion made by alkylating drugs. Hegi et al.&nbsp;2005 showed that glioblastoma patients with a methylated MGMT promoter benefit from temozolomide, and MGMT methylation testing is now routine in neuro-oncology.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="real-data-mlh1-methylation-causes-microsatellite-instability" class="slide level2 smaller">
+<h2>Real data: MLH1 methylation causes microsatellite instability</h2>
+
+<img data-src="fig07-mlh1-msi.png" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"><ul>
+<li><strong>37</strong> of 297 colon tumours have a methylated MLH1 promoter; <strong>36</strong> of them are MSI-high, and their MLH1 RNA is about <strong>8-fold lower</strong> (log2 6.2 vs 9.1).</li>
+<li><strong>25</strong> MSI-high tumours have an unmethylated MLH1: mostly <strong>inherited (Lynch syndrome)</strong> or somatic mutations in mismatch-repair genes.</li>
+<li>Clinically, MLH1 methylation testing helps separate sporadic MSI cancers from Lynch syndrome.</li>
+</ul>
+<aside class="notes">
+<p>MLH1 is a mismatch-repair gene. When both copies are silenced, replication errors in repetitive DNA are not corrected and microsatellites change length: microsatellite instability (MSI), with a very high mutation burden. Herman et al.&nbsp;1998 showed that sporadic MSI colon cancers have methylated MLH1, and that demethylation with 5-aza-deoxycytidine restores expression. Here MSI status comes from the MANTIS score (above 0.4 = MSI-high), computed from the exome sequences. The point to stress: a methylation change completely explains a genetic phenotype. Clinically, an MSI-high or MLH1-negative tumour triggers testing for Lynch syndrome, which is inherited; tumour MLH1 methylation (often with BRAF V600E) usually supports a sporadic origin, but does not exclude inherited or constitutional predisposition. Early onset, multiple primary tumours or a strong family history can still warrant germline and constitutional MLH1 epimutation evaluation; see <a href="https://www.ncbi.nlm.nih.gov/books/NBK1211/">GeneReviews: Lynch syndrome</a>. MSI-high tumours also respond well to immune checkpoint inhibitors.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-cpg-island-methylator-phenotype-cimp" class="slide level2 smaller">
+<h2>The CpG island methylator phenotype (CIMP)</h2>
+
+<img data-src="fig09-cimp-heatmap.png" class="quarto-figure quarto-figure-center r-stretch" style="width:85.0%"><ul>
+<li>Select 1000 CGI CpGs that are <strong>unmethylated in normal colon</strong> and <strong>variable in tumours</strong>, cluster the 297 tumours: a group of <strong>69 (23%)</strong> methylates many of them at once: <strong>CIMP-high</strong>.</li>
+<li>First proposed by Toyota et al.&nbsp;(1999); confirmed with a marker panel by Weisenberger et al.&nbsp;(2006).</li>
+</ul>
+<aside class="notes">
+<p>Walk through the heatmap: rows are CpGs, columns are tumours, dark is methylated. CIMP-high tumours (left, red bar) have many of these islands methylated; CIMP-low an intermediate set; non-CIMP few. The bars below already show the associations of the next slide. The selection step matters: we use only CpGs unmethylated in normal colon, so the clusters reflect gains in the tumour rather than differences in normal tissue or in contaminating cells. The number of groups is a choice (we cut the tree at three; TCGA described four groups). The existence of CIMP was debated for years because early studies used few markers; Weisenberger et al.&nbsp;2006 screened 195 markers in 295 tumours and showed that CIMP-positive tumours form a distinct subset.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="what-goes-with-cimp-high" class="slide level2 smaller">
+<h2>What goes with CIMP-high</h2>
+
+<img data-src="fig10-cimp-associations.png" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><ul>
+<li>CIMP-high tumours: <strong>43% BRAF V600E</strong> (vs 1–4% in the others), <strong>49% MSI-high</strong>, <strong>92% right-sided</strong>, and almost all MLH1-methylated tumours.</li>
+<li>CIMP is a <strong>subtype</strong> with its own origin (serrated precursor lesions), not a random accumulation.</li>
+</ul>
+<aside class="notes">
+<p>Numbers from make-cancer-figs.R: of 68 CIMP-high tumours with mutation data, 29 have BRAF V600E; of 35 BRAF V600E tumours overall, 29 are CIMP-high. Weisenberger et al.&nbsp;reported an odds ratio of 203 for BRAF mutation in CIMP-positive tumours. 30 of the 37 MLH1-methylated tumours are CIMP-high: MLH1 is one of the islands that gets methylated in this phenotype, and when it does, the tumour becomes MSI. Right-sided (proximal) location reflects a different precursor, the sessile serrated lesion. Whether BRAF mutation causes the hypermethylation, or a hypermethylating cell state favours BRAF-mutant clones, is still debated; experiments suggest BRAF V600E can promote CIMP-like methylation through transcriptional repressors, but this is not settled.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="driver-or-passenger" class="slide level2 smaller">
+<h2>Driver or passenger?</h2>
+
+<img data-src="fig11-driver-passenger.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><ul>
+<li><strong>Driver:</strong> silences an expressed tumour suppressor (MLH1, CDKN2A, BRCA1): selected because it gives a growth advantage.</li>
+<li><strong>Passenger:</strong> methylates a gene that was already silent (most Polycomb targets): no advantage, but a stable <strong>record</strong> of the tumour’s history.</li>
+<li>For diagnostics both are useful; for biology and therapy, only drivers matter.</li>
+</ul>
+<aside class="notes">
+<p>A useful way to classify any methylation change in cancer. Tests for driver status: is the gene expressed in the normal cell of origin, is it silenced in the tumour, does restoring it slow growth, does methylation substitute for a mutation (mutually exclusive), and is it clonal? Most of the hundreds of hypermethylated CGIs in a CIMP tumour fail these tests: they are passengers carried along with a cell state. That does not make them useless: their sheer number and stability make them the best markers for detecting and classifying tumours, the topic of the last part of the lecture.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="mutated-epigenetic-regulators" class="slide level2 smaller">
+<h2>Mutated epigenetic regulators</h2>
+
+<img data-src="fig12-mutated-regulators.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>Tumour sequencing found frequent mutations in <strong>writers, erasers, readers and remodellers</strong>, and even in <strong>histones</strong>.</li>
+<li>Most are <strong>loss of function</strong>; some create a <strong>new function</strong> (mutant IDH, oncohistones).</li>
+</ul>
+<aside class="notes">
+<p>Before about 2010, epigenetic changes in cancer were thought of as secondary to genetic ones. Large sequencing projects changed that: chromatin regulators are among the most frequently mutated genes in human cancer. The grid groups the examples of this lecture by what the protein does. Note the tissue specificity: EZH2 gain-of-function in germinal-centre lymphoma, loss in myeloid disease; SETD2 and PBRM1 in clear-cell renal carcinoma; SMARCB1 in rhabdoid tumours. The following slides take the clearest cases one by one. This is a selection, not a complete list.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="idh-mutations-an-oncometabolite-blocks-demethylation" class="slide level2 smaller">
+<h2>IDH mutations: an oncometabolite blocks demethylation</h2>
+
+<img data-src="fig13-idh-2hg.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>Mutant <strong>IDH1 (R132)</strong> or <strong>IDH2 (R140, R172)</strong> converts alpha-ketoglutarate (α-KG) into <strong>D-2-hydroxyglutarate</strong> (Dang et al.&nbsp;2009).</li>
+<li>2-HG <strong>competitively inhibits</strong> α-KG-dependent dioxygenases: <strong>TET</strong> enzymes and <strong>JmjC histone demethylases</strong> (Xu et al.&nbsp;2011).</li>
+<li>Result: CGI hypermethylation, more H3K9/H3K27 methylation, blocked differentiation (Figueroa et al.&nbsp;2010; Lu et al.&nbsp;2012).</li>
+</ul>
+<aside class="notes">
+<p>This is the clearest link between metabolism and the epigenome. IDH1/2 mutations are heterozygous point mutations at one arginine in the active site, found in most lower-grade gliomas, about 20% of AML, cholangiocarcinoma and chondrosarcoma. The mutant enzyme gains a new activity and makes millimolar amounts of 2-HG. TET2 loss and IDH mutation are mutually exclusive in AML and give similar methylation profiles (Figueroa 2010), which is genetic evidence that they act in the same pathway. Turcan et al.&nbsp;2012 showed that introducing mutant IDH1 into astrocytes is sufficient to create the glioma hypermethylator phenotype. Hypermethylation at CTCF sites can also disrupt insulators and let enhancers activate oncogenes such as PDGFRA (Flavahan et al.&nbsp;2016).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="real-data-g-cimp-in-idh-mutant-glioma" class="slide level2 smaller">
+<h2>Real data: G-CIMP in IDH-mutant glioma</h2>
+
+<img data-src="fig14-gcimp.png" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>513 TCGA lower-grade gliomas: <strong>419 IDH-mutant</strong>, 94 IDH-wild-type.</li>
+<li>Of CGI CpGs unmethylated in IDH-wt tumours, a median <strong>8.1%</strong> are methylated (beta &gt; 0.3) in IDH-mutant tumours vs <strong>1.5%</strong> in IDH-wt; <strong>751</strong> island CpGs are &gt; 0.2 higher, only <strong>21</strong> lower.</li>
+<li>The glioma CpG island methylator phenotype (<strong>G-CIMP</strong>, Noushmehr et al.&nbsp;2010) is a readout of the IDH mutation.</li>
+</ul>
+<aside class="notes">
+<p>The heatmap shows the 400 island CpGs that differ most between the groups; the IDH-mutant block is uniformly methylated, so in practice the methylation profile alone predicts IDH status very accurately. This is an example of a driver that acts through the epigenome: the hypermethylation is the mechanism of the mutation, not a passenger. Clinically, IDH status defines the WHO glioma classes (IDH-mutant astrocytoma, IDH-mutant 1p/19q-codeleted oligodendroglioma, IDH-wild-type glioblastoma), and methylation arrays are now used to make that call (classifier slide). In the exercise students compute these numbers.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="dnmt3a-and-tet2-clonal-haematopoiesis" class="slide level2 smaller">
+<h2>DNMT3A and TET2: clonal haematopoiesis</h2>
+
+<img data-src="fig15-chip.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li><strong>DNMT3A</strong> and <strong>TET2</strong> loss-of-function mutations let a blood stem cell clone expand.</li>
+<li>Such clones are found in about <strong>10%</strong> of people aged 70–79 (Jaiswal et al.&nbsp;2014): <strong>clonal haematopoiesis</strong>.</li>
+<li>DNMT3A is mutated in <strong>22%</strong> of AML (Ley et al.&nbsp;2010); the clone is a first step, more mutations are needed.</li>
+</ul>
+<aside class="notes">
+<p>DNMT3A is the de novo methyltransferase; TET2 starts active demethylation. Losing either changes the methylation of haematopoietic stem cells and favours self-renewal over differentiation, so the clone grows slowly over decades. Jaiswal et al.&nbsp;2014 sequenced blood exomes of 17 182 people: clonal mutations were rare below 40 and found in 9.5% at 70–79; carriers had an 11-fold higher risk of blood cancer, though the absolute risk stays low, and a higher risk of cardiovascular disease, probably through inflammatory macrophages. Ley et al.&nbsp;2010 found DNMT3A mutations in 62 of 281 AML patients, most at R882. This is a good example of an epigenetic regulator acting early: mutations in DNMT3A are often the first in the leukaemic lineage.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="ezh2-oncogene-or-tumour-suppressor" class="slide level2 smaller">
+<h2>EZH2: oncogene or tumour suppressor</h2>
+
+<img data-src="fig16-ezh2.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li><strong>Gain:</strong> EZH2 <strong>Y641</strong> mutations in germinal-centre lymphoma; with wild-type EZH2, they raise H3K27me3 (Morin 2010; Sneeringer 2010).</li>
+<li><strong>Loss:</strong> PRC2 components deleted or inactivated in some MDS, T-ALL and MPNST.</li>
+<li>Same enzyme, opposite roles: an <strong>EZH2 inhibitor</strong> helps only where the tumour depends on PRC2.</li>
+</ul>
+<aside class="notes">
+<p>The Y641 story is a lesson in reading biochemistry. Morin et al.&nbsp;found the mutation and reported that it reduced activity on an unmethylated peptide, which looked like loss of function. Sneeringer et al.&nbsp;showed that the mutant is poor at the first methylation but better than wild type at converting me2 to me3, so the heterozygous cell makes more H3K27me3 overall. That locks germinal-centre B cells in a proliferative state by repressing differentiation genes. In myeloid malignancies and T-ALL, PRC2 behaves as a tumour suppressor instead. Tazemetostat, an EZH2 inhibitor, received accelerated FDA approvals for follicular lymphoma and epithelioid sarcoma in 2020, but those approvals were withdrawn in June 2026 after an increased rate of second primary malignancies in the confirmatory trial (<a href="https://www.govinfo.gov/content/pkg/FR-2026-06-22/pdf/2026-12367.pdf">FDA withdrawal notice</a>).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="oncohistones" class="slide level2 smaller">
+<h2>Oncohistones</h2>
+
+<img data-src="fig17-oncohistones.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li><strong>H3K27M</strong> in diffuse midline glioma of children: 78% of DIPGs (Wu et al.&nbsp;2012; Schwartzentruber et al.&nbsp;2012).</li>
+<li>The mutant histone is a <strong>small fraction</strong> of all H3 but binds EZH2 and <strong>inhibits PRC2</strong>: H3K27me3 falls genome-wide (Lewis et al.&nbsp;2013).</li>
+<li><strong>H3K36M</strong> in 95% of chondroblastomas; <strong>H3G34W</strong> in giant cell tumour of bone (Behjati et al.&nbsp;2013).</li>
+</ul>
+<aside class="notes">
+<p>Histone genes were not expected to be cancer genes: there are many copies, so one mutant allele makes only a few percent of the H3 in a cell. The K27M mutant is dominant because methionine at position 27 sits in the EZH2 active site and blocks the enzyme, so PRC2 cannot methylate the wild-type histones either. Lewis et al.&nbsp;2013 also showed that K-to-M mutations at K9 and K36 inhibit the matching methyltransferases. The H3.3 genes are H3F3A and H3F3B (new names H3-3A and H3-3B); H3.1 K27M is in HIST1H3B. These tumours are now diagnosed by the mutation and by their methylation profile, and the loss of H3K27me3 is visible by immunohistochemistry.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="swisnf-remodellers-as-tumour-suppressors" class="slide level2 smaller">
+<h2>SWI/SNF: remodellers as tumour suppressors</h2>
+
+<img data-src="fig18-swisnf.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>SWI/SNF (BAF) subunits are mutated in about <strong>20%</strong> of human cancers (Kadoch et al.&nbsp;2013).</li>
+<li>Rhabdoid tumours: biallelic <strong>SMARCB1</strong> loss is essentially the only recurrent event (Lee et al.&nbsp;2012).</li>
+<li>Loss leaves PRC2 unopposed, creating a <strong>dependency on EZH2</strong> (Knutson et al.&nbsp;2013).</li>
+</ul>
+<aside class="notes">
+<p>SWI/SNF complexes slide and evict nucleosomes at enhancers, so loss of a subunit changes which enhancers are accessible. In rhabdoid tumours exome sequencing found almost no other recurrent mutations, which shows that disrupting a chromatin regulator can be enough to drive a cancer. SWI/SNF and Polycomb oppose each other at many genes; without SMARCB1, PRC2 keeps differentiation genes silent, and the tumour cells depend on EZH2. Knutson et al.&nbsp;2013 showed regression of rhabdoid xenografts with an EZH2 inhibitor; tazemetostat was approved for epithelioid sarcoma, a tumour that also lacks SMARCB1 (INI1), before its FDA approvals were withdrawn in June 2026 (see the EZH2 slide). A synthetic dependency of this kind is the logic behind many epigenetic drugs.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="epigenetic-drugs-the-targets" class="slide level2 smaller">
+<h2>Epigenetic drugs: the targets</h2>
+
+<img data-src="fig19-drug-map.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><ul>
+<li>Approved drugs hit <strong>DNMT1</strong>, <strong>HDACs</strong>, <strong>mutant IDH1/2</strong> and <strong>menin–KMT2A</strong>; <strong>BET</strong> bromodomain inhibitors remain in trials.</li>
+<li><strong>EZH2:</strong> tazemetostat is a historical example; its FDA approvals were withdrawn in <strong>June 2026</strong> because of second primary malignancy risk.</li>
+<li>Most work best in <strong>blood cancers</strong> or in tumours defined by a <strong>specific mutation</strong>.</li>
+</ul>
+<aside class="notes">
+<p>Go through the table from top to bottom and connect each row to the writer/reader/eraser vocabulary of <em>What is epigenetics?</em>. Azacitidine and decitabine are the oldest, used in myelodysplastic syndromes and AML. HDAC inhibitors are approved for T-cell lymphomas. Tazemetostat (approved 2020, FDA approvals withdrawn June 2026) targets EZH2. IDH inhibitors are the best example of precision epigenetic therapy: ivosidenib and enasidenib for IDH-mutant AML, and vorasidenib (2024) for IDH-mutant grade 2 glioma. Revumenib (2024) blocks the menin–KMT2A interaction in KMT2A-rearranged leukaemia. BET inhibitors such as JQ1 displace BRD4 from acetylated chromatin and showed strong effects in models, but toxicity and modest efficacy have so far kept them out of routine use. Approval status here is for the US FDA, checked November 2026; the <a href="https://www.govinfo.gov/content/pkg/FR-2026-06-22/pdf/2026-12367.pdf">June 2026 FDA notice</a> documents the tazemetostat withdrawal.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="hypomethylating-drugs" class="slide level2 smaller">
+<h2>Hypomethylating drugs</h2>
+
+<img data-src="fig20-hma.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>Azacitidine and decitabine are <strong>cytidine analogues</strong> built into DNA during replication; they <strong>trap and deplete DNMT1</strong>.</li>
+<li>Methylation is then <strong>diluted</strong> with each division; silenced genes and <strong>endogenous retroviruses</strong> come back on.</li>
+<li>dsRNA from retroviruses triggers an interferon response: <strong>viral mimicry</strong> (Chiappinelli et al.&nbsp;2015; Roulois et al.&nbsp;2015).</li>
+</ul>
+<aside class="notes">
+<p>The drugs need dividing cells, act slowly and are given in repeated cycles; responses in MDS typically take several cycles. Fenaux et al.&nbsp;2009 showed a survival benefit of azacitidine over conventional care in higher-risk MDS. Azacitidine is a ribonucleoside and is mostly built into RNA; decitabine is a deoxyribonucleoside and goes only into DNA. How the drugs work in patients is still debated: re-expression of tumour suppressors, differentiation, and the immune response through viral mimicry may all contribute. The viral-mimicry idea motivates combining them with immune checkpoint inhibitors.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="methylation-based-tumour-classification" class="slide level2 smaller">
+<h2>Methylation-based tumour classification</h2>
+
+<img data-src="fig21-capper.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>Capper et al.&nbsp;(2018): a <strong>random forest</strong> trained on 2 801 reference samples in <strong>91 classes</strong> (82 tumour, 9 normal), from 450k/EPIC arrays.</li>
+<li>Prospectively, 88% of 1 104 cases matched a class; the diagnosis was <strong>revised in 12%</strong>.</li>
+<li>Works because methylation records the <strong>cell of origin</strong> and is stable in fixed tissue.</li>
+</ul>
+<aside class="notes">
+<p>Brain tumours are hard to classify by histology and inter-observer variability is high. The classifier gives raw scores (votes of 10 000 trees) that are calibrated by multinomial logistic regression into probabilities; a score of at least 0.9 assigns a class, otherwise the case is “no match” and goes back to the pathologist. The same array gives a copy-number profile (1p/19q codeletion, amplifications). The tool is freely available and methylation classes are part of the 2021 WHO classification of CNS tumours. Two lessons from machine learning (<em>Machine learning from scratch</em>): the classifier cannot recognise a class it was not trained on, and scores must be calibrated before they are used as confidence.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="real-data-a-classifier-in-our-tumours" class="slide level2 smaller">
+<h2>Real data: a classifier in our tumours</h2>
+
+<img data-src="fig22-classifier.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"><ul>
+<li>Elastic net on 35 710 CpGs, trained on 201 colon tumours, tested on 84 <strong>held-out patients</strong>: predicts MSI-high from methylation alone, using <strong>41 CpGs</strong>.</li>
+<li>All 63 MSS tumours correct; <strong>14 of 21</strong> MSI-high found: <strong>12 of 14</strong> with MLH1 methylation, only <strong>2 of 7</strong> without.</li>
+<li>The model learned the <strong>MLH1/CIMP</strong> route to MSI; it misses most MSI-high tumours without MLH1 methylation in this test set.</li>
+</ul>
+<aside class="notes">
+<p>This is the exercise’s R4 in miniature. The split is by patient so no person contributes to both training and test. The elastic net (glmnet) is penalised logistic regression, like the epigenetic clocks in <em>Epigenetic clocks and biomarkers</em>. Ask students to predict which tumours are missed before showing the colours: the model relies strongly on MLH1/CIMP-associated patterns and misses five of the seven MSI-high tumours without MLH1 methylation in this test set. This result does not establish that such tumours have no methylation changes, or that all methylation-based classifiers would miss them; identifying Lynch syndrome requires further genetic evaluation. A classifier is only as good as the biology it can measure, and a good test-set accuracy (77 of 84, 92% here) can hide a systematically missed subgroup.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="cancer-detection-from-cell-free-dna" class="slide level2 smaller">
+<h2>Cancer detection from cell-free DNA</h2>
+
+<img data-src="fig23-cfdna.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>Plasma contains short DNA fragments, mostly from blood cells; a <strong>small fraction</strong> comes from a tumour.</li>
+<li>Tumour fragments carry tumour-specific methylation; the pattern also reveals the <strong>tissue of origin</strong>.</li>
+<li>Liu et al.&nbsp;(2020): 99.3% specificity; sensitivity <strong>18% in stage I, 93% in stage IV</strong> across all cancer types.</li>
+</ul>
+<aside class="notes">
+<p>Methylation is better suited than mutations for this task because many regions change together, the changes are shared between patients, and the pattern says which tissue the DNA came from. The CCGA study (Liu et al.&nbsp;2020) sequenced bisulfite-converted plasma DNA at more than 100 000 targeted regions in 6 689 participants. Note the stage dependence: early tumours shed little DNA, which is exactly where screening would help most. Whether such tests reduce cancer deaths in screening is being tested in large trials. The general use of methylation as a biomarker, and its pitfalls, are the subject of <em>Epigenetic clocks and biomarkers</em>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-arithmetic-of-screening" class="slide level2 smaller">
+<h2>The arithmetic of screening</h2>
+
+<img data-src="fig24-ppv.png" class="quarto-figure quarto-figure-center r-stretch" style="width:72.0%"><ul>
+<li><strong>Positive predictive value</strong> depends on prevalence: with 50% sensitivity and 99.3% specificity, PPV is <strong>42%</strong> at 1% prevalence; at 95% specificity only <strong>9%</strong>.</li>
+<li>In a screening population most positives can be false, so specificity matters more than it seems.</li>
+</ul>
+<aside class="notes">
+<p>PPV = sens × prev / (sens × prev + (1 − spec) × (1 − prev)). At 1% prevalence: 0.5 × 0.01 / (0.005 + 0.007 × 0.99) = 0.42. With 95% specificity: 0.005 / (0.005 + 0.05 × 0.99) = 0.09. This is an exam-type calculation. It explains why cfDNA tests are tuned for very high specificity even at the cost of sensitivity, and why they are first used in high-risk groups. Each false positive leads to imaging and sometimes biopsy.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="summary" class="slide level2 smaller">
+<h2>Summary</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>idea</th>
+<th>key fact</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>cancer methylome</td>
+<td>global loss (PMDs, repeats), focal gain at CpG islands, often Polycomb targets</td>
+</tr>
+<tr class="even">
+<td>epigenetic hit</td>
+<td>promoter methylation silences MLH1, CDKN2A, BRCA1; MGMT predicts temozolomide benefit</td>
+</tr>
+<tr class="odd">
+<td>CIMP</td>
+<td>many CGIs methylated together; BRAF V600E, MSI (via MLH1), right colon</td>
+</tr>
+<tr class="even">
+<td>driver vs passenger</td>
+<td>most hypermethylated CGIs are passengers, but good markers</td>
+</tr>
+<tr class="odd">
+<td>mutated regulators</td>
+<td>IDH1/2 → 2-HG blocks TET/KDMs (G-CIMP); DNMT3A/TET2 in clonal haematopoiesis; EZH2 gain/loss; H3K27M inhibits PRC2; SWI/SNF loss</td>
+</tr>
+<tr class="even">
+<td>drugs</td>
+<td>azacitidine/decitabine, HDACi, IDH and menin inhibitors; tazemetostat withdrawn (2026); BET inhibitors in trials</td>
+</tr>
+<tr class="odd">
+<td>diagnostics</td>
+<td>methylation classifiers (Capper 2018); cfDNA detection; PPV depends on prevalence</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>Students should be able to explain the two faces of the cancer methylome, use MLH1 as the example of a functional epigenetic hit, explain IDH → 2-HG → hypermethylation, and do the PPV calculation. Links: <em>DNA methylation biology</em> (TETs, DNMTs), <em>Methylation arrays</em> (the data), <em>Epigenetic clocks and biomarkers</em> (penalised regression, cfDNA), <em>Machine learning from scratch</em> (classifiers and held-out data).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="key-papers-optional-further-reading" class="slide level2 smaller">
+<h2>Key papers (optional further reading)</h2>
+<p><em>Not required reading and not examined. For those who want the primary literature.</em></p>
+<ul>
+<li>Feinberg &amp; Vogelstein 1983, <em>Nature</em>. <a href="https://doi.org/10.1038/301089a0">Hypomethylation distinguishes genes of some human cancers from their normal counterparts</a>. The first epigenetic change found in cancer.</li>
+<li>Toyota et al.&nbsp;1999, <em>PNAS</em>. <a href="https://doi.org/10.1073/pnas.96.15.8681">CpG island methylator phenotype in colorectal cancer</a>. The CIMP concept.</li>
+<li>Figueroa et al.&nbsp;2010, <em>Cancer Cell</em>. <a href="https://doi.org/10.1016/j.ccr.2010.11.015">Leukemic IDH1 and IDH2 mutations result in a hypermethylation phenotype, disrupt TET2 function, and impair hematopoietic differentiation</a>. Metabolism meets methylation.</li>
+<li>Lewis et al.&nbsp;2013, <em>Science</em>. <a href="https://doi.org/10.1126/science.1232245">Inhibition of PRC2 activity by a gain-of-function H3 mutation found in pediatric glioblastoma</a>. How an oncohistone works.</li>
+<li>Capper et al.&nbsp;2018, <em>Nature</em>. <a href="https://doi.org/10.1038/nature26000">DNA methylation-based classification of central nervous system tumours</a>. Methylation in routine diagnostics.</li>
+<li>Flavahan, Gaskell &amp; Bernstein 2017, <em>Science</em>. <a href="https://doi.org/10.1126/science.aal2380">Epigenetic plasticity and the hallmarks of cancer</a>. A broad review.</li>
+</ul>
+
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'visible',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: false,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+            const codeEl = trigger.previousElementSibling.cloneNode(true);
+            for (const childEl of codeEl.children) {
+              if (isCodeAnnotation(childEl)) {
+                childEl.remove();
+              }
+            }
+            return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

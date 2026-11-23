@@ -1333,7 +1333,7 @@ Answer
 </div>
 </div>
 <hr>
-<p><strong>Q4.</strong> In a directional WGBS library, from which strands does read 1 come? What happens if you align a non-directional (PBAT) library in directional mode?</p>
+<p><strong>Q4.</strong> In a directional WGBS library, from which strands does read 1 come? What happens if you align a four-strand non-directional library in directional mode? How does standard PBAT differ?</p>
 <div class="callout callout-style-default callout-note callout-titled" title="Answer">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -1346,7 +1346,7 @@ Answer
 </div>
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Read 1 comes from the original top (OT) or original bottom (OB) strand. A non-directional library also contains reads from CTOT and CTOB; in directional mode those are not tried, so roughly half of the reads fail to align.</p>
+<p>Read 1 comes from the original top (OT) or original bottom (OB) strand. A four-strand non-directional library also contains reads from CTOT and CTOB; in directional mode those are not tried, so roughly half of the reads fail to align. Standard PBAT yields read 1 from CTOT and CTOB, searched with <code>--pbat</code>; using default directional mode can lose nearly all of those reads. Some modified PBAT protocols are non-directional, so check the library protocol. See <a href="https://felixkrueger.github.io/Bismark/options/alignment/">Bismark’s library options</a>.</p>
 </div>
 </div>
 </div>

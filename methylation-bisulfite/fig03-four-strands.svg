@@ -165,5 +165,5 @@
 <line x1="30" y1="248" x2="1090" y2="248" stroke="#dfe6ec" stroke-width="1.5"/>
 <text x="30" y="280" font-size="16" fill="#1b2a3a"><tspan font-weight="bold" fill="#2a6f97">OT, OB</tspan>: original top and bottom strands, converted. <tspan font-weight="bold" fill="#5b6b7a">CTOT, CTOB</tspan>: their PCR copies (complementary strands).</text>
 <text x="30" y="306" font-size="16" fill="#1b2a3a"><tspan font-weight="bold">Directional</tspan> libraries (adapters added before conversion): read 1 is always OT or OB.</text>
-<text x="30" y="332" font-size="16" fill="#1b2a3a"><tspan font-weight="bold">Non-directional</tspan> libraries (e.g. PBAT, single-cell): all four can be read.</text>
+<text x="30" y="332" font-size="16" fill="#1b2a3a"><tspan font-weight="bold">Non-directional:</tspan> all four; standard PBAT read 1: CTOT or CTOB.</text>
 </svg>

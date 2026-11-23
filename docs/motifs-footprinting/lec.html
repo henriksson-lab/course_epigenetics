@@ -231,7 +231,7 @@ Epigenetics
 <li><strong>Footprinting:</strong> whether a TF actually <strong>sits on</strong> its site, from the pattern of Tn5 insertions.</li>
 </ul>
 <aside class="notes">
-<p>This is the last unit of the ATAC-seq block. The running example continues from Differential accessibility: the Corces et al.&nbsp;2016 haematopoiesis ATAC-seq data, B cells versus CD4 T cells from the same three donors. Of 211 824 peaks tested, 19 439 are more open in B cells (B-up) and 16 972 more open in CD4 T cells (T-up), at adjusted p below 0.05 and an absolute log2 fold change above 1. The question for this unit is which TFs are behind those differences. Three ideas, in increasing resolution: enrichment over a set of peaks, accessibility per sample, and protection of single sites. The motif sequences in the middle panel are real consensus sites (PU.1, OCT, IRF in blue; RUNX, TCF/LEF, ETS1 in orange); the lists on the right are what we actually find later in this lecture.</p>
+<p>This is the last unit of the ATAC-seq block. The running example continues from Differential accessibility: the Corces et al.&nbsp;2016 haematopoiesis ATAC-seq data, B cells versus CD4 T cells from the same three donors. Of 211 824 peaks tested, 19 404 are more open in B cells (B-up) and 16 897 more open in CD4 T cells (T-up), at adjusted p below 0.05 and an absolute apeglm-shrunken log2 fold change above 1. The exercise reads the saved differential_peaks.tsv table from that analysis; the remaining 175 523 ns peaks form the background for both differential groups. The question for this unit is which TFs are behind those differences. Three ideas, in increasing resolution: enrichment over a set of peaks, accessibility per sample, and protection of single sites. The motif sequences in the middle panel are real consensus sites (PU.1, OCT, IRF in blue; RUNX, TCF/LEF, ETS1 in orange); the lists on the right are what we actually find later in this lecture.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -292,12 +292,12 @@ Epigenetics
 <h2>Motif enrichment is a 2×2 table</h2>
 
 <img data-src="fig03-two-by-two.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><ul>
-<li>Count target and background peaks <strong>with</strong> and <strong>without</strong> a match. Effect size: the <strong>odds ratio</strong>; with 42% vs 20%, OR = 2.9.</li>
-<li>p-value: <strong>Fisher’s exact test</strong>, which is the <strong>hypergeometric</strong> test: how surprising is it to draw this many motif peaks if the 19 439 B-up peaks were a random draw of all tested peaks?</li>
-<li>Expected matches in B-up under the null: 19 439 × 47 509 / 211 824 = 4360. Observed: 8242.</li>
+<li>Count target and background peaks <strong>with</strong> and <strong>without</strong> a match. Effect size: the <strong>odds ratio</strong>; with 42% vs 20%, OR = 2.95.</li>
+<li>p-value: <strong>Fisher’s exact test</strong>, which is the <strong>hypergeometric</strong> test: how surprising is it to draw this many motif peaks if the 19 404 B-up peaks were a random draw from B-up plus ns peaks?</li>
+<li>Expected matches in B-up under the null: 19 404 × 43 302 / 194 927 ≈ 4310. Observed: 8227.</li>
 </ul>
 <aside class="notes">
-<p>The numbers are real: SPIB in B-up peaks. a = 8242 of 19 439 B-up peaks contain a SPIB match, against c = 39 267 of the 192 385 other tested peaks. The odds ratio (a·d)/(b·c) is 2.87. The one-sided hypergeometric p-value is about 10^-934, which R can only compute on the log scale. HOMER reports exactly this hypergeometric p-value (or a binomial approximation); MEME’s SEA uses Fisher’s exact test as well. Note the background here: all other tested peaks, i.e.&nbsp;regions that are open in at least some of the samples. Students did the same kind of 2×2 table for gene-set enrichment in RNA-seq; here genes are peaks and the gene set is “has a motif”.</p>
+<p>The numbers are real: SPIB in B-up peaks. a = 8227 of 19 404 B-up peaks contain a SPIB match, against c = 35 075 of the 175 523 ns peaks. The odds ratio (a·d)/(b·c) is 2.95. The one-sided hypergeometric p-value is about 10^-966, which R can only represent on the log scale. The null draws the B-up group from the combined B-up and ns pool; the 16 897 T-up peaks are excluded. HOMER reports this hypergeometric p-value (or a binomial approximation); MEME’s SEA uses Fisher’s exact test as well. The background contains tested peaks that did not meet the differential thresholds, rather than random genomic DNA. Students did the same kind of 2×2 table for gene-set enrichment in RNA-seq; here genes are peaks and the gene set is “has a motif”.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -314,12 +314,12 @@ Epigenetics
 <h2>Choosing the background</h2>
 
 <img data-src="fig04-backgrounds.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"><ul>
-<li>The background decides the <strong>question</strong>. For differential peaks the natural background is the other peaks you tested.</li>
+<li>The background decides the <strong>question</strong>. Here each differential group is compared with the tested <strong>ns peaks</strong>, excluding both B-up and T-up from the background.</li>
 <li><strong>GC content</strong> is the classic confounder: motifs differ in GC, and so do peak sets (promoters are GC-rich, distal enhancers AT-richer).</li>
 <li>The random-genome background is the motif version of the naive shuffle in <em>Genomic intervals</em>: it answers “open vs closed DNA”, not “B vs T”.</li>
 </ul>
 <aside class="notes">
-<p>Three choices. (1) Other peaks: what distinguishes B-up regions from other open regions. Anything common to open chromatin cancels. (2) GC-matched: draw background regions with the same GC distribution as the target, so motifs that are GC-rich or AT-rich do not win simply because the target is GC-rich or AT-rich. HOMER does this by default, from random genomic regions (findMotifsGenome.pl), and normalises k-mer content as well. chromVAR, later, matches on both GC and average accessibility. (3) Random genome or shuffled sequence: the target is compared with closed, AT-rich DNA, so every motif of open chromatin looks enriched. Same lesson as the shuffle test in Genomic intervals: the null decides the answer. Shuffled sequences (preserving dinucleotide content) are what MEME tools use by default when no background is given.</p>
+<p>Three choices. (1) The ns peaks: what distinguishes B-up or T-up regions from peaks that are not differential by the course thresholds. We use the same background for both groups, excluding the opposite differential group. The ns label includes peaks with insufficient evidence or a small effect; it does not prove that accessibility is identical. Features common to open chromatin tend to cancel. (2) GC-matched: draw background regions with the same GC distribution as the target, so motifs that are GC-rich or AT-rich do not win simply because the target is GC-rich or AT-rich. HOMER does this by default, from random genomic regions (findMotifsGenome.pl), and normalises k-mer content as well. chromVAR, later, matches on both GC and average accessibility. (3) Random genome or shuffled sequence: the target is compared with closed, AT-rich DNA, so every motif of open chromatin looks enriched. Same lesson as the shuffle test in Genomic intervals: the null decides the answer. Shuffled sequences (preserving dinucleotide content) are what MEME tools use by default when no background is given.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -336,12 +336,12 @@ Epigenetics
 <h2>Real data: the background changes the answer</h2>
 
 <img data-src="fig06-background-real.png" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"><ul>
-<li>B-up peaks are <strong>AT-richer</strong> than other peaks (mean GC 0.48 vs 0.51) but GC-richer than random DNA (0.41).</li>
-<li>Against other peaks, GC-rich motifs (SP1, KLF4, NRF1) look <strong>depleted</strong>; GC matching removes most of this. EBF1 (GC-rich) gains: OR 1.18 → 1.48.</li>
-<li>Against random genome, SPIB looks twice as enriched (OR 5.1) and CTCF flips from depleted to enriched.</li>
+<li>B-up peaks are <strong>AT-richer</strong> than ns peaks (mean GC 0.48 vs 0.51) but GC-richer than random DNA (0.41).</li>
+<li>Against ns peaks, GC-rich motifs (SP1, KLF4, NRF1) look <strong>depleted</strong>; GC matching removes most of this. EBF1 (GC-rich) gains: OR 1.13 → 1.44.</li>
+<li>Against random genome, SPIB looks more enriched (OR 4.89 versus 2.95 against ns) and CTCF flips from depleted to enriched.</li>
 </ul>
 <aside class="notes">
-<p>Real numbers from make-motifs-figs.R. For the GC-matched background, each B-up peak got one partner from the other tested peaks with GC content in the same 2% bin. For the random background, 19 439 random 500-bp windows from chr1–22 and X without Ns or blacklisted regions. Read the plot motif by motif. SPIB: enriched against any background, the robust finding. CTCF: depleted against peaks (CTCF sites are open in all cell types, so they are not B-specific), but enriched against random DNA (CTCF sites are open chromatin). SP1, KLF4, NRF1: their apparent depletion against other peaks is mostly GC: B-up peaks are distal, AT-richer elements, while the background contains GC-rich promoters. EBF1 is the reverse: its motif is GC-rich, so the AT-rich target hides its enrichment until GC is matched. Always report which background you used.</p>
+<p>Real numbers from make-motifs-figs.R. For the GC-matched background, we sampled ns peaks without replacement in the same 2%-GC bins as B-up peaks, taking at most one partner per target. Bins with insufficient ns peaks contribute fewer partners; report the resulting background size and GC distribution. Here all 19 404 targets find partners: both the target and the GC-matched background have mean GC 0.477, versus 0.513 in all ns peaks. For the random background, 19 404 random 500-bp windows from chr1–22 and X without Ns or blacklisted regions. Read the plot motif by motif. SPIB: enriched against any background, the robust finding. CTCF: depleted against peaks (many CTCF sites are shared across cell types, so they are not B-specific), but enriched against random DNA (CTCF sites are open chromatin). SP1, KLF4, NRF1: their apparent depletion against ns peaks is mostly GC: B-up peaks are distal, AT-richer elements, while the background contains GC-rich promoters. EBF1 is the reverse: its motif is GC-rich, so the AT-rich target hides its enrichment until GC is matched. Always report which background you used.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -359,10 +359,10 @@ Epigenetics
 
 <img data-src="fig07-enrichment-volcano.png" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"><ul>
 <li><strong>B-up:</strong> PU.1 / SPIB / SPIC (ETS), IRF and STAT, OCT (POU2F2 = OCT2), IKZF1, MEF2, NF-κB. <strong>T-up:</strong> ETS1 / GABPA / ERG-type ETS, <strong>RUNX</strong>, <strong>TCF7/LEF1</strong>, BCL11B, GATA3 (OR 1.5).</li>
-<li>EBF1 is only weakly enriched (OR 1.18) and PAX5’s JASPAR matrix not at all, although both are B-cell master regulators. EBF is clearly <strong>depleted</strong> in T-up peaks (OR 0.51).</li>
+<li>EBF1 is only weakly enriched (OR 1.13) and PAX5’s JASPAR matrix not at all, although both are B-cell master regulators. EBF is clearly <strong>depleted</strong> in T-up peaks (OR 0.51).</li>
 </ul>
 <aside class="notes">
-<p>Each point is one of 879 JASPAR motifs, B-up or T-up compared with all other tested peaks; the dashed line is the Bonferroni threshold. The B-cell list is textbook: PU.1 and SPIB, the ETS–IRF composite elements bound by PU.1 or SPIB with IRF4/IRF8, OCT2 with its coactivator OBF1, IKAROS, MEF2C, and NF-κB. The T-cell list: RUNX1/3 with CBFβ, TCF1 (TCF7) and LEF1, the ETS factors ETS1 and GABPA, BCL11B and GATA3. Where expectations fail is instructive. EBF1 is enriched only weakly with this matrix and background (better with GC matching, previous slide). PAX5, the B-cell identity factor, is not enriched with JASPAR MA0014.4, while the longer PAX2/PAX8 matrices give OR about 1.9: the PWM, not the biology, failed. And a motif being absent from the list does not mean the TF does not act there: TFs bind as partners, and many sites are weak matches below the threshold.</p>
+<p>Each point is one of 879 JASPAR motifs, B-up or T-up compared with the same ns background; the dashed line is the Bonferroni threshold. The B-cell list is textbook: PU.1 and SPIB, the ETS–IRF composite elements bound by PU.1 or SPIB with IRF4/IRF8, OCT2 with its coactivator OBF1, IKAROS, MEF2C, and NF-κB. The T-cell list: RUNX1/3 with CBFβ, TCF1 (TCF7) and LEF1, the ETS factors ETS1 and GABPA, BCL11B and GATA3. Where expectations fail is instructive. EBF1 is enriched only weakly with this matrix and background (better with GC matching, previous slide). PAX5, the B-cell identity factor, is not enriched with JASPAR MA0014.4, while the longer PAX2/PAX8 matrices give OR about 1.86: matrix choice and background can mask a known regulator. And a motif being absent from the list does not mean the TF does not act there: TFs bind as partners, and many sites are weak matches below the threshold.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -384,7 +384,7 @@ Epigenetics
 <li>CTCF and GC-rich promoter motifs (SP1, KLF4) are below 1 in both: constitutively open, not lineage-specific.</li>
 </ul>
 <aside class="notes">
-<p>Points on the diagonal are enriched in both, points in the lower right only in B, upper left only in T. RUNX and TCF/LEF are T-specific, EBF is depleted in T-up, the POU and IRF motifs are positive in both sets (both are lymphoid, and the background contains everything that is open in either). This plot is a good way to see the redundancy problem: you cannot tell from the motif alone whether PU.1 or SPIB is the factor in B cells; both are expressed in B cells. To name the TF, combine motif enrichment with expression (RNA-seq of the same cells), with ChIP-seq, or with perturbation. This is the logic of Heinz et al.&nbsp;2010 (key papers): a few lineage-determining TFs, PU.1 with C/EBP or with E2A/EBF/OCT, select the enhancers of a cell type.</p>
+<p>Points on the diagonal are enriched in both, points in the lower right only in B, upper left only in T. RUNX and TCF/LEF are T-specific, EBF is depleted in T-up, the POU and IRF motifs are positive in both sets (both are lymphoid, and the ns background includes peaks accessible in either cell type that did not meet the differential thresholds). This plot is a good way to see the redundancy problem: you cannot tell from the motif alone whether PU.1 or SPIB is the factor in B cells; both are expressed in B cells. To name the TF, combine motif enrichment with expression (RNA-seq of the same cells), with ChIP-seq, or with perturbation. This is the logic of Heinz et al.&nbsp;2010 (key papers): a few lineage-determining TFs, PU.1 with C/EBP or with E2A/EBF/OCT, select the enhancers of a cell type.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -415,18 +415,18 @@ Epigenetics
 </tr>
 <tr class="even">
 <td>enriched at BH FDR 5% (OR &gt; 1)</td>
-<td>474</td>
-<td>497</td>
+<td>511</td>
+<td>507</td>
 </tr>
 <tr class="odd">
 <td>enriched at Bonferroni 5% (p &lt; 0.05 / 879 = 5.7 × 10⁻⁵)</td>
-<td>326</td>
-<td>426</td>
+<td>361</td>
+<td>432</td>
 </tr>
 <tr class="even">
 <td>strongest odds ratio</td>
-<td>2.87 (SPIB)</td>
-<td>2.82 (ETV2)</td>
+<td>2.95 (SPIB)</td>
+<td>2.89 (BCL11B)</td>
 </tr>
 </tbody>
 </table>
@@ -436,7 +436,7 @@ Epigenetics
 <li>With few target peaks (say 200), the opposite problem: little power, and multiple testing matters more.</li>
 </ul>
 <aside class="notes">
-<p>The multiple-testing part is the same as in RNA-seq: 879 tests, so a nominal p of 0.05 would give about 44 false positives. BH controls the false discovery rate; Bonferroni the family-wise error rate (threshold 0.05/879). But with nearly 20 000 peaks in the target set, statistical significance is almost guaranteed for any motif with even a few percent difference, as with a huge RNA-seq experiment where every gene is “significant”. So report the odds ratio and the two fractions (42% vs 20% for SPIB), not only −log10 p, and look at the top of the list by effect size. Correlated tests: motifs of the same family give nearly the same answer, so “474 significant motifs” is many fewer independent findings. For this reason many analyses first cluster similar motifs into non-redundant ‘archetypes’ and report one per cluster.</p>
+<p>The multiple-testing part is the same as in RNA-seq: 879 tests, so a nominal p of 0.05 would give about 44 false positives. BH controls the false discovery rate; Bonferroni the family-wise error rate (threshold 0.05/879). But with nearly 20 000 peaks in the target set, statistical significance is almost guaranteed for any motif with even a few percent difference, as with a huge RNA-seq experiment where every gene is “significant”. So report the odds ratio and the two fractions (42% vs 20% for SPIB), not only −log10 p, and look at the top of the list by effect size. Correlated tests: motifs of the same family give nearly the same answer, so “511 significant motifs” is many fewer independent findings. For this reason many analyses first cluster similar motifs into non-redundant ‘archetypes’ and report one per cluster.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -476,19 +476,19 @@ Epigenetics
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># HOMER: known + de novo motifs, 200 bp at the peak centre,</span></span>
 <span id="cb1-2"><a aria-hidden="true" tabindex="-1"></a><span class="co"># GC-matched random genomic background (default) ...</span></span>
 <span id="cb1-3"><a aria-hidden="true" tabindex="-1"></a><span class="ex">findMotifsGenome.pl</span> b_up.bed hg38.fa homer_b_up/ <span class="at">-size</span> 200 <span class="at">-p</span> 8</span>
-<span id="cb1-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># ... or the other tested peaks as background</span></span>
-<span id="cb1-5"><a aria-hidden="true" tabindex="-1"></a><span class="ex">findMotifsGenome.pl</span> b_up.bed hg38.fa homer_bg/ <span class="at">-size</span> 200 <span class="at">-bg</span> tested.bed <span class="at">-p</span> 8</span>
+<span id="cb1-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># ... or the saved ns peaks as background for differential peaks</span></span>
+<span id="cb1-5"><a aria-hidden="true" tabindex="-1"></a><span class="ex">findMotifsGenome.pl</span> b_up.bed hg38.fa homer_bg/ <span class="at">-size</span> 200 <span class="at">-bg</span> ns.bed <span class="at">-p</span> 8</span>
 <span id="cb1-6"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a aria-hidden="true" tabindex="-1"></a><span class="co"># MEME suite: known motifs (SEA) and de novo (STREME) vs the other peaks</span></span>
+<span id="cb1-7"><a aria-hidden="true" tabindex="-1"></a><span class="co"># MEME suite: known motifs (SEA) and de novo (STREME) vs the saved ns peaks</span></span>
 <span id="cb1-8"><a aria-hidden="true" tabindex="-1"></a><span class="ex">bedtools</span> getfasta <span class="at">-fi</span> hg38.fa <span class="at">-bed</span> b_up.bed   <span class="op">&gt;</span> b_up.fa</span>
-<span id="cb1-9"><a aria-hidden="true" tabindex="-1"></a><span class="ex">bedtools</span> getfasta <span class="at">-fi</span> hg38.fa <span class="at">-bed</span> tested.bed <span class="op">&gt;</span> tested.fa</span>
-<span id="cb1-10"><a aria-hidden="true" tabindex="-1"></a><span class="ex">sea</span>    <span class="at">--p</span> b_up.fa <span class="at">--n</span> tested.fa <span class="at">--m</span> JASPAR2024_CORE_vertebrates.meme</span>
-<span id="cb1-11"><a aria-hidden="true" tabindex="-1"></a><span class="ex">streme</span> <span class="at">--p</span> b_up.fa <span class="at">--n</span> tested.fa <span class="at">--dna</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-9"><a aria-hidden="true" tabindex="-1"></a><span class="ex">bedtools</span> getfasta <span class="at">-fi</span> hg38.fa <span class="at">-bed</span> ns.bed <span class="op">&gt;</span> ns.fa</span>
+<span id="cb1-10"><a aria-hidden="true" tabindex="-1"></a><span class="ex">sea</span>    <span class="at">--p</span> b_up.fa <span class="at">--n</span> ns.fa <span class="at">--m</span> JASPAR2024_CORE_vertebrates.meme</span>
+<span id="cb1-11"><a aria-hidden="true" tabindex="-1"></a><span class="ex">streme</span> <span class="at">--p</span> b_up.fa <span class="at">--n</span> ns.fa <span class="at">--dna</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>Not installed in this course: the exercise does the known-motif test in R (<strong>motifmatchr</strong> + Fisher), which shows every step.</li>
 </ul>
 <aside class="notes">
-<p>These are the commands a student would run on a cluster with HOMER or the MEME suite installed (both are in Bioconda). HOMER’s -size 200 uses 200 bp around the peak centre: for summit-centred TF peaks, a narrow window raises the signal-to-noise ratio, because the motif sits near the summit. Our Corces peaks are fixed 500-bp windows around summits. Without -bg, HOMER picks GC-matched random genomic regions as background, which is the “random genome” question with GC matching. With -bg tested.bed it asks the B-vs-other-peaks question. SEA wants a motif file in MEME format, which JASPAR provides for download. The output in each case is a ranked table like ours: motif, fraction of target and background with a match, p-value, q-value.</p>
+<p>These are the commands a student would run on a cluster with HOMER or the MEME suite installed (both are in Bioconda). HOMER’s -size 200 uses 200 bp around the peak centre: for summit-centred TF peaks, a narrow window raises the signal-to-noise ratio, because the motif sits near the summit. Our Corces peaks are fixed 500-bp windows around summits. Without -bg, HOMER picks GC-matched random genomic regions as background, which is the “random genome” question with GC matching. With -bg ns.bed it asks what distinguishes B-up from the tested ns peaks, as in our exercise. SEA wants a motif file in MEME format, which JASPAR provides for download. The output in each case is a ranked table like ours: motif, fraction of target and background with a match, p-value, q-value.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -592,7 +592,7 @@ Epigenetics
 <h2>From reads to an aggregate footprint</h2>
 
 <img data-src="fig14-aggregate.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><ul>
-<li>Each read end is one Tn5 insertion: start + 4 for reads on +, end − 5 for reads on −.</li>
+<li>Each read end is one Tn5 insertion: in <strong>BED coordinates</strong>, start + 4 for reads on +, end − 5 for reads on −. In 1-based R coordinates, use start + 4 and end − 4.</li>
 <li>Take every motif match, cut a window of ±100 bp around its centre, <strong>flip</strong> sites on the − strand, and average the insertion counts position by position.</li>
 </ul>
 <aside class="notes">
@@ -613,11 +613,11 @@ Epigenetics
 <h2>Real data: CTCF footprint in GM12878</h2>
 
 <img data-src="fig15-ctcf-footprint.png" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><ul>
-<li><strong>Bound</strong> sites (motif in a ChIP peak, n = 400): high flanks peaking at about −25 and +33 bp, and a dip over the motif. <strong>Open but unbound</strong> motif sites (n = 427): flat, no flanks, no dip. <strong>Closed</strong> sites: almost no insertions.</li>
+<li><strong>Bound</strong> sites (motif in a ChIP peak, n = 400): high flanks peaking at about −23 and +34 bp, and a dip over the motif. <strong>Open but unbound</strong> motif sites (n = 427): flat, no flanks, no dip. <strong>Closed</strong> sites: almost no insertions.</li>
 <li>The narrow spike at the motif centre appears in bound <strong>and</strong> unbound sites: it is Tn5’s sequence preference, not protein.</li>
 </ul>
 <aside class="notes">
-<p>Real data from the exercise: GM12878 ATAC-seq replicate 1, chr21 only, 505 000 insertions after removing duplicates. CTCF motif matches on chr21 at p &lt; 1e-4 (JASPAR MA0139.2), oriented by motif strand, averaged per site; thin lines are 1-bp values, thick lines a 5-bp running mean. Bound sites: insertions rise to about 0.7 per site at the flanks and fall to about 0.2 on either side of the centre; averaged over ±10 bp the centre is 0.34 against 0.49 at 30–60 bp, a ratio of 0.7. Three lessons. The flanks: CTCF positions nucleosomes and keeps the neighbourhood open. The dip: the protein blocks Tn5 over roughly 20–40 bp, wider than the 19-bp motif because CTCF’s zinc fingers and the protein bulk cover more DNA. The spike at the centre: the unbound open sites have it too, so it comes from the motif sequence itself, which Tn5 prefers to cut (next slide). With one chromosome and 400 sites the profile is noisy; genome-wide it is very clean.</p>
+<p>Real data from the exercise: GM12878 ATAC-seq replicate 1, chr21 only, 505 000 insertions after removing duplicates. CTCF motif matches on chr21 at p &lt; 1e-4 (JASPAR MA0139.2), oriented by motif strand, averaged per site; thin lines are 1-bp values, thick lines a 5-bp running mean. Bound sites: insertions rise to about 0.7 per site at the flanks and fall to about 0.2 on either side of the centre; averaged over ±10 bp the centre is 0.34 against 0.48 at 30–60 bp, a ratio of 0.69. Three lessons. The flanks: CTCF positions nucleosomes and keeps the neighbourhood open. The dip: the protein blocks Tn5 over roughly 20–40 bp, wider than the 15-bp motif because CTCF’s zinc fingers and the protein bulk cover more DNA. The spike at the centre: the unbound open sites have it too, so it comes from the motif sequence itself, which Tn5 prefers to cut (next slide). With one chromosome and 400 sites the profile is noisy; genome-wide it is very clean.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -634,7 +634,7 @@ Epigenetics
 <h2>Tn5 has a sequence preference</h2>
 
 <img data-src="fig16-tn5-bias.png" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"><ul>
-<li>Base composition around 200 000 insertion sites in the GM12878 reads, relative to the same reads 20–30 bp away. Within ±10 bp of the insertion, bases are up to <strong>1.5-fold</strong> over- or under-represented, in a roughly symmetric pattern around the 9-bp duplication.</li>
+<li>Base composition around 200 000 insertion sites in the GM12878 reads, relative to the same reads 20–30 bp away. Within ±10 bp of the insertion, bases are up to <strong>1.8-fold enriched</strong> or <strong>2.6-fold depleted</strong>, in a structured pattern around the 9-bp duplication.</li>
 <li>Tn5 does not cut at random: some sequences are cut more often <strong>whatever is bound</strong>. A motif has nearly the same sequence at every site, so this preference repeats at every site and does not average out.</li>
 </ul>
 <aside class="notes">
@@ -764,7 +764,7 @@ Epigenetics
 </tr>
 <tr class="even">
 <td>background</td>
-<td>decides the question; other peaks for differential sets; match GC; random genome inflates</td>
+<td>decides the question; tested ns peaks for differential sets; match GC; random genome inflates</td>
 </tr>
 <tr class="odd">
 <td>multiple testing</td>

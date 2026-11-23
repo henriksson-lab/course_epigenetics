@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 410" width="1120" height="410" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1b2a3a"/></marker><marker id="ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker><marker id="ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker><marker id="ahc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a8324a"/></marker><marker id="ahgr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/></marker><marker id="ahb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a6f97"/></marker></defs>
+<rect width="1120" height="410" fill="#ffffff"/>
+<text x="24" y="30" font-size="18" fill="#1b2a3a" text-anchor="start" font-weight="bold">Mutant IDH makes an oncometabolite that blocks demethylases</text>
+<rect x="30" y="70" width="150" height="56" rx="10" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.8"/>
+<text x="105.0" y="103.0" font-size="16" fill="#1b2a3a" text-anchor="middle" font-weight="bold">isocitrate</text>
+<rect x="380" y="70" width="130" height="56" rx="10" fill="#eaf5ee" stroke="#1b2a3a" stroke-width="1.8"/>
+<text x="445.0" y="103.0" font-size="16" fill="#1b2a3a" text-anchor="middle" font-weight="bold">α-KG</text>
+<rect x="800" y="70" width="170" height="56" rx="10" fill="#fbeaea" stroke="#c0392b" stroke-width="1.8"/>
+<text x="885.0" y="103.0" font-size="16" fill="#c0392b" text-anchor="middle" font-weight="bold">D-2-HG</text>
+<line x1="182" y1="98" x2="376" y2="98" stroke="#1b2a3a" stroke-width="2.2" marker-end="url(#ah)"/>
+<text x="279" y="88" font-size="15" fill="#1b2a3a" text-anchor="middle">IDH1 / IDH2 (wild type)</text>
+<line x1="512" y1="98" x2="796" y2="98" stroke="#c0392b" stroke-width="2.6" marker-end="url(#ahr)"/>
+<text x="654" y="88" font-size="15" fill="#c0392b" text-anchor="middle" font-weight="bold">mutant IDH1 R132 or IDH2 R140/R172</text>
+<text x="654" y="118" font-size="14" fill="#5b6b7a" text-anchor="middle">(a new enzyme activity)</text>
+<rect x="170" y="220" width="330" height="64" rx="10" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.8"/>
+<text x="335.0" y="247.0" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">TET enzymes</text>
+<text x="335.0" y="267.0" font-size="15" fill="#1b2a3a" text-anchor="middle">5mC → 5hmC: start of DNA demethylation</text>
+<rect x="560" y="220" width="330" height="64" rx="10" fill="#eaf1f7" stroke="#1b2a3a" stroke-width="1.8"/>
+<text x="725.0" y="247.0" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">JmjC histone demethylases</text>
+<text x="725.0" y="267.0" font-size="15" fill="#1b2a3a" text-anchor="middle">remove methyl from H3K9, H3K27, H3K36</text>
+<line x1="430" y1="128" x2="350" y2="216" stroke="#2e8b57" stroke-width="2.2" marker-end="url(#ahg)"/>
+<line x1="460" y1="128" x2="700" y2="216" stroke="#2e8b57" stroke-width="2.2" marker-end="url(#ahg)"/>
+<text x="365" y="168" font-size="15" fill="#2e8b57" text-anchor="end">α-KG is a co-substrate</text>
+<line x1="860" y1="128" x2="800" y2="214" stroke="#c0392b" stroke-width="2.5" stroke-dasharray="6 4"/>
+<line x1="786" y1="214" x2="814" y2="214" stroke="#c0392b" stroke-width="4"/>
+<line x1="840" y1="128" x2="420" y2="214" stroke="#c0392b" stroke-width="2.5" stroke-dasharray="6 4"/>
+<line x1="406" y1="214" x2="434" y2="214" stroke="#c0392b" stroke-width="4"/>
+<text x="868" y="168" font-size="15" fill="#c0392b" text-anchor="start" font-weight="bold">2-HG competes with α-KG</text>
+<line x1="335" y1="286" x2="335" y2="318" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<line x1="725" y1="286" x2="725" y2="318" stroke="#1b2a3a" stroke-width="2" marker-end="url(#ah)"/>
+<text x="335" y="340" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">CpG islands gain methylation</text>
+<text x="335" y="360" font-size="15" fill="#5b6b7a" text-anchor="middle">(G-CIMP in glioma, hypermethylation in AML)</text>
+<text x="725" y="340" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">histone methylation accumulates</text>
+<text x="725" y="360" font-size="15" fill="#5b6b7a" text-anchor="middle">(H3K9me3, H3K27me3)</text>
+<text x="530" y="396" font-size="16" fill="#a8324a" text-anchor="middle" font-weight="bold">both: cells fail to differentiate</text>
+<rect x="918" y="214" width="190" height="150" rx="10" fill="#f4f6f8" stroke="#5b6b7a" stroke-width="1.2"/>
+<text x="1013" y="240" font-size="15" fill="#1b2a3a" text-anchor="middle" font-weight="bold">IDH inhibitors</text>
+<text x="1013" y="264" font-size="15" fill="#1b2a3a" text-anchor="middle">ivosidenib (IDH1)</text>
+<text x="1013" y="284" font-size="15" fill="#1b2a3a" text-anchor="middle">enasidenib (IDH2)</text>
+<text x="1013" y="304" font-size="15" fill="#1b2a3a" text-anchor="middle">vorasidenib (IDH1/2)</text>
+<text x="1013" y="324" font-size="14" fill="#5b6b7a" text-anchor="middle">lower 2-HG; cells can</text>
+<text x="1013" y="344" font-size="14" fill="#5b6b7a" text-anchor="middle">differentiate again</text>
+</svg>

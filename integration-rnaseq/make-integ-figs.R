@@ -24,10 +24,12 @@ colPN <- c(`TRUE` = "#c0392b", `FALSE` = "#5b6b7a")
 chroms <- paste0("chr", c(1:22, "X"))
 
 pr_curve <- function(score, truth) {
-  set.seed(1)
-  o  <- order(score, runif(length(score)), decreasing = TRUE)   # ties in random order
+  o <- order(score, decreasing = TRUE)
   tp <- cumsum(truth[o])
-  data.frame(threshold = score[o], recall = tp / sum(truth), precision = tp / seq_along(o))
+  # A threshold includes every pair with the same score: never split a tie.
+  last <- !duplicated(score[o], fromLast = TRUE)
+  k <- which(last)
+  data.frame(threshold = score[o][k], recall = tp[k] / sum(truth), precision = tp[k] / k)
 }
 auprc <- function(score, truth) { p <- pr_curve(score, truth); sum(diff(c(0, p$recall)) * p$precision) }
 prec_at_recall <- function(score, truth, r = 0.7) { p <- pr_curve(score, truth); p$precision[which(p$recall >= r)[1]] }

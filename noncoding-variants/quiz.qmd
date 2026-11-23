@@ -59,7 +59,7 @@ Equal priors: 0.6, 0.3, 0.1; the 95% set needs all three (0.6 + 0.3 = 0.9 < 0.95
 **Q6.** A PWM gives the reference allele a best score of 9.0 bits and the alternative allele 5.5 bits at a site. By how much does the match change? Why is "the risk allele disrupts a TF motif" weak evidence on its own?
 
 ::: {.callout-note collapse="true" title="Answer"}
-Δ = −3.5 bits: $2^{3.5} \approx 11$-fold weaker in odds. Weak evidence because almost every position in open chromatin changes some motif match when mutated (in our data 81% of random positions in GM12878 peaks gained or lost a JASPAR match at p < 10⁻⁴, vs 85% of autoimmune SNPs), and the TF may not be expressed or bound there. Add binding data, allelic imbalance or a QTL, and an experiment.
+Δ = −3.5 bits: $2^{3.5} \approx 11$-fold lower motif-versus-background likelihood ratio. This is not an 11-fold change in binding probability. Weak evidence because almost every position in open chromatin changes some motif match when mutated (in our data 81% of random positions in GM12878 peaks gained or lost a JASPAR match at p < 10⁻⁴, vs 85% of autoimmune SNPs), and the TF may not be expressed or bound there. Add binding data, allelic imbalance or a QTL, and an experiment.
 :::
 
 ---
@@ -75,7 +75,7 @@ A caQTL compares accessibility **between people** with different genotypes (many
 **Q8.** In GM12878 ATAC-seq, 51.6% of reads at heterozygous SNPs carry the reference allele. Explain why, and what it does to a binomial test against 0.5.
 
 ::: {.callout-note collapse="true" title="Answer"}
-Reference mapping bias: reads carrying the non-reference allele have one more mismatch to the reference genome and are lost slightly more often in alignment or MAPQ filtering. A test against 0.5 then finds spurious reference-biased "imbalance", especially at deeply covered sites (the bias is constant, the standard error shrinks with depth). Test against the genome-wide reference fraction, or remove the bias with WASP or alignment to a personal genome.
+Reference mapping bias: reads carrying the non-reference allele have one more mismatch to the reference genome and are lost slightly more often in alignment or MAPQ filtering. A test against 0.5 then finds spurious reference-biased "imbalance", especially at deeply covered sites (the bias is constant, the standard error shrinks with depth). Testing against the pooled reference fraction adjusts for the overall excess but leaves site-specific bias. WASP checks whether swapping alleles changes a read's mapping. Alignment to a personal genome alone does not ensure equal mappability ([van de Geijn et al. 2015](https://doi.org/10.1038/nmeth.3582)).
 :::
 
 ---

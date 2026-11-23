@@ -250,7 +250,7 @@ Epigenetics
 <h2>Why arrays?</h2>
 
 <img data-src="fig01-platforms.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
-<li>About 3% of the ~28 million CpGs, chosen in advance: promoters and CpG islands (450k), plus enhancers (EPIC).</li>
+<li>About 1.7% (450k) to 3.3% (EPIC v2) of the ~28 million CpGs, chosen in advance: promoters and CpG islands (450k), plus enhancers (EPIC).</li>
 <li>In exchange: low cost per sample, 250–500 ng DNA, a few days from DNA to data, and highly standardised data across labs and decades.</li>
 </ul>
 <aside class="notes">
@@ -768,10 +768,10 @@ Epigenetics
 <li><strong>Direction of causation</strong>: disease → methylation is as plausible as the reverse. RA treatment (methotrexate, steroids) changes both cell composition and methylation.</li>
 <li><strong>Genetics</strong>: many CpGs are controlled by nearby SNPs (meQTLs, <em>Epigenomics and genetic variation</em>); a disease-associated SNP can drive both. Mendelian randomisation can test the direction.</li>
 <li><strong>Tissue</strong>: blood is accessible, not necessarily relevant (the joint synovium is where RA happens).</li>
-<li><strong>The array covers 3% of CpGs</strong>: “no hit” does not mean “no methylation change”.</li>
+<li><strong>450k covers about 1.7% of CpGs; EPIC about 3%</strong>: “no hit” does not mean “no methylation change”.</li>
 </ul>
 <aside class="notes">
-<p>EWAS results are associations, like GWAS results but with an extra problem: methylation can be a consequence of the disease, its treatment or its lifestyle correlates. For RA: patients take drugs (methotrexate is a folate antagonist and affects one-carbon metabolism, which supplies methyl groups), have chronic inflammation and smoke more. Liu et al.&nbsp;2013 addressed direction by asking whether methylation mediates the effect of MHC risk SNPs. Good practice: pre-register covariates, report λ and QQ plots, include a positive control, replicate, and say clearly whether cell composition was adjusted for. Note also the difference between statistical and biological significance: with 10 000 people a Δβ of 0.5% can be significant, but it is far below what changes the expression of a gene.</p>
+<p>EWAS results are associations, like GWAS results but with an extra problem: methylation can be a consequence of the disease, its treatment or its lifestyle correlates. For RA: patients take drugs (methotrexate is a folate antagonist and affects one-carbon metabolism, which supplies methyl groups), have chronic inflammation and smoke more. Liu et al.&nbsp;2013 addressed direction by asking whether methylation mediates the effect of MHC risk SNPs. Good practice: pre-register covariates, report λ and QQ plots, include a positive control, replicate, and say clearly whether cell composition was adjusted for. Note also the difference between statistical and biological significance: with 10 000 people a Δβ of 0.5% can be significant, but significance alone does not show a functional effect. A small bulk difference can also reflect a larger change in a small cell population; functional claims need further evidence.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -869,7 +869,7 @@ Epigenetics
 </tr>
 <tr class="even">
 <td>platforms</td>
-<td>27k → 450k (485 577) → EPIC (866 895) → EPIC v2 (~935 000); ~3% of CpGs</td>
+<td>27k → 450k (485 577) → EPIC (866 895) → EPIC v2 (~935 000); ~1.7–3.3% of CpGs</td>
 </tr>
 <tr class="odd">
 <td>β and M</td>

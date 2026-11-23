@@ -48,7 +48,7 @@ S1 is an input (or a failed ChIP): reads spread evenly over the bins. S2 is an e
 
 ---
 
-**Q5.** A single-end 50 bp ChIP-seq has strand cross-correlation 0.12 at 50 bp, 0.10 at its maximum (220 bp), and a minimum of 0.08. Compute NSC and RSC. What do the two peaks of the curve mean, and is this a good experiment?
+**Q5.** A single-end 50 bp ChIP-seq has strand cross-correlation 0.12 at 50 bp, 0.10 at its fragment-length peak (220 bp), and a minimum of 0.08. Compute NSC and RSC. What do the two peaks of the curve mean, and is this a good experiment?
 
 ::: {.callout-tip collapse="true" title="Hint"}
 NSC = CC(fragment) / min; RSC = (CC(fragment) − min) / (CC(read) − min).

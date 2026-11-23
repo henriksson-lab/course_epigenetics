@@ -1362,7 +1362,7 @@ Answer
 </div>
 <div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Probably not. These motifs are typical of open chromatin and GC-rich promoters in general; random genomic windows are mostly closed and AT-rich, so any set of peaks is “enriched” for them. Use peaks that did not change (all tested peaks) as background, ideally GC-matched. Then CTCF in particular usually comes out <em>depleted</em>, because its sites are open in every condition.</p>
+<p>Those results alone do not show that. These motifs are typical of open chromatin and GC-rich promoters in general; random genomic windows are mostly closed and AT-rich, so any set of peaks is “enriched” for them. Use the tested <code>ns</code> peaks (not differential by the chosen significance and effect-size thresholds) as background, ideally GC-matched. Exclude both differential groups from this background; <code>ns</code> is not proof that a peak is unchanged. Then CTCF in particular usually comes out <em>depleted</em>, because many of its sites are shared across conditions.</p>
 </div>
 </div>
 </div>
